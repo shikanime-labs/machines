@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
@@ -13,5 +13,5 @@ with lib;
   };
 
   xdg.configFile."ghostty/themes/catppuccin-latte".source =
-    "${sources.ghostty}/catppuccin-latte.conf";
+    "${config.catppuccin.sources.ghostty}/catppuccin-latte.conf";
 }
