@@ -169,6 +169,7 @@
       flux = {
         repo = "oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance";
         name = "flux-instance";
+        hash = "sha256-A7ojoUGwSKt+Vi+kFFroNroUxrJzHdLdbrYidHgg8gs=";
         version = "0.46.0";
         targetNamespace = "flux-system";
         createNamespace = true;
