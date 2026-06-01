@@ -155,9 +155,6 @@
     cisHardening = true;
     extraFlags = [
       "--secrets-encryption"
-      # Keep overlay traffic on Tailnet since the firewall only opens CNI/RKE2
-      # ports on tailscale0
-      "--flannel-iface=tailscale0"
     ];
 
     cni = "canal";
@@ -270,6 +267,18 @@
         };
       };
     };
+
+    manifests.rke2-canal-config.content = {
+      apiVersion = "helm.cattle.io/v1";
+      kind = "HelmChartConfig";
+      metadata = {
+        name = "rke2-canal";
+        namespace = "kube-system";
+      };
+      spec.valuesContent = builtins.toJSON {
+        flannel.iface = "tailscale0";
+      };
+    };
   };
 
   systemd.services.rke2-sops-age = {
@@ -285,11 +294,15 @@
       StartLimitIntervalSec = 0;
     };
     preStart = ''
-      until ${pkgs.kubectl}/bin/kubectl get namespace flux-system >/dev/null 2>&1; do
-        sleep 1
-      done
+      set -euo pipefail
+
+      [ -n "$(${pkgs.iproute2}/bin/ss -H -lnt sport = :6443 2>/dev/null)" ]
+      ${pkgs.kubectl}/bin/kubectl get --raw=/readyz >/dev/null 2>&1
+      ${pkgs.kubectl}/bin/kubectl get namespace flux-system >/dev/null 2>&1
     '';
     script = ''
+      set -euo pipefail
+
       if ! ${pkgs.kubectl}/bin/kubectl -n flux-system get secret sops-age >/dev/null 2>&1; then
         ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key | \
           ${pkgs.kubectl}/bin/kubectl -n flux-system create secret generic sops-age \
