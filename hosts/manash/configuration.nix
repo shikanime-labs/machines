@@ -187,9 +187,7 @@
                         secretRef:
                           name: sops-age
                   '';
-                  target = {
-                    kind = "Kustomization";
-                  };
+                  target.kind = "Kustomization";
                 }
               ];
             };
@@ -215,21 +213,17 @@
         values = {
           healthcheck.enabled = true;
           web = {
-            config = {
-              authentication = {
-                type = "Anonymous";
-                anonymous = {
-                  username = "admin";
-                  groups = [ "system:masters" ];
-                };
+            config.authentication = {
+              type = "Anonymous";
+              anonymous = {
+                username = "admin";
+                groups = [ "system:masters" ];
               };
             };
             ingress = {
               enabled = true;
               className = "tailscale";
-              annotations = {
-                "tailscale.com/tags" = "tag:web";
-              };
+              annotations."tailscale.com/tags" = "tag:web";
               hosts = [
                 {
                   host = "nishir-flux";
