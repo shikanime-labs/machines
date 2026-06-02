@@ -92,11 +92,7 @@ in
     };
   };
 
-  networking = {
-    hostName = "nixtar";
-    # Let Tailscale manage /etc/resolv.conf
-    resolvconf.enable = false;
-  };
+  networking.hostName = "nixtar";
 
   nix.extraOptions = ''
     !include ${config.sops.secrets.nix-config.path}
