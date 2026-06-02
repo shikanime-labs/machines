@@ -77,9 +77,6 @@ in
     ./users/shika/home-configuration.nix
   ];
 
-  # Let Tailscale manage /etc/resolv.conf
-  environment.etc."resolv.conf".enable = false;
-
   # Required for Docker credential management
   environment.systemPackages = [
     pkgs.docker-credential-helpers
@@ -95,7 +92,11 @@ in
     };
   };
 
-  networking.hostName = "nixtar";
+  networking = {
+    hostName = "nixtar";
+    # Let Tailscale manage /etc/resolv.conf
+    resolvconf.enable = false;
+  };
 
   nix.extraOptions = ''
     !include ${config.sops.secrets.nix-config.path}
