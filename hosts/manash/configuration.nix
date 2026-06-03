@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   modulesPath,
   ...
 }:
@@ -10,6 +9,7 @@
     "${modulesPath}/profiles/headless.nix"
     ../../modules/nixos/base.nix
     ../../modules/nixos/longhorn.nix
+    ../../modules/nixos/rke2.nix
   ];
 
   home-manager.users.nishir.imports = [
@@ -137,6 +137,7 @@
         allowedUDPPorts = [
           # Canal (Flannel VXLAN) overlay
           8472
+          51820
         ];
       };
       allowedTCPPortRanges = [
@@ -151,7 +152,7 @@
     hostName = "manash";
   };
 
-  services.rke2 = {
+  shikanime.rke2 = {
     enable = true;
     role = "server";
     cisHardening = true;
@@ -266,38 +267,15 @@
         };
       };
     };
-
-    manifests.rke2-canal-config.content = {
-      apiVersion = "helm.cattle.io/v1";
-      kind = "HelmChartConfig";
-      metadata = {
-        name = "rke2-canal";
-        namespace = "kube-system";
-      };
-      spec.valuesContent = builtins.toJSON {
-        flannel.iface = "tailscale0";
-      };
+    canalBackend = "wireguard";
+    flannelIface = "tailscale0";
+    bootstrap = {
+      enable = true;
+      repoUrl = "https://github.com/shikanime/manifests.git";
+      ref = "refs/heads/main";
+      path = "clusters/nishir/overlays/tailnet";
+      hostName = "nishir-flux";
     };
-  };
-
-  systemd.services.rke2-sops-age = {
-    wants = [ "rke2-server.service" ];
-    after = [ "rke2-server.service" ];
-    environment.KUBECONFIG = "/etc/rancher/rke2/rke2.yaml";
-    serviceConfig.Type = "oneshot";
-    preStart = ''
-      until ${pkgs.kubectl}/bin/kubectl get namespace flux-system >/dev/null 2>&1; do
-        sleep 1
-      done
-    '';
-    script = ''
-      if ! ${pkgs.kubectl}/bin/kubectl -n flux-system get secret sops-age >/dev/null 2>&1; then
-        ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key | \
-          ${pkgs.kubectl}/bin/kubectl -n flux-system create secret generic sops-age \
-            --from-file=age.agekey=/dev/stdin \
-            --dry-run=client -o yaml | ${pkgs.kubectl}/bin/kubectl apply -f -
-      fi
-    '';
   };
 
   services = {

@@ -107,6 +107,16 @@
                 ];
               }
               {
+                path_regex = "secrets/rke2-token.enc.yaml";
+                key_groups = [
+                  {
+                    age = age ++ [
+                      "age1f4yuh4j3gqafjduusfpxz3na9xtwth9s6gznq043mfex0zglp5jqkkdm64" # host
+                    ];
+                  }
+                ];
+              }
+              {
                 path_regex = "secrets/telsha.enc.yaml";
                 key_groups = [
                   {
