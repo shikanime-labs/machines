@@ -154,7 +154,6 @@
   services.rke2 = {
     enable = true;
     role = "server";
-    cisHardening = true;
     extraFlags = [
       "--cluster-cidr=10.42.0.0/16,2001:cafe:42::/56"
       "--secrets-encryption"
