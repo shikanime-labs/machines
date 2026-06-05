@@ -120,6 +120,24 @@
 
   hardware.facter.reportPath = ./facter.json;
 
+  fileSystems."/mnt/remilia" = {
+    device = "/dev/disk/by-label/remilia";
+    fsType = "xfs";
+    options = [
+      "nofail"
+      "x-systemd.automount"
+    ];
+  };
+
+  fileSystems."/mnt/flandre" = {
+    device = "/dev/disk/by-label/flandre";
+    fsType = "xfs";
+    options = [
+      "nofail"
+      "x-systemd.automount"
+    ];
+  };
+
   nix.extraOptions = ''
     !include ${config.sops.secrets.nix-config.path}
   '';
