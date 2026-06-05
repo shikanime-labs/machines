@@ -65,6 +65,30 @@
       "net.ipv6.conf.all.forwarding" = 1;
       "net.ipv6.conf.default.forwarding" = 1;
 
+      # This host forwards for Kubernetes/Tailscale, but still learns its WAN
+      # default route via router advertisements.
+      "net.ipv6.conf.all.accept_ra" = 2;
+      "net.ipv6.conf.default.accept_ra" = 2;
+      "net.ipv6.conf.enp1s0.accept_ra" = 2;
+      "net.ipv6.conf.enp1s0.autoconf" = 1;
+      "net.ipv6.conf.enp1s0.accept_ra_defrtr" = 1;
+      "net.ipv6.conf.enp1s0.accept_ra_pinfo" = 1;
+      "net.ipv6.conf.enp1s0.accept_ra_mtu" = 1;
+      "net.ipv6.conf.enp1s0.accept_redirects" = 0;
+      "net.ipv6.conf.all.accept_redirects" = 0;
+      "net.ipv6.conf.default.accept_redirects" = 0;
+      "net.ipv6.conf.all.use_tempaddr" = 2;
+      "net.ipv6.conf.default.use_tempaddr" = 2;
+      "net.ipv6.conf.enp1s0.use_tempaddr" = 2;
+      "net.ipv6.conf.all.temp_prefered_lft" = 86400;
+      "net.ipv6.conf.default.temp_prefered_lft" = 86400;
+      "net.ipv6.conf.enp1s0.temp_prefered_lft" = 86400;
+      "net.ipv6.conf.all.temp_valid_lft" = 604800;
+      "net.ipv6.conf.default.temp_valid_lft" = 604800;
+      "net.ipv6.conf.enp1s0.temp_valid_lft" = 604800;
+      "net.ipv6.route.mtu_expires" = 600;
+      "net.ipv6.route.min_adv_mss" = 1220;
+
       # Increase conntrack room for NAT, service meshes, and
       # clustered east-west traffic
       "net.netfilter.nf_conntrack_max" = 262144;
@@ -143,6 +167,16 @@
   '';
 
   networking = {
+    # Keep the standard precedence ordering, but strongly prefer IPv4-mapped
+    # addresses when a destination is available over both families. This only
+    # affects glibc consumers
+    getaddrinfo.precedence = {
+      "::1/128" = 50;
+      "::/0" = 40;
+      "2002::/16" = 30;
+      "::/96" = 20;
+      "::ffff:0:0/96" = 100;
+    };
     firewall = {
       enable = true;
       interfaces.enp1s0 = {
