@@ -51,7 +51,7 @@
       "net.ipv4.ip_forward" = 1;
       "net.ipv4.conf.all.rp_filter" = 0;
       "net.ipv4.conf.default.rp_filter" = 0;
-      "net.ipv4.conf.tailscale0.rp_filter" = 0;
+      "net.ipv4.conf.enp1s0.rp_filter" = 0;
       "net.ipv4.ip_local_port_range" = "1024 65535";
       "net.ipv4.tcp_congestion_control" = "bbr";
       "net.ipv4.tcp_fin_timeout" = 15;
@@ -145,7 +145,7 @@
   networking = {
     firewall = {
       enable = true;
-      interfaces.tailscale0 = {
+      interfaces.enp1s0 = {
         allowedTCPPorts = [
           # Kubernetes API
           6443
@@ -162,7 +162,7 @@
       allowedTCPPortRanges = [
         {
           # NodePort range for Services; Tailnet-restricted access is handled by
-          # interfaces.tailscale0
+          # interfaces.enp1s0
           from = 30000;
           to = 32767;
         }
