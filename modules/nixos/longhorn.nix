@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   # Enable iscsi protocol support at kernel level
@@ -7,16 +7,19 @@
     "iscsi_tcp"
   ];
 
-  services.openiscsi.enable = true;
+  services.openiscsi = {
+    enable = true;
+    name = "iqn.2026-06.io.shikanime:${config.networking.hostName}";
+  };
 
   # Enable NFS support at kernel level
   boot.supportedFilesystems = [ "nfs" ];
 
-  environment.systemPackages = [
-    pkgs.cryptsetup
-    pkgs.lvm2
-    pkgs.nfs-utils
-    pkgs.openiscsi
+  environment.systemPackages = with pkgs; [
+    cryptsetup
+    lvm2
+    nfs-utils
+    openiscsi
   ];
 
   # FIXME: https://github.com/longhorn/longhorn/issues/2166
