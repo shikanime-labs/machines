@@ -23,7 +23,7 @@
   };
 
   # Let Docker manage /etc/resolv.conf
-  environment.etc."resolv.conf".enable = false;
+  networking.resolvconf.enable = false;
 
   # Let Kubernetes manage the network configuration
   networking.useDHCP = false;
