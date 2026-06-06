@@ -7,6 +7,8 @@
     "iscsi_tcp"
   ];
 
+  services.openiscsi.enable = true;
+
   # Enable NFS support at kernel level
   boot.supportedFilesystems = [ "nfs" ];
 
