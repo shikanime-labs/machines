@@ -23,6 +23,7 @@ with lib;
       codex
       devenv
       docker-credential-helpers
+      gemini-cli
       pass
       qpdf
       qwen-code
