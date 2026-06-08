@@ -21,7 +21,6 @@ let
     else
       removePrefix config.home.homeDirectory "${config.xdg.configHome}/sapling";
 
-  email = "william.phetsinorath@shikanime.studio";
   name = "William Phetsinorath";
   signingKey = "0CC037FFEA0769A1";
 in
@@ -92,6 +91,7 @@ in
       github-token = { };
       gitlab-token = { };
       gouv-email = { };
+      shikanime-studio-email = { };
       nix-access-token = { };
     };
     templates = {
@@ -111,9 +111,9 @@ in
       };
       git-config.file = gitIni.generate "config" {
         user = {
-          inherit email;
           inherit name;
           inherit signingKey;
+          email = config.sops.placeholder.shikanime-studio-email;
         };
       };
       glab-cli-config.file = yaml.generate "config.yaml" {
@@ -141,8 +141,8 @@ in
           key = signingKey;
         };
         user = {
-          inherit email;
           inherit name;
+          email = config.sops.placeholder.shikanime-studio-email;
         };
       };
       nix-config.content = ''
@@ -150,8 +150,8 @@ in
       '';
       sapling-config.file = ini.generate "sapling.conf" {
         alias = {
-          ci = "ci --message-field Signed-off-by=\"${name} <${email}>\"";
-          commit = "commit --message-field Signed-off-by=\"${name} <${email}>\"";
+          ci = "ci --message-field Signed-off-by=\"${name} <${config.sops.placeholder.shikanime-studio-email}>\"";
+          commit = "commit --message-field Signed-off-by=\"${name} <${config.sops.placeholder.shikanime-studio-email}>\"";
           push = "push --force";
         };
         committemplate = {
@@ -178,7 +178,7 @@ in
         };
         ui = {
           editor = "hx";
-          username = "${name} <${email}";
+          username = "${name} <${config.sops.placeholder.shikanime-studio-email}>";
         };
       };
     };
