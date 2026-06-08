@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}:
+{ config, pkgs, ... }:
 
 {
   imports = [
@@ -174,7 +170,7 @@
   };
 
   nix.extraOptions = ''
-    !include ${config.sops.secrets.nix-config.path}
+    !include ${config.sops.templates.nix-config.path}
   '';
 
   networking = {
@@ -546,9 +542,12 @@
     defaultSopsFile = ../../secrets/manash.enc.yaml;
     defaultSopsFormat = "yaml";
     secrets = {
+      nix-access-token = { };
       tailscale-authkey = { };
-      nix-config = { };
     };
+    templates.nix-config.content = ''
+      extra-access-tokens = "github.com=${config.sops.placeholder.nix-access-token}";
+    '';
   };
 
   users.users.nishir = {
