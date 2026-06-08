@@ -16,7 +16,7 @@ let
   yaml = pkgs.formats.yaml { };
 
   name = "William Phetsinorath";
-  signingKey = "0CC037FFEA0769A1";
+  signingKey = "09CA52A835C14157";
 in
 {
   imports = [
