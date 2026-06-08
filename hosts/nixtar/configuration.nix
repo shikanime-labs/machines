@@ -36,14 +36,11 @@ in
     ../../modules/nixos/workstation.nix
   ];
 
-  # Enable cross compilation
-  boot.binfmt.emulatedSystems = [
-    "aarch64-linux"
-  ];
-
   boot = {
-    kernelModules = [ "tcp_bbr" ];
+    # Enable cross compilation
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
 
+    kernelModules = [ "tcp_bbr" ];
     kernel.sysctl = {
       # Optimize for 64GB RAM
       "vm.swappiness" = 10;
@@ -73,11 +70,6 @@ in
     };
   };
 
-  home-manager.users.shika.imports = [
-    ./users/shika/home-configuration.nix
-  ];
-
-  # Required for Docker credential management
   environment.systemPackages = with pkgs; [
     docker-credential-helpers
     dunst
@@ -94,10 +86,14 @@ in
     };
   };
 
+  home-manager.users.shika.imports = [
+    ./users/shika/home-configuration.nix
+  ];
+
   networking.hostName = "nixtar";
 
   nix.extraOptions = ''
-    !include ${config.sops.secrets.nix-config.path}
+    !include ${config.sops.templates.nix-config.path}
   '';
 
   programs.nix-ld = {
@@ -114,7 +110,6 @@ in
       enable = true;
       openFirewall = true;
     };
-
     xserver.videoDrivers = [ "nvidia" ];
   };
 
@@ -126,13 +121,16 @@ in
     };
     defaultSopsFile = ../../secrets/nixtar.enc.yaml;
     defaultSopsFormat = "yaml";
-    secrets.nix-config = { };
+    secrets.nix-access-token = { };
+    templates.nix-config.content = ''
+      extra-access-tokens = "github.com=${config.sops.placeholder.nix-access-token}";
+    '';
   };
 
   users.users.shika = {
-    isNormalUser = true;
     extraGroups = [ "wheel" ];
     home = "/home/shika";
+    isNormalUser = true;
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH+tp1Xfz7NomHCZuDPlfj3XW5hm9t0TiCyEeudRraoe"
     ];
@@ -143,7 +141,6 @@ in
     rootless = {
       enable = true;
       setSocketVariable = true;
-      # Docker CDI setting is not enabled by default
       daemon.settings.features.cdi = true;
     };
   };

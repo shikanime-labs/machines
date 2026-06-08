@@ -13,7 +13,7 @@
   networking.hostName = "telsha";
 
   nix.extraOptions = ''
-    !include ${config.sops.secrets.nix-config.path}
+    !include ${config.sops.templates.nix-config.path}
   '';
 
   sops = {
@@ -24,14 +24,17 @@
     };
     defaultSopsFile = ../../secrets/telsha.enc.yaml;
     defaultSopsFormat = "yaml";
-    secrets.nix-config = { };
+    secrets.nix-access-token = { };
+    templates.nix-config.content = ''
+      extra-access-tokens = "github.com=${config.sops.placeholder.nix-access-token}";
+    '';
   };
 
   system.primaryUser = "shikanimedeva";
 
   users.users.shikanimedeva = {
-    name = "shikanimedeva";
     home = "/Users/shikanimedeva";
+    name = "shikanimedeva";
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH+tp1Xfz7NomHCZuDPlfj3XW5hm9t0TiCyEeudRraoe"
     ];
