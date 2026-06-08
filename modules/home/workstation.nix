@@ -17,7 +17,7 @@ with lib;
 
   home = {
     packages = with pkgs; [
-      bitwarden-cli
+      bws
       cachix
       claude-code
       codex
