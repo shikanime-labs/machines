@@ -58,7 +58,11 @@ with lib;
 
     gpg.enable = true;
 
-    mergiraf.enable = true;
+    mergiraf = {
+      enable = true;
+      enableGitIntegration = true;
+      enableJujutsuIntegration = true;
+    };
 
     mise.enable = true;
 
