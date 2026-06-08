@@ -153,12 +153,9 @@ in
           emptymsg = "{if(title, title, defaulttitle)}\\n\\nSummary: {summary}\\n\\nFixes: {fixes}\\n\\nSigned-off-by: {author}";
         };
         diff-tools = {
-          "code.args" = "--wait --diff $local $other";
-          "code.gui" = true;
-          "code.priority" = 10;
-          "trae.args" = "--wait --diff $local $other";
-          "trae.gui" = true;
-          "trae.priority" = 20;
+          "zed.args" = "--wait --diff $local $other";
+          "zed.gui" = true;
+          "zed.priority" = 20;
         };
         gpg.key = signingKey;
         hooks = {
