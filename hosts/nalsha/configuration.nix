@@ -145,31 +145,7 @@
     };
   };
 
-  fileSystems = {
-    "/mnt/flandre" = {
-      label = "flandre";
-      fsType = "xfs";
-      options = [
-        "nofail"
-        "x-systemd.automount"
-        "x-systemd.device-timeout=10s"
-        "x-systemd.mount-timeout=30s"
-      ];
-    };
-
-    "/mnt/remilia" = {
-      label = "remilia";
-      fsType = "xfs";
-      options = [
-        "nofail"
-        "x-systemd.automount"
-        "x-systemd.device-timeout=10s"
-        "x-systemd.mount-timeout=30s"
-      ];
-    };
-  };
-
-  networking.hostName = "manash";
+  networking.hostName = "nalsha";
 
   shikanime.rke2 = {
     enable = true;
@@ -216,7 +192,7 @@
 
   sops = {
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-    defaultSopsFile = ../../secrets/manash.enc.yaml;
+    defaultSopsFile = ../../secrets/nalsha.enc.yaml;
     defaultSopsFormat = "yaml";
     secrets = {
       nix-access-token = { };
