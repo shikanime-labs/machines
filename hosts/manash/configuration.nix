@@ -200,14 +200,32 @@
     };
   };
 
-  services.tailscale = {
-    enable = true;
-    openFirewall = true;
-    useRoutingFeatures = "server";
-    authKeyFile = config.sops.secrets.tailscale-authkey.path;
-    extraUpFlags = [
-      "--ssh"
-    ];
+  services = {
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      nssmdns6 = true;
+      publish = {
+        enable = true;
+        addresses = true;
+        workstation = true;
+      };
+    };
+
+    openssh = {
+      enable = true;
+      openFirewall = true;
+    };
+
+    tailscale = {
+      enable = true;
+      openFirewall = true;
+      useRoutingFeatures = "server";
+      authKeyFile = config.sops.secrets.tailscale-authkey.path;
+      extraUpFlags = [
+        "--ssh"
+      ];
+    };
   };
 
   nix.extraOptions = ''
