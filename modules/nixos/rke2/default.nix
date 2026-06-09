@@ -82,16 +82,15 @@ with lib;
         enable = true;
         role = "server";
         cisHardening = true;
-        manifests.rke2-canal-config = {
-          target = "rke2-canal-config.yaml";
-          content = {
-            apiVersion = "helm.cattle.io/v1";
-            kind = "HelmChartConfig";
-            metadata.name = "rke2-canal";
-            metadata.namespace = "kube-system";
-            spec.valuesContent = builtins.toJSON {
-              flannel.iface = cfg.interface;
-            };
+        manifests.rke2-canal-config.content = {
+          apiVersion = "helm.cattle.io/v1";
+          kind = "HelmChartConfig";
+          metadata = {
+            name = "rke2-canal";
+            namespace = "kube-system";
+          };
+          spec.valuesContent = builtins.toJSON {
+            flannel.iface = cfg.interface;
           };
         };
         extraFlags = [
