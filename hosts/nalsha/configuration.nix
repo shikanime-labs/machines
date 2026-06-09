@@ -162,6 +162,9 @@
     enable = true;
     tailscale.enable = true;
     extraConfig = {
+      extraFlags = [
+        "--tls-san=ashira.taila659a.ts.net,manash.taila659a.ts.net,nalsha.taila659a.ts.net"
+      ];
       nodeIP = "100.126.72.116,fd7a:115c:a1e0::be3a:4875";
       serverAddr = "https://manash.taila659a.ts.net:9345";
       tokenFile = config.sops.secrets.rke2-token.path;
