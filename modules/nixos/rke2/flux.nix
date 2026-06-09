@@ -229,7 +229,7 @@ with lib;
           createNamespace = true;
           values = mkMerge [
             {
-              awsPackage.install = mkDefault false;
+              awsPackage.install = false;
               runner.allowedNamespaces = [
                 "flux-system"
                 "shikanime"
