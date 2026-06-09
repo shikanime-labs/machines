@@ -207,13 +207,13 @@ with lib;
             {
               healthcheck.enabled = true;
               web.config.authentication = {
-                type = "Anonymous";
                 anonymous = {
                   username = "admin";
                   groups = [ "system:masters" ];
                 };
+                type = "Anonymous";
+                rbac.createRoles = true;
               };
-              web.rbac.createRoles = true;
             }
             cfg.flux.operator.extraConfig
           ];
