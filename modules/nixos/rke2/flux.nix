@@ -166,6 +166,7 @@ with lib;
             version = cfg.flux.instance.version;
             targetNamespace = "flux-system";
             createNamespace = true;
+            failurePolicy = "abort";
             values = {
               instance = {
                 distribution = {
@@ -205,6 +206,7 @@ with lib;
             version = cfg.flux.operator.version;
             targetNamespace = "flux-system";
             createNamespace = true;
+            failurePolicy = "abort";
             values = {
               healthcheck.enabled = true;
               web.config.authentication = {
@@ -226,6 +228,7 @@ with lib;
             version = cfg.flux.tofu.version;
             targetNamespace = "flux-system";
             createNamespace = true;
+            failurePolicy = "abort";
             values = {
               awsPackage.install = false;
               runner.allowedNamespaces = [
