@@ -247,9 +247,7 @@ with lib;
                 name = "flux";
                 namespace = "kube-system";
               };
-              spec = {
-                values = cfg.flux.instance.extraConfig;
-              };
+              spec.valuesContent = builtins.toJSON cfg.flux.instance.extraConfig;
             };
           };
         })
@@ -262,9 +260,7 @@ with lib;
                 name = "flux-operator";
                 namespace = "kube-system";
               };
-              spec = {
-                values = cfg.flux.operator.extraConfig;
-              };
+              spec.valuesContent = builtins.toJSON cfg.flux.operator.extraConfig;
             };
           };
         })
@@ -277,9 +273,7 @@ with lib;
                 name = "tofu-controller";
                 namespace = "kube-system";
               };
-              spec = {
-                values = cfg.flux.tofu.extraConfig;
-              };
+              spec.valuesContent = builtins.toJSON cfg.flux.tofu.extraConfig;
             };
           };
         })
