@@ -57,6 +57,8 @@ with lib;
 
       relative_line_numbers = "enabled";
 
+      terminal.shell.program = "${getExe pkgs.zsh} -c ${getExe pkgs.nushell}";
+
       theme = {
         mode = "system";
         light = mkForce "Catppuccin Latte";
