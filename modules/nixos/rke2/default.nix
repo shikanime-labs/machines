@@ -90,7 +90,10 @@ with lib;
               namespace = "kube-system";
             };
             spec.valuesContent = builtins.toJSON {
-              flannel.iface = cfg.interface;
+              flannel = {
+                backend = "wireguard";
+                iface = cfg.interface;
+              };
             };
           };
 
@@ -161,7 +164,7 @@ with lib;
           10250
         ];
         allowedUDPPorts = [
-          8472
+          51820
         ];
       };
       allowedTCPPortRanges = [
