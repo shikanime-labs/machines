@@ -15,24 +15,6 @@ with lib;
       options = {
         enable = mkEnableOption "Flux bootstrap and management for RKE2";
 
-        repoUrl = mkOption {
-          type = types.str;
-          default = "https://github.com/shikanime/manifests.git";
-          description = "The Git repository Flux bootstraps from.";
-        };
-
-        ref = mkOption {
-          type = types.str;
-          default = "refs/heads/main";
-          description = "The Git ref Flux tracks.";
-        };
-
-        path = mkOption {
-          type = types.str;
-          default = "clusters/nishir/overlays/tailnet";
-          description = "The Kustomization path used by Flux.";
-        };
-
         instance = mkOption {
           type = types.submodule {
             options = {
@@ -42,10 +24,10 @@ with lib;
                 description = "Whether to deploy the Flux instance chart.";
               };
 
-              version = mkOption {
-                type = types.str;
-                default = "0.46.0";
-                description = "The Flux instance chart version.";
+              extraConfig = mkOption {
+                type = types.attrsOf types.raw;
+                default = { };
+                description = "Additional raw configuration merged into the Flux instance chart.";
               };
 
               hash = mkOption {
@@ -54,10 +36,10 @@ with lib;
                 description = "The Flux instance chart hash.";
               };
 
-              extraConfig = mkOption {
-                type = types.attrsOf types.raw;
-                default = { };
-                description = "Additional raw configuration merged into the Flux instance chart.";
+              version = mkOption {
+                type = types.str;
+                default = "0.46.0";
+                description = "The Flux instance chart version.";
               };
             };
           };
@@ -74,10 +56,10 @@ with lib;
                 description = "Whether to deploy the Flux operator chart.";
               };
 
-              version = mkOption {
-                type = types.str;
-                default = "0.46.0";
-                description = "The Flux operator chart version.";
+              extraConfig = mkOption {
+                type = types.attrsOf types.raw;
+                default = { };
+                description = "Additional raw configuration merged into the Flux operator chart.";
               };
 
               hash = mkOption {
@@ -86,15 +68,33 @@ with lib;
                 description = "The Flux operator chart hash.";
               };
 
-              extraConfig = mkOption {
-                type = types.attrsOf types.raw;
-                default = { };
-                description = "Additional raw configuration merged into the Flux operator chart.";
+              version = mkOption {
+                type = types.str;
+                default = "0.46.0";
+                description = "The Flux operator chart version.";
               };
             };
           };
           default = { };
           description = "Flux operator chart settings.";
+        };
+
+        path = mkOption {
+          type = types.str;
+          default = "clusters/nishir/overlays/tailnet";
+          description = "The Kustomization path used by Flux.";
+        };
+
+        ref = mkOption {
+          type = types.str;
+          default = "refs/heads/main";
+          description = "The Git ref Flux tracks.";
+        };
+
+        repoUrl = mkOption {
+          type = types.str;
+          default = "https://github.com/shikanime/manifests.git";
+          description = "The Git repository Flux bootstraps from.";
         };
 
         tofu = mkOption {
@@ -106,10 +106,10 @@ with lib;
                 description = "Whether to deploy the tofu-controller chart.";
               };
 
-              version = mkOption {
-                type = types.str;
-                default = "0.16.2";
-                description = "The tofu-controller chart version.";
+              extraConfig = mkOption {
+                type = types.attrsOf types.raw;
+                default = { };
+                description = "Additional raw configuration merged into the tofu-controller chart.";
               };
 
               hash = mkOption {
@@ -118,10 +118,10 @@ with lib;
                 description = "The tofu-controller chart hash.";
               };
 
-              extraConfig = mkOption {
-                type = types.attrsOf types.raw;
-                default = { };
-                description = "Additional raw configuration merged into the tofu-controller chart.";
+              version = mkOption {
+                type = types.str;
+                default = "0.16.2";
+                description = "The tofu-controller chart version.";
               };
             };
           };
@@ -135,38 +135,25 @@ with lib;
   };
 
   config = mkIf cfg.flux.enable {
-    systemd.services.rke2-flux-sops-age = {
-      description = "Create sops-age secret for flux-system";
-      wants = [ "rke2-server.service" ];
-      after = [ "rke2-server.service" ];
-      environment.KUBECONFIG = "/etc/rancher/rke2/rke2.yaml";
-      serviceConfig.Type = "oneshot";
-      preStart = ''
-        until ${pkgs.kubectl}/bin/kubectl get namespace flux-system >/dev/null 2>&1; do
-          sleep 1
-        done
-      '';
-      script = ''
-        if ! ${pkgs.kubectl}/bin/kubectl -n flux-system get secret sops-age >/dev/null 2>&1; then
-          ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key | \
-            ${pkgs.kubectl}/bin/kubectl -n flux-system create secret generic sops-age \
-              --from-file=age.agekey=/dev/stdin \
-              --dry-run=client -o yaml | ${pkgs.kubectl}/bin/kubectl apply -f -
-        fi
-      '';
-    };
-
     services.rke2 = {
       autoDeployCharts = mkMerge [
         (optionalAttrs cfg.flux.instance.enable {
           flux = {
-            repo = "oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance";
-            name = "flux-instance";
-            hash = cfg.flux.instance.hash;
-            version = cfg.flux.instance.version;
-            targetNamespace = "flux-system";
             createNamespace = true;
-            failurePolicy = "abort";
+            extraDeploy = optional (cfg.flux.instance.extraConfig != { }) {
+              apiVersion = "helm.cattle.io/v1";
+              kind = "HelmChartConfig";
+              metadata = {
+                name = "flux";
+                namespace = "kube-system";
+              };
+              spec.valuesContent = builtins.toJSON cfg.flux.instance.extraConfig;
+            };
+            extraFieldDefinitions.failurePolicy = "abort";
+            hash = cfg.flux.instance.hash;
+            name = "flux-instance";
+            repo = "oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance";
+            targetNamespace = "flux-system";
             values = {
               instance = {
                 distribution = {
@@ -196,66 +183,13 @@ with lib;
                 };
               };
             };
+            version = cfg.flux.instance.version;
           };
         })
         (optionalAttrs cfg.flux.operator.enable {
           flux-operator = {
-            repo = "oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator";
-            name = "flux-operator";
-            hash = cfg.flux.operator.hash;
-            version = cfg.flux.operator.version;
-            targetNamespace = "flux-system";
             createNamespace = true;
-            failurePolicy = "abort";
-            values = {
-              healthcheck.enabled = true;
-              web.config.authentication = {
-                anonymous = {
-                  username = "admin";
-                  groups = [ "system:masters" ];
-                };
-                type = "Anonymous";
-              };
-            };
-          };
-        })
-        (optionalAttrs cfg.flux.tofu.enable {
-          tofu-controller = {
-            repo = "https://flux-iac.github.io/tofu-controller";
-            name = "tofu-controller";
-            hash = cfg.flux.tofu.hash;
-            version = cfg.flux.tofu.version;
-            targetNamespace = "flux-system";
-            createNamespace = true;
-            failurePolicy = "abort";
-            values = {
-              awsPackage.install = false;
-              runner.allowedNamespaces = [
-                "flux-system"
-                "shikanime"
-              ];
-            };
-          };
-        })
-      ];
-
-      manifests = mkMerge [
-        (optionalAttrs (cfg.flux.instance.enable && cfg.flux.instance.extraConfig != { }) {
-          flux-config = {
-            content = {
-              apiVersion = "helm.cattle.io/v1";
-              kind = "HelmChartConfig";
-              metadata = {
-                name = "flux";
-                namespace = "kube-system";
-              };
-              spec.valuesContent = builtins.toJSON cfg.flux.instance.extraConfig;
-            };
-          };
-        })
-        (optionalAttrs (cfg.flux.operator.enable && cfg.flux.operator.extraConfig != { }) {
-          flux-operator-config = {
-            content = {
+            extraDeploy = optional (cfg.flux.operator.extraConfig != { }) {
               apiVersion = "helm.cattle.io/v1";
               kind = "HelmChartConfig";
               metadata = {
@@ -264,11 +198,28 @@ with lib;
               };
               spec.valuesContent = builtins.toJSON cfg.flux.operator.extraConfig;
             };
+            extraFieldDefinitions.failurePolicy = "abort";
+            hash = cfg.flux.operator.hash;
+            name = "flux-operator";
+            repo = "oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator";
+            targetNamespace = "flux-system";
+            values = {
+              healthcheck.enabled = true;
+              web.config.authentication = {
+                anonymous = {
+                  groups = [ "system:masters" ];
+                  username = "admin";
+                };
+                type = "Anonymous";
+              };
+            };
+            version = cfg.flux.operator.version;
           };
         })
-        (optionalAttrs (cfg.flux.tofu.enable && cfg.flux.tofu.extraConfig != { }) {
-          tofu-controller-config = {
-            content = {
+        (optionalAttrs cfg.flux.tofu.enable {
+          tofu-controller = {
+            createNamespace = true;
+            extraDeploy = optional (cfg.flux.tofu.extraConfig != { }) {
               apiVersion = "helm.cattle.io/v1";
               kind = "HelmChartConfig";
               metadata = {
@@ -277,9 +228,43 @@ with lib;
               };
               spec.valuesContent = builtins.toJSON cfg.flux.tofu.extraConfig;
             };
+            extraFieldDefinitions.failurePolicy = "abort";
+            hash = cfg.flux.tofu.hash;
+            name = "tofu-controller";
+            repo = "https://flux-iac.github.io/tofu-controller";
+            targetNamespace = "flux-system";
+            values = {
+              awsPackage.install = false;
+              runner.allowedNamespaces = [
+                "flux-system"
+                "shikanime"
+              ];
+            };
+            version = cfg.flux.tofu.version;
           };
         })
       ];
+    };
+
+    systemd.services.rke2-flux-sops-age = {
+      after = [ "rke2-server.service" ];
+      description = "Create sops-age secret for flux-system";
+      environment.KUBECONFIG = "/etc/rancher/rke2/rke2.yaml";
+      preStart = ''
+        until ${pkgs.kubectl}/bin/kubectl get namespace flux-system >/dev/null 2>&1; do
+          sleep 1
+        done
+      '';
+      script = ''
+        if ! ${pkgs.kubectl}/bin/kubectl -n flux-system get secret sops-age >/dev/null 2>&1; then
+          ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key | \
+            ${pkgs.kubectl}/bin/kubectl -n flux-system create secret generic sops-age \
+              --from-file=age.agekey=/dev/stdin \
+              --dry-run=client -o yaml | ${pkgs.kubectl}/bin/kubectl apply -f -
+        fi
+      '';
+      serviceConfig.Type = "oneshot";
+      wants = [ "rke2-server.service" ];
     };
   };
 }
