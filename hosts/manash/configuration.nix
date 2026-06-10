@@ -156,7 +156,17 @@
     ./users/nishir/home-configuration.nix
   ];
 
-  networking.hostName = "manash";
+  networking = {
+    getaddrinfo.precedence = {
+      "::1/128" = 50;
+      "::/0" = 40;
+      "2002::/16" = 30;
+      "::/96" = 20;
+      "::ffff:0:0/96" = 100;
+    };
+
+    hostName = "manash";
+  };
 
   systemd.services.tailscale-udp-gro-forwarding = {
     description = "Enable Tailscale UDP GRO forwarding on enp1s0";
@@ -172,6 +182,10 @@
   shikanime.rke2 = {
     enable = true;
     extraConfig = {
+      extraFlags = [
+        "--kubelet-arg=max-pods=200"
+        "--node-ip=100.74.220.28,fd7a:115c:a1e0::8d3a:dc1c"
+      ];
       nodeIP = "192.168.1.28,2a02:8424:7899:f201:94eb:8d1:325a:7181";
     };
     longhorn.enable = true;
@@ -222,8 +236,9 @@
       useRoutingFeatures = "server";
       authKeyFile = config.sops.secrets.tailscale-authkey.path;
       extraUpFlags = [
-        "--advertise-routes=10.244.0.0/24,fd00::/112"
         "--ssh"
+        "--accept-routes"
+        "--advertise-routes=10.244.0.0/16,fd00::/108"
       ];
     };
   };
