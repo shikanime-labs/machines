@@ -15,19 +15,16 @@
       "tcp_bbr"
     ];
     kernel.sysctl = {
-      # Raise global descriptor and watch limits for controllers, Syncthing, and
-      # large media libraries
+      # File and Inotify limits - Keep these high for Longhorn, K8s, and Syncthing
       "fs.file-max" = 2097152;
       "fs.inotify.max_user_instances" = 8192;
       "fs.inotify.max_user_watches" = 524288;
 
-      # Let bridged Kubernetes traffic traverse the iptables hooks that CNIs
-      # expect
+      # Bridge networking for CNIs
       "net.bridge.bridge-nf-call-ip6tables" = 1;
       "net.bridge.bridge-nf-call-iptables" = 1;
 
-      # Favor low-latency queueing and larger bursts for overlay traffic and
-      # busy services
+      # Networking queueing and buffer sizing for overlay networks
       "net.core.default_qdisc" = "fq";
       "net.core.netdev_max_backlog" = 16384;
       "net.core.rmem_default" = 7340032;
@@ -36,8 +33,7 @@
       "net.core.wmem_default" = 7340032;
       "net.core.wmem_max" = 16777216;
 
-      # Keep forwarding and TCP autotuning friendly to k0s, Tailscale, and
-      # service fan-out
+      # Forwarding, TCP autotuning, and BBR setup
       "net.ipv4.ip_forward" = 1;
       "net.ipv4.conf.all.rp_filter" = 0;
       "net.ipv4.conf.default.rp_filter" = 0;
@@ -49,14 +45,15 @@
       "net.ipv4.tcp_mtu_probing" = 1;
       "net.ipv4.tcp_rmem" = "4096 87380 16777216";
       "net.ipv4.tcp_wmem" = "4096 65536 16777216";
+
+      # GC thresholds for ARP/Neighbor tables
       "net.ipv4.neigh.default.gc_thresh1" = 1024;
       "net.ipv4.neigh.default.gc_thresh2" = 2048;
       "net.ipv4.neigh.default.gc_thresh3" = 4096;
       "net.ipv6.conf.all.forwarding" = 1;
       "net.ipv6.conf.default.forwarding" = 1;
 
-      # This host forwards for Kubernetes/Tailscale, but avoids learning a WAN
-      # IPv6 default route so outbound clients fall back to IPv4.
+      # IPv6 Router Advertisement tuning
       "net.ipv6.conf.all.accept_ra" = 2;
       "net.ipv6.conf.default.accept_ra" = 2;
       "net.ipv6.conf.enp1s0.accept_ra" = 2;
@@ -70,22 +67,11 @@
       "net.ipv6.route.mtu_expires" = 600;
       "net.ipv6.route.min_adv_mss" = 1220;
 
-      # Increase conntrack room for NAT, service meshes, and
-      # clustered east-west traffic
+      # Increase conntrack limits
       "net.netfilter.nf_conntrack_max" = 262144;
 
-      # Reduce swap thrash and preserve cache behavior on a mixed storage/media
-      # node
-      "vm.dirty_background_ratio" = 3;
-      "vm.dirty_expire_centisecs" = 1000;
-      "vm.dirty_ratio" = 10;
-      "vm.dirty_writeback_centisecs" = 500;
+      # Required to prevent mmap OOM crashes in memory-mapping heavy pods like Longhorn
       "vm.max_map_count" = 262144;
-      "vm.page-cluster" = 0;
-      "vm.swappiness" = 10;
-      "vm.vfs_cache_pressure" = 200;
-      "vm.watermark_boost_factor" = 0;
-      "vm.watermark_scale_factor" = 125;
     };
     loader = {
       efi.canTouchEfiVariables = true;
@@ -151,6 +137,9 @@
       ];
     };
   };
+
+  # Vital for NVMe health and sustained performance
+  services.fstrim.enable = true;
 
   home-manager.users.nishir.imports = [
     ./users/nishir/home-configuration.nix
