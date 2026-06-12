@@ -56,7 +56,7 @@ with lib;
 
       relative_line_numbers = "enabled";
 
-      terminal.shell.program.with_arguments = {
+      terminal.shell.with_arguments = {
         program = "${getExe pkgs.zsh}";
         args = [
           "-c"
