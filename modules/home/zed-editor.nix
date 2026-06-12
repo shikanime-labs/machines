@@ -56,7 +56,13 @@ with lib;
 
       relative_line_numbers = "enabled";
 
-      terminal.shell.program = "${getExe pkgs.zsh} -c ${getExe pkgs.nushell}";
+      terminal.shell.program.with_arguments = {
+        program = "${getExe pkgs.zsh}";
+        args = [
+          "-c"
+          "${getExe pkgs.nushell}"
+        ];
+      };
 
       theme = {
         mode = "system";
