@@ -17,6 +17,7 @@ let
 
   name = "William Phetsinorath";
   gpgSigningKey = "721388256B3D78FA";
+  sshSigningKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPFC5VCX4U04t82TizoUmXxZ064cOqNtswe0zPDqWWRj";
 in
 {
   imports = [
@@ -95,7 +96,7 @@ in
           signingkey =
             let
               signingKey = pkgs.writeText "id_ed25519.pub" ''
-                ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPFC5VCX4U04t82TizoUmXxZ064cOqNtswe0zPDqWWRj
+                ${sshSigningKey}
               '';
             in
             "${signingKey}";
@@ -106,7 +107,7 @@ in
         signing = {
           backend = "ssh";
           behavior = "own";
-          key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPFC5VCX4U04t82TizoUmXxZ064cOqNtswe0zPDqWWRj";
+          key = sshSigningKey;
         };
         user = {
           inherit name;
