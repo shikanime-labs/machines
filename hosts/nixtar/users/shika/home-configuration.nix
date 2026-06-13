@@ -96,24 +96,22 @@ in
         };
       };
       jujutsu-config.file = toml.generate "config.toml" {
-        "--scope" = [
-          {
-            "--when.repositories" = [ "~/Source/Repos/github.com/cloud-pi-native" ];
-            signing.key = config.sops.placeholder.gouv-signing-key;
-            user = {
-              email = config.sops.placeholder.gouv-email;
-              inherit name;
-            };
-          }
-        ];
         signing = {
-          backend = "gpg";
+          backend = "ssh";
           behavior = "own";
-          key = signingKey;
+          key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPFC5VCX4U04t82TizoUmXxZ064cOqNtswe0zPDqWWRj";
         };
         user = {
           inherit name;
           email = config.sops.placeholder.shikanime-studio-email;
+        };
+      };
+      juju-gouv-config.file = toml.generate "config.toml" {
+        "--when.repositories" = [ "~/Source/Repos/github.com/cloud-pi-native" ];
+        signing.key = config.sops.placeholder.gouv-signing-key;
+        user = {
+          email = config.sops.placeholder.gouv-email;
+          inherit name;
         };
       };
       nix-config.content = ''
@@ -161,6 +159,8 @@ in
     };
     "jj/conf.d/default.toml".source =
       config.lib.file.mkOutOfStoreSymlink config.sops.templates.jujutsu-config.path;
+    "juju/conf.d/gouv.conf".source =
+      config.lib.file.mkOutOfStoreSymlink config.sops.templates.juju-gouv-config.path;
     "sapling/sapling.conf".source =
       config.lib.file.mkOutOfStoreSymlink config.sops.templates.sapling-config.path;
   };
