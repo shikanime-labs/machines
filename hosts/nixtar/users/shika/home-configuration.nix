@@ -94,11 +94,11 @@ in
           inherit name;
           signingkey =
             let
-              signingkey = pkgs.writeText "id_ed25519.pub" ''
+              signingKey = pkgs.writeText "id_ed25519.pub" ''
                 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPFC5VCX4U04t82TizoUmXxZ064cOqNtswe0zPDqWWRj
               '';
             in
-            "${signingkey}";
+            "${signingKey}";
           email = config.sops.placeholder.shikanime-studio-email;
         };
       };
