@@ -1,0 +1,18 @@
+name: Check branch naming
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+  push:
+    branches-ignore:
+      - main
+      - master
+
+permissions: {}
+
+jobs:
+  check-branch:
+    runs-on: ubuntu-slim
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Validate branch name
+        run: bash .github/scripts/check-branch-naming.sh
