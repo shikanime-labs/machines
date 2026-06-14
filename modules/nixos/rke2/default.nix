@@ -54,15 +54,6 @@ in
           description = "The IPv6 pod CIDR passed to RKE2.";
         };
 
-        cni = mkOption {
-          type = types.listOf types.str;
-          default = [
-            "multus"
-            "cilium"
-          ];
-          description = "The CNI plugins passed to RKE2.";
-        };
-
         nodeCidrMaskSize = mkOption {
           type = types.int;
           default = 24;
@@ -112,7 +103,7 @@ in
         enable = true;
         extraFlags = [
           (optionalString (clusterCidrs != [ ]) "--cluster-cidr=${concatStringsSep "," clusterCidrs}")
-          "--cni=${concatStringsSep "," cfg.cni}"
+          "--cni=multus,cilium"
           "--kube-controller-manager-arg=node-cidr-mask-size-ipv4=${toString cfg.nodeCidrMaskSize}"
           "--kube-controller-manager-arg=node-cidr-mask-size-ipv6=${toString cfg.nodeCidrMaskSizeIPv6}"
           (optionalString (cfg.serviceCidr != null) "--service-cidr=${cfg.serviceCidr}")
@@ -127,42 +118,37 @@ in
               name = "rke2-cilium";
               namespace = "kube-system";
             };
-            spec.valuesContent = builtins.toJSON (
-              {
-                autoDirectNodeRoutes = true;
-                bpf.masquerade = true;
-                cni = {
-                  chainingMode = "multus";
-                  exclusive = false;
-                };
-                encryption = {
-                  enabled = true;
-                  type = "wireguard";
-                };
-                gatewayAPI = {
-                  enabled = true;
-                  gatewayClass.create = true;
-                };
-                hubble = {
-                  enabled = true;
-                  relay.enabled = true;
-                  ui.enabled = true;
-                };
-                k8sServiceHost = "localhost";
-                k8sServicePort = "6443";
-                kubeProxyReplacement = true;
-                operator.prometheus.enabled = true;
-                prometheus.enabled = true;
-              }
-              // optionalAttrs (cfg.clusterCidrIPv4 != null) {
-                ipv4NativeRoutingCIDR = cfg.clusterCidrIPv4;
-                ipam.operator.clusterPoolIPv4PodCIDRList = [ cfg.clusterCidrIPv4 ];
-              }
-              // optionalAttrs (cfg.clusterCidrIPv6 != null) {
-                ipv6NativeRoutingCIDR = cfg.clusterCidrIPv6;
-                ipam.operator.clusterPoolIPv6PodCIDRList = [ cfg.clusterCidrIPv6 ];
-              }
-            );
+            spec.valuesContent = builtins.toJSON {
+              autoDirectNodeRoutes = true;
+              bpf.masquerade = true;
+              cni = {
+                chainingMode = "multus";
+                exclusive = false;
+              };
+              encryption = {
+                enabled = true;
+                type = "wireguard";
+              };
+              gatewayAPI = {
+                enabled = true;
+                gatewayClass.create = true;
+              };
+              hubble = {
+                enabled = true;
+                relay.enabled = true;
+                ui.enabled = true;
+              };
+              ipam.mode = "kubernetes";
+              k8s = {
+                requireIPv4PodCIDR = cfg.clusterCidrIPv4 != null;
+                requireIPv6PodCIDR = cfg.clusterCidrIPv6 != null;
+              };
+              k8sServiceHost = "localhost";
+              k8sServicePort = "6443";
+              kubeProxyReplacement = true;
+              operator.prometheus.enabled = true;
+              prometheus.enabled = true;
+            };
           };
 
           rke2-coredns-config.content = {
