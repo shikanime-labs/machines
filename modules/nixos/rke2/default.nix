@@ -14,9 +14,7 @@ let
   etcdPeerPort = 2380;
   etcdMetricsPort = 2381;
   ciliumHealthPort = 9890;
-  ciliumVXLANPort = 8472;
-  ciliumHubblePort = 4244;
-  ciliumHubblePeerPort = 4245;
+  wireguardPort = 51820;
   gatewayAPIPort = 8443;
 
   nodePortRange = {
@@ -98,6 +96,7 @@ with lib;
         enable = true;
         role = "server";
         cisHardening = true;
+        disableKubeProxy = true;
         manifests = {
           rke2-cilium-config.content = {
             apiVersion = "helm.cattle.io/v1";
@@ -107,34 +106,25 @@ with lib;
               namespace = "kube-system";
             };
             spec.valuesContent = builtins.toJSON {
-              cni = {
-                chainingMode = "multus";
-                exclusive = false;
-              };
-              tunnelProtocol = "vxlan";
-              gatewayAPI = {
-                enabled = true;
-              };
-              hubble = {
-                enabled = true;
-                relay.enabled = true;
-                ui.enabled = true;
-              };
-              prometheus = {
-                enabled = true;
-              };
-              operator = {
-                prometheus.enabled = true;
-              };
-              bpf = {
-                masquerade = true;
-              };
+              kubeProxyReplacement = true;
+              k8sServiceHost = "localhost";
+              k8sServicePort = "6443";
+              encryption.enabled = true;
+              encryption.type = "wireguard";
+              cni.chainingMode = "multus";
+              cni.exclusive = false;
+              autoDirectNodeRoutes = true;
+              gatewayAPI.enabled = true;
+              hubble.enabled = true;
+              hubble.relay.enabled = true;
+              hubble.ui.enabled = true;
+              prometheus.enabled = true;
+              operator.prometheus.enabled = true;
+              bpf.masquerade = true;
               ipv4NativeRoutingCIDR = "10.244.0.0/16";
-              ipam = {
-                operator.clusterPoolIPv4PodCIDRList = [
-                  "10.244.0.0/16"
-                ];
-              };
+              ipam.operator.clusterPoolIPv4PodCIDRList = [
+                "10.244.0.0/16"
+              ];
             };
           };
 
@@ -213,7 +203,7 @@ with lib;
           gatewayAPIPort
         ];
         allowedUDPPorts = [
-          ciliumVXLANPort
+          wireguardPort
         ];
         allowedTCPPortRanges = [ nodePortRange ];
       };
