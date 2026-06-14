@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
@@ -118,10 +117,7 @@ in
                 enabled = true;
                 type = "wireguard";
               };
-              gatewayAPI = {
-                enabled = true;
-                gatewayClass.create = true;
-              };
+              gatewayAPI.enabled = true;
               hubble = {
                 enabled = true;
                 relay.enabled = true;
@@ -164,11 +160,6 @@ in
             spec.valuesContent = builtins.toJSON {
               manifests.dhcpDaemonSet = true;
             };
-          };
-
-          gateway-api.source = pkgs.fetchurl {
-            url = "https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.0/standard-install.yaml";
-            hash = "sha256-UQM4z2cJ+EQQ78zlJpJo9MfFBn79xdBMdaov0vg4DJY=";
           };
         };
         role = "server";
