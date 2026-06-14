@@ -45,9 +45,16 @@ in
     git = {
       includes = [
         { path = config.lib.file.mkOutOfStoreSymlink config.sops.templates.git-config.path; }
+        {
+          condition = "gitdir:${config.home.homeDirectory}/Source/Repos/github.com/cloud-pi-native";
+          path = config.lib.file.mkOutOfStoreSymlink config.sops.templates.git-config-gouv.path;
+        }
+        {
+          condition = "gitdir:${config.home.homeDirectory}/Source/Repos/github.com/operator6o";
+          path = config.lib.file.mkOutOfStoreSymlink config.sops.templates.git-config-operator6o.path;
+        }
       ];
       signing.signByDefault = true;
-
     };
   };
 
@@ -61,6 +68,8 @@ in
       gitlab-token = { };
       gouv-email = { };
       gouv-signing-key = { };
+      operator6o-email = { };
+      operator6o-signing-key = { };
       shikanime-studio-email = { };
       nix-access-token = { };
     };
@@ -112,12 +121,36 @@ in
           email = config.sops.placeholder.shikanime-studio-email;
         };
       };
-      juju-gouv-config.file = toml.generate "config.toml" {
-        "--when.repositories" = [ "~/Source/Repos/github.com/cloud-pi-native" ];
+      jujutsu-gouv-config.file = toml.generate "config.toml" {
+        "--when.repositories" = [ "${config.home.homeDirectory}/Source/Repos/github.com/cloud-pi-native" ];
         signing.key = config.sops.placeholder.gouv-signing-key;
         user = {
           email = config.sops.placeholder.gouv-email;
           inherit name;
+        };
+      };
+      git-config-gouv.file = gitIni.generate "config" {
+        gpg.format = "gpg";
+        user = {
+          email = config.sops.placeholder.gouv-email;
+          inherit name;
+          signingkey = config.sops.placeholder.gouv-signing-key;
+        };
+      };
+      jujutsu-operator6o-config.file = toml.generate "config.toml" {
+        "--when.repositories" = [ "${config.home.homeDirectory}/Source/Repos/github.com/operator6o" ];
+        signing.key = config.sops.placeholder.operator6o-signing-key;
+        user = {
+          email = config.sops.placeholder.operator6o-email;
+          inherit name;
+        };
+      };
+      git-config-operator6o.file = gitIni.generate "config" {
+        gpg.format = "gpg";
+        user = {
+          email = config.sops.placeholder.operator6o-email;
+          inherit name;
+          signingkey = config.sops.placeholder.operator6o-signing-key;
         };
       };
       nix-config.content = ''
@@ -165,8 +198,10 @@ in
     };
     "jj/conf.d/default.toml".source =
       config.lib.file.mkOutOfStoreSymlink config.sops.templates.jujutsu-config.path;
-    "juju/conf.d/gouv.conf".source =
-      config.lib.file.mkOutOfStoreSymlink config.sops.templates.juju-gouv-config.path;
+    "jj/conf.d/gouv.conf".source =
+      config.lib.file.mkOutOfStoreSymlink config.sops.templates.jujutsu-gouv-config.path;
+    "jj/conf.d/operator6o.conf".source =
+      config.lib.file.mkOutOfStoreSymlink config.sops.templates.jujutsu-operator6o-config.path;
     "sapling/sapling.conf".source =
       config.lib.file.mkOutOfStoreSymlink config.sops.templates.sapling-config.path;
   };
