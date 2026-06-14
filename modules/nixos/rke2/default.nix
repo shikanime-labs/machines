@@ -96,9 +96,9 @@ in
   config = mkIf cfg.enable {
     services.rke2 = mkMerge [
       {
-        cisHardening = true;
-        disableKubeProxy = true;
         enable = true;
+        cisHardening = true;
+        disable = [ "kube-proxy" ];
         extraFlags = [
           (optionalString (clusterCidr != [ ]) "--cluster-cidr=${concatStringsSep "," clusterCidr}")
           "--cni=multus,cilium"
