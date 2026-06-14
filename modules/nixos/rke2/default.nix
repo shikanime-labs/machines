@@ -9,7 +9,7 @@ with lib;
 let
   cfg = config.shikanime.rke2;
 
-  clusterCidrs = lib.filter (cidr: cidr != null) [
+  clusterCidr = lib.filter (cidr: cidr != null) [
     cfg.clusterCidrIPv4
     cfg.clusterCidrIPv6
   ];
@@ -100,7 +100,7 @@ in
         disableKubeProxy = true;
         enable = true;
         extraFlags = [
-          (optionalString (clusterCidrs != [ ]) "--cluster-cidr=${concatStringsSep "," clusterCidrs}")
+          (optionalString (clusterCidr != [ ]) "--cluster-cidr=${concatStringsSep "," clusterCidr}")
           "--cni=multus,cilium"
           "--kube-controller-manager-arg=node-cidr-mask-size-ipv4=${toString cfg.nodeCidrMaskSize}"
           "--kube-controller-manager-arg=node-cidr-mask-size-ipv6=${toString cfg.nodeCidrMaskSizeIPv6}"
