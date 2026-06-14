@@ -156,6 +156,18 @@ with lib;
               manifests.dhcpDaemonSet = true;
             };
           };
+
+          rke2-traefik-config.content = {
+            apiVersion = "helm.cattle.io/v1";
+            kind = "HelmChartConfig";
+            metadata = {
+              name = "rke2-traefik";
+              namespace = "kube-system";
+            };
+            spec.valuesContent = builtins.toJSON {
+              providers.kubernetesGateway.enabled = true;
+            };
+          };
         };
         extraFlags = [
           (optionalString (clusterCidr != [ ]) "--cluster-cidr=${concatStringsSep "," clusterCidr}")
