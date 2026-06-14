@@ -124,7 +124,6 @@ in
                 ui.enabled = true;
               };
               ipam.mode = "kubernetes";
-              localRedirectPolicy = true;
               k8s = {
                 requireIPv4PodCIDR = cfg.clusterCidrIPv4 != null;
                 requireIPv6PodCIDR = cfg.clusterCidrIPv6 != null;
@@ -143,10 +142,7 @@ in
               namespace = "kube-system";
             };
             spec.valuesContent = builtins.toJSON {
-              nodelocal = {
-                enabled = true;
-                use_cilium_lrp = true;
-              };
+              nodelocal.enabled = true;
             };
           };
 
