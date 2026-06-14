@@ -40,18 +40,6 @@ in
       options = {
         enable = mkEnableOption "Shikanime RKE2";
 
-        clusterCidrIPv4 = mkOption {
-          type = types.nullOr types.str;
-          default = "10.244.0.0/16";
-          description = "The IPv4 pod CIDR passed to RKE2.";
-        };
-
-        clusterCidrIPv6 = mkOption {
-          type = types.nullOr types.str;
-          default = "fd00::/108";
-          description = "The IPv6 pod CIDR passed to RKE2.";
-        };
-
         nodeCidrMaskSize = mkOption {
           type = types.int;
           default = 24;
@@ -64,10 +52,10 @@ in
           description = "The IPv6 node CIDR mask size passed to the controller manager.";
         };
 
-        extraConfig = mkOption {
-          type = types.attrsOf types.raw;
-          default = { };
-          description = "Additional direct values merged into services.rke2.";
+        serviceCidr = mkOption {
+          type = types.nullOr types.str;
+          default = "10.96.0.0/12,fd01::/108";
+          description = "The service CIDR passed to RKE2.";
         };
 
         interface = mkOption {
@@ -76,16 +64,22 @@ in
           description = "The WAN interface used for firewall policy.";
         };
 
-        secretsEncryption = mkOption {
-          type = types.bool;
-          default = true;
-          description = "Whether to enable RKE2 secrets encryption.";
+        extraConfig = mkOption {
+          type = types.attrsOf types.raw;
+          default = { };
+          description = "Additional direct values merged into services.rke2.";
         };
 
-        serviceCidr = mkOption {
+        clusterCidrIPv4 = mkOption {
           type = types.nullOr types.str;
-          default = "10.96.0.0/12,fd01::/108";
-          description = "The service CIDR passed to RKE2.";
+          default = "10.244.0.0/16";
+          description = "The IPv4 pod CIDR passed to RKE2.";
+        };
+
+        clusterCidrIPv6 = mkOption {
+          type = types.nullOr types.str;
+          default = "fd00::/108";
+          description = "The IPv6 pod CIDR passed to RKE2.";
         };
       };
     };
@@ -105,8 +99,8 @@ in
           "--kube-controller-manager-arg=node-cidr-mask-size-ipv4=${toString cfg.nodeCidrMaskSize}"
           "--kube-controller-manager-arg=node-cidr-mask-size-ipv6=${toString cfg.nodeCidrMaskSizeIPv6}"
           (optionalString (cfg.serviceCidr != null) "--service-cidr=${cfg.serviceCidr}")
-        ]
-        ++ optional cfg.secretsEncryption "--secrets-encryption";
+          "--secrets-encryption"
+        ];
         gracefulNodeShutdown.enable = true;
         manifests = {
           rke2-cilium-config.content = {
