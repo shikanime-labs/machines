@@ -75,6 +75,7 @@
           with pkgs;
           [
             age
+            docker
             skaffold
           ]
           ++ lib.optional stdenv.hostPlatform.isLinux nixos-facter;
@@ -101,6 +102,20 @@
                 ];
               }
               {
+                path_regex = "secrets/fushi.enc.yaml";
+                key_groups = [ { age = age; } ];
+              }
+              {
+                path_regex = "secrets/kaltashar.enc.yaml";
+                key_groups = [
+                  {
+                    age = age ++ [
+                      "age16pkwna5hq4hh03xfj6j5uew3wq6wfr5xgqgdmg6t3a27uz2dhuqsslh56c" # host
+                    ];
+                  }
+                ];
+              }
+              {
                 path_regex = "secrets/manash.enc.yaml";
                 key_groups = [
                   {
@@ -111,6 +126,10 @@
                 ];
               }
               {
+                path_regex = "secrets/minish.enc.yaml";
+                key_groups = [ { age = age; } ];
+              }
+              {
                 path_regex = "secrets/nalsha.enc.yaml";
                 key_groups = [
                   {
@@ -119,6 +138,10 @@
                     ];
                   }
                 ];
+              }
+              {
+                path_regex = "secrets/nishir.enc.yaml";
+                key_groups = [ { age = age; } ];
               }
               {
                 path_regex = "secrets/nixtar.enc.yaml";
@@ -136,16 +159,6 @@
                   {
                     age = age ++ [
                       "age1eak84xcr44yfqsg843rfu2xajxsyvjwh67a630htpnd0scy7yu5szjfh8d"
-                    ];
-                  }
-                ];
-              }
-              {
-                path_regex = "secrets/kaltashar.enc.yaml";
-                key_groups = [
-                  {
-                    age = age ++ [
-                      "age16pkwna5hq4hh03xfj6j5uew3wq6wfr5xgqgdmg6t3a27uz2dhuqsslh56c" # host
                     ];
                   }
                 ];
