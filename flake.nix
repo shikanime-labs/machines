@@ -44,6 +44,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    identities = {
+      url = "github:x-shikanime/identities";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     kix = {
       url = "github:x-shikanime/kix";
       inputs.nixpkgs.follows = "nixpkgs";
