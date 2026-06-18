@@ -29,16 +29,12 @@ in
   # Identity configuration — consumed by identities.homeModules.default
   identities.shikanime = {
     enable = true;
-    email = config.sops.placeholder.shikanime-studio-email;
-    sshSigningKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPFC5VCX4U04t82TizoUmXxZ064cOqNtswe0zPDqWWRj";
     git.gpgFormat = "ssh";
     sapling.enable = false;
   };
 
   identities.gouv = {
     enable = true;
-    email = config.sops.placeholder.gouv-email;
-    gpgKey = config.sops.placeholder.gouv-signing-key;
     git = {
       gpgFormat = "gpg";
       gitpath = "${config.home.homeDirectory}/Source/Repos/github.com/cloud-pi-native";
@@ -47,8 +43,6 @@ in
 
   identities.operator-6o = {
     enable = true;
-    email = config.sops.placeholder.operator6o-email;
-    gpgKey = config.sops.placeholder.operator6o-signing-key;
     git = {
       gpgFormat = "gpg";
       gitpath = "${config.home.homeDirectory}/Source/Repos/github.com/operator6o";
@@ -103,11 +97,6 @@ in
       cachix-token = { };
       github-token = { };
       gitlab-token = { };
-      gouv-email = { };
-      gouv-signing-key = { };
-      operator6o-email = { };
-      operator6o-signing-key = { };
-      shikanime-studio-email = { };
       nix-access-token = { };
     };
     templates = {
