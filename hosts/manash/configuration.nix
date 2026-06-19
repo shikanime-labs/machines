@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 
 {
   imports = [
@@ -56,22 +56,13 @@
     };
   };
 
-  systemd.services.tailscale-udp-gro-forwarding = {
-    description = "Enable Tailscale UDP GRO forwarding on enp1s0";
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig.Type = "oneshot";
-    script = ''
-      ${pkgs.ethtool}/bin/ethtool -K enp1s0 rx-udp-gro-forwarding on rx-gro-list off
-    '';
-  };
-
   sops = {
     defaultSopsFile = ../../secrets/manash.enc.yaml;
     defaultSopsFormat = "yaml";
-    secrets.rke2-token.restartUnits = [ "rke2-server.service" ];
-    secrets.forgejo-runner-token.restartUnits = [ "gitea-runner-manash.service" ];
+    secrets = {
+      rke2-token.restartUnits = [ "rke2-server.service" ];
+      forgejo-runner-token.restartUnits = [ "gitea-runner-manash.service" ];
+    };
     templates.forgejo-runner-token.content = ''
       TOKEN=${config.sops.placeholder.forgejo-runner-token}
     '';

@@ -37,8 +37,6 @@
     tokenFile = config.sops.secrets.rke2-token.path;
   };
 
-  services.fstrim.enable = true;
-
   sops = {
     defaultSopsFile = ../../secrets/nemishi.enc.yaml;
     defaultSopsFormat = "yaml";
