@@ -372,6 +372,41 @@
         "type": "github"
       }
     },
+    "knix": {
+      "inputs": {
+        "devenv": [
+          "devenv"
+        ],
+        "devlib": [
+          "devlib"
+        ],
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "git-hooks": [
+          "git-hooks"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1781866397,
+        "narHash": "sha256-tqvx0BRrQ701VUS1SgqPPSCH9BKYdE9sln8+O7T4MUk=",
+        "owner": "shikanime-studio",
+        "repo": "knix",
+        "rev": "8966c1a7eff8687048f2a1cb096de96e9547d566",
+        "type": "github"
+      },
+      "original": {
+        "owner": "shikanime-studio",
+        "repo": "knix",
+        "type": "github"
+      }
+    },
     "nix": {
       "inputs": {
         "flake-compat": [
@@ -506,6 +541,7 @@
         "git-hooks": "git-hooks",
         "home-manager": "home-manager",
         "identities": "identities",
+        "knix": "knix",
         "nix-darwin": "nix-darwin",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",

@@ -4,7 +4,6 @@
   imports = [
     ../../modules/nixos/base.nix
     ../../modules/nixos/nishir.nix
-    ../../modules/nixos/rke2
   ];
 
   disko.devices.disk.flandre = {
@@ -31,7 +30,7 @@
 
   networking.hostName = "manash";
 
-  shikanime.rke2.extraConfig.nodeIP = "192.168.1.28,2a02:8424:7899:f201:94eb:8d1:325a:7181";
+  knix.nodeIP = "192.168.1.28,2a02:8424:7899:f201:94eb:8d1:325a:7181";
 
   services = {
     tailscale.extraUpFlags = [

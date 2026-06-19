@@ -30,7 +30,7 @@
 
   networking.hostName = "nemishi";
 
-  shikanime.rke2.extraConfig.nodeIP = "192.168.1.27";
+  knix.nodeIP = "192.168.1.27";
 
   sops = {
     defaultSopsFile = ../../secrets/nemishi.enc.yaml;

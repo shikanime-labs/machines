@@ -4,7 +4,6 @@
   imports = [
     ../../modules/nixos/base.nix
     ../../modules/nixos/nishir.nix
-    ../../modules/nixos/rke2
   ];
 
   disko.devices.disk.patchouli = {
@@ -31,7 +30,7 @@
 
   networking.hostName = "ashira";
 
-  shikanime.rke2.extraConfig = {
+  knix = {
     nodeIP = "192.168.1.60,2a02:8424:7899:f201:94eb:8d1:325a:812b";
     serverAddr = "https://192.168.1.28:9345";
     tokenFile = config.sops.secrets.rke2-token.path;

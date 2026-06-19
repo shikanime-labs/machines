@@ -1,10 +1,6 @@
 { config, ... }:
 
 {
-  imports = [
-    ../../modules/nixos/rke2
-  ];
-
   boot = {
     # Kubernetes and Longhorn rely on bridge netfilter and overlayfs; BBR
     # improves WAN/Tailnet flows on the smaller ARM hosts too.
@@ -121,31 +117,7 @@
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     secrets = {
       nix-config.reloadUnits = [ "nix-daemon.service" ];
-      rke2-token.restartUnits = [ "rke2-server.service" ];
       tailscale-authkey.restartUnits = [ "tailscaled.service" ];
-    };
-  };
-
-  shikanime.rke2 = {
-    enable = true;
-    flux.operator.extraConfig.web.ingress = {
-      enabled = true;
-      className = "tailscale";
-      annotations."tailscale.com/tags" = "tag:web";
-      hosts = [
-        {
-          host = "nishir-flux";
-          paths = [
-            {
-              path = "/";
-              pathType = "ImplementationSpecific";
-            }
-          ];
-        }
-      ];
-      tls = [
-        { hosts = [ "nishir-flux" ]; }
-      ];
     };
   };
 
@@ -156,6 +128,26 @@
     home = "/home/nishir";
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH+tp1Xfz7NomHCZuDPlfj3XW5hm9t0TiCyEeudRraoe"
+    ];
+  };
+
+  knix.flux.operator.extraConfig.web.ingress = {
+    enabled = true;
+    className = "tailscale";
+    annotations."tailscale.com/tags" = "tag:web";
+    hosts = [
+      {
+        host = "nishir-flux";
+        paths = [
+          {
+            path = "/";
+            pathType = "ImplementationSpecific";
+          }
+        ];
+      }
+    ];
+    tls = [
+      { hosts = [ "nishir-flux" ]; }
     ];
   };
 }
