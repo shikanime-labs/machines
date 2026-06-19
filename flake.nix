@@ -57,8 +57,15 @@
     };
 
     knix = {
-      url = "github:x-shikanime/knix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:shikanime-studio/knix";
+      inputs = {
+        devenv.follows = "devenv";
+        devlib.follows = "devlib";
+        flake-parts.follows = "flake-parts";
+        git-hooks.follows = "git-hooks";
+        nixpkgs.follows = "nixpkgs";
+        treefmt-nix.follows = "treefmt-nix";
+      };
     };
 
     flake-parts = {
