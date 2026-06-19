@@ -154,12 +154,14 @@
               modules = [
                 ../../hosts/catbox/configuration.nix
                 inputs.home-manager.nixosModules.home-manager
+                inputs.sops-nix.nixosModules.sops
                 {
                   home-manager.sharedModules = [
                     inputs.catppuccin.homeModules.default
                     inputs.colemak.homeModules.default
                     inputs.devlib.homeModules.default
                     inputs.identities.homeModules.default
+                    inputs.sops-nix.homeModules.default
                   ];
                 }
               ];
@@ -181,12 +183,14 @@
               modules = [
                 ../../hosts/catbox/configuration.nix
                 inputs.home-manager.nixosModules.home-manager
+                inputs.sops-nix.nixosModules.sops
                 {
                   home-manager.sharedModules = [
                     inputs.catppuccin.homeModules.default
                     inputs.colemak.homeModules.default
                     inputs.devlib.homeModules.default
                     inputs.identities.homeModules.default
+                    inputs.sops-nix.homeModules.default
                   ];
                 }
               ];
