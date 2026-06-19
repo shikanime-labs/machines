@@ -5,24 +5,23 @@
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
     "${modulesPath}/profiles/headless.nix"
     ../../modules/nixos/base.nix
+    ../../modules/nixos/rke2
     ../../modules/nixos/telashi.nix
   ];
 
-  disko.devices = {
-    disk.marisa = {
-      type = "disk";
-      device = "/dev/disk/by-label/marisa";
-      content = {
-        type = "filesystem";
-        format = "xfs";
-        mountpoint = "/mnt/marisa";
-        mountOptions = [
-          "nofail"
-          "x-systemd.automount"
-          "x-systemd.device-timeout=10s"
-          "x-systemd.mount-timeout=30s"
-        ];
-      };
+  disko.devices.disk.marisa = {
+    type = "disk";
+    device = "/dev/disk/by-label/marisa";
+    content = {
+      type = "filesystem";
+      format = "xfs";
+      mountpoint = "/mnt/marisa";
+      mountOptions = [
+        "nofail"
+        "x-systemd.automount"
+        "x-systemd.device-timeout=10s"
+        "x-systemd.mount-timeout=30s"
+      ];
     };
   };
 
@@ -32,6 +31,16 @@
 
   networking = {
     hostName = "minish";
+  };
+
+  shikanime.rke2 = {
+    enable = true;
+    extraConfig = {
+      nodeIP = "192.168.1.29";
+      serverAddr = "https://192.168.1.28:9345";
+      tokenFile = config.sops.secrets.rke2-token.path;
+    };
+    longhorn.enable = true;
   };
 
   sops = {

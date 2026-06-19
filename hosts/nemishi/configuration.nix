@@ -5,54 +5,23 @@
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
     "${modulesPath}/profiles/headless.nix"
     ../../modules/nixos/base.nix
+    ../../modules/nixos/rke2
     ../../modules/nixos/telashi.nix
   ];
 
-  disko.devices = {
-    disk.flandre = {
-      type = "disk";
-      device = "/dev/disk/by-label/flandre";
-      content = {
-        type = "filesystem";
-        format = "xfs";
-        mountpoint = "/mnt/flandre";
-        mountOptions = [
-          "nofail"
-          "x-systemd.automount"
-          "x-systemd.device-timeout=10s"
-          "x-systemd.mount-timeout=30s"
-        ];
-      };
-    };
-    disk.nishir = {
-      type = "disk";
-      device = "/dev/nvme0n1";
-      content = {
-        type = "filesystem";
-        format = "xfs";
-        mountpoint = "/mnt/nishir";
-        mountOptions = [
-          "nofail"
-          "x-systemd.automount"
-          "x-systemd.device-timeout=10s"
-          "x-systemd.mount-timeout=30s"
-        ];
-      };
-    };
-    disk.remilia = {
-      type = "disk";
-      device = "/dev/disk/by-label/remilia";
-      content = {
-        type = "filesystem";
-        format = "xfs";
-        mountpoint = "/mnt/remilia";
-        mountOptions = [
-          "nofail"
-          "x-systemd.automount"
-          "x-systemd.device-timeout=10s"
-          "x-systemd.mount-timeout=30s"
-        ];
-      };
+  disko.devices.disk.data = {
+    type = "disk";
+    device = "/dev/nvme0n1";
+    content = {
+      type = "filesystem";
+      format = "xfs";
+      mountpoint = "/mnt/data";
+      mountOptions = [
+        "nofail"
+        "x-systemd.automount"
+        "x-systemd.device-timeout=10s"
+        "x-systemd.mount-timeout=30s"
+      ];
     };
   };
 
@@ -62,6 +31,16 @@
 
   networking = {
     hostName = "nemishi";
+  };
+
+  shikanime.rke2 = {
+    enable = true;
+    extraConfig = {
+      nodeIP = "192.168.1.27";
+      serverAddr = "https://192.168.1.28:9345";
+      tokenFile = config.sops.secrets.rke2-token.path;
+    };
+    longhorn.enable = true;
   };
 
   sops = {

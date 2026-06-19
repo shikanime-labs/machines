@@ -31,7 +31,11 @@
 
   networking.hostName = "manash";
 
-  shikanime.rke2.extraConfig.nodeIP = "192.168.1.28,2a02:8424:7899:f201:94eb:8d1:325a:7181";
+  shikanime.rke2.extraConfig = {
+    nodeIP = "192.168.1.28,2a02:8424:7899:f201:94eb:8d1:325a:7181";
+    serverAddr = "https://192.168.1.28:9345";
+    tokenFile = config.sops.secrets.rke2-token.path;
+  };
 
   services.gitea-actions-runner.instances.manash = {
     enable = true;
