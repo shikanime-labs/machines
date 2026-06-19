@@ -54,9 +54,7 @@
   sops = {
     defaultSopsFile = ../../secrets/manash.enc.yaml;
     defaultSopsFormat = "yaml";
-    secrets = {
-      forgejo-runner-token.restartUnits = [ "gitea-runner-manash.service" ];
-    };
+    secrets.forgejo-runner-token.restartUnits = [ "gitea-runner-manash.service" ];
     templates.forgejo-runner-token.content = ''
       TOKEN=${config.sops.placeholder.forgejo-runner-token}
     '';
