@@ -9,10 +9,6 @@
     ../../modules/nixos/k8s.nix
   ];
 
-  boot = {
-    zfs.forceImportRoot = false;
-  };
-
   disko.devices.disk.marisa = {
     type = "disk";
     device = "/dev/disk/by-label/marisa";

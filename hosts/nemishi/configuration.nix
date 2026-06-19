@@ -9,10 +9,6 @@
     ../../modules/nixos/k8s.nix
   ];
 
-  boot = {
-    zfs.forceImportRoot = false;
-  };
-
   disko.devices.disk.data = {
     type = "disk";
     device = "/dev/nvme0n1";
