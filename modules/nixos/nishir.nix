@@ -15,6 +15,36 @@
     ];
   };
 
+  disko.devices = {
+    disk.main = {
+      type = "disk";
+      device = "/dev/nvme0n1";
+      content = {
+        type = "gpt";
+        partitions = {
+          ESP = {
+            size = "1G";
+            type = "EF00";
+            content = {
+              type = "filesystem";
+              format = "vfat";
+              mountpoint = "/boot";
+              mountOptions = [ "umask=0077" ];
+            };
+          };
+          root = {
+            size = "100%";
+            content = {
+              type = "filesystem";
+              format = "xfs";
+              mountpoint = "/";
+            };
+          };
+        };
+      };
+    };
+  };
+
   boot = {
     # Kubernetes and Longhorn rely on bridge netfilter and overlayfs; BBR
     # improves WAN/Tailnet flows
@@ -127,6 +157,17 @@
     gitea-actions-runner.package = pkgs.forgejo-runner;
   };
 
+  systemd.services.tailscale-udp-gro-forwarding = {
+    description = "Enable Tailscale UDP GRO forwarding on enp1s0";
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig.Type = "oneshot";
+    script = ''
+      ${pkgs.ethtool}/bin/ethtool -K enp1s0 rx-udp-gro-forwarding on rx-gro-list off
+    '';
+  };
+
   networking.firewall = {
     extraCommands = ''
       iptables -I INPUT -i br+ -j ACCEPT
@@ -157,6 +198,41 @@
       nix-config.content = ''
         extra-access-tokens = "github.com=${config.sops.placeholder.nix-access-token}";
       '';
+    };
+  };
+
+  virtualisation.docker = {
+    enable = true;
+    daemon.settings = {
+      fixed-cidr-v6 = "fd00::/80";
+      ipv6 = true;
+    };
+  };
+
+  shikanime.rke2 = {
+    enable = true;
+    longhorn.enable = true;
+    flux = {
+      enable = true;
+      operator.extraConfig.web.ingress = {
+        enabled = true;
+        className = "tailscale";
+        annotations."tailscale.com/tags" = "tag:web";
+        hosts = [
+          {
+            host = "nishir-flux";
+            paths = [
+              {
+                path = "/";
+                pathType = "ImplementationSpecific";
+              }
+            ];
+          }
+        ];
+        tls = [
+          { hosts = [ "nishir-flux" ]; }
+        ];
+      };
     };
   };
 

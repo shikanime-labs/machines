@@ -56,8 +56,6 @@
     };
   };
 
-  services.fstrim.enable = true;
-
   home-manager.users.nishir.imports = [
     ./users/nishir/home-configuration.nix
   ];
