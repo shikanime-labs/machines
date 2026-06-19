@@ -4,7 +4,6 @@
   imports = [
     ../../modules/nixos/base.nix
     ../../modules/nixos/nishir.nix
-    ../../modules/nixos/k8s.nix
   ];
 
   disko.devices.disk.flandre = {

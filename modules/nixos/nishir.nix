@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   # Intel N150 needs firmware plus userspace graphics/QSV libraries so the
@@ -201,6 +206,40 @@
     daemon.settings = {
       fixed-cidr-v6 = "fd00::/80";
       ipv6 = true;
+    };
+  };
+
+  knix = {
+    flux = {
+      enable = lib.mkDefault true;
+      instance.extraConfig.instance.sync = lib.mkDefault {
+        interval = "1m";
+        kind = "GitRepository";
+        path = "clusters/nishir/overlays/tailnet";
+        pullSecret = "";
+        ref = "refs/heads/main";
+        url = "https://github.com/shikanime/manifests.git";
+      };
+
+      operator.extraConfig.web.ingress = {
+        enabled = true;
+        className = "tailscale";
+        annotations."tailscale.com/tags" = "tag:web";
+        hosts = [
+          {
+            host = "nishir-flux";
+            paths = [
+              {
+                path = "/";
+                pathType = "ImplementationSpecific";
+              }
+            ];
+          }
+        ];
+        tls = [
+          { hosts = [ "nishir-flux" ]; }
+        ];
+      };
     };
   };
 

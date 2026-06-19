@@ -6,7 +6,6 @@
     "${modulesPath}/profiles/headless.nix"
     ../../modules/nixos/base.nix
     ../../modules/nixos/telashi.nix
-    ../../modules/nixos/k8s.nix
   ];
 
   disko.devices.disk.data = {

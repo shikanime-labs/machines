@@ -4,7 +4,6 @@
   imports = [
     ../../modules/nixos/base.nix
     ../../modules/nixos/nishir.nix
-    ../../modules/nixos/k8s.nix
   ];
 
   disko.devices.disk.remilia = {
@@ -74,6 +73,7 @@
   sops = {
     defaultSopsFile = ../../secrets/nalsha.enc.yaml;
     defaultSopsFormat = "yaml";
+    secrets.rke2-token.restartUnits = [ "rke2-server.service" ];
     secrets.forgejo-runner-token.restartUnits = [ "gitea-runner-nalsha.service" ];
     templates.forgejo-runner-token.content = ''
       TOKEN=${config.sops.placeholder.forgejo-runner-token}
