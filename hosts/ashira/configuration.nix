@@ -220,10 +220,7 @@
       };
     };
 
-    nix-serve = {
-      enable = true;
-      openFirewall = true;
-    };
+    nix-serve.enable = true;
 
     openssh = {
       enable = true;
