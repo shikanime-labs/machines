@@ -5,16 +5,27 @@
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
     "${modulesPath}/profiles/headless.nix"
     ../../modules/nixos/base.nix
+    ../../modules/nixos/k8s.nix
   ];
 
   boot = {
     zfs.forceImportRoot = false;
-
+    # Older arm64 boards still need these cgroup knobs for RKE2.
     kernelParams = [
       "cgroup_enable=cpuset"
       "cgroup_enable=memory"
       "cgroup_memory=1"
     ];
+
+    kernel.sysctl = {
+      # NVMe tuning
+      "vm.dirty_background_ratio" = 10;
+      "vm.dirty_expire_centisecs" = 2000;
+      "vm.dirty_ratio" = 20;
+      "vm.dirty_writeback_centisecs" = 500;
+      "vm.swappiness" = 10;
+      "vm.vfs_cache_pressure" = 50;
+    };
   };
 
   disko.devices = {
@@ -96,7 +107,6 @@
     nodeIP = "192.168.1.29";
     serverAddr = "https://192.168.1.28:9345";
     tokenFile = config.sops.secrets.rke2-token.path;
-    longhorn.enable = true;
   };
 
   sops = {

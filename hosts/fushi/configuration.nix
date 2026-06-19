@@ -5,6 +5,7 @@
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
     "${modulesPath}/profiles/headless.nix"
     ../../modules/nixos/base.nix
+    ../../modules/nixos/k8s.nix
   ];
 
   boot = {

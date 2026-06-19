@@ -172,7 +172,7 @@
                 }
               ];
             };
-            in
+          in
           catbox.config.system.build.buildLayeredImage;
         manash = self.nixosConfigurations.manash.config.system.build.toplevel;
         nalsha = self.nixosConfigurations.nalsha.config.system.build.toplevel;
@@ -201,7 +201,7 @@
                 }
               ];
             };
-            in
+          in
           catbox.config.system.build.buildLayeredImage;
         fushi = self.nixosConfigurations.fushi.config.system.build.toplevel;
         minish = self.nixosConfigurations.minish.config.system.build.toplevel;
