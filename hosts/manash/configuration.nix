@@ -239,7 +239,7 @@
       instances.manash = {
         enable = true;
         name = "manash";
-        tokenFile = config.sops.secrets.forgejo-runner-token.path;
+        tokenFile = config.sops.templates.forgejo-runner-token.path;
         url = "https://forgejo.taila659a.ts.net";
         labels = [
           "docker:docker://node:22-bookworm"
@@ -269,11 +269,19 @@
     secrets = {
       nix-access-token = { };
       tailscale-authkey = { };
-      forgejo-runner-token = { };
+      forgejo-runner-token = {
+        group = "gitea-runner";
+        mode = "0440";
+      };
     };
-    templates.nix-config.content = ''
-      extra-access-tokens = "github.com=${config.sops.placeholder.nix-access-token}";
-    '';
+    templates = {
+      nix-config.content = ''
+        extra-access-tokens = "github.com=${config.sops.placeholder.nix-access-token}";
+      '';
+      forgejo-runner-token.content = ''
+        TOKEN=${config.sops.placeholder.forgejo-runner-token}
+      '';
+    };
   };
 
   users.users.nishir = {
