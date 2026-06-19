@@ -79,6 +79,17 @@
   ];
 
   networking = {
+    # Allow Docker runners to connect to cache actions.
+    firewall.trustedInterfaces = [ "br-+" ];
+
+    getaddrinfo.precedence = {
+      "::1/128" = 50;
+      "::/0" = 40;
+      "2002::/16" = 30;
+      "::/96" = 20;
+      "::ffff:0:0/96" = 100;
+    };
+
     hostName = "manash";
   };
 
@@ -124,11 +135,58 @@
     tailscale.enable = true;
   };
 
-  services.tailscale = {
-    authKeyFile = config.sops.secrets.tailscale-authkey.path;
-    extraUpFlags = [
-      "--advertise-routes=10.244.0.0/24,fd00::/112"
-    ];
+  services = {
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      nssmdns6 = true;
+      publish = {
+        enable = true;
+        addresses = true;
+        workstation = true;
+      };
+    };
+
+    nix-serve.enable = true;
+
+    openssh = {
+      enable = true;
+      openFirewall = true;
+    };
+
+    tailscale = {
+      enable = true;
+      openFirewall = true;
+      useRoutingFeatures = "server";
+      authKeyFile = config.sops.secrets.tailscale-authkey.path;
+      extraUpFlags = [
+        "--advertise-routes=10.244.0.0/24,fd00::/112"
+        "--ssh"
+      ];
+    };
+
+    gitea-actions-runner = {
+      package = pkgs.forgejo-runner;
+      instances.manash = {
+        enable = true;
+        name = "manash";
+        tokenFile = config.sops.templates.forgejo-runner-token.path;
+        url = "https://forgejo.taila659a.ts.net";
+        labels = [
+          "docker:docker://node:22-bookworm"
+          "nixos-latest:docker://nixos/nix"
+          "native:host"
+        ];
+      };
+    };
+  };
+
+  virtualisation.docker = {
+    enable = true;
+    daemon.settings = {
+      fixed-cidr-v6 = "fd00::/80";
+      ipv6 = true;
+    };
   };
 
   nix.extraOptions = ''
@@ -140,12 +198,18 @@
     defaultSopsFile = ../../secrets/manash.enc.yaml;
     defaultSopsFormat = "yaml";
     secrets = {
-      nix-access-token = { };
-      tailscale-authkey = { };
+      nix-access-token.reloadUnits = [ "nix-daemon.service" ];
+      tailscale-authkey.restartUnits = [ "tailscaled.service" ];
+      forgejo-runner-token.restartUnits = [ "gitea-actions-runner-manash.service" ];
     };
-    templates.nix-config.content = ''
-      extra-access-tokens = "github.com=${config.sops.placeholder.nix-access-token}";
-    '';
+    templates = {
+      nix-config.content = ''
+        extra-access-tokens = "github.com=${config.sops.placeholder.nix-access-token}";
+      '';
+      forgejo-runner-token.content = ''
+        TOKEN=${config.sops.placeholder.forgejo-runner-token}
+      '';
+    };
   };
 
   users.users.nishir = {
