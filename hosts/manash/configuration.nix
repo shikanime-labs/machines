@@ -34,27 +34,25 @@
     enable = true;
     nodeIP = "192.168.1.28,2a02:8424:7899:f201:94eb:8d1:325a:7181";
     serverAddr = "https://192.168.1.28:9345";
+    tokenFile = config.sops.secrets.rke2-token.path;
   };
 
   services = {
-    nix-serve.enable = true;
     tailscale.extraUpFlags = [
       "--advertise-routes=10.244.0.0/24,fd00::/112"
       "--ssh"
     ];
 
-    gitea-actions-runner = {
-      instances.manash = {
-        enable = true;
-        name = "manash";
-        tokenFile = config.sops.templates.forgejo-runner-token.path;
-        url = "https://forgejo.taila659a.ts.net";
-        labels = [
-          "docker:docker://node:22-bookworm"
-          "nixos-latest:docker://nixos/nix"
-          "native:host"
-        ];
-      };
+    gitea-actions-runner.instances.manash = {
+      enable = true;
+      name = "manash";
+      tokenFile = config.sops.templates.forgejo-runner-token.path;
+      url = "https://forgejo.taila659a.ts.net";
+      labels = [
+        "docker:docker://node:22-bookworm"
+        "nixos-latest:docker://nixos/nix"
+        "native:host"
+      ];
     };
   };
 
@@ -72,6 +70,7 @@
   sops = {
     defaultSopsFile = ../../secrets/manash.enc.yaml;
     defaultSopsFormat = "yaml";
+    secrets.rke2-token.restartUnits = [ "rke2-server.service" ];
     secrets.forgejo-runner-token.restartUnits = [ "gitea-runner-manash.service" ];
     templates.forgejo-runner-token.content = ''
       TOKEN=${config.sops.placeholder.forgejo-runner-token}

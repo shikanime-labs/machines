@@ -1,4 +1,4 @@
-{ modulesPath, ... }:
+{ config, modulesPath, ... }:
 
 {
   imports = [
@@ -34,6 +34,7 @@
     enable = true;
     nodeIP = "192.168.1.27";
     serverAddr = "https://192.168.1.28:9345";
+    tokenFile = config.sops.secrets.rke2-token.path;
   };
 
   services.fstrim.enable = true;
@@ -41,6 +42,7 @@
   sops = {
     defaultSopsFile = ../../secrets/nemishi.enc.yaml;
     defaultSopsFormat = "yaml";
+    secrets.rke2-token.restartUnits = [ "rke2-server.service" ];
   };
 
   systemd.tmpfiles.rules = [

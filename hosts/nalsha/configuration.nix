@@ -38,24 +38,21 @@
   };
 
   services = {
-    nix-serve.enable = true;
     tailscale.extraUpFlags = [
       "--advertise-routes=10.244.1.0/24,fd00::1:0/112"
       "--ssh"
     ];
 
-    gitea-actions-runner = {
-      instances.nalsha = {
-        enable = true;
-        name = "nalsha";
-        tokenFile = config.sops.templates.forgejo-runner-token.path;
-        url = "https://forgejo.taila659a.ts.net";
-        labels = [
-          "docker:docker://node:22-bookworm"
-          "nixos-latest:docker://nixos/nix"
-          "native:host"
-        ];
-      };
+    gitea-actions-runner.instances.nalsha = {
+      enable = true;
+      name = "nalsha";
+      tokenFile = config.sops.templates.forgejo-runner-token.path;
+      url = "https://forgejo.taila659a.ts.net";
+      labels = [
+        "docker:docker://node:22-bookworm"
+        "nixos-latest:docker://nixos/nix"
+        "native:host"
+      ];
     };
   };
 

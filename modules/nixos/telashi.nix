@@ -135,4 +135,24 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH+tp1Xfz7NomHCZuDPlfj3XW5hm9t0TiCyEeudRraoe"
     ];
   };
+
+  knix.flux.operator.extraConfig.web.ingress = {
+    enabled = true;
+    className = "tailscale";
+    annotations."tailscale.com/tags" = "tag:web";
+    hosts = [
+      {
+        host = "nishir-flux";
+        paths = [
+          {
+            path = "/";
+            pathType = "ImplementationSpecific";
+          }
+        ];
+      }
+    ];
+    tls = [
+      { hosts = [ "nishir-flux" ]; }
+    ];
+  };
 }
