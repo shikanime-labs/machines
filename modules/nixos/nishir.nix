@@ -189,7 +189,6 @@
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     secrets = {
       nix-access-token.reloadUnits = [ "nix-daemon.service" ];
-      rke2-token.restartUnits = [ "rke2-server.service" ];
       tailscale-authkey.restartUnits = [ "tailscaled.service" ];
     };
     templates.nix-config.content = ''
