@@ -1,11 +1,10 @@
-{ config, modulesPath, ... }:
+{ modulesPath, ... }:
 
 {
   imports = [
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
     "${modulesPath}/profiles/headless.nix"
     ../../modules/nixos/base.nix
-    ../../modules/nixos/rke2
     ../../modules/nixos/telashi.nix
   ];
 
@@ -33,15 +32,7 @@
     hostName = "nemishi";
   };
 
-  shikanime.rke2 = {
-    enable = true;
-    extraConfig = {
-      nodeIP = "192.168.1.27";
-      serverAddr = "https://192.168.1.28:9345";
-      tokenFile = config.sops.secrets.rke2-token.path;
-    };
-    longhorn.enable = true;
-  };
+  shikanime.rke2.extraConfig.nodeIP = "192.168.1.27";
 
   sops = {
     defaultSopsFile = ../../secrets/nemishi.enc.yaml;
