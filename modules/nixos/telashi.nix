@@ -1,7 +1,4 @@
-{
-  config,
-  ...
-}:
+{ config, ... }:
 
 {
   # Older Raspberry Pi-class boards still need these cgroup knobs for RKE2.
