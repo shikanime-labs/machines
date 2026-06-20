@@ -188,15 +188,15 @@
             { hosts = [ "nishir-flux" ]; }
           ];
         };
-        longhorn.extraConfig.recurringJobSelector = {
-          enable = true;
-          jobList = [
-            {
-              name = "standard";
-              isGroup = true;
-            }
-          ];
-        };
+      };
+      longhorn.extraConfig.recurringJobSelector = {
+        enable = true;
+        jobList = [
+          {
+            name = "standard";
+            isGroup = true;
+          }
+        ];
       };
     };
   };
