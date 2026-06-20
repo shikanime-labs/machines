@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
   # Older Raspberry Pi-class boards still need these cgroup knobs for RKE2.
@@ -42,6 +42,8 @@
     };
 
     fstrim.enable = true;
+
+    gitea-actions-runner.package = pkgs.forgejo-runner;
 
     nix-serve.enable = true;
   };

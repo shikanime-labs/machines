@@ -148,6 +148,8 @@
 
     fstrim.enable = true;
 
+    gitea-actions-runner.package = pkgs.forgejo-runner;
+
     nix-serve.enable = true;
 
     openssh = {
