@@ -10,7 +10,6 @@
     "${modulesPath}/profiles/headless.nix"
     "${modulesPath}/virtualisation/docker-image.nix"
     ../../modules/nixos/base.nix
-    ../../modules/nixos/workstation.nix
   ];
 
   home-manager.users = {

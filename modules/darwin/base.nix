@@ -1,4 +1,4 @@
-{ config, ... }:
+_:
 
 {
   # Make home-manager use packages from system
@@ -25,16 +25,6 @@
       trusted-users = [ "@admin" ];
     };
 
-    extraOptions = ''
-      !include ${config.sops.templates.nix-config.path}
-    '';
-  };
-
-  sops = {
-    secrets.nix-access-token = { };
-    templates.nix-config.content = ''
-      extra-access-tokens = "github.com=${config.sops.placeholder.nix-access-token}"
-    '';
   };
 
   # This value determines the Darwin release from which the default
