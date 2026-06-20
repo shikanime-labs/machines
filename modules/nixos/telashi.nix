@@ -94,24 +94,35 @@
   knix = {
     enable = true;
     addons = {
-      flux.operator.extraConfig.web.ingress = {
-        enabled = true;
-        className = "tailscale";
-        annotations."tailscale.com/tags" = "tag:web";
-        hosts = [
-          {
-            host = "nishir-flux";
-            paths = [
-              {
-                path = "/";
-                pathType = "ImplementationSpecific";
-              }
-            ];
-          }
-        ];
-        tls = [
-          { hosts = [ "nishir-flux" ]; }
-        ];
+      flux = {
+        instance.extraConfig.instance.sync = {
+          interval = "1m";
+          kind = "GitRepository";
+          path = "clusters/telashi/overlays/tailnet";
+          pullSecret = "";
+          ref = "refs/heads/main";
+          url = "https://github.com/shikanime/manifests.git";
+        };
+
+        operator.extraConfig.web.ingress = {
+          enabled = true;
+          className = "tailscale";
+          annotations."tailscale.com/tags" = "tag:web";
+          hosts = [
+            {
+              host = "telashi-flux";
+              paths = [
+                {
+                  path = "/";
+                  pathType = "ImplementationSpecific";
+                }
+              ];
+            }
+          ];
+          tls = [
+            { hosts = [ "telashi-flux" ]; }
+          ];
+        };
       };
       longhorn.extraConfig.recurringJobSelector = {
         enable = true;
