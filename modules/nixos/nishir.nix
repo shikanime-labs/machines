@@ -166,7 +166,7 @@
     };
   };
 
-  # Expose RKE2 API (9345), Kubernetes API (6443) and nix-serve (5000) as a single Tailscale Service.
+  # Expose RKE2 API (9345) and Kubernetes API (6443) as a single Tailscale Service.
   services.tailscale.serve = {
     enable = true;
     services.nishir = {
