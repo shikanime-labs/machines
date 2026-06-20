@@ -16,17 +16,17 @@
     settings = {
       builders-use-substitutes = true;
       substituters = [
-        "http://ashira:5000"
-        "http://manash:5000"
-        "http://nalsha:5000"
-        "http://fushi:5000"
-        "http://minish:5000"
-        "http://nemishi:5000"
+        "http://ashira.taila659a.ts.net:5000"
+        "http://manash.taila659a.ts.net:5000"
+        "http://nalsha.taila659a.ts.net:5000"
+        "http://fushi.taila659a.ts.net:5000"
+        "http://minish.taila659a.ts.net:5000"
+        "http://nemishi.taila659a.ts.net:5000"
       ];
     };
     buildMachines = [
       {
-        hostName = "ashira";
+        hostName = "ashira.taila659a.ts.net";
         sshUser = "builder";
         system = "x86_64-linux";
         protocol = "ssh-ng";
@@ -41,7 +41,7 @@
         mandatoryFeatures = [ ];
       }
       {
-        hostName = "manash";
+        hostName = "manash.taila659a.ts.net";
         sshUser = "builder";
         system = "x86_64-linux";
         protocol = "ssh-ng";
@@ -56,7 +56,7 @@
         mandatoryFeatures = [ ];
       }
       {
-        hostName = "nalsha";
+        hostName = "nalsha.taila659a.ts.net";
         sshUser = "builder";
         system = "x86_64-linux";
         protocol = "ssh-ng";
@@ -71,7 +71,7 @@
         mandatoryFeatures = [ ];
       }
       {
-        hostName = "fushi";
+        hostName = "fushi.taila659a.ts.net";
         sshUser = "builder";
         system = "aarch64-linux";
         protocol = "ssh-ng";
@@ -81,7 +81,7 @@
         mandatoryFeatures = [ ];
       }
       {
-        hostName = "minish";
+        hostName = "minish.taila659a.ts.net";
         sshUser = "builder";
         system = "aarch64-linux";
         protocol = "ssh-ng";
@@ -91,7 +91,7 @@
         mandatoryFeatures = [ ];
       }
       {
-        hostName = "nemishi";
+        hostName = "nemishi.taila659a.ts.net";
         sshUser = "builder";
         system = "aarch64-linux";
         protocol = "ssh-ng";
