@@ -1,19 +1,5 @@
 {
   nix = {
-    distributedBuilds = true;
-
-    settings = {
-      builders-use-substitutes = true;
-      substituters = [
-        "https://ashira.taila659a.ts.net:5000"
-        "https://manash.taila659a.ts.net:5000"
-        "https://nalsha.taila659a.ts.net:5000"
-        "https://fushi.taila659a.ts.net:5000"
-        "https://minish.taila659a.ts.net:5000"
-        "https://nemishi.taila659a.ts.net:5000"
-      ];
-    };
-
     buildMachines = [
       {
         hostName = "ashira.taila659a.ts.net";
@@ -91,5 +77,20 @@
         mandatoryFeatures = [ ];
       }
     ];
+
+    distributedBuilds = true;
+
+    settings = {
+      builders-use-substitutes = true;
+      substituters = [
+        "https://ashira.taila659a.ts.net:5000"
+        "https://manash.taila659a.ts.net:5000"
+        "https://nalsha.taila659a.ts.net:5000"
+        # TODO: enable when deployed
+        # "https://fushi.taila659a.ts.net:5000"
+        # "https://minish.taila659a.ts.net:5000"
+        # "https://nemishi.taila659a.ts.net:5000"
+      ];
+    };
   };
 }
