@@ -14,6 +14,8 @@
           inputs.disko.nixosModules.disko
           inputs.home-manager.nixosModules.home-manager
           inputs.knix.nixosModules.default
+          inputs.nixos-hardware.nixosModules.common-cpu-intel
+          inputs.nixos-hardware.nixosModules.common-pc-ssd
           inputs.sops-nix.nixosModules.sops
           {
             home-manager.sharedModules = [
@@ -34,6 +36,8 @@
           inputs.disko.nixosModules.disko
           inputs.home-manager.nixosModules.home-manager
           inputs.knix.nixosModules.default
+          inputs.nixos-hardware.nixosModules.common-cpu-intel
+          inputs.nixos-hardware.nixosModules.common-pc-ssd
           inputs.sops-nix.nixosModules.sops
           {
             home-manager.sharedModules = [
@@ -54,6 +58,8 @@
           inputs.disko.nixosModules.disko
           inputs.home-manager.nixosModules.home-manager
           inputs.knix.nixosModules.default
+          inputs.nixos-hardware.nixosModules.common-cpu-intel
+          inputs.nixos-hardware.nixosModules.common-pc-ssd
           inputs.sops-nix.nixosModules.sops
           {
             home-manager.sharedModules = [
@@ -74,6 +80,7 @@
           inputs.disko.nixosModules.disko
           inputs.home-manager.nixosModules.home-manager
           inputs.knix.nixosModules.default
+          inputs.nixos-hardware.nixosModules.raspberry-pi-4
           inputs.sops-nix.nixosModules.sops
           {
             home-manager.sharedModules = [
@@ -94,6 +101,7 @@
           inputs.disko.nixosModules.disko
           inputs.home-manager.nixosModules.home-manager
           inputs.knix.nixosModules.default
+          inputs.nixos-hardware.nixosModules.raspberry-pi-4
           inputs.sops-nix.nixosModules.sops
           {
             home-manager.sharedModules = [
@@ -114,6 +122,7 @@
           inputs.disko.nixosModules.disko
           inputs.home-manager.nixosModules.home-manager
           inputs.knix.nixosModules.default
+          inputs.nixos-hardware.nixosModules.raspberry-pi-5
           inputs.sops-nix.nixosModules.sops
           {
             home-manager.sharedModules = [

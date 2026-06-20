@@ -1,4 +1,7 @@
-{ config, ... }:
+{
+  config,
+  ...
+}:
 
 {
   # Older Raspberry Pi-class boards still need these cgroup knobs for RKE2.
@@ -7,11 +10,6 @@
     "cgroup_enable=memory"
     "cgroup_memory=1"
   ];
-
-  boot.loader = {
-    grub.enable = false;
-    generic-extlinux-compatible.enable = true;
-  };
 
   networking.getaddrinfo.precedence = {
     "::1/128" = 50;
