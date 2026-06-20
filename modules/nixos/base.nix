@@ -8,14 +8,14 @@
     useUserPackages = true;
   };
 
-  # Cleanup disk weekly
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
-  };
-
   nix = {
+    # Cleanup disk weekly
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+
     # Optimize nix store weekly
     optimise = {
       automatic = true;
