@@ -5,9 +5,12 @@
 }:
 
 {
-  boot.loader = {
-    efi.canTouchEfiVariables = true;
-    systemd-boot.enable = true;
+  boot = {
+    loader = {
+      efi.canTouchEfiVariables = true;
+      systemd-boot.enable = true;
+    };
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
   };
 
   # Intel N150 needs firmware plus userspace graphics/QSV libraries so the
