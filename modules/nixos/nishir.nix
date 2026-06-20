@@ -93,21 +93,14 @@
   # Expose RKE2 API (9345), Kubernetes API (6443) and nix-serve (5000) as a single Tailscale Service.
   services.tailscale.serve = {
     enable = true;
-    services = {
-      nishir = {
-        endpoints = {
-          # RKE2 API
-          "tcp:9345" = "tcp://127.0.0.1:9345";
-          # Kubernetes API
-          "tcp:6443" = "tcp://127.0.0.1:6443";
-        };
-        advertised = true;
+    services.nishir = {
+      endpoints = {
+        # RKE2 API
+        "tcp:9345" = "tcp://127.0.0.1:9345";
+        # Kubernetes API
+        "tcp:6443" = "tcp://127.0.0.1:6443";
       };
-      nishir-cache = {
-        # Nix caching server
-        endpoints."tcp:5000" = "tcp://127.0.0.1:5000";
-        advertised = true;
-      };
+      advertised = true;
     };
   };
 

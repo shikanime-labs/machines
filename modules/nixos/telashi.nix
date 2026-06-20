@@ -64,11 +64,11 @@
     };
   };
 
-  users.users.nishir = {
+  users.users.telashi = {
     extraGroups = [ "wheel" ];
     initialHashedPassword = "$y$j9T$HB1msXB0DEq00J48zRpB20$/3rhVrTzGrv1j/cPvZ0clOM2gEe1TeylUG39wgD0C42";
     isNormalUser = true;
-    home = "/home/nishir";
+    home = "/home/telashi";
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH+tp1Xfz7NomHCZuDPlfj3XW5hm9t0TiCyEeudRraoe"
     ];
@@ -145,19 +145,12 @@
   # server (HA control plane), so all 3 advertise the service.
   services.tailscale.serve = {
     enable = true;
-    services = {
-      telashi = {
-        endpoints = {
-          # RKE2 API
-          "tcp:9345" = "tcp://127.0.0.1:9345";
-          # Kubernetes API
-          "tcp:6443" = "tcp://127.0.0.1:6443";
-          advertised = true;
-        };
-      };
-      telashi-cache = {
-        # Nix caching server
-        endpoints."tcp:5000" = "tcp://127.0.0.1:5000";
+    services.telashi = {
+      endpoints = {
+        # RKE2 API
+        "tcp:9345" = "tcp://127.0.0.1:9345";
+        # Kubernetes API
+        "tcp:6443" = "tcp://127.0.0.1:6443";
         advertised = true;
       };
     };
