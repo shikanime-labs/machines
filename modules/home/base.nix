@@ -1,9 +1,19 @@
+{ config, ... }:
+
 {
   # Add extra cache
   nix.settings.experimental-features = [
     "flakes"
     "nix-command"
   ];
+
+  nix.extraOptions = ''
+    !include ${config.sops.templates.nix-config.path}
+  '';
+
+  sops.templates.nix-config.content = ''
+    extra-access-tokens = "github.com=${config.sops.placeholder.nix-access-token}"
+  '';
 
   # Let Home Manager install and manage itself
   programs.home-manager.enable = true;

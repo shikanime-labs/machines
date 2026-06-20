@@ -1,5 +1,7 @@
+{ config, ... }:
+
 {
-  # Make home-manger use packages from system
+  # Make home-manager use packages from system
   home-manager = {
     backupFileExtension = "backup-before-nix";
     useGlobalPkgs = true;
@@ -25,7 +27,15 @@
       download-buffer-size = 524288000;
       trusted-users = [ "@wheel" ];
     };
+
+    extraOptions = ''
+      !include ${config.sops.templates.nix-config.path}
+    '';
   };
+
+  sops.templates.nix-config.content = ''
+    extra-access-tokens = "github.com=${config.sops.placeholder.nix-access-token}"
+  '';
 
   # Automatically upgrade NixOS
   system.autoUpgrade = {

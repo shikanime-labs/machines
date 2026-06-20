@@ -1,5 +1,7 @@
+{ config, ... }:
+
 {
-  # Make home-manger use packages from system
+  # Make home-manager use packages from system
   home-manager = {
     backupFileExtension = "backup-before-nix";
     useGlobalPkgs = true;
@@ -22,7 +24,15 @@
       download-buffer-size = 524288000;
       trusted-users = [ "@admin" ];
     };
+
+    extraOptions = ''
+      !include ${config.sops.templates.nix-config.path}
+    '';
   };
+
+  sops.templates.nix-config.content = ''
+    extra-access-tokens = "github.com=${config.sops.placeholder.nix-access-token}"
+  '';
 
   # This value determines the Darwin release from which the default
   # settings for stateful data, like file locations and database versions

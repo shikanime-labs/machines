@@ -116,6 +116,7 @@ in
     };
     defaultSopsFile = ../../secrets/nixtar.enc.yaml;
     defaultSopsFormat = "yaml";
+    secrets.nix-access-token = { };
   };
 
   users.users.shika = {

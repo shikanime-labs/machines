@@ -130,19 +130,12 @@
     '';
   };
 
-  nix.extraOptions = ''
-    !include ${config.sops.templates.nix-config.path}
-  '';
-
   sops = {
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     secrets = {
       nix-access-token.reloadUnits = [ "nix-daemon.service" ];
       tailscale-authkey.restartUnits = [ "tailscaled.service" ];
     };
-    templates.nix-config.content = ''
-      extra-access-tokens = "github.com=${config.sops.placeholder.nix-access-token}";
-    '';
   };
 
   virtualisation.docker = {
