@@ -1,3 +1,9 @@
+name: Wakabox
+permissions:
+  contents: read
+"on":
+  schedule:
+    - cron: 0 0 * * *
 jobs:
   wakabox:
     runs-on: ubuntu-latest
