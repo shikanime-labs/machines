@@ -45,7 +45,7 @@
     gitea-actions-runner.instances.nalsha = {
       enable = true;
       name = "nalsha";
-      tokenFile = config.sops.templates.gitea-runner-nalsha-token.path;
+      tokenFile = config.sops.templates.forgejo-runner-nalsha-token.path;
       url = "https://forgejo.taila659a.ts.net";
       labels = [
         "docker:docker://node:22-bookworm"
@@ -58,9 +58,9 @@
   sops = {
     defaultSopsFile = ../../secrets/nalsha.enc.yaml;
     defaultSopsFormat = "yaml";
-    secrets.gitea-runner-nalsha-token.restartUnits = [ "gitea-runner-nalsha.service" ];
-    templates.gitea-runner-nalsha-token.content = ''
-      TOKEN=${config.sops.placeholder.gitea-runner-nalsha-token}
+    secrets.forgejo-runner-nalsha-token.restartUnits = [ "forgejo-runner-nalsha.service" ];
+    templates.forgejo-runner-nalsha-token.content = ''
+      TOKEN=${config.sops.placeholder.forgejo-runner-nalsha-token}
     '';
   };
 }

@@ -44,7 +44,7 @@
     gitea-actions-runner.instances.ashira = {
       enable = true;
       name = "ashira";
-      tokenFile = config.sops.templates.gitea-runner-ashira-token.path;
+      tokenFile = config.sops.templates.forgejo-runner-ashira-token.path;
       url = "https://forgejo.taila659a.ts.net";
       labels = [
         "docker:docker://node:22-bookworm"
@@ -57,9 +57,9 @@
   sops = {
     defaultSopsFile = ../../secrets/ashira.enc.yaml;
     defaultSopsFormat = "yaml";
-    secrets.gitea-runner-ashira-token.restartUnits = [ "gitea-runner-ashira.service" ];
-    templates.gitea-runner-ashira-token.content = ''
-      TOKEN=${config.sops.placeholder.gitea-runner-ashira-token}
+    secrets.forgejo-runner-ashira-token.restartUnits = [ "forgejo-runner-ashira.service" ];
+    templates.forgejo-runner-ashira-token.content = ''
+      TOKEN=${config.sops.placeholder.forgejo-runner-ashira-token}
     '';
   };
 }

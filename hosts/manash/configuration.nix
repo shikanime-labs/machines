@@ -41,7 +41,7 @@
     gitea-actions-runner.instances.manash = {
       enable = true;
       name = "manash";
-      tokenFile = config.sops.templates.gitea-runner-manash-token.path;
+      tokenFile = config.sops.templates.forgejo-runner-manash-token.path;
       url = "https://forgejo.taila659a.ts.net";
       labels = [
         "docker:docker://node:22-bookworm"
@@ -54,9 +54,9 @@
   sops = {
     defaultSopsFile = ../../secrets/manash.enc.yaml;
     defaultSopsFormat = "yaml";
-    secrets.gitea-runner-manash-token.restartUnits = [ "gitea-runner-manash.service" ];
-    templates.gitea-runner-manash-token.content = ''
-      TOKEN=${config.sops.placeholder.gitea-runner-manash-token}
+    secrets.forgejo-runner-manash-token.restartUnits = [ "forgejo-runner-manash.service" ];
+    templates.forgejo-runner-manash-token.content = ''
+      TOKEN=${config.sops.placeholder.forgejo-runner-manash-token}
     '';
   };
 }
