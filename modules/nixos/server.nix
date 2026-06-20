@@ -78,6 +78,12 @@
     wants = [ "network-online.target" ];
   };
 
+  users.users.builder = {
+    isNormalUser = true;
+    home = "/home/builder";
+    useDefaultShell = true;
+  };
+
   virtualisation.docker = {
     daemon.settings = {
       fixed-cidr-v6 = "fd00::/80";

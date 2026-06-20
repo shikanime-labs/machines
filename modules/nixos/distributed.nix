@@ -1,6 +1,7 @@
 {
   nix = {
     distributedBuilds = true;
+
     settings = {
       builders-use-substitutes = true;
       substituters = [
@@ -12,6 +13,7 @@
         "http://nemishi.taila659a.ts.net:5000"
       ];
     };
+
     buildMachines = [
       {
         hostName = "ashira.taila659a.ts.net";
@@ -89,11 +91,5 @@
         mandatoryFeatures = [ ];
       }
     ];
-  };
-
-  users.users.builder = {
-    isNormalUser = true;
-    home = "/home/builder";
-    useDefaultShell = true;
   };
 }
