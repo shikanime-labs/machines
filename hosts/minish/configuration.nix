@@ -34,10 +34,6 @@
     };
   };
 
-  home-manager.users.telashi.imports = [
-    ./users/telashi/home-configuration.nix
-  ];
-
   networking.hostName = "minish";
 
   knix = {

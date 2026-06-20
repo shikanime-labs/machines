@@ -24,10 +24,6 @@
 
   hardware.facter.reportPath = ./facter.json;
 
-  home-manager.users.nishir.imports = [
-    ./users/nishir/home-configuration.nix
-  ];
-
   networking.hostName = "manash";
 
   knix.nodeIP = "192.168.1.28,2a02:8424:7899:f201:94eb:8d1:325a:7181";

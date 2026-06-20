@@ -32,10 +32,6 @@
     };
   };
 
-  home-manager.users.telashi.imports = [
-    ./users/telashi/home-configuration.nix
-  ];
-
   networking.hostName = "nemishi";
 
   knix.nodeIP = "192.168.1.27";

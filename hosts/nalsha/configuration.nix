@@ -24,10 +24,6 @@
 
   hardware.facter.reportPath = ./facter.json;
 
-  home-manager.users.nishir.imports = [
-    ./users/nishir/home-configuration.nix
-  ];
-
   networking.hostName = "nalsha";
 
   knix = {
