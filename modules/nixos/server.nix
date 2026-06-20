@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ./machine.nix
+    ./node.nix
   ];
 
   services = {
