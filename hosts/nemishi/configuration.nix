@@ -215,4 +215,14 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH+tp1Xfz7NomHCZuDPlfj3XW5hm9t0TiCyEeudRraoe"
     ];
   };
+  services.comin = {
+    enable = true;
+    remotes = [{
+      name = "origin";
+      url = "https://forgejo.taila659a.ts.net/shikanime/shikanime.git";
+      branches.main.name = "main";
+      poller.period = 60;
+    }];
+  };
+
 }

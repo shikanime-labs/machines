@@ -19,6 +19,11 @@
       };
     };
 
+    comin = {
+      url = "github:nlewo/comin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     devenv = {
       url = "github:cachix/devenv";
       inputs = {
