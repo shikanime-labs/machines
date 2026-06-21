@@ -178,7 +178,7 @@
               default.extend-words.facter = "facter";
             };
           in
-          "${configFile}";
+          toString configFile;
       };
     };
 }
