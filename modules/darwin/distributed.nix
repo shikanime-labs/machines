@@ -90,17 +90,6 @@
       ];
     };
 
-    settings = {
-      builders-use-substitutes = true;
-      substituters = [
-        "http://ashira.taila659a.ts.net:5000"
-        "http://manash.taila659a.ts.net:5000"
-        "http://nalsha.taila659a.ts.net:5000"
-        # TODO: enable when deployed
-        # "http://fushi.taila659a.ts.net:5000"
-        # "http://minish.taila659a.ts.net:5000"
-        # "http://nemishi.taila659a.ts.net:5000"
-      ];
-    };
+    settings.builders-use-substitutes = true;
   };
 }
