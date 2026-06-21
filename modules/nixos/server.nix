@@ -5,11 +5,7 @@
     ./node.nix
   ];
 
-  services = {
-    gitea-actions-runner.package = pkgs.forgejo-runner;
-
-    nix-serve.enable = true;
-  };
+  services.gitea-actions-runner.package = pkgs.forgejo-runner;
 
   users.users.builder = {
     isNormalUser = true;
