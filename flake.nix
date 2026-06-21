@@ -71,6 +71,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    colmena = {
+      url = "github:zhaofengli/colmena";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -111,6 +116,7 @@
 
   outputs =
     inputs@{
+      colmena,
       devenv,
       devlib,
       flake-parts,
@@ -124,12 +130,14 @@
       let
         darwinFlakeModule = importApply ./modules/flake/darwin.nix { inherit self; };
         nixosFlakeModule = importApply ./modules/flake/nixos.nix { inherit self; };
+        colmenaFlakeModule = importApply ./modules/flake/colmena.nix { inherit self; };
       in
       {
         imports = [
           ./modules/flake/devenv.nix
           darwinFlakeModule
           nixosFlakeModule
+          colmenaFlakeModule
           devenv.flakeModule
           devlib.flakeModule
           git-hooks.flakeModule
