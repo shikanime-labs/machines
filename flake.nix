@@ -19,6 +19,11 @@
       };
     };
 
+    colmena = {
+      url = "github:nix-community/colmena";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     devenv = {
       url = "github:cachix/devenv";
       inputs = {
@@ -96,12 +101,14 @@
 
   nixConfig = {
     extra-substituters = [
+      "https://colmena.cachix.org"
       "https://cachix.cachix.org"
       "https://devenv.cachix.org"
       "https://shikanime.cachix.org"
       "https://shikanime-studio.cachix.org"
     ];
     extra-trusted-public-keys = [
+      "colmena.cachix.org-1:7BzpDnjjH8ki2CT3wbXdr1bY2Q2fxQwvKZJtDi3aDKE="
       "cachix.cachix.org-1:eWNHQldwUO7G2VkjpnjDbWwy4KQ/HNxht7H4SSoMckM="
       "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
       "shikanime.cachix.org-1:OrpjVTH6RzYf2R97IqcTWdLRejF6+XbpFNNZJxKG8Ts="
@@ -111,6 +118,7 @@
 
   outputs =
     inputs@{
+      colmena,
       devenv,
       devlib,
       flake-parts,
@@ -124,12 +132,14 @@
       let
         darwinFlakeModule = importApply ./modules/flake/darwin.nix { inherit self; };
         nixosFlakeModule = importApply ./modules/flake/nixos.nix { inherit self; };
+        colmenaFlakeModule = importApply ./modules/flake/colmena.nix { inherit self; };
       in
       {
         imports = [
           ./modules/flake/devenv.nix
           darwinFlakeModule
           nixosFlakeModule
+          colmenaFlakeModule
           devenv.flakeModule
           devlib.flakeModule
           git-hooks.flakeModule
