@@ -26,6 +26,16 @@
     '';
   };
 
+  services.comin = {
+    enable = true;
+    remotes = [{
+      name = "origin";
+      url = "https://forgejo.taila659a.ts.net/shikanime/shikanime.git";
+      branches.main.name = "main";
+      poller.period = 60;
+    }];
+  };
+
   system.primaryUser = "shikanimedeva";
 
   users.users.shikanimedeva = {
