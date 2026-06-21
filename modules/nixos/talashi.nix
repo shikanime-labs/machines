@@ -80,18 +80,22 @@ in
     # Expose RKE2 API (9345) and Kubernetes API (6443)
     tailscale.serve = {
       enable = true;
-      configFile = json.generate {
-        Services."svc:nishir" = {
-          TCP = {
-            "6443".HTTPS = true;
-            "9345".HTTPS = true;
+      configFile =
+        let
+          config = json.generate {
+            Services."svc:nishir" = {
+              TCP = {
+                "6443".HTTPS = true;
+                "9345".HTTPS = true;
+              };
+              Web = {
+                "nishir.taila659a.ts.net:6443".Handlers."/".Proxy = "http://127.0.0.1:6443";
+                "nishir.taila659a.ts.net:9345".Handlers."/".Proxy = "http://127.0.0.1:9345";
+              };
+            };
           };
-          Web = {
-            "nishir.taila659a.ts.net:6443".Handlers."/".Proxy = "http://127.0.0.1:6443";
-            "nishir.taila659a.ts.net:9345".Handlers."/".Proxy = "http://127.0.0.1:9345";
-          };
-        };
-      };
+        in
+        toString config;
     };
   };
 
