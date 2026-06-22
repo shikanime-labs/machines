@@ -10,6 +10,10 @@
   ];
 
   networking.firewall = {
+    allowedTCPPorts = [
+      4243  # comin Prometheus exporter
+    ];
+
     extraCommands = ''
       iptables -I INPUT -i br+ -j ACCEPT
       iptables -I FORWARD -i br+ -j ACCEPT
