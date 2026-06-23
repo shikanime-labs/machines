@@ -27,8 +27,8 @@ Per-machine entry points.
 
 - `hosts/<name>/configuration.nix` is the main NixOS host definition
 - `hosts/telsha/darwin-configuration.nix` is the nix-darwin host definition
-- `hosts/<name>/users/<user>/home-configuration.nix` contains host-specific
-  Home Manager config
+- `hosts/<name>/users/<user>/home-configuration.nix` contains host-specific Home
+  Manager config
 - `hosts/<name>/facter.json` stores hardware facts for hosts that rely on
   `nixos-facter`
 
@@ -50,7 +50,8 @@ Shared module layers.
 
 - `modules/nixos/` contains Linux host profiles
   - `base.nix` - common NixOS defaults, `comin`, and Nix access token wiring
-  - `minimal.nix` - baseline Nix settings, GC, auto-upgrade, and Home Manager defaults
+  - `minimal.nix` - baseline Nix settings, GC, auto-upgrade, and Home Manager
+    defaults
   - `workstation.nix` - workstation-oriented tooling and desktop defaults
   - `server.nix` - server defaults shared by cluster nodes
   - `distributed.nix` - remote build machines and distributed build settings
@@ -86,8 +87,7 @@ The flake exposes these primary outputs:
 - `nixosConfigurations.nemishi`
 - `nixosConfigurations.nixtar`
 - `darwinConfigurations.telsha`
-- `packages.<system>.*` for the corresponding system builds, including
-  `catbox`
+- `packages.<system>.*` for the corresponding system builds, including `catbox`
 
 The `packages` outputs are mostly convenience build artifacts for CI and local
 verification.
@@ -153,8 +153,9 @@ workstation-style machines:
 - `nixtar` is a WSL-based workstation profile
 - `telsha` is the Darwin workstation profile
 
-Several hosts share remote build configuration through `modules/nixos/distributed.nix`,
-which lets local builds offload work to the other machines.
+Several hosts share remote build configuration through
+`modules/nixos/distributed.nix`, which lets local builds offload work to the
+other machines.
 
 ## Related Repos
 
