@@ -94,7 +94,6 @@ with lib;
       RestartSec = "5s";
     };
     script = ''
-      ${getExe pkgs.tailscale} serve reset
       ${getExe pkgs.tailscale} serve --yes --bg --service=svc:talashi --https=6443 https+insecure://127.0.0.1:6443
       ${getExe pkgs.tailscale} serve --yes --bg --service=svc:talashi --https=9345 https+insecure://127.0.0.1:9345
     '';
