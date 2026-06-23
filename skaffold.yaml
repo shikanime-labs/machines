@@ -6,4 +6,5 @@ build:
   artifacts:
     - image: ghcr.io/x-shikanime/machines/catbox
       custom:
-        buildCommand: nix run github:shikanime-studio/nix-containers -- skaffold build
+        buildCommand:
+          nix run github:shikanime-studio/nix-containers -- skaffold build
