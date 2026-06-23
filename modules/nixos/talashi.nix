@@ -1,7 +1,3 @@
-{ lib, ... }:
-
-with lib;
-
 {
   imports = [
     ./server.nix
@@ -79,7 +75,7 @@ with lib;
     # Expose RKE2 API (9345) and Kubernetes API (6443) as a single Tailscale Service.
     tailscale.serve = {
       enable = true;
-      services.nishir = {
+      services.talashi = {
         advertised = true;
         endpoints = {
           # Kubernetes API
