@@ -65,6 +65,8 @@ with lib;
       enableJujutsuIntegration = true;
     };
 
+    jujutsu.settings."merge-tools".mergiraf."merge-tool-edits-conflict-markers" = true;
+
     mise.enable = true;
 
     nix-index.enable = true;
