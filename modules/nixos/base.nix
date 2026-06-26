@@ -21,7 +21,7 @@
     remotes = [
       {
         name = "origin";
-        url = "https://github.com/x-shikanime/machines.git";
+        url = "https://github.com/shikanime-labs/machines.git";
       }
     ];
   };

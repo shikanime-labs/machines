@@ -13,7 +13,7 @@
     };
 
     colemak = {
-      url = "github:x-shikanime/colemak";
+      url = "github:shikanime-labs/colemak";
       inputs = {
         devenv.follows = "devenv";
         devlib.follows = "devlib";
@@ -45,7 +45,7 @@
     };
 
     identities = {
-      url = "github:x-shikanime/identities";
+      url = "github:shikanime-labs/identities";
       inputs = {
         devenv.follows = "devenv";
         devlib.follows = "devlib";
