@@ -1,7 +1,6 @@
 {
   imports = [
     ./server.nix
-    ./monitoring.nix
   ];
 
   # Older Raspberry Pi-class boards still need these cgroup knobs for RKE2.

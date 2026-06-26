@@ -5,7 +5,6 @@ with lib;
 {
   imports = [
     ./server.nix
-    ./monitoring.nix
   ];
 
   boot = {
