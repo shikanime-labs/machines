@@ -5,6 +5,7 @@ with lib;
 {
   imports = [
     ./server.nix
+    ./monitoring.nix
   ];
 
   boot = {
@@ -67,7 +68,7 @@ with lib;
             path = "clusters/nishir/overlays/tailnet";
             pullSecret = "";
             ref = "refs/heads/main";
-            url = "https://github.com/x-shikanime/manifests.git";
+            url = "https://github.com/shikanime-labs/manifests.git";
           };
 
           operator.extraConfig.web.ingress = {

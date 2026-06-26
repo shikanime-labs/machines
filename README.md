@@ -168,6 +168,7 @@ other machines.
 This repository follows the same general shape as the other Shikanime
 configuration repos:
 
-- `x-shikanime/manifests`
+- `shikanime-labs/colemak`
+- `shikanime-labs/manifests`
 - `shikanime-studio/knix`
-- `x-shikanime/colemak`
+

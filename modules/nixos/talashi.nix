@@ -1,6 +1,7 @@
 {
   imports = [
     ./server.nix
+    ./monitoring.nix
   ];
 
   # Older Raspberry Pi-class boards still need these cgroup knobs for RKE2.
@@ -31,7 +32,7 @@
             path = "clusters/talashi/overlays/tailnet";
             pullSecret = "";
             ref = "refs/heads/main";
-            url = "https://github.com/x-shikanime/manifests.git";
+            url = "https://github.com/shikanime-labs/manifests.git";
           };
 
           operator.extraConfig.web.ingress = {
