@@ -60,29 +60,31 @@
 
   networking.wireless = {
     enable = true;
-    secretsFile = config.sops.secrets.wifi.path;
+    secretsFile = config.sops.templates.wifi.path;
     networks = {
-      "Vintage Korean".psk = "@wifi_vintage_korean@";
-      "SFR_E368_5SGHZ".psk = "@wifi_sfr_e368_5ghz@";
-      "SFR_E368".psk = "@wifi_sfr_e368@";
+      "SFR_E368".pskRaw = "ext:psk_sfr_e368";
+      "SFR_E368_5SGHZ".pskRaw = "ext:psk_sfr_e368_5ghz";
+      "Vintage Korean".pskRaw = "ext:psk_vintage_korean";
     };
   };
 
   sops = {
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     secrets = {
-      codeberg-runner-token.restartUnits = [ "codeberg-runner-${config.networking.hostName}.service" ];
-      forgejo-runner-token.restartUnits = [ "forgejo-runner-${config.networking.hostName}.service" ];
       tailscale-authkey.restartUnits = [ "tailscaled.service" ];
-      wifi.restartUnits = [ "wpa_supplicant.service" ];
+      wifi-sfr-e368.restartUnits = [ "wpa_supplicant.service" ];
+      wifi-sfr-e368-5ghz.restartUnits = [ "wpa_supplicant.service" ];
+      wifi-vintage-korean.restartUnits = [ "wpa_supplicant.service" ];
     };
     templates = {
-      codeberg-runner-token.content = ''
-        TOKEN=${config.sops.placeholder.codeberg-runner-token}
-      '';
-      forgejo-runner-token.content = ''
-        TOKEN=${config.sops.placeholder.forgejo-runner-token}
-      '';
+      wifi = {
+        content = ''
+          psk_sfr_e368=${config.sops.placeholder.wifi-sfr-e368}
+          psk_sfr_e368_5ghz=${config.sops.placeholder.wifi-sfr-e368-5ghz}
+          psk_vintage_korean=${config.sops.placeholder.wifi-vintage-korean}
+        '';
+        restartUnits = [ "wpa_supplicant.service" ];
+      };
     };
   };
 
@@ -110,13 +112,5 @@
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH+tp1Xfz7NomHCZuDPlfj3XW5hm9t0TiCyEeudRraoe"
     ];
-  };
-
-  virtualisation.docker = {
-    daemon.settings = {
-      fixed-cidr-v6 = "fd00::/80";
-      ipv6 = true;
-    };
-    enable = true;
   };
 }
