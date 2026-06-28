@@ -50,7 +50,6 @@
           operator.extraConfig.web.ingress = {
             enabled = true;
             className = "tailscale";
-            annotations."tailscale.com/tags" = "tag:web";
             hosts = [
               {
                 host = "nishir-flux";
