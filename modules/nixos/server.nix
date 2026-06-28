@@ -6,18 +6,6 @@
   ];
 
   services = {
-    gitea-actions-runner.instances.codeberg = {
-      enable = true;
-      name = config.networking.hostName;
-      tokenFile = config.sops.templates.codeberg-runner-token.path;
-      url = "https://codeberg.org";
-      labels = [
-        "docker:docker://node:22-bookworm"
-        "nixos-latest:docker://nixos/nix"
-        "native:host"
-      ];
-    };
-
     knix = {
       enable = true;
       addons = {
