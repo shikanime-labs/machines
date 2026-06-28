@@ -72,8 +72,6 @@ with lib;
 
     mise.enable = true;
 
-    nix-index.enable = true;
-
     nushell = {
       enable = true;
       extraConfig = ''
