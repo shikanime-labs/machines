@@ -58,9 +58,34 @@
     };
   };
 
+  networking.wireless = {
+    enable = true;
+    secretsFile = config.sops.templates.wifi.path;
+    networks = {
+      "SFR_E368".pskRaw = "ext:psk_sfr_e368";
+      "SFR_E368_5SGHZ".pskRaw = "ext:psk_sfr_e368_5ghz";
+      "Vintage Korean".pskRaw = "ext:psk_vintage_korean";
+    };
+  };
+
   sops = {
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-    secrets.tailscale-authkey.restartUnits = [ "tailscaled.service" ];
+    secrets = {
+      tailscale-authkey.restartUnits = [ "tailscaled.service" ];
+      wifi-sfr-e368.restartUnits = [ "wpa_supplicant.service" ];
+      wifi-sfr-e368-5ghz.restartUnits = [ "wpa_supplicant.service" ];
+      wifi-vintage-korean.restartUnits = [ "wpa_supplicant.service" ];
+    };
+    templates = {
+      wifi = {
+        content = ''
+          psk_sfr_e368=${config.sops.placeholder.wifi-sfr-e368}
+          psk_sfr_e368_5ghz=${config.sops.placeholder.wifi-sfr-e368-5ghz}
+          psk_vintage_korean=${config.sops.placeholder.wifi-vintage-korean}
+        '';
+        restartUnits = [ "wpa_supplicant.service" ];
+      };
+    };
   };
 
   systemd.services.tailscale-udp-gro-forwarding = {
