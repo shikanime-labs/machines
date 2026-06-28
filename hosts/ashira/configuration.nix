@@ -1,7 +1,6 @@
-{ ... }:
-
 {
   imports = [
+    ../../modules/nixos/agent.nix
     ../../modules/nixos/beelink.nix
     ../../modules/nixos/distributed.nix
     ../../modules/nixos/follower.nix
