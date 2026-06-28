@@ -67,11 +67,8 @@
       };
       tlsSan = [
         "ashira.taila659a.ts.net"
-        "fushi.taila659a.ts.net"
         "manash.taila659a.ts.net"
-        "minish.taila659a.ts.net"
         "nalsha.taila659a.ts.net"
-        "nemishi.taila659a.ts.net"
         "nishir.taila659a.ts.net"
       ];
     };
