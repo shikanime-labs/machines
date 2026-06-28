@@ -2,7 +2,8 @@
 
 {
   imports = [
-    ../../modules/nixos/nishir.nix
+    ../../modules/nixos/beelink.nix
+    ../../modules/nixos/server.nix
     ../../modules/nixos/distributed.nix
   ];
 
@@ -56,6 +57,18 @@
       nodeIP = "192.168.1.64,2a02:8424:7899:f201:94eb:8d1:325a:7234";
       serverAddr = "https://nishir.taila659a.ts.net:9345";
       tokenFile = config.sops.secrets.rke2-token.path;
+    };
+
+    # Expose RKE2 API (9345) and Kubernetes API (6443) as a single Tailscale Service.
+    tailscale.serve = {
+      enable = true;
+      services.nishir = {
+        advertised = true;
+        endpoints = {
+          "tcp:6443" = "http://127.0.0.1:6443";
+          "tcp:9345" = "http://127.0.0.1:9345";
+        };
+      };
     };
 
     tailscale.extraUpFlags = [

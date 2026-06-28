@@ -1,9 +1,11 @@
 {
-  imports = [
-    ../../modules/nixos/agent.nix
-    ../../modules/nixos/rpi.nix
-    ../../modules/nixos/distributed.nix
-  ];
+  boot = {
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
+    loader = {
+      efi.canTouchEfiVariables = true;
+      systemd-boot.enable = true;
+    };
+  };
 
   disko.devices.disk.main = {
     type = "disk";
@@ -33,13 +35,14 @@
     };
   };
 
-  networking.hostName = "nemishi";
+  # Intel N150 needs firmware plus userspace graphics/QSV libraries so the
+  # Jellyfin pod can use VAAPI/QSV via /dev/dri/renderD128.
+  hardware.enableRedistributableFirmware = true;
 
-  services.knix.nodeIP = "192.168.1.27";
-
-  sops = {
-    defaultSopsFile = ../../secrets/nemishi.enc.yaml;
-    defaultSopsFormat = "yaml";
-    secrets.rke2-token.restartUnits = [ "rke2-agent.service" ];
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
   };
+
+  services.fstrim.enable = true;
 }

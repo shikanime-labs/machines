@@ -95,7 +95,7 @@ with lib;
           SetEnv.TERM = "xterm-256color";
         };
         "fushi.taila659a.ts.net" = {
-          User = "talashi";
+          User = "nishir";
           SetEnv.TERM = "xterm-256color";
         };
         "manash.taila659a.ts.net" = {
@@ -103,7 +103,7 @@ with lib;
           SetEnv.TERM = "xterm-256color";
         };
         "minish.taila659a.ts.net" = {
-          User = "talashi";
+          User = "nishir";
           SetEnv.TERM = "xterm-256color";
         };
         "nalsha.taila659a.ts.net" = {
@@ -111,7 +111,7 @@ with lib;
           SetEnv.TERM = "xterm-256color";
         };
         "nemishi.taila659a.ts.net" = {
-          User = "talashi";
+          User = "nishir";
           SetEnv.TERM = "xterm-256color";
         };
         "thinkcentre-m710t.tailfb4bb2.ts.net" = {
