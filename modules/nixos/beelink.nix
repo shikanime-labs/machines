@@ -1,14 +1,15 @@
 {
-  imports = [
-    ../../modules/nixos/agent.nix
-    ../../modules/nixos/distributed.nix
-    ../../modules/nixos/follower.nix
-    ../../modules/nixos/rpi.nix
-  ];
+  boot = {
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
+    loader = {
+      efi.canTouchEfiVariables = true;
+      systemd-boot.enable = true;
+    };
+  };
 
   disko.devices.disk.main = {
     type = "disk";
-    device = "/dev/disk/by-label/marisa";
+    device = "/dev/nvme0n1";
     content = {
       type = "gpt";
       partitions = {
@@ -34,12 +35,14 @@
     };
   };
 
-  networking.hostName = "minish";
+  # Intel N150 needs firmware plus userspace graphics/QSV libraries so the
+  # Jellyfin pod can use VAAPI/QSV via /dev/dri/renderD128.
+  hardware.enableRedistributableFirmware = true;
 
-  services.knix.nodeIP = "192.168.1.29";
-
-  sops = {
-    defaultSopsFile = ../../secrets/minish.enc.yaml;
-    defaultSopsFormat = "yaml";
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
   };
+
+  services.fstrim.enable = true;
 }

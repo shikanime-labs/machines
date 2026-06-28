@@ -1,7 +1,9 @@
 {
   imports = [
-    ../../modules/nixos/talashi.nix
+    ../../modules/nixos/agent.nix
     ../../modules/nixos/distributed.nix
+    ../../modules/nixos/follower.nix
+    ../../modules/nixos/rpi.nix
   ];
 
   disko.devices.disk.main = {
