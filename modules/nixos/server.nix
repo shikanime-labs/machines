@@ -1,5 +1,3 @@
-{ config, pkgs, ... }:
-
 {
   imports = [
     ./node.nix
@@ -82,16 +80,4 @@
       };
     };
   };
-
-  sops = {
-    secrets = {
-      codeberg-runner-token.restartUnits = [ "codeberg-runner-${config.networking.hostName}.service" ];
-    };
-    templates = {
-      codeberg-runner-token.content = ''
-        TOKEN=${config.sops.placeholder.codeberg-runner-token}
-      '';
-    };
-  };
-
 }
