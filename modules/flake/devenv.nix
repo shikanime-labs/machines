@@ -88,7 +88,7 @@
               ashira = "age1mel902ydxqv4yh798t5en336am9zwykapy8rtfvq4yprzr79t5wqzxe8ph";
               fushi = "";
               manash = "age1f4yuh4j3gqafjduusfpxz3na9xtwth9s6gznq043mfex0zglp5jqkkdm64";
-              minish = "";
+              minish = "age1a4y27yc3tarlju7vg0lugnvs933wmk4hnw0udrn4499mts04qd0qvu7c3u";
               nalsha = "age1evzl6xw2n96l2xyy7jed3zlv6d4jpmytp47rpp39pjju08tep4mqqa2au5";
               nemishi = "";
 
