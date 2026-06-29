@@ -46,23 +46,21 @@
     enable32Bit = true;
   };
 
-  services = {
-    fstrim.enable = true;
+  services.fstrim.enable = true;
 
-    tailscale-udp-gro-forwarding = {
-      after = [ "network-online.target" ];
-      description = "Enable Tailscale UDP GRO forwarding on enp1s0";
-      script = ''
-        ${pkgs.ethtool}/bin/ethtool -K enp1s0 rx-udp-gro-forwarding on rx-gro-list off
-      '';
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        Restart = "on-failure";
-        RestartSec = "5s";
-      };
-      wantedBy = [ "multi-user.target" ];
-      wants = [ "network-online.target" ];
+  systemd.services.tailscale-udp-gro-forwarding = {
+    after = [ "network-online.target" ];
+    description = "Enable Tailscale UDP GRO forwarding on enp1s0";
+    script = ''
+      ${pkgs.ethtool}/bin/ethtool -K enp1s0 rx-udp-gro-forwarding on rx-gro-list off
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "5s";
     };
+    wantedBy = [ "multi-user.target" ];
+    wants = [ "network-online.target" ];
   };
 }
