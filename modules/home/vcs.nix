@@ -29,6 +29,10 @@ with lib;
           autostash = true;
           updateRefs = true;
         };
+        user = {
+          email = "contact@shikanime.studio";
+          name = "Shikanime Deva";
+        };
       };
     };
 
@@ -100,11 +104,13 @@ with lib;
         };
 
         hooks = {
-          precommit.git-hooks = "test -f .git/hooks/pre-commit && .git/hooks/pre-commit || true";
-          preoutgoing.git-hooks = "test -f .git/hooks/pre-push && .git/hooks/pre-push || true";
-          update.git-hooks = "test -f .git/hooks/post-rewrite && .git/hooks/post-rewrite || true";
+          "precommit.git-hooks" = "test -f .git/hooks/pre-commit && .git/hooks/pre-commit || true";
+          "preoutgoing.git-hooks" = "test -f .git/hooks/pre-push && .git/hooks/pre-push || true";
+          "update.git-hooks" = "test -f .git/hooks/post-rewrite && .git/hooks/post-rewrite || true";
         };
       };
+      userName = "Shikanime Deva";
+      userEmail = "contact@shikanime.studio";
     };
   };
 }
