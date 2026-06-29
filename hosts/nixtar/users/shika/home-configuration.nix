@@ -41,8 +41,6 @@ in
       ];
     };
 
-    sapling.extraConfig = config.sapling.extraConfig;
-
     shikanime.enable = true;
   };
 
