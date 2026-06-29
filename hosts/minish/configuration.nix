@@ -2,7 +2,6 @@
 
 {
   imports = [
-    ../../modules/nixos/agent.nix
     ../../modules/nixos/builder.nix
     ../../modules/nixos/distributed.nix
     ../../modules/nixos/rpi4.nix
