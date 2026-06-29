@@ -84,7 +84,7 @@
           settings.creation_rules =
             let
               telsha = "age1pwl9yz4k4255a4h8qz7lafce8wxhsul0cnqwmr8528fqgujlfshshv3z3g";
-              nixtar = "age1x9v4ps90txy9mk4392uya93tyzx40te4dvns4chg5s6q8mfy03ns74jpay";
+              nixtar = "age1um232l0h8wn9mtha2qf4f4mnf7ucjayvf5qxjvynatmasg8qg5mshekvjl";
               ashira = "age1mel902ydxqv4yh798t5en336am9zwykapy8rtfvq4yprzr79t5wqzxe8ph";
               fushi = "";
               manash = "age1f4yuh4j3gqafjduusfpxz3na9xtwth9s6gznq043mfex0zglp5jqkkdm64";
