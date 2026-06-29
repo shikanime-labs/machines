@@ -1,5 +1,6 @@
 {
   imports = [
+    ./follower.nix
     ./node.nix
   ];
 
