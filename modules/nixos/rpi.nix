@@ -46,7 +46,7 @@
     after = [ "network-online.target" ];
     description = "Enable NIC hardware offloads and RPS for Pi";
     script = ''
-      for __rpi_iface in end0 eth0; do
+      for __rpi_iface in end0; do
         ip link show "$__rpi_iface" >/dev/null 2>&1 || continue
         # Tailscale UDP GRO forwarding (original behavior preserved)
         ${pkgs.ethtool}/bin/ethtool -K "$__rpi_iface" rx-udp-gro-forwarding on rx-gro-list off

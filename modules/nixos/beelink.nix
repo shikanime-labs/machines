@@ -81,7 +81,7 @@
     after = [ "network-online.target" ];
     description = "Enable NIC hardware offloads and RPS for enp1s0";
     script = ''
-      for __beelink_iface in enp1s0 enp1s1 enp2s0; do
+      for __beelink_iface in enp1s0 enp2s0; do
         ip link show "$__beelink_iface" >/dev/null 2>&1 || continue
         # Tailscale UDP GRO forwarding (original behavior preserved)
         ${pkgs.ethtool}/bin/ethtool -K "$__beelink_iface" rx-udp-gro-forwarding on rx-gro-list off
