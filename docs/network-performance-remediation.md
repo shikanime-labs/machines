@@ -81,11 +81,12 @@ kubectl rollout restart ds -n kube-system rke2-canal
 
 2. `modules/nixos/node.nix` — Firewall allows pod CIDR on br+ interfaces.
 
-3. `modules/nixos/beelink.nix` — Pod CIDR firewall on enp1s0/enp2s0. Replaced
-   GRO-only service with `network-nic-performance` (TSO/GSO/sg/tx+rx+RPS).
+3. `modules/nixos/beelink.nix` — Dual i226-V NICs bonded via `balance-alb`
+   (bond0) into a single `br0` bridge. `network-nic-performance` service applies
+   TSO/GSO/SG/RX+TX offloads and RPS on both physical ports.
 
-4. `modules/nixos/rpi.nix` — Pod CIDR firewall on end0. Same NIC offload
-   service.
+4. `modules/nixos/rpi.nix` — Single `end0` NIC into `br0` bridge. Same NIC
+   offload service.
 
-5. `modules/nixos/rpi5.nix` — Imports rpi.nix (inherits firewall + offloads).
+5. `modules/nixos/rpi5.nix` — Imports rpi.nix (inherits bridge + offloads).
    Pi5-specific: kernelboot, config.txt [pi5] section.
