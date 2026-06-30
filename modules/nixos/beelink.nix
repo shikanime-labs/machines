@@ -48,48 +48,38 @@
 
   services.fstrim.enable = true;
 
-  # Allow pod CIDR traffic on physical NICs (cross-node pod↔host).
-  # Hardware-specific: Beelink uses Intel i226-V 2.5 Gbps on enp1s0/enp2s0.
-  networking.firewall.extraCommands = ''
-    for __beelink_fw_iface in enp1s0 enp2s0; do
-      ip link show "$__beelink_fw_iface" >/dev/null 2>&1 || continue
-      iptables -I INPUT -i "$__beelink_fw_iface" -s 10.244.0.0/16 -j ACCEPT
-      iptables -I INPUT -i "$__beelink_fw_iface" -s 10.42.0.0/16 -j ACCEPT
-      iptables -I FORWARD -i "$__beelink_fw_iface" -s 10.244.0.0/16 -j ACCEPT
-      iptables -I FORWARD -i "$__beelink_fw_iface" -d 10.244.0.0/16 -j ACCEPT
-      ip6tables -I INPUT -i "$__beelink_fw_iface" -s fd00::/10 -j ACCEPT 2>/dev/null || true
-      ip6tables -I FORWARD -i "$__beelink_fw_iface" -s fd00::/10 -j ACCEPT 2>/dev/null || true
-      ip6tables -I FORWARD -i "$__beelink_fw_iface" -d fd00::/10 -j ACCEPT 2>/dev/null || true
-    done
-  '';
-  networking.firewall.extraStopCommands = ''
-    for __beelink_fw_iface in enp1s0 enp2s0; do
-      iptables -D INPUT -i "$__beelink_fw_iface" -s 10.244.0.0/16 -j ACCEPT 2>/dev/null || true
-      iptables -D INPUT -i "$__beelink_fw_iface" -s 10.42.0.0/16 -j ACCEPT 2>/dev/null || true
-      iptables -D FORWARD -i "$__beelink_fw_iface" -s 10.244.0.0/16 -j ACCEPT 2>/dev/null || true
-      iptables -D FORWARD -i "$__beelink_fw_iface" -d 10.244.0.0/16 -j ACCEPT 2>/dev/null || true
-      ip6tables -D INPUT -i "$__beelink_fw_iface" -s fd00::/10 -j ACCEPT 2>/dev/null || true
-      ip6tables -D FORWARD -i "$__beelink_fw_iface" -s fd00::/10 -j ACCEPT 2>/dev/null || true
-      ip6tables -D FORWARD -i "$__beelink_fw_iface" -d fd00::/10 -j ACCEPT 2>/dev/null || true
-    done
-  '';
+  networking = {
+    useNetworkd = true;
 
-  # Consolidated network performance tuning for Beelink (Intel N150, 2.5 Gbps NIC)
-  # Previously was only tailscale-udp-gro-forwarding; expanded to enable full
-  # hardware offloads (TSO/GSO/checksum) and RPS packet steering across cores.
+    # balance-alb (mode 6): aggregates both 2.5G NICs without switch-side LACP.
+    # The NETGEAR MS308 is unmanaged — balance-alb handles load balancing
+    # entirely in the Linux driver via ARP negotiation.
+    bonds.bond0 = {
+      interfaces = [
+        "enp1s0"
+        "enp2s0"
+      ];
+      driverOptions = {
+        mode = "balance-alb";
+        miimon = "100";
+      };
+    };
+
+    bridges.br0.interfaces = [ "bond0" ];
+    interfaces.br0.useDHCP = true;
+  };
+
+  # NIC performance tuning: hardware offloads + RPS for both Intel i226-V ports.
   systemd.services.network-nic-performance = {
     after = [ "network-online.target" ];
-    description = "Enable NIC hardware offloads and RPS for enp1s0";
+    description = "Enable NIC hardware offloads and RPS";
     script = ''
-      for __beelink_iface in enp1s0 enp2s0; do
-        ip link show "$__beelink_iface" >/dev/null 2>&1 || continue
-        # Tailscale UDP GRO forwarding (original behavior preserved)
-        ${pkgs.ethtool}/bin/ethtool -K "$__beelink_iface" rx-udp-gro-forwarding on rx-gro-list off
-        # Hardware offloads: reduce CPU per-byte overhead
-        ${pkgs.ethtool}/bin/ethtool -K "$__beelink_iface" tso on gso on sg on tx on rx on 2>/dev/null || true
-        # Receive Packet Steering: distribute IRQs across all CPU cores
-        for __beelink_rxq in /sys/class/net/"$__beelink_iface"/queues/rx-*; do
-          echo f > "$__beelink_rxq"/rps_cpus 2>/dev/null || true
+      for iface in enp1s0 enp2s0; do
+        ip link show "$iface" >/dev/null 2>&1 || continue
+        ${pkgs.ethtool}/bin/ethtool -K "$iface" rx-udp-gro-forwarding on rx-gro-list off
+        ${pkgs.ethtool}/bin/ethtool -K "$iface" tso on gso on sg on tx on rx on 2>/dev/null || true
+        for rxq in /sys/class/net/"$iface"/queues/rx-*; do
+          echo f > "$rxq"/rps_cpus 2>/dev/null || true
         done
       done
     '';
