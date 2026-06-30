@@ -9,13 +9,13 @@
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
   ];
 
-  disko.devices.disk.flandre = {
+  disko.devices.disk.marisa = {
     type = "disk";
-    device = "/dev/disk/by-label/flandre";
+    device = "/dev/disk/by-label/marisa";
     content = {
       type = "filesystem";
       format = "xfs";
-      mountpoint = "/mnt/flandre";
+      mountpoint = "/mnt/marisa";
       mountOptions = [
         "nofail"
         "x-systemd.automount"
