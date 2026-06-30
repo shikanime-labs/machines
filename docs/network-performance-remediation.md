@@ -45,6 +45,7 @@ services.knix.canal.backend = "host-gw";
 ```
 
 Per-host override (if needed):
+
 ```nix
 services.knix.canal.backend = lib.mkForce "vxlan";
 ```
