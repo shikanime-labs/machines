@@ -44,10 +44,10 @@
   services = {
     knix = {
       nodeIP = "192.168.1.80,fd7a:115c:a1e0::793a:a25d";
-      labels = [
-        "beta.kubernetes.io/instance-type=rpi4-model-b"
-        "node.kubernetes.io/instance-type=rpi4-model-b"
-      ];
+      labels = {
+        "beta.kubernetes.io/instance-type" = "rpi4-model-b";
+        "node.kubernetes.io/instance-type" = "rpi4-model-b";
+      };
     };
 
     tailscale.extraUpFlags = [
