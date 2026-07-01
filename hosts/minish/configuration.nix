@@ -27,16 +27,7 @@
 
   hardware.facter.reportPath = ./facter.json;
 
-  networking = {
-    hostName = "minish";
-    defaultGateway = "192.168.1.1";
-    interfaces.br0.ipv4.addresses = [
-      {
-        address = "192.168.1.77";
-        prefixLength = 24;
-      }
-    ];
-  };
+  networking.hostName = "minish";
 
   services.knix.nodeIP = "192.168.1.77,fd7a:115c:a1e0::bb3a:b57";
 

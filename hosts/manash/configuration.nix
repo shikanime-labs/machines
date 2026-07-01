@@ -24,16 +24,7 @@
 
   hardware.facter.reportPath = ./facter.json;
 
-  networking = {
-    hostName = "manash";
-    defaultGateway = "192.168.1.1";
-    interfaces.br0.ipv4.addresses = [
-      {
-        address = "192.168.1.28";
-        prefixLength = 24;
-      }
-    ];
-  };
+  networking.hostName = "manash";
 
   services = {
     knix.nodeIP = "192.168.1.28,2a02:8424:7899:f201:94eb:8d1:325a:7181";

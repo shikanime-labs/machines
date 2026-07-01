@@ -50,25 +50,30 @@ negotiation. Zero switch configuration required.
 - Fails over automatically if one NIC/link dies (`miimon=100`)
 - One cable plugged in → bond works on single link; second cable is hot-add
 
-## Longhorn storage network
+## Longhorn storage network (Multus bridge CNI)
 
-The Multus `storageNetwork` NAD has been **removed**. Rationale:
+Longhorn's cluster-wide `storageNetwork` setting requires the Multus NAD target
+bridge (`br0`) to exist on every node. This is why a uniform single-bridge
+design was chosen over per-role bridges.
 
-1. `br0` carries all traffic (management + pod). A Multus secondary interface on
-   the same bridge as flannel provides **zero isolation** — both interfaces hit
-   identical iptables/conntrack/kube-proxy overhead
-   (`bridge-nf-call-iptables=1`).
-2. The knix Multus stack uses DHCP IPAM (thick plugin + dynamic networks
-   controller + DHCP DaemonSet). Whereabouts IPAM is incompatible with this
-   stack. DHCP IPAM on the same subnet as `br0` causes routing ambiguity (two
-   interfaces, same subnet, same pod).
-3. Longhorn on default flannel/host-gw already performs at wire speed for
-   same-L2 clusters.
+NetworkAttachmentDefinition:
+`infrastructure/longhorn/overlays/nishir/netattachdef.yaml`
 
-**When to re-add**: only with a **physically separate storage network** —
-`enp2s0` cabled to a dedicated switch, `br-storage` bridge with
-`bridge-nf-call-iptables=0` on that bridge only. Then the NAD bypasses all
-Kubernetes netfilter overhead. See the "dual bridge" pattern in the skill.
+```yaml
+spec:
+  config: |-
+    {
+      "cniVersion": "0.4.0",
+      "name": "longhorn-storage",
+      "type": "bridge",
+      "bridge": "br0",
+      "ipam": {
+        "type": "whereabouts",
+        "range": "192.168.2.0/24",
+        "range_end": "192.168.2.250"
+      }
+    }
+```
 
 ## NIC performance tuning
 
