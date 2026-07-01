@@ -59,6 +59,16 @@ with lib;
       openFirewall = true;
       useRoutingFeatures = "server";
     };
+
+    # Userspace hardware watchdog + system resource monitor
+    watchdogd = {
+      enable = true;
+      settings = {
+        filenr.enabled = true;
+        meminfo.enabled = true;
+        loadavg.enabled = true;
+      };
+    };
   };
 
   networking.wireless = {
