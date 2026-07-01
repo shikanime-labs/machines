@@ -9,6 +9,8 @@
     ./node.nix
   ];
 
+  nix.settings.trusted-users = [ "builder" ];
+
   services.gitea-actions-runner = {
     package = pkgs.forgejo-runner;
     instances = {
