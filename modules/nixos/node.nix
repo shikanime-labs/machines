@@ -92,6 +92,10 @@ with lib;
   };
 
   services.knix = {
+    # Bridge interface — flannel, firewall, and sysctl rules all target br0.
+    # Bonded on Beelink (bond0 → br0), single-NIC on RPi (end0 → br0).
+    interface = "br0";
+
     # Use host-gw for flannel overlay — zero encapsulation overhead on same-LAN clusters
     canal.backend = "host-gw";
 

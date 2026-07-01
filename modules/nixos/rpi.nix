@@ -19,7 +19,6 @@
 
     # Single NIC bridge — all traffic (flannel, SSH, Longhorn) on one wire.
     bridges.br0.interfaces = [ "end0" ];
-    interfaces.br0.useDHCP = true;
   };
 
   # NIC performance tuning: hardware offloads + RPS for the USB3 GigE port.

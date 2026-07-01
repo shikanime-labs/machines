@@ -66,7 +66,6 @@
     };
 
     bridges.br0.interfaces = [ "bond0" ];
-    interfaces.br0.useDHCP = true;
   };
 
   # NIC performance tuning: hardware offloads + RPS for both Intel i226-V ports.
