@@ -29,7 +29,10 @@
 
   networking = {
     hostName = "minish";
-    defaultGateway = "192.168.1.1";
+    defaultGateway = {
+      address = "192.168.1.1";
+      interface = "br0";
+    };
     interfaces.br0.ipv4.addresses = [
       {
         address = "192.168.1.77";
