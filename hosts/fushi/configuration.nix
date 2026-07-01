@@ -27,7 +27,19 @@
 
   hardware.facter.reportPath = ./facter.json;
 
-  networking.hostName = "fushi";
+  networking = {
+    defaultGateway = {
+      address = "192.168.1.1";
+      interface = "end0";
+    };
+    hostName = "fushi";
+    interfaces.end0.ipv4.addresses = [
+      {
+        address = "192.168.1.80";
+        prefixLength = 24;
+      }
+    ];
+  };
 
   services.knix.nodeIP = "192.168.1.80,fd7a:115c:a1e0::793a:a25d";
 

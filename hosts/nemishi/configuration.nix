@@ -25,7 +25,19 @@
     };
   };
 
-  networking.hostName = "nemishi";
+  networking = {
+    defaultGateway = {
+      address = "192.168.1.1";
+      interface = "end0";
+    };
+    hostName = "nemishi";
+    interfaces.end0.ipv4.addresses = [
+      {
+        address = "192.168.1.27";
+        prefixLength = 24;
+      }
+    ];
+  };
 
   services.knix.nodeIP = "192.168.1.27";
 
