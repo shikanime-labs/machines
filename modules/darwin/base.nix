@@ -19,9 +19,12 @@ in
     ./minimal.nix
   ];
 
-  nix.extraOptions = ''
-    !include ${config.sops.templates.nix-config.path}
-  '';
+  nix = {
+    extraOptions = ''
+      !include ${config.sops.templates.nix-config.path}
+    '';
+    settings.experimental-features = "nix-command flakes";
+  };
 
   sops = {
     secrets.nix-access-token = { };

@@ -1,6 +1,5 @@
 {
   imports = [
-    ../../modules/darwin/base.nix
     ../../modules/darwin/distributed.nix
     ../../modules/darwin/workstation.nix
   ];
