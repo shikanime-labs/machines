@@ -25,7 +25,7 @@
         aliases = {
           prune = [
             "abandon"
-            "nulls()"
+            "empty()"
             "conflicts()"
           ];
           restack = [
@@ -62,10 +62,7 @@
           '';
           git_push_bookmark = "\"shikanime/push-\" ++ change_id.short()";
         };
-        revset-aliases = {
-          "closest_merge(to)" = "heads(::to & merges())";
-          "nulls()" = "empty() & mutable()";
-        };
+        revset-aliases."closest_merge(to)" = "heads(::to & merges())";
         ui.default-command = "log";
         user = {
           email = "contact@shikanime.studio";
