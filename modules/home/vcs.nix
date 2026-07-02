@@ -67,6 +67,10 @@
           "nulls()" = "empty() & mutable()";
         };
         ui.default-command = "log";
+        user = {
+          email = "contact@shikanime.studio";
+          name = "Shikanime Deva";
+        };
       };
     };
   };
