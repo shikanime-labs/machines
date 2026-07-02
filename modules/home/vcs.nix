@@ -25,7 +25,7 @@
         aliases = {
           prune = [
             "abandon"
-            "nulls()"
+            "empty()"
             "conflicts()"
           ];
           restack = [
