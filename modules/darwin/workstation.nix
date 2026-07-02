@@ -20,6 +20,7 @@
       "appcleaner"
       "dbeaver-community"
       "discord"
+      "element"
       "firefox"
       "google-chrome"
       "google-drive"
