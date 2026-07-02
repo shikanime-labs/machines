@@ -51,16 +51,16 @@
   networking = {
     useNetworkd = true;
 
-    # active-backup (mode 1): one NIC active, the other passive.
-    # The MS308 is unmanaged, so this avoids multipath/ALB negotiation edge cases
-    # while still giving automatic failover if one link or NIC dies.
+    # balance-alb (mode 6): aggregates both 2.5G NICs without switch-side LACP.
+    # The NETGEAR MS308 is unmanaged — balance-alb handles load balancing
+    # entirely in the Linux driver via ARP negotiation.
     bonds.bond0 = {
       interfaces = [
         "enp1s0"
         "enp2s0"
       ];
       driverOptions = {
-        mode = "active-backup";
+        mode = "balance-alb";
         miimon = "100";
       };
     };
