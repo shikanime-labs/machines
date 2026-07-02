@@ -59,7 +59,7 @@ Shared module layers.
   - `minimal.nix` - baseline Nix settings, GC, auto-upgrade, and Home Manager
     defaults
   - `workstation.nix` - workstation-oriented tooling and desktop defaults
-  - `server.nix` - server defaults shared by cluster nodes
+  - `follower.nix` - server defaults shared by cluster nodes
   - `distributed.nix` - remote build machines and distributed build settings
   - `node.nix` - cluster node defaults: tailscale, SSH, Avahi, firewall tweaks
   - `nishir.nix` and `talashi.nix` - cluster-specific server profiles

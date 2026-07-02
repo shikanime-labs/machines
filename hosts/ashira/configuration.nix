@@ -3,7 +3,7 @@
     ../../modules/nixos/beelink.nix
     ../../modules/nixos/builder.nix
     ../../modules/nixos/distributed.nix
-    ../../modules/nixos/server.nix
+    ../../modules/nixos/follower.nix
   ];
 
   disko.devices.disk.patchouli = {
