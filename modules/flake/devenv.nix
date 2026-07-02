@@ -21,7 +21,11 @@
           inputs.identities.devenvModules.default
         ];
 
-        identities.enable = true;
+        identities = {
+          enable = true;
+          nixtar.enable = true;
+          telsha.enable = true;
+        };
 
         github = {
           settings.workflows = {

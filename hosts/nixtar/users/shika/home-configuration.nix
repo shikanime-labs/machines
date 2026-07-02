@@ -21,6 +21,8 @@ in
   ];
 
   identities = {
+    enable = true;
+
     ghstack.enable = true;
 
     glab.enable = true;
