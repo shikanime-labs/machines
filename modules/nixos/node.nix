@@ -63,10 +63,7 @@ with lib;
     # Userspace hardware watchdog + system resource monitor
     watchdogd = {
       enable = true;
-      settings = {
-        filenr.enabled = true;
-        meminfo.enabled = true;
-      };
+      settings.meminfo.enabled = true;
     };
   };
 
