@@ -92,6 +92,8 @@ with lib;
           psk_sfr_e368_5ghz=${config.sops.placeholder.wifi-sfr-e368-5ghz}
           psk_vintage_korean=${config.sops.placeholder.wifi-vintage-korean}
         '';
+        group = "wpa_supplicant";
+        mode = "0640";
         restartUnits = [ "wpa_supplicant.service" ];
       };
     };
