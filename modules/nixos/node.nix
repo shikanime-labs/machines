@@ -63,7 +63,10 @@ with lib;
     # Userspace hardware watchdog + system resource monitor
     watchdogd = {
       enable = true;
-      settings.meminfo.enabled = true;
+      settings = {
+        meminfo.enabled = true;
+        timeout = 120; # Increased from 15s to prevent premature reboots
+      };
     };
   };
 
@@ -81,9 +84,21 @@ with lib;
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     secrets = {
       tailscale-authkey.restartUnits = [ "tailscaled.service" ];
-      wifi-sfr-e368.restartUnits = [ "wpa_supplicant.service" ];
-      wifi-sfr-e368-5ghz.restartUnits = [ "wpa_supplicant.service" ];
-      wifi-vintage-korean.restartUnits = [ "wpa_supplicant.service" ];
+      wifi-sfr-e368 = {
+        owner = "wpa_supplicant";
+        group = "wpa_supplicant";
+        restartUnits = [ "wpa_supplicant.service" ];
+      };
+      wifi-sfr-e368-5ghz = {
+        owner = "wpa_supplicant";
+        group = "wpa_supplicant";
+        restartUnits = [ "wpa_supplicant.service" ];
+      };
+      wifi-vintage-korean = {
+        owner = "wpa_supplicant";
+        group = "wpa_supplicant";
+        restartUnits = [ "wpa_supplicant.service" ];
+      };
     };
     templates = {
       wifi = {

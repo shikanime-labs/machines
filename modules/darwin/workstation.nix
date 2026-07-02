@@ -24,6 +24,7 @@
       "google-chrome"
       "google-drive"
       "jellyfin-media-player"
+      "lm-studio"
       "macfuse"
       "mattermost"
       "microsoft-edge"
