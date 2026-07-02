@@ -11,7 +11,6 @@
       lfs.enable = true;
       settings = {
         credential.helper = "manager";
-        init.defaultBranch = "main";
         user = {
           email = "contact@shikanime.studio";
           name = "Shikanime Deva";
