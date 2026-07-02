@@ -1,6 +1,4 @@
-{ lib, pkgs, ... }:
-
-with lib;
+{ pkgs, ... }:
 
 {
   home.packages = [
@@ -12,23 +10,8 @@ with lib;
       enable = true;
       lfs.enable = true;
       settings = {
-        alias = {
-          adog = "log --all --decorate --oneline --graph";
-          filing = "commit --amend --signoff --no-edit --reset-author";
-          poi = "commit --amend --no-edit";
-          pouf = "push --force-with-lease";
-          refiling = "rebase --exec 'git filing'";
-          tape = "push --mirror";
-        };
-        advice.skippedCherryPicks = false;
         credential.helper = "manager";
         init.defaultBranch = "main";
-        pull.rebase = true;
-        push.autoSetupRemote = true;
-        rebase = {
-          autostash = true;
-          updateRefs = true;
-        };
         user = {
           email = "contact@shikanime.studio";
           name = "Shikanime Deva";
