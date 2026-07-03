@@ -49,7 +49,7 @@ let
       selfHostname = mkHostname config.networking.hostName;
       mergedHosts = mergeAttrsList knownHostsList;
     in
-    filterAttrs (name: value: selfHostname != name) mergedHosts;
+    filterAttrs (name: _value: selfHostname != name) mergedHosts;
 in
 {
   nix = {
