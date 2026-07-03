@@ -7,6 +7,18 @@
 
 with lib;
 
+let
+  mkSshHeadlessHost = user: {
+    User = user;
+    SetEnv.TERM = "xterm-256color";
+  };
+
+  mkSshWorkstationHost = user: {
+    ForwardX11 = true;
+    User = user;
+    SetEnv.TERM = "xterm-256color";
+  };
+in
 {
   catppuccin = {
     enable = true;
@@ -89,39 +101,14 @@ with lib;
     ssh = {
       enable = true;
       settings = {
-        "ashira.taila659a.ts.net" = {
-          User = "nishir";
-          SetEnv.TERM = "xterm-256color";
-        };
-        "catbox.taila659a.ts.net" = {
-          User = "shika";
-          SetEnv.TERM = "xterm-256color";
-        };
-        "fushi.taila659a.ts.net" = {
-          User = "nishir";
-          SetEnv.TERM = "xterm-256color";
-        };
-        "manash.taila659a.ts.net" = {
-          User = "nishir";
-          SetEnv.TERM = "xterm-256color";
-        };
-        "minish.taila659a.ts.net" = {
-          User = "nishir";
-          SetEnv.TERM = "xterm-256color";
-        };
-        "nalsha.taila659a.ts.net" = {
-          User = "nishir";
-          SetEnv.TERM = "xterm-256color";
-        };
-        "nemishi.taila659a.ts.net" = {
-          User = "nishir";
-          SetEnv.TERM = "xterm-256color";
-        };
-        "thinkcentre-m710t.tailfb4bb2.ts.net" = {
-          ForwardX11 = true;
-          User = "william-phetsinorath";
-          SetEnv.TERM = "xterm-256color";
-        };
+        "ashira.taila659a.ts.net" = mkSshHeadlessHost "nishir";
+        "catbox.taila659a.ts.net" = mkSshHeadlessHost "shika";
+        "fushi.taila659a.ts.net" = mkSshHeadlessHost "nishir";
+        "manash.taila659a.ts.net" = mkSshHeadlessHost "nishir";
+        "minish.taila659a.ts.net" = mkSshHeadlessHost "nishir";
+        "nalsha.taila659a.ts.net" = mkSshHeadlessHost "nishir";
+        "nemishi.taila659a.ts.net" = mkSshHeadlessHost "nishir";
+        "thinkcentre-m710t.tailfb4bb2.ts.net" = mkSshWorkstationHost "william-phetsinorath";
       };
     };
 

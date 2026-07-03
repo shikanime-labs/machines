@@ -1,81 +1,46 @@
+{ config, ... }:
+
+let
+  mkHostname = hostName: "${hostName}.taila659a.ts.net";
+
+  mkBeelinkBuildMachine = hostName: {
+    hostName = mkHostname hostName;
+    sshUser = "builder";
+    system = "x86_64-linux";
+    protocol = "ssh-ng";
+    maxJobs = 4;
+    speedFactor = 2;
+    supportedFeatures = [
+      "nixos-test"
+      "benchmark"
+      "big-parallel"
+      "kvm"
+    ];
+    mandatoryFeatures = [ ];
+  };
+
+  mkRpiBuildMachine = hostName: {
+    hostName = mkHostname hostName;
+    sshUser = "builder";
+    system = "aarch64-linux";
+    protocol = "ssh-ng";
+    maxJobs = 2;
+    speedFactor = 1;
+    supportedFeatures = [ "nixos-test" ];
+    mandatoryFeatures = [ ];
+  };
+
+  mkBuildMachines = machines: builtins.filter (m: config.networking.hostName != m.hostName) machines;
+in
 {
   nix = {
-    buildMachines = [
-      {
-        hostName = "ashira.taila659a.ts.net";
-        sshUser = "builder";
-        system = "x86_64-linux";
-        protocol = "ssh-ng";
-        maxJobs = 4;
-        speedFactor = 2;
-        supportedFeatures = [
-          "nixos-test"
-          "benchmark"
-          "big-parallel"
-          "kvm"
-        ];
-        mandatoryFeatures = [ ];
-      }
-      {
-        hostName = "manash.taila659a.ts.net";
-        sshUser = "builder";
-        system = "x86_64-linux";
-        protocol = "ssh-ng";
-        maxJobs = 4;
-        speedFactor = 2;
-        supportedFeatures = [
-          "nixos-test"
-          "benchmark"
-          "big-parallel"
-          "kvm"
-        ];
-        mandatoryFeatures = [ ];
-      }
-      {
-        hostName = "nalsha.taila659a.ts.net";
-        sshUser = "builder";
-        system = "x86_64-linux";
-        protocol = "ssh-ng";
-        maxJobs = 4;
-        speedFactor = 2;
-        supportedFeatures = [
-          "nixos-test"
-          "benchmark"
-          "big-parallel"
-          "kvm"
-        ];
-        mandatoryFeatures = [ ];
-      }
-      {
-        hostName = "fushi.taila659a.ts.net";
-        sshUser = "builder";
-        system = "aarch64-linux";
-        protocol = "ssh-ng";
-        maxJobs = 2;
-        speedFactor = 1;
-        supportedFeatures = [ "nixos-test" ];
-        mandatoryFeatures = [ ];
-      }
-      {
-        hostName = "minish.taila659a.ts.net";
-        sshUser = "builder";
-        system = "aarch64-linux";
-        protocol = "ssh-ng";
-        maxJobs = 2;
-        speedFactor = 1;
-        supportedFeatures = [ "nixos-test" ];
-        mandatoryFeatures = [ ];
-      }
-      {
-        hostName = "nemishi.taila659a.ts.net";
-        sshUser = "builder";
-        system = "aarch64-linux";
-        protocol = "ssh-ng";
-        maxJobs = 4;
-        speedFactor = 1;
-        supportedFeatures = [ "nixos-test" ];
-        mandatoryFeatures = [ ];
-      }
+    buildMachines = mkBuildMachines [
+      (mkBeelinkBuildMachine "ashira")
+      (mkBeelinkBuildMachine "manash")
+      (mkBeelinkBuildMachine "nalsha")
+      (mkRpiBuildMachine "fushi")
+      (mkRpiBuildMachine "minish")
+      (mkRpiBuildMachine "nemishi")
     ];
 
     distributedBuilds = true;
