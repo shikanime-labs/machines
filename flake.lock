@@ -424,11 +424,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783171099,
-        "narHash": "sha256-hSpp/6BVODk1kVQ1FPrP66nDxacT7xo5tmjSNsnyBZk=",
+        "lastModified": 1783172896,
+        "narHash": "sha256-i4MojuBhIhyljoQpP3wjiQ1o969HeRWXLiFzKWuM58A=",
         "owner": "shikanime-labs",
         "repo": "identities",
-        "rev": "3c9ee39558580ec911cc93f0570f8e5e73d86318",
+        "rev": "c69b2e9a5c9d330e6ed32a413062191a0c236039",
         "type": "github"
       },
       "original": {
