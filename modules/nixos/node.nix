@@ -91,6 +91,11 @@ with lib;
         fallback_providers = [
           {
             api_mode = "chat_completions";
+            model = "labs-leanstral-2603";
+            provider = "custom:aperture";
+          }
+          {
+            api_mode = "chat_completions";
             model = "stepfun/step-3.7-flash:free";
             provider = "custom:aperture";
           }
