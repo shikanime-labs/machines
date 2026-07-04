@@ -72,6 +72,7 @@ with lib;
       };
       environmentFiles = [
         config.sops.templates.hermes-agent-env.path
+        config.sops.templates.hermes-agent-matrix-env.path
       ];
       extraPackages = with pkgs; [
         curl
@@ -213,6 +214,10 @@ with lib;
         content = ''
           API_SERVER_ENABLED=true
           API_SERVER_KEY=${config.sops.placeholder.hermes-agent-api-server-key}
+        '';
+      };
+      hermes-agent-matrix-env = {
+        content = ''
           MATRIX_HOMESERVER=https://matrix.taila659a.ts.net/
           MATRIX_ACCESS_TOKEN=${config.sops.placeholder.hermes-agent-matrix-access-token}
           MATRIX_ALLOWED_USERS=@admin:matrix.taila659a.ts.net,@shikanime:matrix.taila659a.ts.net
