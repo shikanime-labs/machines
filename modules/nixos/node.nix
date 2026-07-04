@@ -66,10 +66,6 @@ with lib;
     hermes-agent = {
       enable = true;
       addToSystemPackages = true;
-      container = {
-        enable = true;
-        hostUsers = [ "nishir" ];
-      };
       environmentFiles = [
         config.sops.templates.hermes-agent-env.path
         config.sops.templates.hermes-agent-matrix-env.path
