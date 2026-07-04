@@ -83,6 +83,7 @@ with lib;
         yarn
       ];
       settings = {
+        memory.provider = "honcho";
         model = {
           default = "openrouter/free";
           provider = "custom:aperture";
@@ -104,7 +105,29 @@ with lib;
             base_url = "https://ai.taila659a.ts.net/v1";
           }
         ];
+        documents = {
+          "honcho.json" = builtins.toJSON {
+            hosts.hermes = {
+              peerName = "nishir";
+              aiPeer = "telsha";
+              workspace = "hermes";
+              observationMode = "directional";
+              writeFrequency = "async";
+              recallMode = "hybrid";
+              dialecticCadence = 3;
+              sessionStrategy = "per-session";
+              enabled = true;
+              saveMessages = true;
+              dialecticReasoningLevel = "low";
+              pinPeerName = false;
+            };
+            baseUrl = "https://honcho.taila659a.ts.net";
+          };
+        };
       };
+      extraDependencyGroups = [
+        "honcho"
+      ];
     };
 
     knix = {
