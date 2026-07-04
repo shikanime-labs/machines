@@ -182,6 +182,11 @@ with lib;
         owner = "hermes";
         restartUnits = [ "hermes-agent.service" ];
       };
+      hermes-agent-matrix-access-token = {
+        group = "hermes";
+        owner = "hermes";
+        restartUnits = [ "hermes-agent.service" ];
+      };
       tailscale-authkey.restartUnits = [ "tailscaled.service" ];
       wifi-sfr-e368 = {
         owner = "wpa_supplicant";
@@ -204,6 +209,9 @@ with lib;
         content = ''
           API_SERVER_ENABLED=true
           API_SERVER_KEY=${config.sops.placeholder.hermes-agent-api-server-key}
+          MATRIX_HOMESERVER=https://matrix.taila659a.ts.net/
+          MATRIX_ACCESS_TOKEN=${config.sops.placeholder.hermes-agent-matrix-access-token}
+          MATRIX_ALLOWED_USERS=@admin:matrix.taila659a.ts.net,@shikanime:matrix.taila659a.ts.net
         '';
         restartUnits = [ "hermes-agent.service" ];
       };
