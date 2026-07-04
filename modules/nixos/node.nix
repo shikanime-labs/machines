@@ -148,11 +148,28 @@ with lib;
   };
 
   sops = {
-    secrets.hermes-env = {
-      owner = "hermes";
-      group = "hermes";
-      mode = "0640";
-      restartUnits = [ "hermes-agent.service" ];
+    secrets = {
+      hermes-env = {
+        owner = "hermes";
+        group = "hermes";
+        restartUnits = [ "hermes-agent.service" ];
+      };
+      tailscale-authkey.restartUnits = [ "tailscaled.service" ];
+      wifi-sfr-e368 = {
+        owner = "wpa_supplicant";
+        group = "wpa_supplicant";
+        restartUnits = [ "wpa_supplicant.service" ];
+      };
+      wifi-sfr-e368-5ghz = {
+        owner = "wpa_supplicant";
+        group = "wpa_supplicant";
+        restartUnits = [ "wpa_supplicant.service" ];
+      };
+      wifi-vintage-korean = {
+        owner = "wpa_supplicant";
+        group = "wpa_supplicant";
+        restartUnits = [ "wpa_supplicant.service" ];
+      };
     };
     templates = {
       hermes-agent-env = {
