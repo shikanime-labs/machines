@@ -1,12 +1,9 @@
 {
   config,
-  lib,
   modulesPath,
   pkgs,
   ...
 }:
-
-with lib;
 
 {
   imports = [

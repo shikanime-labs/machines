@@ -102,7 +102,6 @@
       codeberg-runner-token.sopsFile = ../../secrets/nishir.enc.yaml;
       forgejo-runner-token.sopsFile = ../../secrets/nishir.enc.yaml;
       hermes-agent-api-server-key.sopsFile = ../../secrets/nishir.enc.yaml;
-      hermes-agent-matrix-access-token.sopsFile = ../../secrets/nishir.enc.yaml;
       nix-access-token.sopsFile = ../../secrets/nishir.enc.yaml;
       rke2-token.sopsFile = ../../secrets/nishir.enc.yaml;
       wifi-sfr-e368.sopsFile = ../../secrets/nishir.enc.yaml;
