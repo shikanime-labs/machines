@@ -77,13 +77,13 @@ in
 
     gpg.enable = true;
 
+    jujutsu.settings."merge-tools".mergiraf."merge-tool-edits-conflict-markers" = true;
+
     mergiraf = {
       enable = true;
       enableGitIntegration = true;
       enableJujutsuIntegration = true;
     };
-
-    jujutsu.settings."merge-tools".mergiraf."merge-tool-edits-conflict-markers" = true;
 
     mise.enable = true;
 
@@ -95,6 +95,8 @@ in
         source ${pkgs.nu_scripts}/share/nu_scripts/custom-completions/vscode/vscode-completions.nu
       '';
     };
+
+    pay-respects.enable = true;
 
     ripgrep.enable = true;
 
