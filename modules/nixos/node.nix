@@ -83,27 +83,6 @@ with lib;
         yarn
       ];
       settings = {
-        memory.provider = "honcho";
-        model = {
-          default = "openrouter/free";
-          provider = "custom:aperture";
-        };
-        fallback_providers = [
-          {
-            api_mode = "chat_completions";
-            model = "labs-leanstral-2603";
-            provider = "custom:aperture";
-          }
-          {
-            api_mode = "chat_completions";
-            model = "stepfun/step-3.7-flash:free";
-            provider = "custom:aperture";
-          }
-        ];
-        mcp_servers.aperture = {
-          url = "http://ai.taila659a.ts.net/v1/mcp";
-          enabled = true;
-        };
         custom_providers = [
           {
             name = "aperture";
@@ -126,6 +105,28 @@ with lib;
             dialecticReasoningLevel = "low";
             pinPeerName = false;
           };
+        };
+        fallback_providers = [
+          {
+            api_mode = "chat_completions";
+            model = "labs-leanstral-2603";
+            provider = "custom:aperture";
+          }
+          {
+            api_mode = "chat_completions";
+            model = "stepfun/step-3.7-flash:free";
+            provider = "custom:aperture";
+          }
+        ];
+        group_sessions_per_user = false;
+        memory.provider = "honcho";
+        model = {
+          default = "openrouter/free";
+          provider = "custom:aperture";
+        };
+        mcp_servers.aperture = {
+          url = "http://ai.taila659a.ts.net/v1/mcp";
+          enabled = true;
         };
       };
       extraDependencyGroups = [
