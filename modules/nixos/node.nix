@@ -12,6 +12,16 @@ with lib;
     ./base.nix
   ];
 
+  boot.kernel.sysctl = {
+    # 32 = SHUTDOWN_IOERROR. This specifically targets I/O failures.
+    # When XFS encounters a permanent I/O error, it panics the kernel.
+    "fs.xfs.panic_mask" = 32;
+
+    # Ensure the panic actually triggers a reboot after 10 seconds
+    "kernel.panic" = 10;
+    "kernel.panic_on_io_nmi" = 1;
+  };
+
   networking.firewall = {
     extraCommands = ''
       iptables -I INPUT -i br+ -j ACCEPT
