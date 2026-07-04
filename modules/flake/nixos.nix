@@ -12,6 +12,7 @@
         modules = [
           ../../hosts/ashira/configuration.nix
           inputs.disko.nixosModules.default
+          inputs.hermes-agent.nixosModules.default
           inputs.home-manager.nixosModules.default
           inputs.knix.nixosModules.default
           inputs.nixos-hardware.nixosModules.common-cpu-intel
@@ -35,6 +36,7 @@
         modules = [
           ../../hosts/manash/configuration.nix
           inputs.disko.nixosModules.default
+          inputs.hermes-agent.nixosModules.default
           inputs.home-manager.nixosModules.default
           inputs.knix.nixosModules.default
           inputs.nixos-hardware.nixosModules.common-cpu-intel
@@ -58,6 +60,7 @@
         modules = [
           ../../hosts/nalsha/configuration.nix
           inputs.disko.nixosModules.default
+          inputs.hermes-agent.nixosModules.default
           inputs.home-manager.nixosModules.default
           inputs.knix.nixosModules.default
           inputs.nixos-hardware.nixosModules.common-cpu-intel
@@ -81,6 +84,7 @@
         modules = [
           ../../hosts/fushi/configuration.nix
           inputs.disko.nixosModules.default
+          inputs.hermes-agent.nixosModules.default
           inputs.home-manager.nixosModules.default
           inputs.knix.nixosModules.default
           inputs.nixos-hardware.nixosModules.raspberry-pi-4
@@ -103,6 +107,7 @@
         modules = [
           ../../hosts/minish/configuration.nix
           inputs.disko.nixosModules.default
+          inputs.hermes-agent.nixosModules.default
           inputs.home-manager.nixosModules.default
           inputs.knix.nixosModules.default
           inputs.nixos-hardware.nixosModules.raspberry-pi-4
@@ -125,6 +130,7 @@
         modules = [
           ../../hosts/nemishi/configuration.nix
           inputs.disko.nixosModules.default
+          inputs.hermes-agent.nixosModules.default
           inputs.home-manager.nixosModules.default
           inputs.knix.nixosModules.default
           inputs.nixos-hardware.nixosModules.raspberry-pi-5
@@ -146,9 +152,10 @@
         };
         modules = [
           ../../hosts/nixtar/configuration.nix
+          inputs.comin.nixosModules.comin
+          inputs.hermes-agent.nixosModules.default
           inputs.home-manager.nixosModules.default
           inputs.nixos-wsl.nixosModules.default
-          inputs.comin.nixosModules.comin
           inputs.sops-nix.nixosModules.default
           {
             home-manager.sharedModules = [
@@ -175,6 +182,7 @@
               };
               modules = [
                 ../../hosts/catbox/configuration.nix
+                inputs.hermes-agent.nixosModules.default
                 inputs.home-manager.nixosModules.default
                 inputs.comin.nixosModules.comin
                 inputs.sops-nix.nixosModules.default
@@ -205,6 +213,7 @@
               };
               modules = [
                 ../../hosts/catbox/configuration.nix
+                inputs.hermes-agent.nixosModules.default
                 inputs.home-manager.nixosModules.default
                 inputs.comin.nixosModules.comin
                 inputs.sops-nix.nixosModules.default
