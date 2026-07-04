@@ -147,7 +147,7 @@ with lib;
 
   sops = {
     secrets = {
-      hermes-env = {
+      hermes-agent-api-server-key = {
         group = "hermes";
         owner = "hermes";
         restartUnits = [ "hermes-agent.service" ];
