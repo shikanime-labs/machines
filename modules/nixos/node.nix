@@ -216,7 +216,6 @@ with lib;
           MATRIX_ACCESS_TOKEN=${config.sops.placeholder.hermes-agent-matrix-access-token}
           MATRIX_ALLOWED_USERS=@admin:matrix.taila659a.ts.net,@shikanime:matrix.taila659a.ts.net
           MATRIX_ALLOWED_ROOMS=!automata:matrix.taila659a.ts.net
-          MATRIX_E2EE_MODE=required
           MATRIX_HOME_ROOM=!automata:matrix.taila659a.ts.net
           MATRIX_RECOVERY_KEY_FILE=${config.sops.secrets.hermes-agent-matrix-recovery-key.path}
         '';
