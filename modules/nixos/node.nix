@@ -70,17 +70,17 @@ with lib;
         enable = true;
         hostUsers = [ "nishir" ];
       };
-      createUser = false;
       environmentFiles = [
         config.sops.templates.hermes-agent-env.path
       ];
       extraPackages = with pkgs; [
-        honcho
-        yarn
-        nodejs
-        corepack
-        git
         curl
+        corepack
+        gh
+        git
+        honcho
+        nodejs
+        yarn
       ];
       settings = {
         model = {
@@ -148,8 +148,8 @@ with lib;
   sops = {
     secrets = {
       hermes-env = {
-        owner = "hermes";
         group = "hermes";
+        owner = "hermes";
         restartUnits = [ "hermes-agent.service" ];
       };
       tailscale-authkey.restartUnits = [ "tailscaled.service" ];
