@@ -184,6 +184,12 @@ with lib;
         owner = "hermes";
         restartUnits = [ "hermes-agent.service" ];
       };
+      hermes-agent-matrix-recovery-key = {
+        group = "hermes";
+        owner = "hermes";
+        restartUnits = [ "hermes-agent.service" ];
+        mode = "0600";
+      };
       tailscale-authkey.restartUnits = [ "tailscaled.service" ];
       wifi-sfr-e368 = {
         owner = "wpa_supplicant";
@@ -212,6 +218,7 @@ with lib;
           MATRIX_ALLOWED_ROOMS=!automata:matrix.taila659a.ts.net
           MATRIX_E2EE_MODE=required
           MATRIX_HOME_ROOM=!automata:matrix.taila659a.ts.net
+          MATRIX_RECOVERY_KEY_FILE=${config.sops.secrets.hermes-agent-matrix-recovery-key.path}
         '';
         restartUnits = [ "hermes-agent.service" ];
       };
