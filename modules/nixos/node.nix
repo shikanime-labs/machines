@@ -112,21 +112,23 @@ with lib;
         ];
         documents = {
           "honcho.json" = builtins.toJSON {
-            hosts.hermes = {
-              peerName = "nishir";
-              aiPeer = "telsha";
-              workspace = "hermes";
-              observationMode = "directional";
-              writeFrequency = "async";
-              recallMode = "hybrid";
-              dialecticCadence = 3;
-              sessionStrategy = "per-session";
-              enabled = true;
-              saveMessages = true;
-              dialecticReasoningLevel = "low";
-              pinPeerName = false;
-            };
             baseUrl = "https://honcho.taila659a.ts.net";
+            hosts = {
+              hermes = {
+                peerName = config.networking.hostName;
+                aiPeer = "telsha";
+                workspace = "hermes";
+                observationMode = "directional";
+                writeFrequency = "async";
+                recallMode = "hybrid";
+                dialecticCadence = 3;
+                sessionStrategy = "per-session";
+                enabled = true;
+                saveMessages = true;
+                dialecticReasoningLevel = "low";
+                pinPeerName = false;
+              };
+            };
           };
         };
       };
