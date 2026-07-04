@@ -211,6 +211,7 @@ with lib;
           MATRIX_HOMESERVER=https://matrix.taila659a.ts.net/
           MATRIX_ACCESS_TOKEN=${config.sops.placeholder.hermes-agent-matrix-access-token}
           MATRIX_ALLOWED_USERS=@admin:matrix.taila659a.ts.net,@shikanime:matrix.taila659a.ts.net
+          MATRIX_ALLOWED_ROOMS=!automata:matrix.taila659a.ts.net
           MATRIX_E2EE_MODE=required
         '';
         restartUnits = [ "hermes-agent.service" ];
