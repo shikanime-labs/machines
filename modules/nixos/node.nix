@@ -213,6 +213,7 @@ with lib;
           MATRIX_ALLOWED_USERS=@admin:matrix.taila659a.ts.net,@shikanime:matrix.taila659a.ts.net
           MATRIX_ALLOWED_ROOMS=!automata:matrix.taila659a.ts.net
           MATRIX_E2EE_MODE=required
+          MATRIX_HOME_ROOM=!automata:matrix.taila659a.ts.net
         '';
         restartUnits = [ "hermes-agent.service" ];
       };
