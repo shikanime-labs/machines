@@ -54,6 +54,9 @@
 
     vmagent = {
       enable = true;
+      extraArgs = [
+        "-enableTCP6"
+      ];
       prometheusConfig.scrape_configs = [
         {
           job_name = "comin";
