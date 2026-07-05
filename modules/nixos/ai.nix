@@ -60,7 +60,6 @@ with lib;
           provider = "custom:aperture";
         }
       ];
-      group_sessions_per_user = false;
       memory.provider = "honcho";
       model = {
         default = "openrouter/free";
@@ -119,6 +118,7 @@ with lib;
             MATRIX_E2EE_MODE=required
             MATRIX_HOME_ROOM=!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net
             MATRIX_RECOVERY_KEY_FILE=${config.sops.secrets.hermes-agent-matrix-recovery-key.path}
+            MATRIX_SESSION_SCOPE=room
           '';
           restartUnits = [ "hermes-agent.service" ];
         };
