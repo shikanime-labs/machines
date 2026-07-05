@@ -212,18 +212,31 @@ with lib;
           API_SERVER_KEY=${config.sops.placeholder.hermes-agent-api-server-key}
         '';
       };
-      hermes-agent-matrix-env = {
-        content = ''
-          MATRIX_HOMESERVER=https://matrix.taila659a.ts.net/
-          MATRIX_ACCESS_TOKEN=${config.sops.placeholder.hermes-agent-matrix-access-token}
-          MATRIX_ALLOWED_USERS=@admin:matrix.taila659a.ts.net,@shikanime:matrix.taila659a.ts.net
-          MATRIX_ALLOWED_ROOMS=!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net
-          MATRIX_E2EE_MODE=required
-          MATRIX_HOME_ROOM=!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net
-          MATRIX_RECOVERY_KEY_FILE=${config.sops.secrets.hermes-agent-matrix-recovery-key.path}
-        '';
-        restartUnits = [ "hermes-agent.service" ];
-      };
+      hermes-agent-matrix-env =
+        let
+          allowedUsers = [
+            "@admin:matrix.taila659a.ts.net"
+            "@shikanime:matrix.taila659a.ts.net"
+            "@operator-8o:matrix.taila659a.ts.net"
+            "@operator-9o:matrix.taila659a.ts.net"
+            "@operator-12o:matrix.taila659a.ts.net"
+            "@operator-14o:matrix.taila659a.ts.net"
+            "@operator-16o:matrix.taila659a.ts.net"
+            "@operator-18o:matrix.taila659a.ts.net"
+          ];
+        in
+        {
+          content = ''
+            MATRIX_HOMESERVER=https://matrix.taila659a.ts.net/
+            MATRIX_ACCESS_TOKEN=${config.sops.placeholder.hermes-agent-matrix-access-token}
+            MATRIX_ALLOWED_USERS=${strings.join "," allowedUsers}
+            MATRIX_ALLOWED_ROOMS=!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net
+            MATRIX_E2EE_MODE=required
+            MATRIX_HOME_ROOM=!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net
+            MATRIX_RECOVERY_KEY_FILE=${config.sops.secrets.hermes-agent-matrix-recovery-key.path}
+          '';
+          restartUnits = [ "hermes-agent.service" ];
+        };
       wifi = {
         content = ''
           psk_sfr_e368=${config.sops.placeholder.wifi-sfr-e368}
