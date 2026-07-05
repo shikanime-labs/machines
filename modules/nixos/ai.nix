@@ -60,6 +60,15 @@ with lib;
           provider = "custom:aperture";
         }
       ];
+      matrix = {
+        allowed_rooms = [ "!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net" ];
+        allowed_users = [
+          "@admin:matrix.taila659a.ts.net"
+          "@shikanime:matrix.taila659a.ts.net"
+        ];
+        free_response_rooms = [ "!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net" ];
+        session_scope = "room";
+      };
       memory.provider = "honcho";
       model = {
         default = "openrouter/free";
@@ -102,28 +111,16 @@ with lib;
           API_SERVER_KEY=${config.sops.placeholder.hermes-agent-api-server-key}
         '';
       };
-      hermes-agent-matrix-env =
-        let
-          allowedUsers = [
-            "@admin:matrix.taila659a.ts.net"
-            "@shikanime:matrix.taila659a.ts.net"
-          ];
-          alloweRoom = "!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net";
-        in
-        {
-          content = ''
-            MATRIX_HOMESERVER=https://matrix.taila659a.ts.net/
-            MATRIX_ACCESS_TOKEN=${config.sops.placeholder.hermes-agent-matrix-access-token}
-            MATRIX_ALLOWED_USERS=${strings.join "," allowedUsers}
-            MATRIX_ALLOWED_ROOMS=${alloweRoom}
-            MATRIX_FREE_RESPONSE_ROOMS=${alloweRoom}
-            MATRIX_E2EE_MODE=required
-            MATRIX_HOME_ROOM=!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net
-            MATRIX_RECOVERY_KEY_FILE=${config.sops.secrets.hermes-agent-matrix-recovery-key.path}
-            MATRIX_SESSION_SCOPE=room
-          '';
-          restartUnits = [ "hermes-agent.service" ];
-        };
+      hermes-agent-matrix-env = {
+        content = ''
+          MATRIX_HOMESERVER=https://matrix.taila659a.ts.net/
+          MATRIX_ACCESS_TOKEN=${config.sops.placeholder.hermes-agent-matrix-access-token}
+          MATRIX_E2EE_MODE=required
+          MATRIX_HOME_ROOM=!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net
+          MATRIX_RECOVERY_KEY_FILE=${config.sops.secrets.hermes-agent-matrix-recovery-key.path}
+        '';
+        restartUnits = [ "hermes-agent.service" ];
+      };
     };
   };
 }
