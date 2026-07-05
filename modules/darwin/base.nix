@@ -60,7 +60,7 @@ in
       command = ''
         ${pkgs.victoriametrics}/bin/vmagent \
           -promscrape.config=${vmagentConfig} \
-          -remoteWrite.url=https://nishir-telemetry.taila659a.ts.net/insert/0/prometheus
+          -remoteWrite.url=https://telemetry.taila659a.ts.net/insert/0/prometheus
       '';
       serviceConfig = {
         Label = "org.nixos.vmagent";
