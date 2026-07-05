@@ -1,11 +1,15 @@
 { pkgs, ... }:
 
 {
-  # Older Raspberry Pi-class boards still need these cgroup knobs for RKE2.
   boot.kernelParams = [
+    # Older Raspberry Pi-class boards still need these cgroup knobs for RKE2.
     "cgroup_enable=cpuset"
     "cgroup_enable=memory"
     "cgroup_memory=1"
+    # Disable USB runtime autosuspend; external SSD drops offline under load
+    "usbcore.autosuspend=-1"
+    # Bind SABRENT/JMicron enclosure to usb-storage, bypassing UASP
+    "usb-storage.quirks=152d:a578:u"
   ];
 
   nixpkgs.overlays = [

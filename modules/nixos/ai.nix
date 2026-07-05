@@ -8,6 +8,7 @@
 with lib;
 
 {
+  # cargo.nix / dist.nix-style: addToSystemPackages = true + extraPackages -> cargo.nix inherits?
   services.hermes-agent = {
     enable = true;
     addToSystemPackages = true;
@@ -122,4 +123,6 @@ with lib;
       };
     };
   };
+
+  users.users.hermes.extraGroups = [ "wheel" ];
 }
