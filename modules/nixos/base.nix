@@ -47,6 +47,12 @@
           "zfs"
         ];
       };
+      enabledCollectors = [
+        "interrupts"
+        "processes"
+        "systemd"
+        "tcpstat"
+      ];
       process.enable = true;
       smartctl.enable = true;
       systemd.enable = true;
