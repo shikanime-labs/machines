@@ -66,7 +66,6 @@ with lib;
           "@admin:matrix.taila659a.ts.net"
           "@shikanime:matrix.taila659a.ts.net"
         ];
-        free_response_rooms = [ "!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net" ];
         session_scope = "room";
       };
       memory.provider = "honcho";
