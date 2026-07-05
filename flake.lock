@@ -459,11 +459,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783277685,
-        "narHash": "sha256-6UadTWU9b7Y6xLprfP6Xlcsa5SKRIc24Q1zdvaVB2PY=",
+        "lastModified": 1783289833,
+        "narHash": "sha256-vmQwYCvJBwQPnFOeteeeDOWhbFDkSFAD8CC9vbwDp2w=",
         "owner": "shikanime-studio",
         "repo": "knix",
-        "rev": "188a46407866244a95390b090f0d374101ca34a9",
+        "rev": "6a6cdf64494d99ddd72a5efe752fe2bdf5080734",
         "type": "github"
       },
       "original": {
