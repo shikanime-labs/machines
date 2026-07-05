@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 
 {
   imports = [
@@ -26,14 +26,6 @@
           name = "origin";
           url = "https://github.com/shikanime-labs/machines.git";
         }
-      ];
-    };
-
-    hermes-agent = {
-      enable = true;
-      container.enable = true;
-      extraPackages = with pkgs; [
-        honcho
       ];
     };
 
