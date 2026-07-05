@@ -1,9 +1,10 @@
 {
   imports = [
+    ../../modules/nixos/ai.nix
     ../../modules/nixos/beelink.nix
     ../../modules/nixos/builder.nix
-    ../../modules/nixos/leader.nix
     ../../modules/nixos/distributed.nix
+    ../../modules/nixos/leader.nix
   ];
 
   disko.devices.disk.flandre = {

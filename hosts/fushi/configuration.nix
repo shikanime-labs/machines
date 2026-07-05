@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../../modules/nixos/ai.nix
     ../../modules/nixos/agent.nix
     ../../modules/nixos/builder.nix
     ../../modules/nixos/distributed.nix
