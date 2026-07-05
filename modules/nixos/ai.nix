@@ -108,12 +108,6 @@ with lib;
           allowedUsers = [
             "@admin:matrix.taila659a.ts.net"
             "@shikanime:matrix.taila659a.ts.net"
-            "@operator-8o:matrix.taila659a.ts.net"
-            "@operator-9o:matrix.taila659a.ts.net"
-            "@operator-12o:matrix.taila659a.ts.net"
-            "@operator-14o:matrix.taila659a.ts.net"
-            "@operator-16o:matrix.taila659a.ts.net"
-            "@operator-18o:matrix.taila659a.ts.net"
           ];
         in
         {
