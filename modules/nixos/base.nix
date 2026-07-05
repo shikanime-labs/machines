@@ -70,58 +70,6 @@
             { targets = [ "127.0.0.1:9100" ]; }
           ];
         }
-        {
-          job_name = "kube-controller-manager";
-          scheme = "https";
-          tls_config = {
-            ca_file = "/var/lib/rancher/rke2/server/tls/server-ca.crt";
-            cert_file = "/var/lib/rancher/rke2/server/tls/client-admin.crt";
-            key_file = "/var/lib/rancher/rke2/server/tls/client-admin.key";
-            insecure_skip_verify = true;
-          };
-          static_configs = [
-            { targets = [ "127.0.0.1:10257" ]; }
-          ];
-        }
-        {
-          job_name = "kube-etcd";
-          scheme = "https";
-          tls_config = {
-            ca_file = "/var/lib/rancher/rke2/server/tls/etcd/server-ca.crt";
-            cert_file = "/var/lib/rancher/rke2/server/tls/etcd/client.crt";
-            key_file = "/var/lib/rancher/rke2/server/tls/etcd/client.key";
-            insecure_skip_verify = true; # Prevents IP Subject Alternative Name (SAN) mismatch errors on localhost
-          };
-          static_configs = [
-            { targets = [ "127.0.0.1:2379" ]; }
-          ];
-        }
-        {
-          job_name = "kube-proxy";
-          scheme = "https";
-          tls_config = {
-            ca_file = "/var/lib/rancher/rke2/server/tls/server-ca.crt";
-            cert_file = "/var/lib/rancher/rke2/server/tls/client-admin.crt";
-            key_file = "/var/lib/rancher/rke2/server/tls/client-admin.key";
-            insecure_skip_verify = true;
-          };
-          static_configs = [
-            { targets = [ "127.0.0.1:10249" ]; }
-          ];
-        }
-        {
-          job_name = "kube-scheduler";
-          scheme = "https";
-          tls_config = {
-            ca_file = "/var/lib/rancher/rke2/server/tls/server-ca.crt";
-            cert_file = "/var/lib/rancher/rke2/server/tls/client-admin.crt";
-            key_file = "/var/lib/rancher/rke2/server/tls/client-admin.key";
-            insecure_skip_verify = true;
-          };
-          static_configs = [
-            { targets = [ "127.0.0.1:10259" ]; }
-          ];
-        }
       ];
       remoteWrite.url = "https://telemetry.taila659a.ts.net/insert/0/prometheus";
     };
