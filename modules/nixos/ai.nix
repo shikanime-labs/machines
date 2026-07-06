@@ -28,21 +28,22 @@ with lib;
     ];
     extraPlugins =
       let
-        rtk = pkgs.fetchFromGitHub {
-          owner = "rtk-ai";
-          repo = "rtk";
-          rev = "v0.42.3";
+        hermesLcmPlugin = pkgs.fetchFromGitHub {
+          owner = "stephenschoettler";
+          repo = "hermes-lcm";
+          rev = "v0.18.1";
           hash = "sha256-UWiu6y3Ci5F5OYQZIB0QuFmgv+tRUTouD9RZfX+PcsA=";
         };
-        rtkRewritePlugin = pkgs.symlinkJoin {
-          name = "rtk-plugin";
-          paths = [
-            "${rtk}/hooks/hermes/rtk-rewrite"
-          ];
-        };
       in
-      [ rtkRewritePlugin ];
+      [
+        hermesLcmPlugin
+      ];
     settings = {
+      plugins.enabled = [
+        "hermes-lcm"
+        "rtk-plugin"
+      ];
+      context.engine = "lcm";
       custom_providers = [
         {
           name = "aperture";
