@@ -23,8 +23,19 @@ with lib;
       git
       honcho
       nodejs
+      rtk
       yarn
     ];
+    extraPlugins =
+      let
+        rtk = pkgs.fetchFromGitHub {
+          owner = "rtk-ai";
+          repo = "rtk";
+          rev = "v0.42.3";
+          hash = "sha256-UWiu6y3Ci5F5OYQZIB0QuFmgv+tRUTouD9RZfX+PcsA=";
+        };
+      in
+      [ "${rtk}/hooks/hermes/rtk-rewrite" ];
     settings = {
       custom_providers = [
         {
