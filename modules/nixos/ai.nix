@@ -67,7 +67,6 @@ with lib;
           "@admin:matrix.taila659a.ts.net"
           "@shikanime:matrix.taila659a.ts.net"
         ];
-        session_scope = "room";
       };
       memory.provider = "honcho";
       model = {
