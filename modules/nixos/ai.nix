@@ -34,8 +34,14 @@ with lib;
           rev = "v0.42.3";
           hash = "sha256-UWiu6y3Ci5F5OYQZIB0QuFmgv+tRUTouD9RZfX+PcsA=";
         };
+        rtkRewritePlugin = pkgs.symlinkJoin {
+          name = "rtk-plugin";
+          paths = [
+            "${rtk}/hooks/hermes/rtk-rewrite"
+          ];
+        };
       in
-      [ "${rtk}/hooks/hermes/rtk-rewrite" ];
+      [ rtkRewritePlugin ];
     settings = {
       custom_providers = [
         {
