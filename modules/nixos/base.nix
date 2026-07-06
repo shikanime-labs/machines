@@ -26,6 +26,10 @@
           name = "origin";
           url = "https://github.com/shikanime-labs/machines.git";
         }
+        {
+          name = "origin";
+          url = "https://forgejo.taila659a.ts.net/shikanime-labs/machines.git";
+        }
       ];
     };
 
