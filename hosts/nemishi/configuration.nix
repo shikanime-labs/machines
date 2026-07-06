@@ -88,10 +88,6 @@
         "node.kubernetes.io/instance-type" = "rpi5";
       };
     };
-
-    tailscale.extraUpFlags = [
-      "--advertise-routes=10.244.5.0/24,fd00::5:0/112"
-    ];
   };
 
   sops = {

@@ -85,10 +85,6 @@
         "node.kubernetes.io/instance-type" = "beelink-eq14";
       };
     };
-
-    tailscale.extraUpFlags = [
-      "--advertise-routes=10.244.1.0/24,fd00::1:0/112"
-    ];
   };
 
   sops = {

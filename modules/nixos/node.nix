@@ -82,7 +82,10 @@ with lib;
     tailscale = {
       authKeyFile = config.sops.secrets.tailscale-authkey.path;
       enable = true;
-      extraUpFlags = [ "--ssh" ];
+      extraUpFlags = [
+        "--accept-routes"
+        "--ssh"
+      ];
       openFirewall = true;
       useRoutingFeatures = "server";
       serve.services.syncthing = {
