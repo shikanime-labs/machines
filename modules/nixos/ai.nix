@@ -26,23 +26,7 @@ with lib;
       rtk
       yarn
     ];
-    extraPlugins =
-      let
-        hermesLcmPlugin = pkgs.fetchFromGitHub {
-          owner = "stephenschoettler";
-          repo = "hermes-lcm";
-          rev = "v0.18.1";
-          hash = "sha256-UWiu6y3Ci5F5OYQZIB0QuFmgv+tRUTouD9RZfX+PcsA=";
-        };
-      in
-      [
-        hermesLcmPlugin
-      ];
     settings = {
-      plugins.enabled = [
-        "hermes-lcm"
-        "rtk-plugin"
-      ];
       context.engine = "lcm";
       custom_providers = [
         {
