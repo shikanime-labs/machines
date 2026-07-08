@@ -53,7 +53,7 @@
             "--all-remotes"
           ];
         };
-        git.private-commits = "description(glob:'*[private]*')";
+        git.private-commits = "description('[private]')";
         templates = {
           commit_trailers = ''
             format_signed_off_by_trailer(self)
