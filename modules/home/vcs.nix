@@ -9,13 +9,7 @@
     git = {
       enable = true;
       lfs.enable = true;
-      settings = {
-        credential.helper = "manager";
-        user = {
-          email = "contact@shikanime.studio";
-          name = "Shikanime Deva";
-        };
-      };
+      settings.credential.helper = "manager";
     };
 
     jujutsu = {
@@ -66,10 +60,6 @@
           "nulls()" = "empty() & mutable()";
         };
         ui.default-command = "log";
-        user = {
-          email = "contact@shikanime.studio";
-          name = "Shikanime Deva";
-        };
       };
     };
   };
