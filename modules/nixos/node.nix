@@ -18,17 +18,28 @@ with lib;
 
   networking = {
     firewall = {
+      # Cluster -> tailnet egress. Pods route via the node (flannel host-gw),
+      # so their traffic reaches the host on the CNI bridge (cni0) and must be
+      # forwarded out tailscale0 to reach tailnet CGNAT addresses
+      # (100.64.0.0/10, e.g. *.ts.net). The node already holds these routes via
+      # Tailscale --accept-routes; only the firewall FORWARD policy (default
+      # DROP) blocks it. Egress-only: return traffic is ESTABLISHED and allowed
+      # by conntrack. IPv4 + IPv6 (pod ranges are fd00::/56).
       extraCommands = ''
         iptables -I INPUT -i br+ -j ACCEPT
         iptables -I FORWARD -i br+ -j ACCEPT
         ip6tables -I INPUT -i br+ -j ACCEPT
         ip6tables -I FORWARD -i br+ -j ACCEPT
+        iptables -I FORWARD -i cni+ -o tailscale0 -j ACCEPT
+        ip6tables -I FORWARD -i cni+ -o tailscale0 -j ACCEPT
       '';
       extraStopCommands = ''
         iptables -D INPUT -i br+ -j ACCEPT 2>/dev/null || true
         iptables -D FORWARD -i br+ -j ACCEPT 2>/dev/null || true
         ip6tables -D INPUT -i br+ -j ACCEPT 2>/dev/null || true
         ip6tables -D FORWARD -i br+ -j ACCEPT 2>/dev/null || true
+        iptables -D FORWARD -i cni+ -o tailscale0 -j ACCEPT 2>/dev/null || true
+        ip6tables -D FORWARD -i cni+ -o tailscale0 -j ACCEPT 2>/dev/null || true
       '';
     };
 
