@@ -33,6 +33,7 @@ in
       cachix
       devenv
       docker-credential-helpers
+      graphify
       pass
       qpdf
       qwen-code
