@@ -84,7 +84,6 @@ with lib;
       enable = true;
       extraUpFlags = [
         "--accept-routes"
-        "--advertise-routes=10.244.0.0/16"
         "--ssh"
       ];
       openFirewall = true;
