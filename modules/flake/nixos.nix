@@ -1,6 +1,60 @@
 { self, ... }:
 { inputs, ... }:
 
+let
+  aiModules = [
+    inputs.cua.nixosModules.cua-driver
+    inputs.hermes-agent.nixosModules.default
+  ];
+
+  baseModules = [
+    inputs.comin.nixosModules.comin
+    inputs.sops-nix.nixosModules.default
+    inputs.home-manager.nixosModules.default
+  ];
+
+  clusterModules = [
+    inputs.disko.nixosModules.default
+    inputs.knix.nixosModules.default
+  ];
+
+  beelinkClusterModules = [
+    inputs.nixos-hardware.nixosModules.common-cpu-intel
+    inputs.nixos-hardware.nixosModules.common-pc-ssd
+  ]
+  ++ aiModules
+  ++ baseModules
+  ++ clusterModules;
+
+  rpi4ClusterModules = [
+    inputs.nixos-hardware.nixosModules.raspberry-pi-4
+  ]
+  ++ aiModules
+  ++ baseModules
+  ++ clusterModules;
+
+  rpi5ClusterModules = [
+    inputs.nixos-hardware.nixosModules.raspberry-pi-5
+  ]
+  ++ aiModules
+  ++ baseModules
+  ++ clusterModules;
+
+  workstationHomeModules = [
+    inputs.catppuccin.homeModules.default
+    inputs.colemak.homeModules.default
+    inputs.devlib.homeModules.default
+    inputs.identities.homeModules.default
+    inputs.sops-nix.homeModules.default
+  ];
+
+  workstationsModules =
+    aiModules
+    ++ baseModules
+    ++ [
+      { home-manager.sharedModules = workstationHomeModules; }
+    ];
+in
 {
   flake = {
     nixosConfigurations = {
@@ -11,23 +65,8 @@
         };
         modules = [
           ../../hosts/ashira/configuration.nix
-          inputs.comin.nixosModules.comin
-          inputs.cua.nixosModules.default
-          inputs.disko.nixosModules.default
-          inputs.hermes-agent.nixosModules.default
-          inputs.home-manager.nixosModules.default
-          inputs.knix.nixosModules.default
-          inputs.nixos-hardware.nixosModules.common-cpu-intel
-          inputs.nixos-hardware.nixosModules.common-pc-ssd
-          inputs.sops-nix.nixosModules.default
-          {
-            home-manager.sharedModules = [
-              inputs.devlib.homeModules.default
-              inputs.identities.homeModules.default
-              inputs.sops-nix.homeModules.default
-            ];
-          }
-        ];
+        ]
+        ++ beelinkClusterModules;
       };
       manash = inputs.nixpkgs.lib.nixosSystem {
         pkgs = import inputs.nixpkgs {
@@ -36,23 +75,8 @@
         };
         modules = [
           ../../hosts/manash/configuration.nix
-          inputs.comin.nixosModules.comin
-          inputs.cua.nixosModules.default
-          inputs.disko.nixosModules.default
-          inputs.hermes-agent.nixosModules.default
-          inputs.home-manager.nixosModules.default
-          inputs.knix.nixosModules.default
-          inputs.nixos-hardware.nixosModules.common-cpu-intel
-          inputs.nixos-hardware.nixosModules.common-pc-ssd
-          inputs.sops-nix.nixosModules.default
-          {
-            home-manager.sharedModules = [
-              inputs.devlib.homeModules.default
-              inputs.identities.homeModules.default
-              inputs.sops-nix.homeModules.default
-            ];
-          }
-        ];
+        ]
+        ++ beelinkClusterModules;
       };
       nalsha = inputs.nixpkgs.lib.nixosSystem {
         pkgs = import inputs.nixpkgs {
@@ -61,23 +85,8 @@
         };
         modules = [
           ../../hosts/nalsha/configuration.nix
-          inputs.comin.nixosModules.comin
-          inputs.cua.nixosModules.default
-          inputs.disko.nixosModules.default
-          inputs.hermes-agent.nixosModules.default
-          inputs.home-manager.nixosModules.default
-          inputs.knix.nixosModules.default
-          inputs.nixos-hardware.nixosModules.common-cpu-intel
-          inputs.nixos-hardware.nixosModules.common-pc-ssd
-          inputs.sops-nix.nixosModules.default
-          {
-            home-manager.sharedModules = [
-              inputs.devlib.homeModules.default
-              inputs.identities.homeModules.default
-              inputs.sops-nix.homeModules.default
-            ];
-          }
-        ];
+        ]
+        ++ beelinkClusterModules;
       };
       fushi = inputs.nixpkgs.lib.nixosSystem {
         pkgs = import inputs.nixpkgs {
@@ -86,22 +95,8 @@
         };
         modules = [
           ../../hosts/fushi/configuration.nix
-          inputs.comin.nixosModules.comin
-          inputs.cua.nixosModules.default
-          inputs.disko.nixosModules.default
-          inputs.hermes-agent.nixosModules.default
-          inputs.home-manager.nixosModules.default
-          inputs.knix.nixosModules.default
-          inputs.nixos-hardware.nixosModules.raspberry-pi-4
-          inputs.sops-nix.nixosModules.default
-          {
-            home-manager.sharedModules = [
-              inputs.devlib.homeModules.default
-              inputs.identities.homeModules.default
-              inputs.sops-nix.homeModules.default
-            ];
-          }
-        ];
+        ]
+        ++ rpi4ClusterModules;
       };
       minish = inputs.nixpkgs.lib.nixosSystem {
         pkgs = import inputs.nixpkgs {
@@ -110,22 +105,8 @@
         };
         modules = [
           ../../hosts/minish/configuration.nix
-          inputs.comin.nixosModules.comin
-          inputs.cua.nixosModules.default
-          inputs.disko.nixosModules.default
-          inputs.hermes-agent.nixosModules.default
-          inputs.home-manager.nixosModules.default
-          inputs.knix.nixosModules.default
-          inputs.nixos-hardware.nixosModules.raspberry-pi-4
-          inputs.sops-nix.nixosModules.default
-          {
-            home-manager.sharedModules = [
-              inputs.devlib.homeModules.default
-              inputs.identities.homeModules.default
-              inputs.sops-nix.homeModules.default
-            ];
-          }
-        ];
+        ]
+        ++ rpi4ClusterModules;
       };
       nemishi = inputs.nixpkgs.lib.nixosSystem {
         pkgs = import inputs.nixpkgs {
@@ -134,22 +115,8 @@
         };
         modules = [
           ../../hosts/nemishi/configuration.nix
-          inputs.comin.nixosModules.comin
-          inputs.cua.nixosModules.default
-          inputs.disko.nixosModules.default
-          inputs.hermes-agent.nixosModules.default
-          inputs.home-manager.nixosModules.default
-          inputs.knix.nixosModules.default
-          inputs.nixos-hardware.nixosModules.raspberry-pi-5
-          inputs.sops-nix.nixosModules.default
-          {
-            home-manager.sharedModules = [
-              inputs.devlib.homeModules.default
-              inputs.identities.homeModules.default
-              inputs.sops-nix.homeModules.default
-            ];
-          }
-        ];
+        ]
+        ++ rpi5ClusterModules;
       };
       nixtar = inputs.nixpkgs.lib.nixosSystem {
         pkgs = import inputs.nixpkgs {
@@ -158,22 +125,9 @@
         };
         modules = [
           ../../hosts/nixtar/configuration.nix
-          inputs.comin.nixosModules.comin
-          inputs.cua.nixosModules.default
-          inputs.hermes-agent.nixosModules.default
-          inputs.home-manager.nixosModules.default
           inputs.nixos-wsl.nixosModules.default
-          inputs.sops-nix.nixosModules.default
-          {
-            home-manager.sharedModules = [
-              inputs.catppuccin.homeModules.default
-              inputs.colemak.homeModules.default
-              inputs.devlib.homeModules.default
-              inputs.identities.homeModules.default
-              inputs.sops-nix.homeModules.default
-            ];
-          }
-        ];
+        ]
+        ++ workstationsModules;
       };
     };
 
@@ -189,20 +143,8 @@
               };
               modules = [
                 ../../hosts/catbox/configuration.nix
-                inputs.hermes-agent.nixosModules.default
-                inputs.home-manager.nixosModules.default
-                inputs.comin.nixosModules.comin
-                inputs.sops-nix.nixosModules.default
-                {
-                  home-manager.sharedModules = [
-                    inputs.catppuccin.homeModules.default
-                    inputs.colemak.homeModules.default
-                    inputs.devlib.homeModules.default
-                    inputs.identities.homeModules.default
-                    inputs.sops-nix.homeModules.default
-                  ];
-                }
-              ];
+              ]
+              ++ workstationsModules;
             };
           in
           catbox.config.system.build.buildLayeredImage;
@@ -220,20 +162,8 @@
               };
               modules = [
                 ../../hosts/catbox/configuration.nix
-                inputs.hermes-agent.nixosModules.default
-                inputs.home-manager.nixosModules.default
-                inputs.comin.nixosModules.comin
-                inputs.sops-nix.nixosModules.default
-                {
-                  home-manager.sharedModules = [
-                    inputs.catppuccin.homeModules.default
-                    inputs.colemak.homeModules.default
-                    inputs.devlib.homeModules.default
-                    inputs.identities.homeModules.default
-                    inputs.sops-nix.homeModules.default
-                  ];
-                }
-              ];
+              ]
+              ++ workstationsModules;
             };
           in
           catbox.config.system.build.buildLayeredImage;
