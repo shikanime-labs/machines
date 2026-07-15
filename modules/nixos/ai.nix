@@ -81,6 +81,7 @@ with lib;
       };
     };
     extraDependencyGroups = [
+      "computer-use"
       "honcho"
       "matrix"
     ];
