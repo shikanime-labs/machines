@@ -62,6 +62,11 @@ with lib;
           model = "stepfun/step-3.7-flash:free";
           provider = "custom:aperture";
         }
+        {
+          api_mode = "chat_completions";
+          model = "tencent/hy3:free";
+          provider = "custom:aperture";
+        }
       ];
       matrix = {
         allowed_rooms = [ "!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net" ];
