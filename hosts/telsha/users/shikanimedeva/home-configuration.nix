@@ -32,7 +32,7 @@ in
     gouv = {
       enable = true;
       git.condition = "gitpath:${config.home.homeDirectory}/Source/Repos/github.com/cloud-pi-native";
-      jj.extraConfig."--when.repositories" = [
+      jj.extraConfig."--when".repositories = [
         "${config.home.homeDirectory}/Source/Repos/github.com/cloud-pi-native"
       ];
     };
@@ -40,7 +40,7 @@ in
     operator-6o = {
       enable = true;
       git.condition = "gitpath:${config.home.homeDirectory}/Source/Repos/github.com/operator6o";
-      jj.extraConfig."--when.repositories" = [
+      jj.extraConfig."--when".repositories = [
         "${config.home.homeDirectory}/Source/Repos/github.com/operator6o"
       ];
     };
