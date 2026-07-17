@@ -41,10 +41,18 @@
             "-r"
             "closest_merge(@)+:: ~ empty()"
           ];
-          sync = [
+          fetch = [
             "git"
             "fetch"
             "--all-remotes"
+          ];
+          switch = [
+            "workspace"
+            "add"
+          ];
+          push = [
+            "git"
+            "push"
           ];
         };
         git.private-commits = "description(substring:\"[private]\")";
@@ -59,7 +67,12 @@
           "closest_merge(to)" = "heads(::to & merges())";
           "nulls()" = "empty() & mutable()";
         };
-        ui.default-command = "log";
+        ui = {
+          default-command = "log";
+          movement = {
+            edit = true;
+          };
+        };
       };
     };
   };
