@@ -1,4 +1,6 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
+
+with lib;
 
 {
   home.packages = [
@@ -46,9 +48,46 @@
             "fetch"
             "--all-remotes"
           ];
+          jjplus = [
+            "util"
+            "exec"
+            "--"
+            "${getExe pkgs.jjplus}"
+          ];
           switch = [
-            "workspace"
-            "add"
+            "util"
+            "exec"
+            "--"
+            "${getExe pkgs.jjplus}"
+            "switch"
+          ];
+          checkout = [
+            "util"
+            "exec"
+            "--"
+            "${getExe pkgs.jjplus}"
+            "checkout"
+          ];
+          remove = [
+            "util"
+            "exec"
+            "--"
+            "${getExe pkgs.jjplus}"
+            "remove"
+          ];
+          submit = [
+            "util"
+            "exec"
+            "--"
+            "${getExe pkgs.jjplus}"
+            "submit"
+          ];
+          land = [
+            "util"
+            "exec"
+            "--"
+            "${getExe pkgs.jjplus}"
+            "land"
           ];
           push = [
             "git"

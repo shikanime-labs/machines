@@ -1,0 +1,20 @@
+[package]
+name = "jj-switch"
+version = "0.1.0"
+edition = "2021"
+description = "jj workspace helper with a `switch` subcommand"
+license = "Apache-2.0"
+
+[[bin]]
+name = "jjplus"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[features]
+# Integration tests that drive the compiled binary against a real GitHub repo.
+# Off by default so `cargo test` stays offline/fast.
+integration = []
