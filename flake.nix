@@ -162,7 +162,9 @@
       in
       {
         imports = [
+          ./modules/flake/packages.nix
           ./modules/flake/devenv.nix
+          inputs.flake-parts.flakeModules.easyOverlay
           devenv.flakeModule
           devlib.flakeModule
           darwinFlakeModule

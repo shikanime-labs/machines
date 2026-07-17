@@ -7,6 +7,7 @@
       pkgs = import inputs.nixpkgs {
         system = "aarch64-darwin";
         config.allowUnfree = true;
+        overlays = [ self.overlays.default ];
       };
       modules = [
         ../../hosts/telsha/darwin-configuration.nix

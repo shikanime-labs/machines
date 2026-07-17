@@ -16,6 +16,7 @@
           inputs.devlib.devenvModules.git
           inputs.devlib.devenvModules.nix
           inputs.devlib.devenvModules.opentofu
+          inputs.devlib.devenvModules.rust
           inputs.devlib.devenvModules.shell
           inputs.devlib.devenvModules.shikanime
           inputs.identities.devenvModules.default

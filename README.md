@@ -24,8 +24,15 @@ This flake is the source of truth for the machines I manage. It wires together:
 
 ### `flake.nix`
 
-The flake entry point. It imports the module sets and exposes the host
-configurations and build outputs.
+The flake entry point at the repo root. It declares `description`, `inputs`, and
+`nixConfig`, then delegates the flake `outputs` to `modules/flake/flake.nix`
+(which holds the flake-parts glue and host wiring).
+
+- `modules/flake/flake.nix` — the flake `outputs` (flake-parts `mkFlake`, host
+  configurations, build outputs)
+- `modules/flake/packages.nix` — the nixpkgs overlay exposing local packages
+  (e.g. `jjplus`), applied to `pkgs` for both host and Home Manager configs
+- `modules/flake/devenv.nix`, `darwin.nix`, `nixos.nix` — per-system flake glue
 
 ### `hosts/`
 
@@ -67,7 +74,8 @@ Shared module layers.
   - `base.nix`, `minimal.nix`, `workstation.nix`, `distributed.nix`
 - `modules/home/` contains shared Home Manager modules
   - shell, editor, font, VCS, and workstation-specific settings
-- `modules/flake/` contains flake-parts glue for NixOS, Darwin, and devenv
+- `modules/flake/` contains the flake `outputs` (flake.nix), the nixpkgs overlay
+  (`packages.nix`), and flake-parts glue for NixOS, Darwin, and devenv
 
 ### `secrets/`
 
