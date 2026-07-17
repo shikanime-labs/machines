@@ -75,6 +75,8 @@ with lib;
     };
 
     knix = {
+      addons.longhorn.enable = true;
+
       # Bridge interface — flannel, firewall, and sysctl rules all target br0.
       # Bonded on Beelink (bond0 → br0), single-NIC on RPi (end0 → br0).
       interface = "br0";
@@ -82,7 +84,12 @@ with lib;
       # Use host-gw for flannel overlay — zero encapsulation overhead on same-LAN clusters
       canal.backend = "host-gw";
 
-      addons.longhorn.enable = true;
+      # Multus meta-plugin + Whereabouts IPAM. Gives selected pods a second
+      # interface on the LAN bridge (br0) for local-network exposure (e.g. Jellyfin UPnP).
+      multus = {
+        enable = true;
+        extraConfig.rke2-whereabouts.enabled = true;
+      };
     };
 
     openssh = {
