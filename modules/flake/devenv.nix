@@ -156,6 +156,7 @@
                   manash
                   minish
                   nalsha
+                  nemishi
                   nixtar
                   telsha
                 ];
