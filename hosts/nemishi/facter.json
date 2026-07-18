@@ -1,0 +1,1127 @@
+{
+  "version": 1,
+  "smbios": {},
+  "system": "aarch64-linux",
+  "virtualisation": "none",
+  "uefi": { "supported": false },
+  "hardware": {
+    "bridge": [
+      {
+        "attached_to": 0,
+        "base_class": { "name": "Bridge", "hex": "0006", "value": 6 },
+        "bus_type": { "name": "PCI", "hex": "0004", "value": 4 },
+        "class_list": ["pci", "bridge"],
+        "detail": {
+          "command": 6,
+          "function": 0,
+          "header_type": 1,
+          "prog_if": 0,
+          "secondary_bus": 1
+        },
+        "device": { "hex": "2712", "value": 10002 },
+        "driver": "pcieport",
+        "driver_module": "pcieportdrv",
+        "driver_modules": ["pcieportdrv"],
+        "drivers": ["pcieport"],
+        "index": 7,
+        "model": "Broadcom PCI bridge",
+        "module_alias": "pci:v000014E4d00002712sv00000000sd00000000bc06sc04i00",
+        "pci_interface": { "name": "Normal decode", "hex": "0000", "value": 0 },
+        "revision": { "hex": "0021", "value": 33 },
+        "slot": { "bus": 256, "number": 0 },
+        "sub_class": { "name": "PCI bridge", "hex": "0004", "value": 4 },
+        "sysfs_bus_id": "0001:00:00.0",
+        "sysfs_id": "/devices/platform/axi/1000110000.pcie/pci0001:00/0001:00:00.0",
+        "vendor": { "name": "Broadcom", "hex": "14e4", "value": 5348 }
+      },
+      {
+        "attached_to": 0,
+        "base_class": { "name": "Bridge", "hex": "0006", "value": 6 },
+        "bus_type": { "name": "PCI", "hex": "0004", "value": 4 },
+        "class_list": ["pci", "bridge"],
+        "detail": {
+          "command": 6,
+          "function": 0,
+          "header_type": 1,
+          "prog_if": 0,
+          "secondary_bus": 1
+        },
+        "device": { "hex": "2712", "value": 10002 },
+        "driver": "pcieport",
+        "driver_module": "pcieportdrv",
+        "driver_modules": ["pcieportdrv"],
+        "drivers": ["pcieport"],
+        "index": 9,
+        "model": "Broadcom PCI bridge",
+        "module_alias": "pci:v000014E4d00002712sv00000000sd00000000bc06sc04i00",
+        "pci_interface": { "name": "Normal decode", "hex": "0000", "value": 0 },
+        "revision": { "hex": "0021", "value": 33 },
+        "slot": { "bus": 512, "number": 0 },
+        "sub_class": { "name": "PCI bridge", "hex": "0004", "value": 4 },
+        "sysfs_bus_id": "0002:00:00.0",
+        "sysfs_id": "/devices/platform/axi/1000120000.pcie/pci0002:00/0002:00:00.0",
+        "vendor": { "name": "Broadcom", "hex": "14e4", "value": 5348 }
+      }
+    ],
+    "cpu": [
+      {
+        "address_sizes": { "physical": "0x0", "virtual": "0x0" },
+        "architecture": "aarch64",
+        "bogo": 108,
+        "family": 4,
+        "features": [
+          "fp",
+          "asimd",
+          "evtstrm",
+          "aes",
+          "pmull",
+          "sha1",
+          "sha2",
+          "crc32",
+          "atomics",
+          "fphp",
+          "asimdhp",
+          "cpuid",
+          "asimdrdm",
+          "lrcpc",
+          "dcpop",
+          "asimddp"
+        ],
+        "fpu": false,
+        "fpu_exception": false,
+        "model": 1,
+        "page_size": 16384,
+        "physical_id": 0,
+        "stepping": 0,
+        "vendor_name": "ARM Limited",
+        "write_protect": false
+      }
+    ],
+    "disk": [
+      {
+        "resources": [
+          {
+            "type": "disk_geo",
+            "cylinders": 244198,
+            "geo_type": "logical",
+            "heads": 64,
+            "sectors": 32,
+            "size": "0x0"
+          },
+          {
+            "type": "size",
+            "unit": "sectors",
+            "value_1": 500118192,
+            "value_2": 512
+          }
+        ],
+        "model": "SAMSUNG MZAL4256HBJD-00BL2",
+        "serial": "S67PNF0W904398",
+        "sysfs_id": "/class/block/nvme0n1",
+        "sysfs_device_link": "/devices/platform/axi/1000110000.pcie/pci0001:00/0001:00:00.0/0001:01:00.0/nvme/nvme0",
+        "sysfs_bus_id": "nvme0",
+        "driver": "nvme",
+        "driver_module": "nvme",
+        "attached_to": 10,
+        "index": 21,
+        "drivers": ["nvme"],
+        "base_class": {
+          "name": "Mass Storage Device",
+          "hex": "0106",
+          "value": 262
+        },
+        "slot": { "bus": 0, "number": 0 },
+        "driver_modules": ["nvme"],
+        "sub_class": { "name": "Disk", "hex": "0000", "value": 0 },
+        "sub_device": { "hex": "a80b", "value": 43019 },
+        "sub_vendor": { "hex": "144d", "value": 5197 },
+        "device": {
+          "name": "SAMSUNG MZAL4256HBJD-00BL2",
+          "hex": "a80b",
+          "value": 43019
+        },
+        "class_list": ["disk", "block_device", "nvme"],
+        "bus_type": { "name": "NVME", "hex": "0096", "value": 150 },
+        "unix_device_names": [
+          "/dev/disk/by-id/nvme-SAMSUNG_MZAL4256HBJD-00BL2_S67PNF0W904398",
+          "/dev/disk/by-id/nvme-SAMSUNG_MZAL4256HBJD-00BL2_S67PNF0W904398_1",
+          "/dev/disk/by-id/nvme-nvme.144d-533637504e463057393034333938-53414d53554e47204d5a414c3432353648424a442d3030424c32-00000001",
+          "/dev/disk/by-path/platform-1000110000.pcie-pci-0001:01:00.0-nvme-1",
+          "/dev/nvme0n1"
+        ],
+        "vendor": { "hex": "144d", "value": 5197 }
+      },
+      {
+        "resources": [
+          { "type": "size", "unit": "sectors", "value_1": 8192, "value_2": 512 }
+        ],
+        "attached_to": 0,
+        "index": 22,
+        "model": "Disk",
+        "sysfs_id": "/class/block/ram2",
+        "base_class": {
+          "name": "Mass Storage Device",
+          "hex": "0106",
+          "value": 262
+        },
+        "class_list": ["disk", "block_device"],
+        "sub_class": { "name": "Disk", "hex": "0000", "value": 0 },
+        "unix_device_names": ["/dev/ram2"]
+      },
+      {
+        "resources": [
+          { "type": "size", "unit": "sectors", "value_1": 8192, "value_2": 512 }
+        ],
+        "attached_to": 0,
+        "index": 23,
+        "model": "Disk",
+        "sysfs_id": "/class/block/ram0",
+        "base_class": {
+          "name": "Mass Storage Device",
+          "hex": "0106",
+          "value": 262
+        },
+        "class_list": ["disk", "block_device"],
+        "sub_class": { "name": "Disk", "hex": "0000", "value": 0 },
+        "unix_device_names": ["/dev/ram0"]
+      },
+      {
+        "resources": [
+          { "type": "size", "unit": "sectors", "value_1": 8192, "value_2": 512 }
+        ],
+        "attached_to": 0,
+        "index": 24,
+        "model": "Disk",
+        "sysfs_id": "/class/block/ram9",
+        "base_class": {
+          "name": "Mass Storage Device",
+          "hex": "0106",
+          "value": 262
+        },
+        "class_list": ["disk", "block_device"],
+        "sub_class": { "name": "Disk", "hex": "0000", "value": 0 },
+        "unix_device_names": ["/dev/ram9"]
+      },
+      {
+        "resources": [
+          {
+            "type": "disk_geo",
+            "cylinders": 1948992,
+            "geo_type": "logical",
+            "heads": 4,
+            "sectors": 16,
+            "size": "0x0"
+          },
+          {
+            "type": "size",
+            "unit": "sectors",
+            "value_1": 124735488,
+            "value_2": 512
+          }
+        ],
+        "model": "Disk",
+        "driver": "sdhci-brcmstb",
+        "index": 25,
+        "attached_to": 20,
+        "serial": "0xc467264d",
+        "sysfs_bus_id": "mmc0:aaaa",
+        "sysfs_device_link": "/devices/platform/soc@107c000000/1000fff000.mmc/mmc_host/mmc0/mmc0:aaaa",
+        "sysfs_id": "/class/block/mmcblk0",
+        "base_class": {
+          "name": "Mass Storage Device",
+          "hex": "0106",
+          "value": 262
+        },
+        "class_list": ["disk", "block_device"],
+        "drivers": ["mmcblk", "sdhci-brcmstb"],
+        "sub_class": { "name": "Disk", "hex": "0000", "value": 0 },
+        "unix_device_names": [
+          "/dev/disk/by-id/mmc-SN64G_0xc467264d",
+          "/dev/disk/by-path/platform-1000fff000.mmc",
+          "/dev/mmcblk0"
+        ]
+      },
+      {
+        "resources": [
+          { "type": "size", "unit": "sectors", "value_1": 8192, "value_2": 512 }
+        ],
+        "attached_to": 0,
+        "index": 26,
+        "model": "Disk",
+        "sysfs_id": "/class/block/ram14",
+        "base_class": {
+          "name": "Mass Storage Device",
+          "hex": "0106",
+          "value": 262
+        },
+        "class_list": ["disk", "block_device"],
+        "sub_class": { "name": "Disk", "hex": "0000", "value": 0 },
+        "unix_device_names": ["/dev/ram14"]
+      },
+      {
+        "resources": [
+          { "type": "size", "unit": "sectors", "value_1": 8192, "value_2": 512 }
+        ],
+        "attached_to": 0,
+        "index": 27,
+        "model": "Disk",
+        "sysfs_id": "/class/block/ram7",
+        "base_class": {
+          "name": "Mass Storage Device",
+          "hex": "0106",
+          "value": 262
+        },
+        "class_list": ["disk", "block_device"],
+        "sub_class": { "name": "Disk", "hex": "0000", "value": 0 },
+        "unix_device_names": ["/dev/ram7"]
+      },
+      {
+        "resources": [
+          { "type": "size", "unit": "sectors", "value_1": 8192, "value_2": 512 }
+        ],
+        "attached_to": 0,
+        "index": 28,
+        "model": "Disk",
+        "sysfs_id": "/class/block/ram12",
+        "base_class": {
+          "name": "Mass Storage Device",
+          "hex": "0106",
+          "value": 262
+        },
+        "class_list": ["disk", "block_device"],
+        "sub_class": { "name": "Disk", "hex": "0000", "value": 0 },
+        "unix_device_names": ["/dev/ram12"]
+      },
+      {
+        "resources": [
+          { "type": "size", "unit": "sectors", "value_1": 8192, "value_2": 512 }
+        ],
+        "attached_to": 0,
+        "index": 29,
+        "model": "Disk",
+        "sysfs_id": "/class/block/ram5",
+        "base_class": {
+          "name": "Mass Storage Device",
+          "hex": "0106",
+          "value": 262
+        },
+        "class_list": ["disk", "block_device"],
+        "sub_class": { "name": "Disk", "hex": "0000", "value": 0 },
+        "unix_device_names": ["/dev/ram5"]
+      },
+      {
+        "resources": [
+          { "type": "size", "unit": "sectors", "value_1": 8192, "value_2": 512 }
+        ],
+        "attached_to": 0,
+        "index": 30,
+        "model": "Disk",
+        "sysfs_id": "/class/block/ram10",
+        "base_class": {
+          "name": "Mass Storage Device",
+          "hex": "0106",
+          "value": 262
+        },
+        "class_list": ["disk", "block_device"],
+        "sub_class": { "name": "Disk", "hex": "0000", "value": 0 },
+        "unix_device_names": ["/dev/ram10"]
+      },
+      {
+        "resources": [
+          { "type": "size", "unit": "sectors", "value_1": 8192, "value_2": 512 }
+        ],
+        "attached_to": 0,
+        "index": 31,
+        "model": "Disk",
+        "sysfs_id": "/class/block/ram3",
+        "base_class": {
+          "name": "Mass Storage Device",
+          "hex": "0106",
+          "value": 262
+        },
+        "class_list": ["disk", "block_device"],
+        "sub_class": { "name": "Disk", "hex": "0000", "value": 0 },
+        "unix_device_names": ["/dev/ram3"]
+      },
+      {
+        "resources": [
+          { "type": "size", "unit": "sectors", "value_1": 8192, "value_2": 512 }
+        ],
+        "attached_to": 0,
+        "index": 32,
+        "model": "Disk",
+        "sysfs_id": "/class/block/ram1",
+        "base_class": {
+          "name": "Mass Storage Device",
+          "hex": "0106",
+          "value": 262
+        },
+        "class_list": ["disk", "block_device"],
+        "sub_class": { "name": "Disk", "hex": "0000", "value": 0 },
+        "unix_device_names": ["/dev/ram1"]
+      },
+      {
+        "resources": [
+          { "type": "size", "unit": "sectors", "value_1": 8192, "value_2": 512 }
+        ],
+        "attached_to": 0,
+        "index": 33,
+        "model": "Disk",
+        "sysfs_id": "/class/block/ram15",
+        "base_class": {
+          "name": "Mass Storage Device",
+          "hex": "0106",
+          "value": 262
+        },
+        "class_list": ["disk", "block_device"],
+        "sub_class": { "name": "Disk", "hex": "0000", "value": 0 },
+        "unix_device_names": ["/dev/ram15"]
+      },
+      {
+        "resources": [
+          { "type": "size", "unit": "sectors", "value_1": 8192, "value_2": 512 }
+        ],
+        "attached_to": 0,
+        "index": 34,
+        "model": "Disk",
+        "sysfs_id": "/class/block/ram8",
+        "base_class": {
+          "name": "Mass Storage Device",
+          "hex": "0106",
+          "value": 262
+        },
+        "class_list": ["disk", "block_device"],
+        "sub_class": { "name": "Disk", "hex": "0000", "value": 0 },
+        "unix_device_names": ["/dev/ram8"]
+      },
+      {
+        "resources": [
+          { "type": "size", "unit": "sectors", "value_1": 8192, "value_2": 512 }
+        ],
+        "attached_to": 0,
+        "index": 35,
+        "model": "Disk",
+        "sysfs_id": "/class/block/ram13",
+        "base_class": {
+          "name": "Mass Storage Device",
+          "hex": "0106",
+          "value": 262
+        },
+        "class_list": ["disk", "block_device"],
+        "sub_class": { "name": "Disk", "hex": "0000", "value": 0 },
+        "unix_device_names": ["/dev/ram13"]
+      },
+      {
+        "resources": [
+          { "type": "size", "unit": "sectors", "value_1": 8192, "value_2": 512 }
+        ],
+        "attached_to": 0,
+        "index": 36,
+        "model": "Disk",
+        "sysfs_id": "/class/block/ram6",
+        "base_class": {
+          "name": "Mass Storage Device",
+          "hex": "0106",
+          "value": 262
+        },
+        "class_list": ["disk", "block_device"],
+        "sub_class": { "name": "Disk", "hex": "0000", "value": 0 },
+        "unix_device_names": ["/dev/ram6"]
+      },
+      {
+        "resources": [
+          { "type": "size", "unit": "sectors", "value_1": 8192, "value_2": 512 }
+        ],
+        "attached_to": 0,
+        "index": 37,
+        "model": "Disk",
+        "sysfs_id": "/class/block/ram11",
+        "base_class": {
+          "name": "Mass Storage Device",
+          "hex": "0106",
+          "value": 262
+        },
+        "class_list": ["disk", "block_device"],
+        "sub_class": { "name": "Disk", "hex": "0000", "value": 0 },
+        "unix_device_names": ["/dev/ram11"]
+      },
+      {
+        "resources": [
+          { "type": "size", "unit": "sectors", "value_1": 8192, "value_2": 512 }
+        ],
+        "attached_to": 0,
+        "index": 38,
+        "model": "Disk",
+        "sysfs_id": "/class/block/ram4",
+        "base_class": {
+          "name": "Mass Storage Device",
+          "hex": "0106",
+          "value": 262
+        },
+        "class_list": ["disk", "block_device"],
+        "sub_class": { "name": "Disk", "hex": "0000", "value": 0 },
+        "unix_device_names": ["/dev/ram4"]
+      }
+    ],
+    "hub": [
+      {
+        "resources": [
+          {
+            "type": "baud",
+            "bits": 0,
+            "handshake": 0,
+            "parity": 0,
+            "speed": 480000000,
+            "stop_bits": 0
+          }
+        ],
+        "serial": "xhci-hcd.1",
+        "model": "Linux 6.18.34 xhci-hcd xHCI Host Controller",
+        "sysfs_id": "/devices/platform/axi/1000120000.pcie/1f00300000.usb/xhci-hcd.1/usb3/3-0:1.0",
+        "sysfs_bus_id": "3-0:1.0",
+        "attached_to": 18,
+        "module_alias": "usb:v1D6Bp0002d0618dc09dsc00dp01ic09isc00ip00in00",
+        "driver": "hub",
+        "driver_module": "usbcore",
+        "hotplug": "usb",
+        "index": 39,
+        "device": { "name": "xHCI Host Controller", "hex": "0002", "value": 2 },
+        "base_class": { "name": "Hub", "hex": "010a", "value": 266 },
+        "drivers": ["hub"],
+        "driver_modules": ["usbcore"],
+        "revision": { "name": "6.18", "hex": "0000", "value": 0 },
+        "slot": { "bus": 0, "number": 0 },
+        "class_list": ["usb", "hub"],
+        "bus_type": { "name": "USB", "hex": "0086", "value": 134 },
+        "vendor": {
+          "name": "Linux 6.18.34 xhci-hcd",
+          "hex": "1d6b",
+          "value": 7531
+        },
+        "detail": {
+          "device_class": { "name": "hub", "hex": "0009", "value": 9 },
+          "device_protocol": 1,
+          "device_subclass": {
+            "name": "per_interface",
+            "hex": "0000",
+            "value": 0
+          },
+          "interface_alternate_setting": 0,
+          "interface_class": { "name": "hub", "hex": "0009", "value": 9 },
+          "interface_number": 0,
+          "interface_protocol": 0,
+          "interface_subclass": {
+            "name": "per_interface",
+            "hex": "0000",
+            "value": 0
+          }
+        }
+      },
+      {
+        "attached_to": 18,
+        "base_class": { "name": "Hub", "hex": "010a", "value": 266 },
+        "bus_type": { "name": "USB", "hex": "0086", "value": 134 },
+        "class_list": ["usb", "hub"],
+        "detail": {
+          "device_class": { "name": "hub", "hex": "0009", "value": 9 },
+          "device_protocol": 3,
+          "device_subclass": {
+            "name": "per_interface",
+            "hex": "0000",
+            "value": 0
+          },
+          "interface_alternate_setting": 0,
+          "interface_class": { "name": "hub", "hex": "0009", "value": 9 },
+          "interface_number": 0,
+          "interface_protocol": 0,
+          "interface_subclass": {
+            "name": "per_interface",
+            "hex": "0000",
+            "value": 0
+          }
+        },
+        "device": { "name": "xHCI Host Controller", "hex": "0003", "value": 3 },
+        "driver": "hub",
+        "driver_module": "usbcore",
+        "driver_modules": ["usbcore"],
+        "drivers": ["hub"],
+        "hotplug": "usb",
+        "index": 40,
+        "model": "Linux 6.18.34 xhci-hcd xHCI Host Controller",
+        "module_alias": "usb:v1D6Bp0003d0618dc09dsc00dp03ic09isc00ip00in00",
+        "revision": { "name": "6.18", "hex": "0000", "value": 0 },
+        "serial": "xhci-hcd.1",
+        "slot": { "bus": 0, "number": 0 },
+        "sysfs_bus_id": "4-0:1.0",
+        "sysfs_id": "/devices/platform/axi/1000120000.pcie/1f00300000.usb/xhci-hcd.1/usb4/4-0:1.0",
+        "vendor": {
+          "name": "Linux 6.18.34 xhci-hcd",
+          "hex": "1d6b",
+          "value": 7531
+        }
+      },
+      {
+        "resources": [
+          {
+            "type": "baud",
+            "bits": 0,
+            "handshake": 0,
+            "parity": 0,
+            "speed": 480000000,
+            "stop_bits": 0
+          }
+        ],
+        "serial": "xhci-hcd.0",
+        "model": "Linux 6.18.34 xhci-hcd xHCI Host Controller",
+        "sysfs_id": "/devices/platform/axi/1000120000.pcie/1f00200000.usb/xhci-hcd.0/usb1/1-0:1.0",
+        "sysfs_bus_id": "1-0:1.0",
+        "attached_to": 15,
+        "module_alias": "usb:v1D6Bp0002d0618dc09dsc00dp01ic09isc00ip00in00",
+        "driver": "hub",
+        "driver_module": "usbcore",
+        "hotplug": "usb",
+        "index": 41,
+        "device": { "name": "xHCI Host Controller", "hex": "0002", "value": 2 },
+        "base_class": { "name": "Hub", "hex": "010a", "value": 266 },
+        "drivers": ["hub"],
+        "driver_modules": ["usbcore"],
+        "revision": { "name": "6.18", "hex": "0000", "value": 0 },
+        "slot": { "bus": 0, "number": 0 },
+        "class_list": ["usb", "hub"],
+        "bus_type": { "name": "USB", "hex": "0086", "value": 134 },
+        "vendor": {
+          "name": "Linux 6.18.34 xhci-hcd",
+          "hex": "1d6b",
+          "value": 7531
+        },
+        "detail": {
+          "device_class": { "name": "hub", "hex": "0009", "value": 9 },
+          "device_protocol": 1,
+          "device_subclass": {
+            "name": "per_interface",
+            "hex": "0000",
+            "value": 0
+          },
+          "interface_alternate_setting": 0,
+          "interface_class": { "name": "hub", "hex": "0009", "value": 9 },
+          "interface_number": 0,
+          "interface_protocol": 0,
+          "interface_subclass": {
+            "name": "per_interface",
+            "hex": "0000",
+            "value": 0
+          }
+        }
+      },
+      {
+        "attached_to": 15,
+        "base_class": { "name": "Hub", "hex": "010a", "value": 266 },
+        "bus_type": { "name": "USB", "hex": "0086", "value": 134 },
+        "class_list": ["usb", "hub"],
+        "detail": {
+          "device_class": { "name": "hub", "hex": "0009", "value": 9 },
+          "device_protocol": 3,
+          "device_subclass": {
+            "name": "per_interface",
+            "hex": "0000",
+            "value": 0
+          },
+          "interface_alternate_setting": 0,
+          "interface_class": { "name": "hub", "hex": "0009", "value": 9 },
+          "interface_number": 0,
+          "interface_protocol": 0,
+          "interface_subclass": {
+            "name": "per_interface",
+            "hex": "0000",
+            "value": 0
+          }
+        },
+        "device": { "name": "xHCI Host Controller", "hex": "0003", "value": 3 },
+        "driver": "hub",
+        "driver_module": "usbcore",
+        "driver_modules": ["usbcore"],
+        "drivers": ["hub"],
+        "hotplug": "usb",
+        "index": 42,
+        "model": "Linux 6.18.34 xhci-hcd xHCI Host Controller",
+        "module_alias": "usb:v1D6Bp0003d0618dc09dsc00dp03ic09isc00ip00in00",
+        "revision": { "name": "6.18", "hex": "0000", "value": 0 },
+        "serial": "xhci-hcd.0",
+        "slot": { "bus": 0, "number": 0 },
+        "sysfs_bus_id": "2-0:1.0",
+        "sysfs_id": "/devices/platform/axi/1000120000.pcie/1f00200000.usb/xhci-hcd.0/usb2/2-0:1.0",
+        "vendor": {
+          "name": "Linux 6.18.34 xhci-hcd",
+          "hex": "1d6b",
+          "value": 7531
+        }
+      }
+    ],
+    "memory": [
+      {
+        "resources": [{ "type": "phys_mem", "range": 8589934592 }],
+        "attached_to": 0,
+        "index": 6,
+        "model": "Main Memory",
+        "base_class": {
+          "name": "Internally Used Class",
+          "hex": "0101",
+          "value": 257
+        },
+        "class_list": ["memory"],
+        "sub_class": { "name": "Main Memory", "hex": "0002", "value": 2 }
+      }
+    ],
+    "mmc_controller": [
+      {
+        "attached_to": 0,
+        "base_class": { "name": "MMC Controller", "hex": "0117", "value": 279 },
+        "bus_type": { "name": "MMC", "hex": "0093", "value": 147 },
+        "class_list": ["mmc_controller"],
+        "device": "SDIO Controller 1",
+        "index": 19,
+        "model": "SDIO Controller 1",
+        "slot": { "bus": 0, "number": 1 },
+        "sysfs_bus_id": "mmc1:0001",
+        "sysfs_id": "/devices/platform/axi/1001100000.mmc/mmc_host/mmc1/mmc1:0001",
+        "vendor": ""
+      },
+      {
+        "attached_to": 0,
+        "base_class": { "name": "MMC Controller", "hex": "0117", "value": 279 },
+        "bus_type": { "name": "MMC", "hex": "0093", "value": 147 },
+        "class_list": ["mmc_controller"],
+        "device": "SD Controller 0",
+        "driver": "mmcblk",
+        "drivers": ["mmcblk"],
+        "index": 20,
+        "model": "SD Controller 0",
+        "slot": { "bus": 0, "number": 0 },
+        "sysfs_bus_id": "mmc0:aaaa",
+        "sysfs_id": "/devices/platform/soc@107c000000/1000fff000.mmc/mmc_host/mmc0/mmc0:aaaa",
+        "vendor": ""
+      }
+    ],
+    "network_controller": [
+      {
+        "attached_to": 9,
+        "base_class": {
+          "name": "Network controller",
+          "hex": "0002",
+          "value": 2
+        },
+        "bus_type": { "name": "PCI", "hex": "0004", "value": 4 },
+        "class_list": ["network_controller", "pci"],
+        "detail": {
+          "command": 1030,
+          "function": 0,
+          "header_type": 0,
+          "prog_if": 0,
+          "secondary_bus": 0
+        },
+        "device": { "hex": "0001", "value": 1 },
+        "driver": "rp1",
+        "driver_module": "rp1",
+        "driver_modules": ["rp1"],
+        "drivers": ["rp1"],
+        "index": 8,
+        "model": "Ethernet controller",
+        "module_alias": "pci:v00001DE4d00000001sv00000000sd00000000bc02sc00i00",
+        "slot": { "bus": 513, "number": 0 },
+        "sub_class": {
+          "name": "Ethernet controller",
+          "hex": "0000",
+          "value": 0
+        },
+        "sysfs_bus_id": "0002:01:00.0",
+        "sysfs_id": "/devices/platform/axi/1000120000.pcie/pci0002:00/0002:00:00.0/0002:01:00.0",
+        "vendor": { "hex": "1de4", "value": 7652 }
+      },
+      {
+        "resources": [
+          { "type": "hwaddr", "address": 50 },
+          { "type": "phwaddr", "address": 50 },
+          {
+            "type": "wlan",
+            "auth_modes": ["open", "sharedkey", "wpa-psk", "wpa-eap"],
+            "channels": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "36",
+              "40",
+              "44",
+              "48",
+              "52",
+              "56",
+              "60",
+              "64",
+              "100",
+              "104",
+              "108",
+              "112",
+              "116",
+              "120",
+              "124",
+              "128",
+              "132",
+              "136",
+              "140",
+              "144",
+              "149"
+            ],
+            "enc_modes": ["WEP40", "WEP104", "TKIP", "CCMP"],
+            "frequencies": [
+              "2.412",
+              "2.417",
+              "2.422",
+              "2.427",
+              "2.432",
+              "2.437",
+              "2.442",
+              "2.447",
+              "2.452",
+              "2.457",
+              "2.462",
+              "5.18",
+              "5.2",
+              "5.22",
+              "5.24",
+              "5.26",
+              "5.28",
+              "5.3",
+              "5.32",
+              "5.5",
+              "5.52",
+              "5.54",
+              "5.56",
+              "5.58",
+              "5.6",
+              "5.62",
+              "5.64",
+              "5.66",
+              "5.68",
+              "5.7",
+              "5.72",
+              "5.745"
+            ]
+          }
+        ],
+        "attached_to": 0,
+        "sysfs_id": "/devices/platform/axi/1001100000.mmc/mmc_host/mmc1/mmc1:0001/mmc1:0001:1",
+        "sysfs_bus_id": "mmc1:0001:1",
+        "module_alias": "sdio:c00v02D0d4345",
+        "model": "Broadcom WLAN controller",
+        "driver": "brcmfmac",
+        "driver_module": "brcmfmac",
+        "index": 12,
+        "drivers": ["brcmfmac"],
+        "driver_modules": ["brcmfmac", "brcmfmac", "brcmfmac"],
+        "device": { "hex": "4345", "value": 17221 },
+        "class_list": ["network_controller", "wlan_card"],
+        "slot": { "bus": 0, "number": 0 },
+        "sub_class": { "name": "WLAN controller", "hex": "0082", "value": 130 },
+        "bus_type": { "name": "SDIO", "hex": "0094", "value": 148 },
+        "base_class": {
+          "name": "Network controller",
+          "hex": "0002",
+          "value": 2
+        },
+        "unix_device_names": ["wld0"],
+        "vendor": { "name": "Broadcom Corp.", "hex": "02d0", "value": 720 }
+      },
+      {
+        "resources": [
+          { "type": "hwaddr", "address": 50 },
+          { "type": "phwaddr", "address": 50 }
+        ],
+        "model": "ARM Ethernet controller",
+        "sysfs_id": "/devices/platform/axi/1000120000.pcie/1f00100000.ethernet",
+        "sysfs_bus_id": "1f00100000.ethernet",
+        "attached_to": 0,
+        "driver": "macb",
+        "module_alias": "of:NethernetT(null)Craspberrypi,rp1-gemCcdns,macb",
+        "index": 17,
+        "device": {
+          "name": "ARM Ethernet controller",
+          "hex": "0000",
+          "value": 0
+        },
+        "drivers": ["macb"],
+        "sub_class": {
+          "name": "Ethernet controller",
+          "hex": "0000",
+          "value": 0
+        },
+        "class_list": ["network_controller"],
+        "base_class": {
+          "name": "Network controller",
+          "hex": "0002",
+          "value": 2
+        },
+        "unix_device_names": ["end0"]
+      }
+    ],
+    "network_interface": [
+      {
+        "attached_to": 0,
+        "base_class": {
+          "name": "Network Interface",
+          "hex": "0107",
+          "value": 263
+        },
+        "class_list": ["network_interface"],
+        "index": 43,
+        "model": "Loopback network interface",
+        "sub_class": { "name": "Loopback", "hex": "0000", "value": 0 },
+        "sysfs_id": "/class/net/lo",
+        "unix_device_names": ["lo"]
+      },
+      {
+        "resources": [
+          { "type": "hwaddr", "address": 50 },
+          { "type": "phwaddr", "address": 50 }
+        ],
+        "attached_to": 17,
+        "driver": "macb",
+        "index": 46,
+        "model": "Ethernet network interface",
+        "sysfs_device_link": "/devices/platform/axi/1000120000.pcie/1f00100000.ethernet",
+        "sysfs_id": "/class/net/end0",
+        "base_class": {
+          "name": "Network Interface",
+          "hex": "0107",
+          "value": 263
+        },
+        "class_list": ["network_interface"],
+        "drivers": ["macb"],
+        "sub_class": { "name": "Ethernet", "hex": "0001", "value": 1 },
+        "unix_device_names": ["end0"]
+      },
+      {
+        "resources": [
+          { "type": "hwaddr", "address": 50 },
+          { "type": "phwaddr", "address": 50 }
+        ],
+        "index": 47,
+        "sysfs_id": "/class/net/wld0",
+        "sysfs_device_link": "/devices/platform/axi/1001100000.mmc/mmc_host/mmc1/mmc1:0001/mmc1:0001:1",
+        "driver": "brcmfmac",
+        "driver_module": "brcmfmac",
+        "model": "Ethernet network interface",
+        "attached_to": 12,
+        "drivers": ["brcmfmac"],
+        "driver_modules": ["brcmfmac", "brcmfmac", "brcmfmac"],
+        "sub_class": { "name": "Ethernet", "hex": "0001", "value": 1 },
+        "class_list": ["network_interface"],
+        "base_class": {
+          "name": "Network Interface",
+          "hex": "0107",
+          "value": 263
+        },
+        "unix_device_names": ["wld0"]
+      }
+    ],
+    "storage_controller": [
+      {
+        "attached_to": 7,
+        "base_class": {
+          "name": "Mass storage controller",
+          "hex": "0001",
+          "value": 1
+        },
+        "bus_type": { "name": "PCI", "hex": "0004", "value": 4 },
+        "class_list": ["storage_controller", "pci"],
+        "detail": {
+          "command": 1030,
+          "function": 0,
+          "header_type": 0,
+          "prog_if": 2,
+          "secondary_bus": 0
+        },
+        "device": { "hex": "a80b", "value": 43019 },
+        "driver": "nvme",
+        "driver_module": "nvme",
+        "driver_modules": ["nvme"],
+        "drivers": ["nvme"],
+        "index": 10,
+        "model": "Mass storage controller",
+        "module_alias": "pci:v0000144Dd0000A80Bsv0000144Dsd0000A80Bbc01sc08i02",
+        "pci_interface": { "hex": "0002", "value": 2 },
+        "revision": { "hex": "0002", "value": 2 },
+        "slot": { "bus": 257, "number": 0 },
+        "sub_class": { "hex": "0008", "value": 8 },
+        "sub_device": { "hex": "a80b", "value": 43019 },
+        "sub_vendor": { "hex": "144d", "value": 5197 },
+        "sysfs_bus_id": "0001:01:00.0",
+        "sysfs_id": "/devices/platform/axi/1000110000.pcie/pci0001:00/0001:00:00.0/0001:01:00.0",
+        "vendor": { "hex": "144d", "value": 5197 }
+      }
+    ],
+    "system": {},
+    "unknown": [
+      {
+        "attached_to": 0,
+        "base_class": {
+          "name": "Unclassified device",
+          "hex": "0000",
+          "value": 0
+        },
+        "bus_type": { "name": "SDIO", "hex": "0094", "value": 148 },
+        "class_list": ["unknown"],
+        "device": { "hex": "4345", "value": 17221 },
+        "index": 11,
+        "model": "Broadcom Unclassified device",
+        "module_alias": "sdio:c02v02D0d4345",
+        "slot": { "bus": 0, "number": 0 },
+        "sub_class": {
+          "name": "Unclassified device",
+          "hex": "0000",
+          "value": 0
+        },
+        "sysfs_bus_id": "mmc1:0001:3",
+        "sysfs_id": "/devices/platform/axi/1001100000.mmc/mmc_host/mmc1/mmc1:0001/mmc1:0001:3",
+        "vendor": { "name": "Broadcom Corp.", "hex": "02d0", "value": 720 }
+      },
+      {
+        "attached_to": 0,
+        "base_class": {
+          "name": "Unclassified device",
+          "hex": "0000",
+          "value": 0
+        },
+        "bus_type": { "name": "SDIO", "hex": "0094", "value": 148 },
+        "class_list": ["unknown"],
+        "device": { "hex": "4345", "value": 17221 },
+        "driver": "brcmfmac",
+        "driver_module": "brcmfmac",
+        "driver_modules": ["brcmfmac", "brcmfmac", "brcmfmac"],
+        "drivers": ["brcmfmac"],
+        "index": 13,
+        "model": "Broadcom Unclassified device",
+        "module_alias": "sdio:c00v02D0d4345",
+        "slot": { "bus": 0, "number": 0 },
+        "sub_class": {
+          "name": "Unclassified device",
+          "hex": "0000",
+          "value": 0
+        },
+        "sysfs_bus_id": "mmc1:0001:2",
+        "sysfs_id": "/devices/platform/axi/1001100000.mmc/mmc_host/mmc1/mmc1:0001/mmc1:0001:2",
+        "vendor": { "name": "Broadcom Corp.", "hex": "02d0", "value": 720 }
+      }
+    ],
+    "usb_controller": [
+      {
+        "attached_to": 0,
+        "base_class": {
+          "name": "Serial bus controller",
+          "hex": "000c",
+          "value": 12
+        },
+        "class_list": ["usb_controller"],
+        "device": { "name": "ARM USB controller", "hex": "0000", "value": 0 },
+        "driver": "dwc3",
+        "driver_info": {
+          "type": "module",
+          "active": false,
+          "conf": "",
+          "modprobe": true,
+          "db_entry_0": ["uhci-hcd"],
+          "module_args": [""],
+          "names": ["uhci-hcd"]
+        },
+        "drivers": ["dwc3"],
+        "index": 14,
+        "model": "ARM USB controller",
+        "module_alias": "of:NusbT(null)Csnps,dwc3",
+        "pci_interface": { "name": "UHCI", "hex": "0000", "value": 0 },
+        "sub_class": { "name": "USB Controller", "hex": "0003", "value": 3 },
+        "sysfs_bus_id": "1f00200000.usb",
+        "sysfs_id": "/devices/platform/axi/1000120000.pcie/1f00200000.usb"
+      },
+      {
+        "attached_to": 0,
+        "base_class": {
+          "name": "Serial bus controller",
+          "hex": "000c",
+          "value": 12
+        },
+        "class_list": ["usb_controller"],
+        "device": {
+          "name": "ARM USB XHCI controller",
+          "hex": "0000",
+          "value": 0
+        },
+        "driver": "xhci-hcd",
+        "drivers": ["xhci-hcd"],
+        "index": 15,
+        "model": "ARM USB XHCI controller",
+        "module_alias": "platform:xhci-hcd",
+        "pci_interface": { "hex": "0030", "value": 48 },
+        "sub_class": { "name": "USB Controller", "hex": "0003", "value": 3 },
+        "sysfs_bus_id": "xhci-hcd.0",
+        "sysfs_id": "/devices/platform/axi/1000120000.pcie/1f00200000.usb/xhci-hcd.0"
+      },
+      {
+        "attached_to": 0,
+        "base_class": {
+          "name": "Serial bus controller",
+          "hex": "000c",
+          "value": 12
+        },
+        "class_list": ["usb_controller"],
+        "device": { "name": "ARM USB controller", "hex": "0000", "value": 0 },
+        "driver": "dwc3",
+        "driver_info": {
+          "type": "module",
+          "active": false,
+          "conf": "",
+          "modprobe": true,
+          "db_entry_0": ["uhci-hcd"],
+          "module_args": [""],
+          "names": ["uhci-hcd"]
+        },
+        "drivers": ["dwc3"],
+        "index": 16,
+        "model": "ARM USB controller",
+        "module_alias": "of:NusbT(null)Csnps,dwc3",
+        "pci_interface": { "name": "UHCI", "hex": "0000", "value": 0 },
+        "sub_class": { "name": "USB Controller", "hex": "0003", "value": 3 },
+        "sysfs_bus_id": "1f00300000.usb",
+        "sysfs_id": "/devices/platform/axi/1000120000.pcie/1f00300000.usb"
+      },
+      {
+        "attached_to": 0,
+        "base_class": {
+          "name": "Serial bus controller",
+          "hex": "000c",
+          "value": 12
+        },
+        "class_list": ["usb_controller"],
+        "device": {
+          "name": "ARM USB XHCI controller",
+          "hex": "0000",
+          "value": 0
+        },
+        "driver": "xhci-hcd",
+        "drivers": ["xhci-hcd"],
+        "index": 18,
+        "model": "ARM USB XHCI controller",
+        "module_alias": "platform:xhci-hcd",
+        "pci_interface": { "hex": "0030", "value": 48 },
+        "sub_class": { "name": "USB Controller", "hex": "0003", "value": 3 },
+        "sysfs_bus_id": "xhci-hcd.1",
+        "sysfs_id": "/devices/platform/axi/1000120000.pcie/1f00300000.usb/xhci-hcd.1"
+      }
+    ]
+  }
+}

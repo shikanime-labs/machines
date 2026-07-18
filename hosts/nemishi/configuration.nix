@@ -26,6 +26,8 @@
     };
   };
 
+  hardware.facter.reportPath = ./facter.json;
+
   networking = {
     hostName = "nemishi";
     defaultGateway = {
