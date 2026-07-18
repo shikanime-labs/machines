@@ -79,6 +79,19 @@
           static_configs = [
             { targets = [ "127.0.0.1:9100" ]; }
           ];
+          # Every host scrapes 127.0.0.1:9100 and remoteWrites the SAME
+          # instance label, so VM merges all nodes into one series → garbage
+          # rates. Rewrite to a unique per-host identity + real cluster label.
+          relabel_configs = [
+            {
+              target_label = "instance";
+              replacement = config.networking.hostName;
+            }
+            {
+              target_label = "cluster";
+              replacement = "nishir";
+            }
+          ];
         }
       ];
       remoteWrite.url = "https://telemetry.taila659a.ts.net/insert/0/prometheus";
