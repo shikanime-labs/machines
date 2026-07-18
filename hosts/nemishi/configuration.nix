@@ -82,7 +82,7 @@
     '';
 
     knix = {
-      nodeIP = "192.168.1.27";
+      nodeIP = "192.168.1.27,2a02:8424:7899:f201:94eb:8d1:325a:aa5b";
       labels = {
         "beta.kubernetes.io/instance-type" = "rpi5";
         "node.kubernetes.io/instance-type" = "rpi5";
