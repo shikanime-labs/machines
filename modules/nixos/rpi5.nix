@@ -1,3 +1,5 @@
+{ pkgs, ... }:
+
 {
   imports = [
     ./rpi.nix
@@ -17,8 +19,10 @@
   #      -> nvme nvme0: I/O tag 24 QID 0 timeout, disable controller
   #   2. PCIe ASPM L1 on the BCM2712 root (default policy) -> probe error -12
   # Both must be disabled for a clean probe.
-  boot.kernelParams = [
-    "nvme_core.default_ps_max_latency_us=0"
-    "pcie_aspm=off"
+  hardware.deviceTree.overlays = [
+    {
+      name = "pcie-32bit-dma-pi5";
+      dtsFile = "${pkgs.raspberrypifw}/share/raspberrypi/boot/overlays/pcie-32bit-dma-pi5.dtbo";
+    }
   ];
 }
