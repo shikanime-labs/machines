@@ -69,9 +69,7 @@
         };
         ui = {
           default-command = "log";
-          movement = {
-            edit = true;
-          };
+          movement.edit = true;
         };
       };
     };
