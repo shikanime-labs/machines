@@ -22,7 +22,7 @@
   hardware.deviceTree.overlays = [
     {
       name = "pcie-32bit-dma-pi5";
-      dtsFile = "${pkgs.raspberrypifw}/share/raspberrypi/boot/overlays/pcie-32bit-dma-pi5.dtbo";
+      dtboFile = "${pkgs.raspberrypifw}/share/raspberrypi/boot/overlays/pcie-32bit-dma-pi5.dtbo";
     }
   ];
 }
