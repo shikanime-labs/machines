@@ -73,7 +73,7 @@ let
     let
       catbox = mkCatboxNixosConfiguration system;
     in
-    catbox.config.system.build.buildLayeredImage;
+    catbox.config.system.build.containerdiskImage;
 in
 {
   flake = {

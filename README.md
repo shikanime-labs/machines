@@ -47,7 +47,7 @@ Current hosts:
 - `minish` - NixOS ARM node
 - `nemishi` - NixOS ARM node
 - `nixtar` - NixOS on WSL
-- `catbox` - Docker image / devcontainer style NixOS build output
+- `catbox` - KubeVirt containerdisk (NixOS qcow2 wrapped as an OCI image)
 - `telsha` - nix-darwin host
 
 ### `modules/`

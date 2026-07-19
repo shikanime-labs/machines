@@ -1,5 +1,4 @@
 {
-  config,
   modulesPath,
   pkgs,
   ...
@@ -8,9 +7,18 @@
 {
   imports = [
     "${modulesPath}/profiles/headless.nix"
-    "${modulesPath}/virtualisation/docker-image.nix"
+    ../../modules/nixos/containerdisk.nix
     ../../modules/nixos/minimal.nix
   ];
+
+  containerdisk = {
+    name = "ghcr.io/shikanime-labs/machines/catbox";
+    settings.LABELS = {
+      "org.opencontainers.image.source" = "https://github.com/shikanime-labs/machines";
+      "org.opencontainers.image.description" = "catbox KubeVirt containerdisk";
+      "org.opencontainers.image.licenses" = "AGPL-3.0-or-later";
+    };
+  };
 
   home-manager.users = {
     automata.imports = [
@@ -19,17 +27,6 @@
     shika.imports = [
       ./users/shika/home-configuration.nix
     ];
-  };
-
-  # Prevent resolvconf from overriding Docker managed resolv.conf
-  environment.etc."resolv.conf".enable = false;
-
-  networking = {
-    # Let Kubernetes manage the network configuration
-    useDHCP = false;
-
-    # Let Docker manage /etc/resolv.conf
-    resolvconf.enable = false;
   };
 
   programs.nix-ld = {
@@ -46,65 +43,6 @@
     enable = true;
     openFirewall = true;
   };
-
-  system.build.buildLayeredImage = pkgs.dockerTools.buildLayeredImage {
-    name = "ghcr.io/shikanime-labs/machines/catbox";
-    contents = [
-      config.system.build.toplevel
-      pkgs.bash
-      pkgs.coreutils
-      pkgs.dockerTools.binSh
-      pkgs.findutils
-      pkgs.gh
-      pkgs.git
-      pkgs.gnugrep
-      pkgs.gnupg
-      pkgs.gnused
-      pkgs.gnutar
-      pkgs.gzip
-      pkgs.openssh
-      pkgs.pass
-      pkgs.stdenv
-    ];
-    includeNixDB = true;
-    config = {
-      LABELS = {
-        "devcontainer.metadata" = builtins.toJSON [
-          {
-            containerEnv = {
-              USER = "shika";
-            };
-            mounts = [
-              {
-                source = "/sys/kernel/debug";
-                target = "/sys/kernel/debug";
-                type = "bind";
-              }
-              {
-                source = "/sys/kernel/tracing";
-                target = "/sys/kernel/tracing";
-                type = "bind";
-              }
-            ];
-            onCreateCommand = "systemctl is-system-running --wait || true";
-            overrideCommand = false;
-            privileged = true;
-            remoteUser = "shika";
-            updateRemoteUserUID = false;
-          }
-        ];
-        "org.opencontainers.image.source" = "https://github.com/shikanime-labs/machines";
-        "org.opencontainers.image.description" = "catbox development environment";
-        "org.opencontainers.image.licenses" = "AGPL-3.0-or-later";
-      };
-      ExposedPorts."22/tcp" = { };
-      Entrypoint = [ "/init" ];
-    };
-  };
-
-  systemd.tmpfiles.rules = [
-    "Z /workspaces - root users - -"
-  ];
 
   users.users = {
     shika = {
