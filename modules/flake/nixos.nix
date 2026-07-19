@@ -55,19 +55,23 @@ let
       { home-manager.sharedModules = workstationHomeModules; }
     ];
 
+  mkCatboxNixosConfiguration =
+    system:
+    inputs.nixpkgs.lib.nixosSystem {
+      pkgs = import inputs.nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+      modules = [
+        ../../hosts/catbox/configuration.nix
+      ]
+      ++ workstationsModules;
+    };
+
   mkCatbox =
     system:
     let
-      catbox = inputs.nixpkgs.lib.nixosSystem {
-        pkgs = import inputs.nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
-        };
-        modules = [
-          ../../hosts/catbox/configuration.nix
-        ]
-        ++ workstationsModules;
-      };
+      catbox = mkCatboxNixosConfiguration system;
     in
     catbox.config.system.build.buildLayeredImage;
 in
