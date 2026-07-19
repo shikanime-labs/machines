@@ -19,6 +19,14 @@
   #      -> nvme nvme0: I/O tag 24 QID 0 timeout, disable controller
   #   2. PCIe ASPM L1 on the BCM2712 root (default policy) -> probe error -12
   # Both must be disabled for a clean probe.
+  #
+  # Probe error -12 (ENOMEM) is also hit when the default 64 MiB CMA pool is too
+  # small for the NVMe admin queue / PRP DMA buffers. Bump it so the driver can
+  # allocate. Confirmed: without cma=512M the probe fails even with the overlay.
+  boot.kernelParams = [
+    "cma=512M"
+  ];
+
   hardware.deviceTree.overlays = [
     {
       name = "pcie-32bit-dma-pi5";
