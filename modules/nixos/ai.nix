@@ -81,7 +81,7 @@ with lib;
         provider = "custom:aperture";
       };
       mcp_servers.aperture = {
-        url = "http://ai.taila659a.ts.net/v1/mcp";
+        url = "https://ai.taila659a.ts.net/mcp";
         enabled = true;
       };
     };
