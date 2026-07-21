@@ -46,12 +46,6 @@ in
     sessionPath = [ "${config.home.homeDirectory}/.local/bin" ];
   };
 
-  # FIX: https://github.com/Mic92/sops-nix/issues/890
-  launchd.agents.sops-nix = mkIf pkgs.stdenv.isDarwin {
-    enable = true;
-    config.EnvironmentVariables.PATH = mkForce "/usr/bin:/bin:/usr/sbin:/sbin";
-  };
-
   programs = {
     antigravity-cli.enable = true;
 
