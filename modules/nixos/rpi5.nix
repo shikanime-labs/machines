@@ -18,10 +18,6 @@
     # small for the NVMe admin queue / PRP DMA buffers. Bump it so the driver can
     # allocate. Confirmed: without cma=512M the probe fails even with the overlay.
     "cma=512M"
-    # PCIe ASPM L1 on the BCM2712 root port (default policy) -> probe error -12.
-    # Force L1 off for a clean NVMe probe. (The earlier 0-byte / "missing device"
-    # failure was the M.2 HAT 16-pin power ribbon, not APST — removed.)
-    "pcie_aspm.policy=performance"
   ];
 
   hardware.deviceTree.overlays = [
