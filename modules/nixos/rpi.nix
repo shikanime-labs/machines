@@ -12,6 +12,10 @@
     "usb-storage.quirks=152d:a578:u"
   ];
 
+  # Silences Raspberry Pi firmware debug flooding on all RPi hosts through
+  # fushi/nemishi/minish. 4 = warnings and above still appear.
+  boot.consoleLogLevel = 4;
+
   nixpkgs.overlays = [
     (_: super: {
       makeModulesClosure = x: super.makeModulesClosure (x // { allowMissing = true; });
