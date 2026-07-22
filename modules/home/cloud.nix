@@ -1,6 +1,10 @@
 { pkgs, ... }:
 
 {
+  imports = [
+    ./krew.nix
+  ];
+
   catppuccin.k9s.enable = false;
 
   programs = {
