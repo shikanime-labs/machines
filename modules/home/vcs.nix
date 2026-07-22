@@ -9,6 +9,7 @@
     git = {
       enable = true;
       lfs.enable = true;
+      ignores = [ ".hermes/" ];
       settings.credential.helper = "manager";
     };
 
