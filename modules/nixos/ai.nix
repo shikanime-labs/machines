@@ -30,8 +30,26 @@ with lib;
       context.engine = "lcm";
       custom_providers = [
         {
-          name = "aperture";
+          name = "aperture-anthropic";
           base_url = "https://ai.taila659a.ts.net/v1";
+          api_mode = "anthropic_messages";
+          model = "glm-4.7";
+          models = [
+            "glm-4.7"
+            "glm-5.2"
+          ];
+        }
+        {
+          name = "aperture-openai";
+          base_url = "https://ai.taila659a.ts.net/v1";
+          api_mode = "chat_completions";
+          model = "stepfun/step-3.7-flash:free";
+          models = [
+            "tencent/hy3:free"
+            "mistral/labs-leanstral-1-5"
+            "openrouter/free"
+            "stepfun/step-3.7-flash:free"
+          ];
         }
       ];
       documents."honcho.json" = builtins.toJSON {
@@ -54,18 +72,18 @@ with lib;
       fallback_providers = [
         {
           api_mode = "chat_completions";
-          model = "labs-leanstral-2603";
-          provider = "custom:aperture";
+          model = "poolside/laguna-s-2.1:free";
+          provider = "custom:aperture-openai";
+        }
+        {
+          api_mode = "chat_completions";
+          model = "labs-leanstral-1-5";
+          provider = "custom:aperture-openai";
         }
         {
           api_mode = "chat_completions";
           model = "stepfun/step-3.7-flash:free";
-          provider = "custom:aperture";
-        }
-        {
-          api_mode = "chat_completions";
-          model = "tencent/hy3:free";
-          provider = "custom:aperture";
+          provider = "custom:aperture-openai";
         }
       ];
       matrix = {
@@ -77,8 +95,71 @@ with lib;
       };
       memory.provider = "honcho";
       model = {
-        default = "openrouter/free";
-        provider = "custom:aperture";
+        default = "tencent/hy3:free";
+        provider = "custom:aperture-openai";
+        base_url = "https://ai.taila659a.ts.net/v1";
+      };
+      auxiliary = {
+        vision = {
+          provider = "custom:aperture-openai";
+          model = "openrouter/free";
+          base_url = "https://ai.taila659a.ts.net/v1";
+        };
+        web_extract = {
+          provider = "custom:aperture-openai";
+          model = "openrouter/free";
+          base_url = "https://ai.taila659a.ts.net/v1";
+        };
+        compression = {
+          provider = "custom:aperture-openai";
+          model = "openrouter/free";
+          base_url = "https://ai.taila659a.ts.net/v1";
+        };
+        skills_hub = {
+          provider = "custom:aperture-openai";
+          model = "openrouter/free";
+          base_url = "https://ai.taila659a.ts.net/v1";
+        };
+        approval = {
+          provider = "custom:aperture-openai";
+          model = "openrouter/free";
+          base_url = "https://ai.taila659a.ts.net/v1";
+        };
+        mcp = {
+          provider = "custom:aperture-openai";
+          model = "openrouter/free";
+          base_url = "https://ai.taila659a.ts.net/v1";
+        };
+        title_generation = {
+          provider = "custom:aperture-openai";
+          model = "openrouter/free";
+          base_url = "https://ai.taila659a.ts.net/v1";
+        };
+        memory_query_rewrite = {
+          provider = "custom:aperture-anthropic:openai";
+          model = "auxiliary";
+          base_url = "https://ai.taila659a.ts.net/v1";
+        };
+        tts_audio_tags = {
+          provider = "custom:aperture-openai";
+          model = "openrouter/free";
+          base_url = "https://ai.taila659a.ts.net/v1";
+        };
+        triage_specifier = {
+          provider = "custom:aperture-openai";
+          model = "openrouter/free";
+          base_url = "https://ai.taila659a.ts.net/v1";
+        };
+        kanban_decomposer = {
+          provider = "custom:aperture-openai";
+          model = "openrouter/free";
+          base_url = "https://ai.taila659a.ts.net/v1";
+        };
+        profile_describer = {
+          provider = "custom:aperture-openai";
+          model = "openrouter/free";
+          base_url = "https://ai.taila659a.ts.net/v1";
+        };
       };
       mcp_servers.aperture = {
         url = "https://ai.taila659a.ts.net/mcp";
