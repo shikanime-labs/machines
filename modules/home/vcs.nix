@@ -6,6 +6,8 @@
   ];
 
   programs = {
+    delta.enable = true;
+
     gh-dash.enable = true;
 
     git = {
