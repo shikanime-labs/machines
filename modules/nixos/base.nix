@@ -5,9 +5,15 @@
     ./minimal.nix
   ];
 
-  nix.extraOptions = ''
-    !include ${config.sops.templates.nix-config.path}
-  '';
+  nix = {
+    extraOptions = ''
+      !include ${config.sops.templates.nix-config.path}
+    '';
+    settings.experimental-features = [
+      "flakes"
+      "nix-command"
+    ];
+  };
 
   sops = {
     secrets.nix-access-token.reloadUnits = [ "nix-daemon.service" ];

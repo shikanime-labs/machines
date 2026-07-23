@@ -23,7 +23,7 @@ in
     extraOptions = ''
       !include ${config.sops.templates.nix-config.path}
     '';
-    settings.experimental-features = "nix-command flakes";
+    settings.experimental-features = "flakes nix-command";
   };
 
   sops = {
