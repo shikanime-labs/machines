@@ -1,7 +1,7 @@
 {
   imports = [
     ../../modules/nixos/ai.nix
-    ../../modules/nixos/beelink.nix
+    ../../modules/nixos/beelink-eq.nix
     ../../modules/nixos/builder.nix
     ../../modules/nixos/distributed.nix
     ../../modules/nixos/follower.nix
@@ -50,7 +50,7 @@
       ## HOST CONTEXT
       nalsha — Beelink EQ14, x86_64. RKE2 worker node. `/mnt/remilia` (XFS,
       /dev/disk/by-label/remilia). Static IP `192.168.1.64/24` on `br0`; also
-      `2a02:8424:7899:f201:94eb:8d1:325a:7234`. Imports: `beelink.nix`,
+      `2a02:8424:7899:f201:94eb:8d1:325a:7234`. Imports: `beelink-eq.nix`,
       `builder.nix`, `distributed.nix`, `follower.nix`. Advertises Tailscale
       routes `10.244.1.0/24,fd00::1:0/112`. Secrets from
       `../../secrets/nalsha.enc.yaml`; shared tokens from `nishir.enc.yaml`.

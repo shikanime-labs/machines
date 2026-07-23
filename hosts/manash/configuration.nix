@@ -1,7 +1,7 @@
 {
   imports = [
     ../../modules/nixos/ai.nix
-    ../../modules/nixos/beelink.nix
+    ../../modules/nixos/beelink-eq.nix
     ../../modules/nixos/builder.nix
     ../../modules/nixos/distributed.nix
     ../../modules/nixos/leader.nix
@@ -50,7 +50,7 @@
       ## HOST CONTEXT
       manash — Beelink EQ14, x86_64. RKE2 control-plane anchor. `/mnt/flandre`
       (XFS, /dev/disk/by-label/flandre). Static IP `192.168.1.28/24` on `br0`;
-      also `2a02:8424:7899:f201:94eb:8d1:325a:7181`. Imports: `beelink.nix`,
+      also `2a02:8424:7899:f201:94eb:8d1:325a:7181`. Imports: `beelink-eq.nix`,
       `builder.nix`, `distributed.nix`, `leader.nix`. Advertises Tailscale
       routes `10.244.0.0/24,fd00::/112`. Secrets from
       `../../secrets/manash.enc.yaml`; shared tokens from `nishir.enc.yaml`.

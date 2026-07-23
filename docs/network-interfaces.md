@@ -10,10 +10,10 @@ bridge `br0` that carries all traffic — pod-to-pod, SSH, flannel, Longhorn.
 
 Configured inline in each hardware module — no custom abstraction module.
 
-| Module                      | Interfaces         | Bond                  | Bridge | DHCP |
-| --------------------------- | ------------------ | --------------------- | ------ | ---- |
-| `modules/nixos/beelink.nix` | `enp1s0`, `enp2s0` | `bond0` (balance-alb) | `br0`  | yes  |
-| `modules/nixos/rpi.nix`     | `end0`             | —                     | `br0`  | yes  |
+| Module                         | Interfaces         | Bond                  | Bridge | DHCP |
+| ------------------------------ | ------------------ | --------------------- | ------ | ---- |
+| `modules/nixos/beelink-eq.nix` | `enp1s0`, `enp2s0` | `bond0` (balance-alb) | `br0`  | yes  |
+| `modules/nixos/rpi.nix`        | `end0`             | —                     | `br0`  | yes  |
 
 ### Beelink (dual 2.5G NIC, balance-alb bond)
 
