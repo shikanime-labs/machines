@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   pkgs,
   ...
@@ -9,7 +8,7 @@ with lib;
 
 {
   imports = [
-    ./base.nix
+    ./machine.nix
   ];
 
   # 32 = SHUTDOWN_IOERROR. This specifically targets I/O failures.
@@ -50,30 +49,9 @@ with lib;
       "::/96" = 20;
       "::ffff:0:0/96" = 100;
     };
-
-    wireless = {
-      enable = true;
-      secretsFile = config.sops.templates.wifi.path;
-      networks = {
-        "SFR_E368".pskRaw = "ext:psk_sfr_e368";
-        "SFR_E368_5SGHZ".pskRaw = "ext:psk_sfr_e368_5ghz";
-        "Vintage Korean".pskRaw = "ext:psk_vintage_korean";
-      };
-    };
   };
 
   services = {
-    avahi = {
-      enable = true;
-      nssmdns4 = true;
-      nssmdns6 = true;
-      publish = {
-        addresses = true;
-        enable = true;
-        workstation = true;
-      };
-    };
-
     knix = {
       addons.longhorn.enable = true;
 
@@ -92,24 +70,9 @@ with lib;
       };
     };
 
-    openssh = {
-      enable = true;
-      openFirewall = true;
-    };
-
-    tailscale = {
-      authKeyFile = config.sops.secrets.tailscale-authkey.path;
-      enable = true;
-      extraUpFlags = [
-        "--accept-routes"
-        "--ssh"
-      ];
-      openFirewall = true;
-      useRoutingFeatures = "server";
-      serve.services.syncthing = {
-        endpoints."tcp:22000" = "tcp://127.0.0.1:22000";
-        advertised = true;
-      };
+    tailscale.serve.services.syncthing = {
+      endpoints."tcp:22000" = "tcp://127.0.0.1:22000";
+      advertised = true;
     };
 
     # Userspace hardware watchdog + system resource monitor
@@ -119,37 +82,6 @@ with lib;
         meminfo.enabled = true;
         timeout = 120; # Increased from 15s to prevent premature reboots
       };
-    };
-  };
-
-  sops = {
-    secrets = {
-      tailscale-authkey.restartUnits = [ "tailscaled.service" ];
-      wifi-sfr-e368 = {
-        owner = "wpa_supplicant";
-        group = "wpa_supplicant";
-        restartUnits = [ "wpa_supplicant.service" ];
-      };
-      wifi-sfr-e368-5ghz = {
-        owner = "wpa_supplicant";
-        group = "wpa_supplicant";
-        restartUnits = [ "wpa_supplicant.service" ];
-      };
-      wifi-vintage-korean = {
-        owner = "wpa_supplicant";
-        group = "wpa_supplicant";
-        restartUnits = [ "wpa_supplicant.service" ];
-      };
-    };
-    templates.wifi = {
-      content = ''
-        psk_sfr_e368=${config.sops.placeholder.wifi-sfr-e368}
-        psk_sfr_e368_5ghz=${config.sops.placeholder.wifi-sfr-e368-5ghz}
-        psk_vintage_korean=${config.sops.placeholder.wifi-vintage-korean}
-      '';
-      group = "wpa_supplicant";
-      mode = "0640";
-      restartUnits = [ "wpa_supplicant.service" ];
     };
   };
 

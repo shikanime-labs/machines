@@ -149,6 +149,19 @@ in
         ]
         ++ workstationsModules;
       };
+
+      ishtar = inputs.nixpkgs.lib.nixosSystem {
+        pkgs = import inputs.nixpkgs {
+          system = "x86_64-linux";
+          config.allowUnfree = true;
+        };
+        modules = [
+          ../../hosts/ishtar/configuration.nix
+          inputs.nixos-hardware.nixosModules.common-cpu-intel
+          inputs.nixos-hardware.nixosModules.common-pc-ssd
+        ]
+        ++ workstationsModules;
+      };
     };
 
     packages = {
@@ -157,6 +170,7 @@ in
         catbox = mkCatbox "x86_64-linux";
         manash = self.nixosConfigurations.manash.config.system.build.toplevel;
         nalsha = self.nixosConfigurations.nalsha.config.system.build.toplevel;
+        ishtar = self.nixosConfigurations.ishtar.config.system.build.toplevel;
         nixtar = self.nixosConfigurations.nixtar.config.system.build.tarballBuilder;
       };
       aarch64-linux = {

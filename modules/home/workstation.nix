@@ -105,6 +105,7 @@ in
         "minish.taila659a.ts.net" = mkSshHeadlessHost "nishir";
         "nalsha.taila659a.ts.net" = mkSshHeadlessHost "nishir";
         "nemishi.taila659a.ts.net" = mkSshHeadlessHost "nishir";
+        "ishtar.taila659a.ts.net" = mkSshWorkstationHost "shika";
         "thinkcentre-m710t.tailfb4bb2.ts.net" = mkSshWorkstationHost "william-phetsinorath";
       };
     };

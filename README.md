@@ -46,6 +46,8 @@ Current hosts:
 - `fushi` - NixOS ARM node
 - `minish` - NixOS ARM node
 - `nemishi` - NixOS ARM node
+- `ishtar` - NixOS GUI workstation (Razer Blade 17 (2019), Hyprland on Wayland +
+  NVIDIA)
 - `nixtar` - NixOS on WSL
 - `catbox` - KubeVirt containerdisk (NixOS qcow2 wrapped as an OCI image)
 - `telsha` - nix-darwin host
@@ -91,6 +93,7 @@ The flake exposes these primary outputs:
 - `nixosConfigurations.fushi`
 - `nixosConfigurations.minish`
 - `nixosConfigurations.nemishi`
+- `nixosConfigurations.ishtar`
 - `nixosConfigurations.nixtar`
 - `darwinConfigurations.telsha`
 - `packages.<system>.*` for the corresponding system builds, including `catbox`
@@ -121,8 +124,8 @@ nix build .#packages.x86_64-linux.catbox
 sudo nixos-rebuild switch --flake .#manash
 ```
 
-Replace `manash` with `ashira`, `nalsha`, `fushi`, `minish`, `nemishi`, or
-`nixtar` as needed.
+Replace `manash` with `ashira`, `nalsha`, `fushi`, `minish`, `nemishi`,
+`ishtar`, or `nixtar` as needed.
 
 ### Switch A Darwin Host
 
@@ -156,6 +159,7 @@ workstation-style machines:
   distributed build settings, and cluster runner duties
 - `fushi`, `minish`, and `nemishi` are ARM Linux nodes with the same shared
   cluster profile shape
+- `ishtar` is a bare-metal GUI workstation (Hyprland on Wayland + NVIDIA)
 - `nixtar` is a WSL-based workstation profile
 - `telsha` is the Darwin workstation profile
 
