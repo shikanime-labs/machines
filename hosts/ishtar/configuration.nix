@@ -17,9 +17,9 @@
 
   networking.hostName = "ishtar";
 
-  home-manager.users.shika.imports = [
-    ./users/shika/home-configuration.nix
-  ];
+  # home-manager.users.shika.imports = [
+  #   ./users/shika/home-configuration.nix
+  # ];
 
   sops = {
     age = {
