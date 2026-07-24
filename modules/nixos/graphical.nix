@@ -41,9 +41,16 @@
     videoDrivers = [ "nvidia" ];
   };
 
-  # NixOS-level hyprland provides the GDM desktop session; per-user config lives in home-manager.
+  # GDM (Wayland-only since GNOME 50) as the display manager. It auto-discovers
+  # the Hyprland session via programs.hyprland.enable -> sessionPackages (withUWSM).
+  services.displayManager.gdm.enable = true;
+
+  # NixOS-level hyprland provides the desktop session; per-user config lives in home-manager.
   programs = {
-    hyprland.enable = true;
+    hyprland = {
+      enable = true;
+      withUWSM = true;
+    };
     hyprlock.enable = true;
   };
 
