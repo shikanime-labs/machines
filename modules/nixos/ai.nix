@@ -211,6 +211,4 @@ with lib;
       };
     };
   };
-
-  users.users.hermes.extraGroups = [ "wheel" ];
 }
