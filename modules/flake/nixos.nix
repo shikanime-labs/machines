@@ -5,6 +5,8 @@ let
   aiModules = [
     inputs.cua.nixosModules.cua-driver
     inputs.hermes-agent.nixosModules.default
+    inputs.noctalia.nixosModules.default
+    inputs.noctalia-greeter.nixosModules.default
   ];
 
   baseModules = [
@@ -46,6 +48,7 @@ let
     inputs.devlib.homeModules.default
     inputs.identities.homeModules.default
     inputs.sops-nix.homeModules.default
+    inputs.noctalia.homeModules.default
   ];
 
   workstationsModules =

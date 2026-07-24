@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
@@ -19,10 +18,6 @@ in
     ../../../../modules/home/starship.nix
     ../../../../modules/home/vcs.nix
     ../../../../modules/home/workstation.nix
-  ];
-
-  home.packages = with pkgs; [
-    hyprpicker
   ];
 
   identities = {
@@ -54,14 +49,20 @@ in
   programs = {
     bash.enable = true;
     docker-cli.settings.credsStore = "pass";
-    hyprlock.enable = true;
-    waybar.enable = true;
-    wlogout.enable = true;
-  };
-
-  services = {
-    hyprpaper.enable = true;
-    hypridle.enable = true;
+    noctalia = {
+      enable = true;
+      systemd.enable = true;
+      settings = {
+        shell = {
+          font = "JetBrainsMono Nerd Font";
+        };
+        theme = {
+          mode = "dark";
+          source = "builtin";
+          builtin = "Catppuccin";
+        };
+      };
+    };
   };
 
   sops = {
