@@ -91,6 +91,7 @@
           settings.creation_rules =
             let
               ashira = "age1mel902ydxqv4yh798t5en336am9zwykapy8rtfvq4yprzr79t5wqzxe8ph";
+              ishtar = "age16tla3k0j70er5q526nrt6kqzzw7ds62dazlsknjxuhp7q4yq3ydqhxv8gy";
               fushi = "age1fm9p4r5mug9rwk9puz7enpqap5xcrqeku6wp7atsajher559hads5wg03y";
               manash = "age1f4yuh4j3gqafjduusfpxz3na9xtwth9s6gznq043mfex0zglp5jqkkdm64";
               minish = "age1a4y27yc3tarlju7vg0lugnvs933wmk4hnw0udrn4499mts04qd0qvu7c3u";
@@ -104,6 +105,15 @@
                 path_regex = "secrets/ashira.enc.yaml";
                 age = [
                   ashira
+                  ishtar
+                  nixtar
+                  telsha
+                ];
+              }
+              {
+                path_regex = "secrets/ishtar.enc.yaml";
+                age = [
+                  ishtar
                   nixtar
                   telsha
                 ];
@@ -111,6 +121,7 @@
               {
                 path_regex = "secrets/fushi.enc.yaml";
                 age = [
+                  ishtar
                   fushi
                   nixtar
                   telsha
@@ -119,6 +130,7 @@
               {
                 path_regex = "secrets/manash.enc.yaml";
                 age = [
+                  ishtar
                   manash
                   nixtar
                   telsha
@@ -127,6 +139,7 @@
               {
                 path_regex = "secrets/minish.enc.yaml";
                 age = [
+                  ishtar
                   minish
                   nixtar
                   telsha
@@ -135,6 +148,7 @@
               {
                 path_regex = "secrets/nalsha.enc.yaml";
                 age = [
+                  ishtar
                   nalsha
                   nixtar
                   telsha
@@ -143,6 +157,7 @@
               {
                 path_regex = "secrets/nemishi.enc.yaml";
                 age = [
+                  ishtar
                   nemishi
                   nixtar
                   telsha
@@ -151,6 +166,7 @@
               {
                 path_regex = "secrets/nishir.enc.yaml";
                 age = [
+                  ishtar
                   ashira
                   fushi
                   manash
