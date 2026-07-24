@@ -177,6 +177,22 @@
                   telsha
                 ];
               }
+              {
+                path_regex = "secrets/nixtar.enc.yaml";
+                age = [
+                  ishtar
+                  nixtar
+                  telsha
+                ];
+              }
+              {
+                path_regex = "secrets/telsha.enc.yaml";
+                age = [
+                  ishtar
+                  nixtar
+                  telsha
+                ];
+              }
             ];
         };
 
