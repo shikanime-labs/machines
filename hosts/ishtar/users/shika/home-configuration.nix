@@ -69,11 +69,9 @@ in
     defaultSopsFile = ../../../../secrets/ishtar.enc.yaml;
     defaultSopsFormat = "yaml";
     secrets.cachix-token = { };
-    templates = {
-      cachix-config.content = toDhall {
-        authToken = config.sops.placeholder.cachix-token;
-        hostname = "https://cachix.org";
-      };
+    templates.cachix-config.content = toDhall {
+      authToken = config.sops.placeholder.cachix-token;
+      hostname = "https://cachix.org";
     };
   };
 
