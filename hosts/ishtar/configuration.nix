@@ -1,5 +1,3 @@
-{ config, ... }:
-
 {
   imports = [
     ../../modules/nixos/razer-blade.nix
@@ -18,23 +16,6 @@
   };
 
   networking.hostName = "ishtar";
-
-  services = {
-    openssh = {
-      enable = true;
-      openFirewall = true;
-    };
-
-    tailscale = {
-      enable = true;
-      openFirewall = true;
-      authKeyFile = config.sops.secrets.tailscale-authkey.path;
-      extraUpFlags = [
-        "--accept-routes"
-        "--ssh"
-      ];
-    };
-  };
 
   home-manager.users.shika.imports = [
     ./users/shika/home-configuration.nix
