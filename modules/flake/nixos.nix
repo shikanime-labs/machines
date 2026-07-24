@@ -13,6 +13,7 @@ let
     inputs.comin.nixosModules.comin
     inputs.sops-nix.nixosModules.default
     inputs.home-manager.nixosModules.default
+    inputs.colemak.nixosModules.default
   ];
 
   clusterModules = [
