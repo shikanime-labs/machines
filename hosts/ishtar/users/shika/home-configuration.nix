@@ -53,14 +53,13 @@ in
       enable = true;
       systemd.enable = true;
       settings = {
-        shell = {
-          font = "JetBrainsMono Nerd Font";
-        };
+        shell.font = "JetBrainsMono Nerd Font";
         theme = {
-          mode = "dark";
+          mode = "auto";
           source = "builtin";
           builtin = "Catppuccin";
         };
+        location.auto_locate = true;
       };
     };
   };
