@@ -173,6 +173,7 @@
       {
         imports = [
           ./modules/flake/devenv.nix
+          ./treefmt.nix
           devenv.flakeModule
           devlib.flakeModule
           darwinFlakeModule

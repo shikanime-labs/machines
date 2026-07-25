@@ -7,9 +7,6 @@
       pkgs,
       ...
     }:
-    let
-      toml = pkgs.formats.toml { };
-    in
     {
       devenv.shells.default = {
         imports = [
@@ -195,14 +192,6 @@
               }
             ];
         };
-
-        treefmt.config.programs.typos.configFile =
-          let
-            configFile = toml.generate "typos.toml" {
-              default.extend-words.facter = "facter";
-            };
-          in
-          toString configFile;
       };
     };
 }

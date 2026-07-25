@@ -142,6 +142,20 @@ nix develop
 The shell is defined through `devenv` and includes the repository tooling used
 for build and workflow tasks.
 
+### Lint And Format
+
+Formatting and linting run through `treefmt` (Alejandra for Nix, plus Statix,
+Deadnix, and Typos). Enter the dev shell first, then:
+
+```sh
+nix develop          # or: direnv allow
+treefmt              # format and lint the repo
+nix flake check      # full evaluation check (also run in CI)
+```
+
+A `.editorconfig` keeps editor defaults (LF, 2-space indent) consistent across
+contributors.
+
 ## Secret Handling
 
 Most hosts consume encrypted data from `secrets/<host>.enc.yaml`.
