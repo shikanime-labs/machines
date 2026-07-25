@@ -70,7 +70,7 @@ in
 
   sops = {
     age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
-    defaultSopsFile = ../../../../secrets/ishtar.enc.yaml;
+    defaultSopsFile = ../../../../secrets/shikanime.enc.yaml;
     defaultSopsFormat = "yaml";
     secrets.cachix-token = { };
     templates.cachix-config.content = toDhall {

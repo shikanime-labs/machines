@@ -122,11 +122,7 @@
 
               nishir = ashira ++ fushi ++ manash ++ minish ++ nalsha ++ nemishi;
 
-              workstations = [
-                ishtar
-                nixtar
-                telsha
-              ];
+              workstations = ishtar ++ nixtar ++ telsha;
 
               identities =
                 config.devenv.shells.default.identities.ishtar.ageKeys
@@ -177,6 +173,10 @@
               {
                 path_regex = "secrets/nixtar.enc.yaml";
                 age = nixtar ++ identities;
+              }
+              {
+                path_regex = "secrets/shikanime.enc.yaml";
+                age = identities;
               }
               {
                 path_regex = "secrets/telsha.enc.yaml";
