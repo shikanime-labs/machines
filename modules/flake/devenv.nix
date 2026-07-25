@@ -111,7 +111,13 @@
                 nemishi
               ];
 
-              workstations =
+              workstations = [
+                ishtar
+                nixtar
+                telsha
+              ];
+
+              identities =
                 config.devenv.shells.default.identities.ishtar.ageKeys
                 ++ config.devenv.shells.default.identities.nixtar.ageKeys
                 ++ config.devenv.shells.default.identities.telsha.ageKeys;
@@ -122,75 +128,75 @@
                 age = [
                   ashira
                 ]
-                ++ workstations;
+                ++ identities;
               }
               {
                 path_regex = "secrets/builder.enc.yaml";
-                age = nishir ++ workstations;
+                age = identities ++ nishir ++ workstations;
               }
               {
                 path_regex = "secrets/fushi.enc.yaml";
                 age = [
                   fushi
                 ]
-                ++ workstations;
+                ++ identities;
               }
               {
                 path_regex = "secrets/ishtar.enc.yaml";
                 age = [
                   ishtar
                 ]
-                ++ workstations;
+                ++ identities;
               }
               {
                 path_regex = "secrets/machine.enc.yaml";
-                age = nishir ++ workstations;
+                age = identities ++ nishir ++ workstations;
               }
               {
                 path_regex = "secrets/manash.enc.yaml";
                 age = [
                   manash
                 ]
-                ++ workstations;
+                ++ identities;
               }
               {
                 path_regex = "secrets/minish.enc.yaml";
                 age = [
                   minish
                 ]
-                ++ workstations;
+                ++ identities;
               }
               {
                 path_regex = "secrets/nalsha.enc.yaml";
                 age = [
                   nalsha
                 ]
-                ++ workstations;
+                ++ identities;
               }
               {
                 path_regex = "secrets/nemishi.enc.yaml";
                 age = [
                   nemishi
                 ]
-                ++ workstations;
+                ++ identities;
               }
               {
                 path_regex = "secrets/nishir.enc.yaml";
-                age = nishir ++ workstations;
+                age = identities ++ nishir;
               }
               {
                 path_regex = "secrets/nixtar.enc.yaml";
                 age = [
                   nixtar
                 ]
-                ++ workstations;
+                ++ identities;
               }
               {
                 path_regex = "secrets/telsha.enc.yaml";
                 age = [
                   telsha
                 ]
-                ++ workstations;
+                ++ identities;
               }
             ];
         };
