@@ -75,7 +75,8 @@ Shared module layers.
 
 Noctalia (the Wayland shell/bar) is configured entirely through Nix — there is
 no repo-owned theme schema or UI component to edit. The theme is set per user in
-`hosts/<host>/users/<user>/home-configuration.nix` under `programs.noctalia.settings`:
+`hosts/<host>/users/<user>/home-configuration.nix` under
+`programs.noctalia.settings`:
 
 - `theme.mode` — the auto-mode flag. `"auto"` follows the day/night schedule;
   set it to `"dark"` or `"light"` to disable auto and pin a fixed theme.
