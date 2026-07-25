@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ ... }:
 
 {
   imports = [
@@ -24,11 +24,11 @@
 
   services = {
     knix = {
-      serverAddr = lib.mkForce "https://nishir.taila659a.ts.net:9345";
-      interface = lib.mkForce "tailscale0";
-      nodeIP = "100.85.127.78";
+      interface = "tailscale0";
+      nodeIP = "100.85.127.78,fd7a:115c:a1e0::d63a:7f4f";
       labels = {
-        "node.kubernetes.io/instance-type" = "laptop";
+        "beta.kubernetes.io/instance-type" = "razer-blade-17";
+        "node.kubernetes.io/instance-type" = "razer-blade-17";
       };
     };
 
