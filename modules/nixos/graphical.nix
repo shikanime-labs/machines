@@ -59,8 +59,10 @@
       keyboard = {
         layout = "us";
       };
-      theme = {
-        mode = "dark";
+      # Select the Catppuccin builtin palette (Mocha dark). The greeter reads
+      # [appearance].scheme as its default scheme; theme.mode is not a valid key.
+      appearance = {
+        scheme = "Catppuccin";
       };
     };
   };
