@@ -3,6 +3,7 @@
 {
   perSystem =
     {
+      config,
       lib,
       pkgs,
       ...
@@ -101,15 +102,10 @@
               nemishi = "age14c70j0haarha8e44zssrkd3rut0ygspqwnx42zfy0lv68he2pfms62h8a3";
               telsha = "age1eak84xcr44yfqsg843rfu2xajxsyvjwh67a630htpnd0scy7yu5szjfh8d";
 
-              ishtarUser = "age1vn5a6cluts3ul6ssyfajewyr58htmlqlvfjryd6y9kpjsyvk93cq5p5y73";
-              nixtarUser = "age1um232l0h8wn9mtha2qf4f4mnf7ucjayvf5qxjvynatmasg8qg5mshekvjl";
-              telshaUser = "age1pwl9yz4k4255a4h8qz7lafce8wxhsul0cnqwmr8528fqgujlfshshv3z3g";
-
-              workstations = [
-                ishtarUser
-                nixtarUser
-                telshaUser
-              ];
+              workstations =
+                config.devenv.shells.default.identities.ishtar.ageKeys
+                ++ config.devenv.shells.default.identities.nixtar.ageKeys
+                ++ config.devenv.shells.default.identities.telsha.ageKeys;
             in
             [
               {
