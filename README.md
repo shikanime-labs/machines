@@ -71,6 +71,22 @@ Shared module layers.
   - shell, editor, font, VCS, and workstation-specific settings
 - `modules/flake/` contains flake-parts glue for NixOS, Darwin, and devenv
 
+### Theming
+
+Noctalia (the Wayland shell/bar) is configured entirely through Nix — there is
+no repo-owned theme schema or UI component to edit. The theme is set per user in
+`hosts/<host>/users/<user>/home-configuration.nix` under `programs.noctalia.settings`:
+
+- `theme.mode` — the auto-mode flag. `"auto"` follows the day/night schedule;
+  set it to `"dark"` or `"light"` to disable auto and pin a fixed theme.
+- `location.auto_locate` — when `true` (current ishtar setting), the schedule is
+  derived from runtime IP geolocation. For a fixed-location, offline setup use
+  `location.latitude`/`longitude` instead, or `location.custom_schedule` with
+  explicit `sunrise`/`sunset` times.
+
+The greeter (`modules/nixos/graphical.nix`, `programs.noctalia-greeter`) keeps a
+separate, static `theme.mode` — it does not inherit the shell's auto setting.
+
 ### `secrets/`
 
 Encrypted secrets managed by `sops-nix`.
