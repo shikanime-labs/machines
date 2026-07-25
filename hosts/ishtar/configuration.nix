@@ -1,6 +1,10 @@
+{ lib, ... }:
+
 {
   imports = [
+    ../../modules/nixos/ai.nix
     ../../modules/nixos/razer-blade.nix
+    ../../modules/nixos/leader.nix
   ];
 
   # Colemak at the OS level (TTY + localed -> niri reads it).
@@ -15,6 +19,15 @@
     "/" = {
       device = "/dev/disk/by-uuid/db554498-9db3-4070-a9a8-d11c73059810";
       fsType = "ext4";
+    };
+  };
+
+  services.knix = {
+    serverAddr = lib.mkForce "https://nishir.taila659a.ts.net:9345";
+    interface = lib.mkForce "tailscale0";
+    nodeIP = "100.85.127.78";
+    labels = {
+      "node.kubernetes.io/instance-type" = "laptop";
     };
   };
 
@@ -33,6 +46,8 @@
     defaultSopsFile = ../../secrets/ishtar.enc.yaml;
     defaultSopsFormat = "yaml";
     secrets = {
+      hermes-agent-api-server-key.sopsFile = ../../secrets/nishir.enc.yaml;
+      rke2-token.sopsFile = ../../secrets/nishir.enc.yaml;
       wifi-sfr-e368.sopsFile = ../../secrets/nishir.enc.yaml;
       wifi-sfr-e368-5ghz.sopsFile = ../../secrets/nishir.enc.yaml;
       wifi-vintage-korean.sopsFile = ../../secrets/nishir.enc.yaml;
