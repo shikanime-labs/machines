@@ -3,6 +3,9 @@
   "extends": ["config:best-practices", "security:openssf-scorecard"],
   "nix": { "enabled": true },
   "postUpgradeTasks": {
-    "nixFmt": { "commands": ["nix", "fmt"], "installTools": { "nix": {} } }
+    "commands": ["nix fmt"],
+    "executionMode": "branch",
+    "fileFilters": ["**/*.nix"],
+    "installTools": { "nix": {} }
   }
 }
