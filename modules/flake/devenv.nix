@@ -95,103 +95,96 @@
               fushi = "age1fm9p4r5mug9rwk9puz7enpqap5xcrqeku6wp7atsajher559hads5wg03y";
               manash = "age1f4yuh4j3gqafjduusfpxz3na9xtwth9s6gznq043mfex0zglp5jqkkdm64";
               minish = "age1a4y27yc3tarlju7vg0lugnvs933wmk4hnw0udrn4499mts04qd0qvu7c3u";
+              nixtar = "age1um232l0h8wn9mtha2qf4f4mnf7ucjayvf5qxjvynatmasg8qg5mshekvjl";
               nalsha = "age1evzl6xw2n96l2xyy7jed3zlv6d4jpmytp47rpp39pjju08tep4mqqa2au5";
               nemishi = "age14c70j0haarha8e44zssrkd3rut0ygspqwnx42zfy0lv68he2pfms62h8a3";
-              nixtar = "age1um232l0h8wn9mtha2qf4f4mnf7ucjayvf5qxjvynatmasg8qg5mshekvjl";
-              telsha = "age1pwl9yz4k4255a4h8qz7lafce8wxhsul0cnqwmr8528fqgujlfshshv3z3g";
+              telsha = "age1eak84xcr44yfqsg843rfu2xajxsyvjwh67a630htpnd0scy7yu5szjfh8d";
+
+              ishtarUser = "age16tla3k0j70er5q526nrt6kqzzw7ds62dazlsknjxuhp7q4yq3ydqhxv8gy";
+              nixtarUser = "age1um232l0h8wn9mtha2qf4f4mnf7ucjayvf5qxjvynatmasg8qg5mshekvjl";
+              telshaUser = "age1pwl9yz4k4255a4h8qz7lafce8wxhsul0cnqwmr8528fqgujlfshshv3z3g";
+
+              workstations = [
+                ishtarUser
+                nixtarUser
+                telshaUser
+              ];
             in
             [
               {
                 path_regex = "secrets/ashira.enc.yaml";
                 age = [
                   ashira
-                  ishtar
-                  nixtar
-                  telsha
-                ];
+                ]
+                ++ workstations;
               }
               {
                 path_regex = "secrets/ishtar.enc.yaml";
                 age = [
                   ishtar
-                  nixtar
-                  telsha
-                ];
+                ]
+                ++ workstations;
               }
               {
                 path_regex = "secrets/fushi.enc.yaml";
                 age = [
-                  ishtar
                   fushi
-                  nixtar
-                  telsha
-                ];
+                ]
+                ++ workstations;
               }
               {
                 path_regex = "secrets/manash.enc.yaml";
                 age = [
-                  ishtar
                   manash
-                  nixtar
-                  telsha
-                ];
+                ]
+                ++ workstations;
               }
               {
                 path_regex = "secrets/minish.enc.yaml";
                 age = [
-                  ishtar
                   minish
-                  nixtar
-                  telsha
-                ];
+                ]
+                ++ workstations;
               }
               {
                 path_regex = "secrets/nalsha.enc.yaml";
                 age = [
-                  ishtar
                   nalsha
-                  nixtar
-                  telsha
-                ];
+                ]
+                ++ workstations;
               }
               {
                 path_regex = "secrets/nemishi.enc.yaml";
                 age = [
-                  ishtar
                   nemishi
-                  nixtar
-                  telsha
-                ];
+                ]
+                ++ workstations;
               }
               {
                 path_regex = "secrets/nishir.enc.yaml";
                 age = [
-                  ishtar
                   ashira
                   fushi
                   manash
                   minish
                   nalsha
                   nemishi
-                  nixtar
-                  telsha
-                ];
+                ]
+                ++ workstations;
               }
               {
                 path_regex = "secrets/nixtar.enc.yaml";
                 age = [
-                  ishtar
                   nixtar
-                  telsha
-                ];
+                ]
+                ++ workstations;
               }
               {
                 path_regex = "secrets/telsha.enc.yaml";
                 age = [
-                  ishtar
-                  nixtar
                   telsha
-                ];
+                ]
+                ++ workstations;
               }
             ];
         };
