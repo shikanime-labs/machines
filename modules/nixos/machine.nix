@@ -33,7 +33,25 @@
       openFirewall = true;
       useRoutingFeatures = "server";
     };
+
+    # Userspace hardware watchdog + system resource monitor
+    watchdogd = {
+      enable = true;
+      settings = {
+        meminfo.enabled = true;
+        timeout = 120; # Increased from 15s to prevent premature reboots
+      };
+    };
   };
 
   sops.secrets.tailscale-authkey.restartUnits = [ "tailscaled.service" ];
+
+  # XFS no longer panics on I/O errors: on USB-backed nodes a transient
+  # enclosure I/O error was panicking the kernel and reboot-looping. Let XFS
+  # remount read-only and ride out the hiccup instead.
+  systemd.oomd.enable = true;
+
+  # zram swap so the kernel OOM-killer isn't the first responder on small nodes.
+  # PSI is enabled by default on NixOS std kernel; that also lets systemd-oomd run.
+  zramSwap.enable = true;
 }

@@ -11,15 +11,6 @@ with lib;
     ./machine.nix
   ];
 
-  # XFS no longer panics on I/O errors: on USB-backed nodes a transient
-  # enclosure I/O error was panicking the kernel and reboot-looping. Let XFS
-  # remount read-only and ride out the hiccup instead.
-  systemd.oomd.enable = true;
-
-  # zram swap so the kernel OOM-killer isn't the first responder on small nodes.
-  # PSI is enabled by default on NixOS std kernel; that also lets systemd-oomd run.
-  zramSwap.enable = true;
-
   networking = {
     firewall = {
       # Cluster -> tailnet egress. Pods route via the node (flannel host-gw),
@@ -58,35 +49,17 @@ with lib;
 
   services = {
     knix = {
-      addons.longhorn.enable = true;
-
       # Bridge interface — flannel, firewall, and sysctl rules all target br0.
       # Bonded on Beelink (bond0 → br0), single-NIC on RPi (end0 → br0).
       interface = "br0";
 
       # Use host-gw for flannel overlay — zero encapsulation overhead on same-LAN clusters
       canal.backend = "host-gw";
-
-      # Multus meta-plugin + Whereabouts IPAM. Gives selected pods a second
-      # interface on the LAN bridge (br0) for local-network exposure (e.g. Jellyfin UPnP).
-      multus = {
-        enable = true;
-        extraConfig.rke2-whereabouts.enabled = true;
-      };
     };
 
     tailscale.serve.services.syncthing = {
       endpoints."tcp:22000" = "tcp://127.0.0.1:22000";
       advertised = true;
-    };
-
-    # Userspace hardware watchdog + system resource monitor
-    watchdogd = {
-      enable = true;
-      settings = {
-        meminfo.enabled = true;
-        timeout = 120; # Increased from 15s to prevent premature reboots
-      };
     };
   };
 

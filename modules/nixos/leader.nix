@@ -1,6 +1,6 @@
 {
   imports = [
-    ./node.nix
+    ./machine.nix
   ];
 
   services = {

@@ -6,6 +6,7 @@
     ../../modules/nixos/agent.nix
     ../../modules/nixos/builder.nix
     ../../modules/nixos/distributed.nix
+    ../../modules/nixos/nishir.nix
     ../../modules/nixos/rpi4.nix
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
   ];

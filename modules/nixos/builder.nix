@@ -6,7 +6,7 @@
 
 {
   imports = [
-    ./node.nix
+    ./machine.nix
   ];
 
   nix.settings.trusted-users = [ "builder" ];

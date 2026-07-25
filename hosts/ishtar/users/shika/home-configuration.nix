@@ -62,6 +62,10 @@ in
         location.auto_locate = true;
       };
     };
+    thunderbird = {
+      enable = true;
+      profiles.default.isDefault = true;
+    };
   };
 
   sops = {

@@ -63,7 +63,7 @@ Shared module layers.
   - `workstation.nix` - workstation-oriented tooling and desktop defaults
   - `follower.nix` - server defaults shared by cluster nodes
   - `distributed.nix` - remote build machines and distributed build settings
-  - `node.nix` - cluster node defaults: tailscale, SSH, Avahi, firewall tweaks
+  - `nishir.nix` - cluster node defaults: tailscale, SSH, Avahi, firewall tweaks
   - `nishir.nix` and `talashi.nix` - cluster-specific server profiles
 - `modules/darwin/` contains macOS host profiles
   - `base.nix`, `minimal.nix`, `workstation.nix`, `distributed.nix`

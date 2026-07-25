@@ -5,6 +5,7 @@
     ../../modules/nixos/builder.nix
     ../../modules/nixos/distributed.nix
     ../../modules/nixos/follower.nix
+    ../../modules/nixos/nishir.nix
   ];
 
   disko.devices.disk.patchouli = {

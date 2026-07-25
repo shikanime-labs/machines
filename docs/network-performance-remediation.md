@@ -40,7 +40,7 @@ The `services.knix.canal` options are provided by the `canal.nix` module in
 is set to `host-gw` globally for all cluster nodes:
 
 ```nix
-# modules/nixos/node.nix
+# modules/nixos/nishir.nix
 services.knix.canal.backend = "host-gw";
 ```
 
@@ -79,7 +79,7 @@ kubectl rollout restart ds -n kube-system rke2-canal
    needed. `rke2.nix` updated to use `cfg.canal` values in the HelmChartConfig
    manifest.
 
-2. `modules/nixos/node.nix` — Firewall allows pod CIDR on br+ interfaces.
+2. `modules/nixos/nishir.nix` — Firewall allows pod CIDR on br+ interfaces.
 
 3. `modules/nixos/beelink-eq.nix` — Dual i226-V NICs bonded via `balance-alb`
    (bond0) into a single `br0` bridge. `network-nic-performance` service applies
