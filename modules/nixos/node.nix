@@ -11,9 +11,14 @@ with lib;
     ./machine.nix
   ];
 
-  # 32 = SHUTDOWN_IOERROR. This specifically targets I/O failures.
-  # When XFS encounters a permanent I/O error, it panics the kernel.
-  boot.kernel.sysctl."fs.xfs.panic_mask" = 32;
+  # XFS no longer panics on I/O errors: on USB-backed nodes a transient
+  # enclosure I/O error was panicking the kernel and reboot-looping. Let XFS
+  # remount read-only and ride out the hiccup instead.
+  systemd.oomd.enable = true;
+
+  # zram swap so the kernel OOM-killer isn't the first responder on small nodes.
+  # PSI is enabled by default on NixOS std kernel; that also lets systemd-oomd run.
+  zramSwap.enable = true;
 
   networking = {
     firewall = {
