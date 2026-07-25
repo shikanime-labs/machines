@@ -167,6 +167,15 @@ Several hosts share remote build configuration through
 `modules/nixos/distributed.nix`, which lets local builds offload work to the
 other machines.
 
+## Theming
+
+Noctalia uses the Catppuccin built-in palette for its shell. The Ishtar home
+configuration selects it via
+`programs.noctalia.settings.theme.builtin = "Catppuccin"` with `mode = "auto"`,
+so the shell follows the system light/dark state. The `catppuccin` Home Manager
+module (Latte flavor on the workstation profile) supplies matching terminal and
+application colors.
+
 ## Related Repos
 
 This repository follows the same general shape as the other Shikanime
