@@ -47,7 +47,7 @@ with lib;
           models = [
             "tencent/hy3:free"
             "mistral/labs-leanstral-1-5"
-            "openrouter/free"
+            "openrouter/openrouter/free"
             "stepfun/step-3.7-flash:free"
           ];
         }
@@ -102,37 +102,37 @@ with lib;
       auxiliary = {
         vision = {
           provider = "custom:aperture-openai";
-          model = "openrouter/free";
+          model = "openrouter/openrouter/free";
           base_url = "https://ai.taila659a.ts.net/v1";
         };
         web_extract = {
           provider = "custom:aperture-openai";
-          model = "openrouter/free";
+          model = "openrouter/openrouter/free";
           base_url = "https://ai.taila659a.ts.net/v1";
         };
         compression = {
           provider = "custom:aperture-openai";
-          model = "openrouter/free";
+          model = "openrouter/openrouter/free";
           base_url = "https://ai.taila659a.ts.net/v1";
         };
         skills_hub = {
           provider = "custom:aperture-openai";
-          model = "openrouter/free";
+          model = "openrouter/openrouter/free";
           base_url = "https://ai.taila659a.ts.net/v1";
         };
         approval = {
           provider = "custom:aperture-openai";
-          model = "openrouter/free";
+          model = "openrouter/openrouter/free";
           base_url = "https://ai.taila659a.ts.net/v1";
         };
         mcp = {
           provider = "custom:aperture-openai";
-          model = "openrouter/free";
+          model = "openrouter/openrouter/free";
           base_url = "https://ai.taila659a.ts.net/v1";
         };
         title_generation = {
           provider = "custom:aperture-openai";
-          model = "openrouter/free";
+          model = "openrouter/openrouter/free";
           base_url = "https://ai.taila659a.ts.net/v1";
         };
         memory_query_rewrite = {
@@ -142,22 +142,22 @@ with lib;
         };
         tts_audio_tags = {
           provider = "custom:aperture-openai";
-          model = "openrouter/free";
+          model = "openrouter/openrouter/free";
           base_url = "https://ai.taila659a.ts.net/v1";
         };
         triage_specifier = {
           provider = "custom:aperture-openai";
-          model = "openrouter/free";
+          model = "openrouter/openrouter/free";
           base_url = "https://ai.taila659a.ts.net/v1";
         };
         kanban_decomposer = {
           provider = "custom:aperture-openai";
-          model = "openrouter/free";
+          model = "openrouter/openrouter/free";
           base_url = "https://ai.taila659a.ts.net/v1";
         };
         profile_describer = {
           provider = "custom:aperture-openai";
-          model = "openrouter/free";
+          model = "openrouter/openrouter/free";
           base_url = "https://ai.taila659a.ts.net/v1";
         };
       };
