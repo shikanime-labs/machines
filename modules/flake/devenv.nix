@@ -23,6 +23,7 @@
 
         identities = {
           enable = true;
+          ishtar.enable = true;
           nixtar.enable = true;
           telsha.enable = true;
         };
