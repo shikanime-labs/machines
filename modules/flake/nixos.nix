@@ -163,6 +163,7 @@ in
           ../../hosts/ishtar/configuration.nix
           inputs.nixos-hardware.nixosModules.common-cpu-intel
           inputs.nixos-hardware.nixosModules.common-pc-ssd
+          inputs.knix.nixosModules.default
         ]
         ++ workstationsModules;
       };
