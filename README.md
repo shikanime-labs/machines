@@ -84,9 +84,10 @@ no repo-owned theme schema or UI component to edit. The theme is set per user in
   derived from runtime IP geolocation. For a fixed-location, offline setup use
   `location.latitude`/`longitude` instead, or `location.custom_schedule` with
   explicit `sunrise`/`sunset` times.
-
-The greeter (`modules/nixos/graphical.nix`, `programs.noctalia-greeter`) keeps a
-separate, static `theme.mode` — it does not inherit the shell's auto setting.
+- `shell.greeter_sync.auto_sync` — when `true`, the shell pushes its resolved
+  theme (auto → day/night) into the greeter, so the login screen follows the
+  same schedule. Off by default. Do not set `theme.mode` on the greeter: its
+  binary ignores `[theme]`; only the shell→greeter sync drives greeter theming.
 
 ### `secrets/`
 
@@ -181,8 +182,8 @@ workstation-style machines:
 - `telsha` is the Darwin workstation profile
 
 Several hosts share remote build configuration through
-`modules/nixos/distributed.nix`, which lets local builds offload work to the
-other machines.
+`modules/nixos/profiles/distributed.nix`, which lets local builds offload work
+to the other machines.
 
 ## Related Repos
 

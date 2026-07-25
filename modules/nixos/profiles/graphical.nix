@@ -49,19 +49,10 @@
     # Noctalia shell/bar as a systemd user service (auto-starts in the Wayland session).
     noctalia = {
       enable = true;
-      systemd.enable = true;
+      recommendedServices.enable = true;
     };
 
-    noctalia-greeter = {
-      enable = true;
-      settings = {
-        cursor = {
-          theme = "Adwaita";
-          size = 24;
-        };
-        theme.mode = "dark";
-      };
-    };
+    noctalia-greeter.enable = true;
 
     # Niri forces XWayland off (the wayland-session import passes enableXWayland=false).
     # Re-enable it so X11 apps actually start under Niri.
