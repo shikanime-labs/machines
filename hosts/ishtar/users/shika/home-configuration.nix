@@ -57,7 +57,7 @@ in
           font = "JetBrainsMono Nerd Font";
         };
         theme = {
-          mode = "dark";
+          mode = "auto";           # dark | light | auto — follows system light/dark
           source = "builtin";
           builtin = "Catppuccin";
         };

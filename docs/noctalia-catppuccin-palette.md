@@ -44,7 +44,7 @@ programs = {
         font = "JetBrainsMono Nerd Font";
       };
       theme = {
-        mode = "dark";          # dark | light | auto
+        mode = "auto";          # dark | light | auto
         source = "builtin";     # builtin | wallpaper | community
         builtin = "Catppuccin"; # Ayu | Catppuccin | Dracula | Eldritch |
                                 # Gruvbox | Kanagawa | Noctalia | Nord |
@@ -61,8 +61,9 @@ programs = {
 - `auto` → follows the system time/appearance and switches Mocha↔Latte
   automatically (Noctalia's auto-mode theme engine).
 
-Because the builtin `Catppuccin` resolves to Mocha, `mode = "dark"` is the
-default-recommended value for a dark desktop.
+Because the builtin `Catppuccin` resolves to Mocha, `mode = "dark"` gives a
+static Mocha-dark desktop; `mode = "auto"` (the current `ishtar` setting)
+follows the system light/dark state and switches Mocha↔Latte automatically.
 
 ## 2. Enable Catppuccin on the Noctalia Greeter
 
