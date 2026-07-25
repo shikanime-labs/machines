@@ -92,26 +92,6 @@ in
         ]
         ++ beelinkClusterModules;
       };
-      manash = inputs.nixpkgs.lib.nixosSystem {
-        pkgs = import inputs.nixpkgs {
-          system = "x86_64-linux";
-          config.allowUnfree = true;
-        };
-        modules = [
-          ../../hosts/manash/configuration.nix
-        ]
-        ++ beelinkClusterModules;
-      };
-      nalsha = inputs.nixpkgs.lib.nixosSystem {
-        pkgs = import inputs.nixpkgs {
-          system = "x86_64-linux";
-          config.allowUnfree = true;
-        };
-        modules = [
-          ../../hosts/nalsha/configuration.nix
-        ]
-        ++ beelinkClusterModules;
-      };
       fushi = inputs.nixpkgs.lib.nixosSystem {
         pkgs = import inputs.nixpkgs {
           system = "aarch64-linux";
@@ -122,6 +102,29 @@ in
         ]
         ++ rpi4ClusterModules;
       };
+      ishtar = inputs.nixpkgs.lib.nixosSystem {
+        pkgs = import inputs.nixpkgs {
+          system = "x86_64-linux";
+          config.allowUnfree = true;
+        };
+        modules = [
+          ../../hosts/ishtar/configuration.nix
+          inputs.nixos-hardware.nixosModules.common-cpu-intel
+          inputs.nixos-hardware.nixosModules.common-pc-ssd
+          inputs.knix.nixosModules.default
+        ]
+        ++ workstationsModules;
+      };
+      manash = inputs.nixpkgs.lib.nixosSystem {
+        pkgs = import inputs.nixpkgs {
+          system = "x86_64-linux";
+          config.allowUnfree = true;
+        };
+        modules = [
+          ../../hosts/manash/configuration.nix
+        ]
+        ++ beelinkClusterModules;
+      };
       minish = inputs.nixpkgs.lib.nixosSystem {
         pkgs = import inputs.nixpkgs {
           system = "aarch64-linux";
@@ -131,6 +134,16 @@ in
           ../../hosts/minish/configuration.nix
         ]
         ++ rpi4ClusterModules;
+      };
+      nalsha = inputs.nixpkgs.lib.nixosSystem {
+        pkgs = import inputs.nixpkgs {
+          system = "x86_64-linux";
+          config.allowUnfree = true;
+        };
+        modules = [
+          ../../hosts/nalsha/configuration.nix
+        ]
+        ++ beelinkClusterModules;
       };
       nemishi = inputs.nixpkgs.lib.nixosSystem {
         pkgs = import inputs.nixpkgs {
@@ -153,29 +166,15 @@ in
         ]
         ++ workstationsModules;
       };
-
-      ishtar = inputs.nixpkgs.lib.nixosSystem {
-        pkgs = import inputs.nixpkgs {
-          system = "x86_64-linux";
-          config.allowUnfree = true;
-        };
-        modules = [
-          ../../hosts/ishtar/configuration.nix
-          inputs.nixos-hardware.nixosModules.common-cpu-intel
-          inputs.nixos-hardware.nixosModules.common-pc-ssd
-          inputs.knix.nixosModules.default
-        ]
-        ++ workstationsModules;
-      };
     };
 
     packages = {
       x86_64-linux = {
         ashira = self.nixosConfigurations.ashira.config.system.build.toplevel;
         catbox = mkCatbox "x86_64-linux";
+        ishtar = self.nixosConfigurations.ishtar.config.system.build.toplevel;
         manash = self.nixosConfigurations.manash.config.system.build.toplevel;
         nalsha = self.nixosConfigurations.nalsha.config.system.build.toplevel;
-        ishtar = self.nixosConfigurations.ishtar.config.system.build.toplevel;
         nixtar = self.nixosConfigurations.nixtar.config.system.build.tarballBuilder;
       };
       aarch64-linux = {
