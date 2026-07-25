@@ -62,7 +62,6 @@ in
         location.auto_locate = true;
       };
     };
-    thunderbird.enable = true;
   };
 
   sops = {
