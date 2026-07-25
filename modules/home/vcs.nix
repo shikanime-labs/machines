@@ -13,7 +13,14 @@
     git = {
       enable = true;
       lfs.enable = true;
-      ignores = [ ".hermes/" ];
+      ignores = [
+        ".hermes/"
+        "*.graphify"
+        "graphify_output/"
+        "graphify-out/"
+        ".graphify_cache/"
+        "graphify_cache/"
+      ];
       settings.credential.helper = "manager";
     };
 
