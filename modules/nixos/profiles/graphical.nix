@@ -88,6 +88,10 @@
     xserver.enable = true;
   };
 
+  # Niri forces XWayland off (the wayland-session import passes enableXWayland=false).
+  # Re-enable it so X11 apps actually start under Niri.
+  programs.xwayland.enable = true;
+
   # Niri's built-in default spawns `${env TERMINAL alacritty}` on Super+Enter.
   # Point it at Ghostty (provided by the home config) without a full config.kdl.
   environment.sessionVariables.TERMINAL = "ghostty";
