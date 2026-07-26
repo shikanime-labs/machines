@@ -7,6 +7,7 @@
     systemd.enable = true;
     settings = {
       shell.font = "Fira Code";
+      shell.polkit_agent = true;
       shell.greeter_sync.auto_sync = true;
       theme = {
         mode = "auto";

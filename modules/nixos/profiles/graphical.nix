@@ -80,18 +80,10 @@
 
   xdg.portal.enable = true;
 
-  # polkit authentication agent. Niri is not GNOME, so the GNOME agent never
-  # autostarts; without it pkexec/gparted have no way to show the password
-  # prompt. Run it as a --user service bound to the graphical session.
-  systemd.user.services.polkit-gnome-auth-agent = {
-    description = "polkit authentication agent";
-    wantedBy = [ "graphical-session.target" ];
-    partOf = [ "graphical-session.target" ];
-    after = [ "graphical-session.target" ];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-      Restart = "on-failure";
-    };
-  };
+  # polkit authority daemon: required for the privilege prompts that
+  # pkexec/gparted raise. Noctalia's built-in in-session agent (enabled via
+  # programs.noctalia.settings.shell.polkit_agent in the home module) registers
+  # against this daemon, so the external polkit-gnome agent is intentionally
+  # omitted to avoid two agents racing for the session-bus registration.
+  security.polkit.enable = true;
 }
