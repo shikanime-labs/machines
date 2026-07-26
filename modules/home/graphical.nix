@@ -25,13 +25,6 @@
     };
   };
 
-  # Laptop: Niri's lid-close bind calls `noctalia msg session lock-and-suspend`.
-  # Stop systemd/logind from also suspending so we don't double-act.
-  services.logind.extraConfig = ''
-    HandleLidSwitch=ignore
-    HandleLidSwitchExternalPower=ignore
-  '';
-
   xdg.configFile."niri/config.kdl".text = ''
     // Niri settings for Noctalia integration (Noctalia v5 Niri compositor spec).
     // §1 spawn-at-startup omitted: Noctalia already auto-starts via systemd user service.

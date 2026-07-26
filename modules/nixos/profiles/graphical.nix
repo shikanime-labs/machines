@@ -74,6 +74,13 @@
     # encrypted (Niri ships no keyring today).
     gnome.gnome-keyring.enable = true;
 
+    # Laptop: Niri's lid-close bind calls `noctalia msg session lock-and-suspend`.
+    # Stop systemd/logind from also suspending so we don't double-act.
+    logind.extraConfig = ''
+      HandleLidSwitch=ignore
+      HandleLidSwitchExternalPower=ignore
+    '';
+
     # XWayland for the rare X11 app under Niri. Keep xserver on for the XWayland socket.
     xserver.enable = true;
   };
