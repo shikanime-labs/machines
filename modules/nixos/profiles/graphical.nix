@@ -20,7 +20,7 @@
         laptopSessionUtils = [
           brightnessctl # backlight/brightness keys under Niri
           fuzzel # app launcher; Niri's default config binds Super+R to it
-          gparted-full # disk patition gui
+          gparted-full # disk partition GUI (full FS tool set: resize/move any fs)
           pavucontrol # audio mixer GUI (volume keys only step, no panel)
           playerctl # media-key control for MPRIS players
         ];
@@ -51,6 +51,7 @@
     noctalia = {
       enable = true;
       recommendedServices.enable = true;
+      systemd.enable = true;
     };
 
     noctalia-greeter.enable = true;
