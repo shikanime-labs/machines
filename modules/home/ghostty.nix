@@ -19,6 +19,7 @@ with lib;
           mkForce "dark:catppuccin-frappe,light:catppuccin-latte";
       command = "${getExe pkgs.zsh} --login -c ${getExe pkgs.nushell}";
     };
+    systemd.enable = pkgs.stdenv.isLinux;
   };
 
   xdg.configFile."ghostty/themes/catppuccin-frappe" = mkIf (!pkgs.stdenv.isLinux) {
