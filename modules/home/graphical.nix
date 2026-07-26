@@ -6,7 +6,7 @@
     enable = true;
     systemd.enable = true;
     settings = {
-      shell.font = "JetBrainsMono Nerd Font";
+      shell.font = "Fira Code";
       shell.greeter_sync.auto_sync = true;
       theme = {
         mode = "auto";
