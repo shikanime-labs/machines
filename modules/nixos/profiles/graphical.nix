@@ -78,6 +78,7 @@
     # XWayland for the rare X11 app under Niri. Keep xserver on for the XWayland socket.
     xserver.enable = true;
   };
+
   # Niri's built-in default spawns `${env TERMINAL alacritty}` on Super+Enter.
   # Point it at Ghostty (provided by the home config) without a full config.kdl.
   environment.sessionVariables.TERMINAL = "ghostty";

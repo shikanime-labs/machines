@@ -78,11 +78,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1785029331,
-        "narHash": "sha256-lqArsYHHnZaPxQ5asGsr7gg/xlx4cPBl9xiQSKTyYT4=",
+        "lastModified": 1785029869,
+        "narHash": "sha256-Xz5OxbgclCIO5Oq/XjY6Y2A4TBz05cFJAcS+x2oJFUc=",
         "owner": "shikanime-labs",
         "repo": "colemak",
-        "rev": "dce9b52a42f1567bd3af74f5e75b7ae6926f0bfc",
+        "rev": "b6b3464f63301939c901127c829d40a245c96509",
         "type": "github"
       },
       "original": {
