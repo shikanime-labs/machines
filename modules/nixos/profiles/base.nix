@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 
 {
   imports = [
@@ -66,6 +66,10 @@
       process.enable = true;
       smartctl.enable = true;
       systemd.enable = true;
+      nvidia-gpu = lib.mkIf config.hardware.nvidia.enabled {
+        enable = true;
+        listenAddress = "127.0.0.1";
+      };
     };
 
     vmagent = {
@@ -88,6 +92,22 @@
           # Every host scrapes 127.0.0.1:9100 and remoteWrites the SAME
           # instance label, so VM merges all nodes into one series → garbage
           # rates. Rewrite to a unique per-host identity + real cluster label.
+          relabel_configs = [
+            {
+              target_label = "instance";
+              replacement = config.networking.hostName;
+            }
+            {
+              target_label = "cluster";
+              replacement = "nishir";
+            }
+          ];
+        }
+        {
+          job_name = "nvidia-gpu";
+          static_configs = [
+            { targets = [ "127.0.0.1:9835" ]; }
+          ];
           relabel_configs = [
             {
               target_label = "instance";
