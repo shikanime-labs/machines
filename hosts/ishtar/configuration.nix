@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   imports = [
     ../../modules/nixos/profiles/ai.nix
