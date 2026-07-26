@@ -6,19 +6,30 @@
     ./workstation.nix
   ];
 
-  # Gaming + laptop utilities
-  environment.systemPackages = with pkgs; [
-    brightnessctl
-    fuzzel # App launcher; niri's default config binds Super+R to it.
-    pavucontrol
-    playerctl
-    wine
-    wine64
-    winetricks
-    protonup-qt
-    bottles
-    heroic
-  ];
+  # Gaming + laptop utilities the graphical session needs at the system level.
+  environment.systemPackages =
+    with pkgs;
+    let
+      # Wayland session utilities: launcher + media/backlight controls that must
+      # resolve on Niri's spawned PATH (compositor launches them directly).
+      laptopSessionUtils = [
+        brightnessctl # backlight/brightness keys under Niri
+        fuzzel # app launcher; Niri's default config binds Super+R to it
+        pavucontrol # audio mixer GUI (volume keys only step, no panel)
+        playerctl # media-key control for MPRIS players
+      ];
+
+      # Wine/Proton stack for running Windows games and their launchers.
+      windowsGaming = [
+        wine
+        wine64
+        winetricks
+        protonup-qt
+        bottles
+        heroic
+      ];
+    in
+    laptopSessionUtils ++ windowsGaming;
 
   hardware = {
     # WiFi / Bluetooth firmware for the laptop radios.
@@ -52,9 +63,7 @@
           theme = "Adwaita";
           size = 24;
         };
-        theme = {
-          mode = "dark";
-        };
+        theme.mode = "dark";
       };
     };
 
