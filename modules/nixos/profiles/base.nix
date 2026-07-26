@@ -32,10 +32,13 @@
           name = "origin";
           url = "https://github.com/shikanime-labs/machines.git";
         }
-        {
-          name = "origin";
-          url = "https://forgejo.taila659a.ts.net/shikanime-labs/machines.git";
-        }
+        # NOTE: the forgejo mirror was removed from comin remotes on purpose.
+        # Two remotes shared the name "origin", so comin's single
+        # refs/remotes/origin/main was overwritten by the last-fetched remote
+        # (forgejo). comin then deployed forgejo's stale `main`, which predated
+        # the steam udev commits — that is why the Steam input udev rules never
+        # reached ishtar. comin deploys from GitHub only now; keep forgejo as an
+        # out-of-band git mirror if redundancy is wanted.
       ];
     };
 
