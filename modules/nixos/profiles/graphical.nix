@@ -105,7 +105,10 @@
     };
 
     # XWayland for the rare X11 app under Niri. Keep xserver on for the XWayland socket.
-    xserver.enable = true;
+    xserver = {
+      enable = true;
+      videoDrivers = [ "nvidia" ];
+    };
   };
 
   xdg.portal.enable = true;
