@@ -15,6 +15,20 @@
         builtin = "Catppuccin";
       };
       location.auto_locate = true;
+      # Load the Bitwarden vault-lookup plugin from this repo (path source).
+      # Location points at the official source dir, so the plugin id
+      # "shikanime/bitwarden" resolves to plugins/official/bitwarden/plugin.toml.
+      plugins = {
+        sources = [
+          {
+            kind = "path";
+            name = "machines-local";
+            location = "plugins/official";
+            enabled = true;
+          }
+        ];
+        enabled = [ "shikanime/bitwarden" ];
+      };
     };
   };
 }

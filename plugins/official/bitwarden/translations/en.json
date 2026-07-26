@@ -1,0 +1,9 @@
+{
+  "setting.server_url": "Server URL",
+  "setting.client_id": "API client ID",
+  "setting.client_id.desc": "Bitwarden personal API key client id (Account Settings → API Key)",
+  "setting.client_secret": "API client secret",
+  "setting.client_secret.desc": "Bitwarden personal API key client secret. Stored in plugin data dir, not the repo.",
+  "setting.master_password_file": "Master password file",
+  "setting.master_password_file.desc": "Path to a file containing the vault master password, used to unlock non-interactively"
+}

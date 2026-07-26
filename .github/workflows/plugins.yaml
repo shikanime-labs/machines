@@ -1,0 +1,25 @@
+name: Plugin Validation
+permissions:
+  contents: read
+"on":
+  pull_request:
+    paths:
+      - "plugins/**"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/**"
+  workflow_dispatch: {}
+
+jobs:
+  validate-bitwarden:
+    name: Validate Noctalia plugins
+    runs-on: ubuntu-slim
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate plugin manifests and entries
+        run: python3 .github/scripts/validate-noctalia-plugins.py

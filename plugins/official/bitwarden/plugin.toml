@@ -1,0 +1,57 @@
+# Noctalia v5 plugin manifest for Bitwarden vault lookup.
+# Schema verified against noctalia 5.0.0 (src/scripting/plugin_manifest.cpp).
+# File MUST be named plugin.toml; plugin id is "author/plugin".
+
+id = "shikanime/bitwarden"
+name = "Bitwarden"
+version = "0.1.0"
+author = "shikanime-labs"
+license = "MIT"
+description = "Retrieve credentials from a Bitwarden vault via the bw CLI."
+plugin_api = 3  # base feature set: state, runAsync, launcher_provider, service
+
+# Plugin-level settings (shared across every entry). Services/launcher providers
+# are singletons with no per-instance settings surface, so all config lives here.
+[[setting]]
+key = "server_url"
+type = "string"
+label_key = "setting.server_url"
+default = "https://vault.bitwarden.com"
+
+[[setting]]
+key = "client_id"
+type = "string"
+label_key = "setting.client_id"
+description_key = "setting.client_id.desc"
+default = ""
+
+[[setting]]
+key = "client_secret"
+type = "string"
+label_key = "setting.client_secret"
+description_key = "setting.client_secret.desc"
+default = ""
+
+[[setting]]
+key = "master_password_file"
+type = "file"
+label_key = "setting.master_password_file"
+description_key = "setting.master_password_file.desc"
+default = ""
+
+# Headless background loop: owns the bw auth lifecycle, publishes status to state.
+[[service]]
+id = "bw"
+entry = "service.luau"
+
+# Launcher prefix "bw " to search the vault and copy a credential on select.
+[[launcher_provider]]
+id = "lookup"
+entry = "lookup.luau"
+prefix = "bw"
+glyph = "🔐"
+include_in_global_search = false
+debounce_ms = 250
+  [[launcher_provider.category]]
+  label = "Bitwarden"
+  glyph = "🔐"
