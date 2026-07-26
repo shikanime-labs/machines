@@ -22,6 +22,7 @@
           ddcutil # DDC/CI external monitor brightness/control
           fuzzel # app launcher; Niri's default config binds Super+R to it
           gparted-full # disk partition GUI (full FS tool set: resize/move any fs)
+          nautilus # file manager GUI
           pavucontrol # audio mixer GUI (volume keys only step, no panel)
           playerctl # media-key control for MPRIS players
           xwayland-satellite # bridge x11 apps
@@ -90,6 +91,7 @@
     # Secret Service daemon so Thunderbird's login manager stores credentials
     # encrypted (Niri ships no keyring today).
     gnome = {
+      gvfs.enable = true; # trash, removable-media mount, network shares for nautilus
       gnome-keyring.enable = true;
       gnome-software.enable = true;
       sushi.enable = true;
