@@ -14,6 +14,7 @@ in
     ../../../modules/home/ghostty.nix
     ../../../modules/home/graphical.nix
     ../../../modules/home/helix.nix
+    ../../../modules/home/wallpaper.nix
     ../../../modules/home/starship.nix
     ../../../modules/home/vcs.nix
     ../../../modules/home/workstation.nix
