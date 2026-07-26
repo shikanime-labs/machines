@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Noctalia Bar — Capsule Integration</title>
+<style>
+  /* Tokens reused from DESIGN_CALENDAR_WIDGET / capsule spec (Catppuccin OKLCH). */
+  :root{
+    --bg:oklch(17% 0.012 260);
+    --surface:oklch(22% 0.014 260);
+    --fg:oklch(92% 0.010 260);
+    --fg-muted:oklch(72% 0.014 260);
+    --border:oklch(30% 0.014 260);
+    --accent:oklch(72% 0.13 268);
+    --err:oklch(68% 0.16 25);
+    --ok:oklch(72% 0.14 155);
+    --mono:ui-monospace,"SF Mono",Menlo,monospace;
+    --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;min-height:100vh;background:oklch(10% 0.01 260);color:var(--fg);
+    font-family:var(--font);display:flex;flex-direction:column;align-items:center;gap:24px;
+    padding:24px 16px;
+  }
+  h1{font-size:16px;font-weight:600;margin:0;color:var(--fg-muted)}
+  .lede{font-size:13px;color:var(--fg-muted);max-width:560px;text-align:center;margin:0;
+    line-height:1.5}
+
+  /* ---- bar shell ---- */
+  .bar{
+    display:flex;align-items:center;gap:8px;
+    width:min(820px,100%);
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:8px 10px;
+  }
+  /* the capsule module cluster */
+  .bar #capsules{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+  .bar .spacer{flex:1}
+
+  /* ---- responsive: collapse to a scrollable single row on narrow widths ---- */
+  @media (max-width:560px){
+    .bar{
+      width:100%;border-radius:14px;gap:6px;padding:6px 8px;
+      /* allow horizontal scroll instead of wrap so popups stay anchored */
+      overflow-x:auto;scrollbar-width:none;
+    }
+    .bar::-webkit-scrollbar{display:none}
+    .bar #capsules{gap:6px;flex:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important}
+  }
+
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+  <h1>Noctalia Bar</h1>
+  <p class="lede">
+    The implemented widget capsule (<code>&lt;noctalia-capsule&gt;</code>) embedded into the
+    bar surface. Clock + system cluster on the left, DND + Calendar on the right.
+    Live clock + a popup demo below the bar.
+  </p>
+
+  <div class="bar" id="bar" role="toolbar" aria-label="Noctalia bar">
+    <!-- left cluster: clock (static) + network/battery group -->
+    <div id="capsules"></div>
+    <span class="spacer"></span>
+  </div>
+
+  <!-- popup demo surface anchored to the bar (opened by the calendar capsule) -->
+  <div class="popup" id="calPopup" role="dialog" aria-label="Calendar" hidden
+       style="width:360px;background:var(--bg);border:1px solid var(--border);
+              border-radius:14px;padding:14px;color:var(--fg-muted);font-size:13px">
+    <strong style="color:var(--fg)">Today · 3 events</strong>
+    <div style="margin-top:8px">Design review 14:00 · 1:1 15:30 · Standup 09:00</div>
+  </div>
+
+  <span class="sr" aria-live="polite" id="sr"></span>
+
+  <script type="module">
+    import { mountBar, NoctaliaCapsule } from "./bar.mjs";
+
+    const sr = document.getElementById("sr");
+    const calPopup = document.getElementById("calPopup");
+
+    // initial bar state model
+    const state = {
+      clock: { time: "14:32" },
+      net:   { connected: true, ssid: "home-net" },
+      battery: { pct: 82, charging: false },
+      dnd:   { on: false },
+      cal:   { events: 3, open: false },
+    };
+
+    const bar = mountBar(document.getElementById("capsules"), state, {
+      onState: (s) => {
+        if (s.cal.open) {
+          calPopup.removeAttribute("hidden");
+          sr.textContent = "Calendar opened";
+        } else {
+          calPopup.setAttribute("hidden", "");
+          sr.textContent = "Calendar closed";
+        }
+      },
+    });
+
+    // keep the clock capsule synchronized (data sync demo)
+    setInterval(() => {
+      const now = new Date();
+      const t = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      state.clock.time = t;
+      bar.sync();
+    }, 1000 * 15);
+  </script>
+</body>
+</html>
