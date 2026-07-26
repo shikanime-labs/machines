@@ -24,6 +24,7 @@
           gparted-full # disk partition GUI (full FS tool set: resize/move any fs)
           pavucontrol # audio mixer GUI (volume keys only step, no panel)
           playerctl # media-key control for MPRIS players
+          xwayland-satellite # bridge x11 apps
         ];
       in
       laptopSessionUtils;
@@ -69,10 +70,6 @@
       protontricks.enable = true;
       remotePlay.openFirewall = true;
     };
-
-    # Niri forces XWayland off (the wayland-session import passes enableXWayland=false).
-    # Re-enable it so X11 apps actually start under Niri.
-    xwayland.enable = true;
   };
 
   # greetd daemon. `default_session.user` defaults to "greeter" (auto-created by the module).

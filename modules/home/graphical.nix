@@ -106,5 +106,8 @@
     switch-events {
         lid-close { spawn "noctalia" "msg" "session" "lock-and-suspend"; }
     }
+
+    // X11 bridge for legacy X apps
+    xwayland-satellite {}
   '';
 }
