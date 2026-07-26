@@ -83,6 +83,13 @@
     # encrypted (Niri ships no keyring today).
     gnome.gnome-keyring.enable = true;
 
+    # Let niri own the lid-close action (lock-and-suspend) instead of logind's
+    # default suspend, which would race with niri's switch-events rule.
+    logind.settings.Login = {
+      HandleLidSwitch = "ignore";
+      HandleLidSwitchDocked = "ignore";
+    };
+
     # XWayland for the rare X11 app under Niri. Keep xserver on for the XWayland socket.
     xserver.enable = true;
   };
