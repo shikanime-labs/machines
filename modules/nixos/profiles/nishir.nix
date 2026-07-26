@@ -38,6 +38,14 @@ with lib;
 
   services = {
     knix = {
+      addons.flux.instance.extraConfig.instance.sync = {
+        interval = "1m";
+        kind = "GitRepository";
+        path = "clusters/nishir/overlays/tailnet";
+        ref = "refs/heads/main";
+        url = "https://github.com/shikanime-labs/manifests.git";
+      };
+
       # Bridge interface — flannel, firewall, and sysctl rules all target br0.
       # Bonded on Beelink (bond0 → br0), single-NIC on RPi (end0 → br0).
       interface = "br0";
