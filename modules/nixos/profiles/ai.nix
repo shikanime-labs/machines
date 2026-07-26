@@ -165,6 +165,12 @@ with lib;
         url = "https://ai.taila659a.ts.net/mcp";
         enabled = true;
       };
+      # Bare `hermes`/`hermes chat` launches the Ink TUI by default; token
+      # streaming on for live agent output. Explicit --cli/--tui still wins.
+      display = {
+        interface = "tui";
+        streaming = true;
+      };
     };
     extraDependencyGroups = [
       "computer-use"
