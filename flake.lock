@@ -70,16 +70,19 @@
         "nixpkgs": [
           "nixpkgs"
         ],
+        "noctalia-greeter": [
+          "noctalia-greeter"
+        ],
         "treefmt-nix": [
           "treefmt-nix"
         ]
       },
       "locked": {
-        "lastModified": 1784996109,
-        "narHash": "sha256-ZcZYJFDE8mwI8x5Oydvmj/wrHSpikn8NcIqWXhuSvh4=",
+        "lastModified": 1785029331,
+        "narHash": "sha256-lqArsYHHnZaPxQ5asGsr7gg/xlx4cPBl9xiQSKTyYT4=",
         "owner": "shikanime-labs",
         "repo": "colemak",
-        "rev": "5761c9fd027bc02930cc2057eabdd3df20c1e849",
+        "rev": "dce9b52a42f1567bd3af74f5e75b7ae6926f0bfc",
         "type": "github"
       },
       "original": {

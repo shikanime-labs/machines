@@ -20,6 +20,7 @@
         flake-parts.follows = "flake-parts";
         git-hooks.follows = "git-hooks";
         nixpkgs.follows = "nixpkgs";
+        noctalia-greeter.follows = "noctalia-greeter";
         treefmt-nix.follows = "treefmt-nix";
       };
     };
