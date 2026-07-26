@@ -39,8 +39,12 @@ in
     exporter.listen_address = "127.0.0.1";
     remotes = [
       {
-        name = "origin";
+        name = "github";
         url = "https://github.com/shikanime-labs/machines.git";
+      }
+      {
+        name = "forgejo";
+        url = "https://forgejo.taila659a.ts.net/shikanime-labs/machines.git";
       }
     ];
   };
