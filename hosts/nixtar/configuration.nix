@@ -69,7 +69,6 @@ in
   };
 
   environment.systemPackages = with pkgs; [
-    docker-credential-helpers
     dunst
     libnotify
     wl-clipboard
