@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}:
+{ config, pkgs, ... }:
 
 {
   imports = [
@@ -41,12 +37,6 @@
         TOKEN=${config.sops.placeholder.forgejo-runner-token}
       '';
     };
-  };
-
-  users.users.builder = {
-    isNormalUser = true;
-    home = "/home/builder";
-    useDefaultShell = true;
   };
 
   virtualisation.docker = {

@@ -2,9 +2,11 @@
 
 {
   imports = [
-    ../../modules/nixos/ai.nix
-    ../../modules/nixos/razer-blade.nix
-    ../../modules/nixos/leader.nix
+    ../../modules/nixos/profiles/ai.nix
+    ../../modules/nixos/profiles/leader.nix
+    ../../modules/nixos/profiles/graphical.nix
+    ../../modules/nixos/hardware/razer-blade.nix
+    ../../modules/nixos/users/nishir.nix
   ];
 
   # Colemak at the OS level (TTY + localed -> niri reads it).
@@ -71,7 +73,7 @@
   networking.hostName = "ishtar";
 
   home-manager.users.shika.imports = [
-    ./users/shika/home-configuration.nix
+    ../../modules/nixos/users/shika.nix
   ];
 
   sops = {

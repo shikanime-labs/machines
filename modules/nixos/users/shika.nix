@@ -1,8 +1,4 @@
-{
-  config,
-  lib,
-  ...
-}:
+{ config, lib, ... }:
 
 with lib;
 
@@ -11,13 +7,13 @@ let
 in
 {
   imports = [
-    ../../../../modules/home/base.nix
-    ../../../../modules/home/cloud.nix
-    ../../../../modules/home/fontconfig.nix
-    ../../../../modules/home/helix.nix
-    ../../../../modules/home/starship.nix
-    ../../../../modules/home/vcs.nix
-    ../../../../modules/home/workstation.nix
+    ../../../modules/home/base.nix
+    ../../../modules/home/cloud.nix
+    ../../../modules/home/fontconfig.nix
+    ../../../modules/home/helix.nix
+    ../../../modules/home/starship.nix
+    ../../../modules/home/vcs.nix
+    ../../../modules/home/workstation.nix
   ];
 
   identities = {
@@ -46,31 +42,11 @@ in
     shikanime.enable = true;
   };
 
-  programs = {
-    bash.enable = true;
-    docker-cli.settings.credsStore = "pass";
-    noctalia = {
-      enable = true;
-      systemd.enable = true;
-      settings = {
-        shell.font = "JetBrainsMono Nerd Font";
-        theme = {
-          mode = "auto";
-          source = "builtin";
-          builtin = "Catppuccin";
-        };
-        location.auto_locate = true;
-      };
-    };
-    thunderbird = {
-      enable = true;
-      profiles.default.isDefault = true;
-    };
-  };
+  programs.bash.enable = true;
 
   sops = {
     age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
-    defaultSopsFile = ../../../../secrets/shikanime.enc.yaml;
+    defaultSopsFile = ../../../secrets/shikanime.enc.yaml;
     defaultSopsFormat = "yaml";
     secrets.cachix-token = { };
     templates.cachix-config.content = toDhall {

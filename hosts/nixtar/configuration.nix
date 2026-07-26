@@ -31,7 +31,7 @@ in
 {
   imports = [
     "${modulesPath}/profiles/headless.nix"
-    ../../modules/nixos/workstation.nix
+    ../../modules/nixos/profiles/workstation.nix
   ];
 
   boot = {
@@ -85,7 +85,7 @@ in
   };
 
   home-manager.users.shika.imports = [
-    ./users/shika/home-configuration.nix
+    ../../modules/nixos/users/shika.nix
   ];
 
   networking.hostName = "nixtar";

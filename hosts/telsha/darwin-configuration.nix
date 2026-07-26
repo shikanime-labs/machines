@@ -1,11 +1,11 @@
 {
   imports = [
-    ../../modules/darwin/distributed.nix
-    ../../modules/darwin/workstation.nix
+    ../../modules/darwin/profiles/distributed.nix
+    ../../modules/darwin/profiles/workstation.nix
   ];
 
   home-manager.users.shikanimedeva.imports = [
-    ./users/shikanimedeva/home-configuration.nix
+    ../../modules/darwin/users/shikanimedeva.nix
   ];
 
   networking.hostName = "telsha";

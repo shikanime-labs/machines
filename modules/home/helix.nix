@@ -1,7 +1,3 @@
-{ lib, ... }:
-
-with lib;
-
 {
   programs.helix = {
     defaultEditor = true;

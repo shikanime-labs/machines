@@ -1,10 +1,6 @@
 { pkgs, ... }:
 
 {
-  imports = [
-    ./machine.nix
-  ];
-
   boot.kernelParams = [
     # Older Raspberry Pi-class boards still need these cgroup knobs for RKE2.
     "cgroup_enable=cpuset"

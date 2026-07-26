@@ -1,8 +1,4 @@
-{
-  config,
-  lib,
-  ...
-}:
+{ config, lib, ... }:
 
 with lib;
 
@@ -11,15 +7,15 @@ let
 in
 {
   imports = [
-    ../../../../modules/home/base.nix
-    ../../../../modules/home/cloud.nix
-    ../../../../modules/home/fontconfig.nix
-    ../../../../modules/home/ghostty.nix
-    ../../../../modules/home/helix.nix
-    ../../../../modules/home/starship.nix
-    ../../../../modules/home/vcs.nix
-    ../../../../modules/home/workstation.nix
-    ../../../../modules/home/zed-editor.nix
+    ../../../modules/home/base.nix
+    ../../../modules/home/cloud.nix
+    ../../../modules/home/fontconfig.nix
+    ../../../modules/home/ghostty.nix
+    ../../../modules/home/helix.nix
+    ../../../modules/home/starship.nix
+    ../../../modules/home/vcs.nix
+    ../../../modules/home/workstation.nix
+    ../../../modules/home/zed-editor.nix
   ];
 
   identities = {
@@ -74,7 +70,7 @@ in
 
   sops = {
     age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
-    defaultSopsFile = ../../../../secrets/shikanime.enc.yaml;
+    defaultSopsFile = ../../../secrets/shikanime.enc.yaml;
     defaultSopsFormat = "yaml";
     secrets.cachix-token = { };
     templates.cachix-config.content = toDhall {

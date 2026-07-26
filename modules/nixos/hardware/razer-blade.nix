@@ -1,8 +1,4 @@
 {
-  imports = [
-    ./graphical.nix
-  ];
-
   # UEFI laptop bootloader (Razer Blade 17, 2019). Windows dual-boot via systemd-boot.
   # Windows entry is automatically detected by systemd-boot.
   boot.loader = {

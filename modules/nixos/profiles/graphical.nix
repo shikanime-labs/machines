@@ -51,9 +51,6 @@
           theme = "Adwaita";
           size = 24;
         };
-        keyboard = {
-          layout = "us";
-        };
         theme = {
           mode = "dark";
         };
