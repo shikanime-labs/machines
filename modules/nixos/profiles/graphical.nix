@@ -20,6 +20,7 @@
         laptopSessionUtils = [
           brightnessctl # backlight/brightness keys under Niri
           fuzzel # app launcher; Niri's default config binds Super+R to it
+          gparted-full # disk patition gui
           pavucontrol # audio mixer GUI (volume keys only step, no panel)
           playerctl # media-key control for MPRIS players
         ];
