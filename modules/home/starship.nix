@@ -14,7 +14,7 @@ in
         style = "bold lavender";
       };
       git_branch.style = "bold mauve";
-      palette = "catppuccin_latte";
+      palette = if pkgs.stdenv.isLinux then "catppuccin_latte" else "catppuccin_frappe";
     }
     // settings;
   };
