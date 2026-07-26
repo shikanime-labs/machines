@@ -33,14 +33,6 @@ with lib;
         ip6tables -D FORWARD -i cni+ -o tailscale0 -j ACCEPT 2>/dev/null || true
       '';
     };
-
-    getaddrinfo.precedence = {
-      "::1/128" = 50;
-      "::/0" = 40;
-      "2002::/16" = 30;
-      "::/96" = 20;
-      "::ffff:0:0/96" = 100;
-    };
   };
 
   services = {
