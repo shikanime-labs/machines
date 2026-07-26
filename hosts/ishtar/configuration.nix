@@ -22,6 +22,12 @@
     };
   };
 
+  home-manager.users.shika.imports = [
+    ../../modules/nixos/users/shika.nix
+  ];
+
+  networking.hostName = "ishtar";
+
   services = {
     knix = {
       interface = "tailscale0";
@@ -67,12 +73,6 @@
       13O: Root cause isolated. Fix applied. Try to keep up.
     '';
   };
-
-  networking.hostName = "ishtar";
-
-  home-manager.users.shika.imports = [
-    ../../modules/nixos/users/shika.nix
-  ];
 
   sops = {
     age = {

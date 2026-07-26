@@ -19,4 +19,52 @@
       };
     };
   };
+
+  # Laptop: Niri's lid-close bind calls `noctalia msg session lock-and-suspend`.
+  # Stop systemd/logind from also suspending so we don't double-act.
+  services.logind.extraConfig = ''
+    HandleLidSwitch=ignore
+    HandleLidSwitchExternalPower=ignore
+  '';
+
+  xdg.configFile."niri/config.kdl".text = ''
+    // Niri settings for Noctalia integration (Noctalia v5 Niri compositor spec).
+    // §1 spawn-at-startup omitted: Noctalia already auto-starts via systemd user service.
+
+    window-rule {
+        geometry-corner-radius 20
+        clip-to-geometry true
+    }
+
+    window-rule {
+        match app-id="dev.noctalia.Noctalia"
+        open-floating true
+        default-column-width { fixed 1080; }
+        default-window-height { fixed 920; }
+    }
+
+    debug {
+        // Required, or Noctalia notification actions / window activation won't work.
+        honor-xdg-activation-with-invalid-serial
+    }
+
+    binds {
+        Mod+Space { spawn-sh "noctalia msg panel-toggle launcher"; }
+        Mod+S { spawn-sh "noctalia msg panel-toggle control-center"; }
+        Mod+Comma { spawn-sh "noctalia msg settings-toggle"; }
+        Alt+Tab { spawn-sh "noctalia msg window-switcher"; }
+
+        XF86AudioRaiseVolume { spawn-sh "noctalia msg volume-up"; }
+        XF86AudioLowerVolume { spawn-sh "noctalia msg volume-down"; }
+        XF86AudioMute { spawn-sh "noctalia msg volume-mute"; }
+        XF86MonBrightnessUp { spawn-sh "noctalia msg brightness-up"; }
+        XF86MonBrightnessDown { spawn-sh "noctalia msg brightness-down"; }
+    }
+
+    // Laptop: lock + suspend on lid close (ishtar). logind HandleLidSwitch=ignore
+    // set at the NixOS level so systemd doesn't also suspend.
+    switch-events {
+        lid-close { spawn "noctalia" "msg" "session" "lock-and-suspend"; }
+    }
+  '';
 }
