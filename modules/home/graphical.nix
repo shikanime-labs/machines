@@ -8,6 +8,12 @@
     settings = {
       # Disable bar/dock exclusive-zone reservation (was upstream default true).
       bar.main.reserve_space = false;
+      # Widget capsule cluster — the "capsule" pill look is native (capsule_radius);
+      # see docs/noctalia-widget-capsule.md. DND == caffeine (idle inhibitor toggle);
+      # calendar is a service with no native bar widget (needs a plugin).
+      bar.main.capsule_radius = 18;
+      bar.main.start = [ "clock" "network" "battery" ];
+      bar.main.end = [ "caffeine" ];
       dock.reserve_space = false;
       backdrop = {
         enabled = true;

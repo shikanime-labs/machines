@@ -91,7 +91,10 @@ no repo-owned theme schema or UI component to edit. The theme is set per user in
 
 Plugins (e.g. `noctalia/translator`, the launcher `/tr` provider) are enabled
 under the same `programs.noctalia.settings.plugins.enabled` attrset — see
-[docs/noctalia-plugins.md](docs/noctalia-plugins.md).
+[docs/noctalia-plugins.md](docs/noctalia-plugins.md). The bar's capsule-style
+widget cluster (clock / network / battery / DND) is configured natively — see
+[docs/noctalia-widget-capsule.md](docs/noctalia-widget-capsule.md) (v5 bar is
+config/Luau only; no HTML/webview surface).
 
 ### `secrets/`
 
