@@ -48,11 +48,9 @@
       open = false; # proprietary/closed kernel module, per explicit request
       modesetting.enable = true;
       powerManagement.enable = true;
-      prime = {
-        offload = {
-          enable = true;
-          enableOffloadCmd = true; # provides `nvidia-offload` wrapper
-        };
+      prime.offload = {
+        enable = true;
+        enableOffloadCmd = true; # provides `nvidia-offload` wrapper
       };
     };
   };
