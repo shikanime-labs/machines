@@ -75,6 +75,11 @@
     steam.enable = true;
   };
 
+  # Flatpak sandboxing for graphical hosts. The module asserts xdg.portal.enable,
+  # so the portal must be on or the build fails.
+  xdg.portal.enable = true;
+  services.flatpak.enable = true;
+
   # greetd daemon. `default_session.user` defaults to "greeter" (auto-created by the module).
   # The Noctalia Greeter module sets default_session.command to its session binary.
   services = {
