@@ -91,11 +91,13 @@
     # Secret Service daemon so Thunderbird's login manager stores credentials
     # encrypted (Niri ships no keyring today).
     gnome = {
-      gvfs.enable = true; # trash, removable-media mount, network shares for nautilus
       gnome-keyring.enable = true;
       gnome-software.enable = true;
       sushi.enable = true;
     };
+
+    # GVfs: trash, removable-media mount, and network shares for nautilus.
+    gvfs.enable = true;
 
     # Let niri own the lid-close action (lock-and-suspend) instead of logind's
     # default suspend, which would race with niri's switch-events rule.
