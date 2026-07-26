@@ -6,9 +6,16 @@
     enable = true;
     systemd.enable = true;
     settings = {
-      # Disable bar/dock exclusive-zone reservation (was upstream default true).
-      bar.main.reserve_space = false;
-      dock.reserve_space = false;
+      # Disable dock exclusive-zone reservation (was upstream default true).
+      # Bar smart auto-hide: reveal on pointer-edge approach (auto_hide), hide
+      # when the active workspace has windows (smart_auto_hide). reserve_space kept
+      # false per the merged "drop exclusive zone" decision; enable only if layout
+      # jump bugs you.
+      bar.main = {
+        auto_hide = true;
+        smart_auto_hide = true;
+        reserve_space = false;
+      };
       backdrop = {
         enabled = true;
         blur_intensity = 0.5; # default; 0.0 = no blur, 1.0 = max
