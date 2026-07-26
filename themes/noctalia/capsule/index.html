@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Noctalia Capsule — component demo</title>
+  <style>
+    body { margin: 0; background: oklch(10% 0.01 260); color: oklch(92% 0.010 260);
+      font: 14px/1.5 ui-sans-serif, system-ui, sans-serif; padding: 32px 16px; }
+    .bar { display: inline-flex; align-items: center; gap: 8px; background: oklch(17% 0.012 260);
+      border: 1px solid oklch(30% 0.014 260); border-radius: 18px; padding: 10px 12px; }
+    .spacer { width: 40px; }
+  </style>
+</head>
+<body>
+  <p>The <code>&lt;noctalia-capsule&gt;</code> element renders any bar module per
+     DESIGN_WIDGET_CAPSULE.md. Configure via <code>setConfig()</code> and live-patch
+     with <code>update()</code>; it emits <code>capsule-toggle</code> /
+     <code>capsule-popup-open</code> / <code>capsule-popup-close</code>.</p>
+
+  <div class="bar" role="toolbar" aria-label="Noctalia bar">
+    <!-- static clock: not focusable -->
+    <noctalia-capsule id="clock" data-kind="static" data-decorative="true"></noctalia-capsule>
+
+    <!-- toggle DND -->
+    <noctalia-capsule id="dnd" data-kind="toggle"></noctalia-capsule>
+
+    <!-- popup calendar with status dot -->
+    <noctalia-capsule id="cal" data-kind="popup" data-status-dot="true"></noctalia-capsule>
+  </div>
+
+  <script type="module">
+    import { NoctaliaCapsule } from "./capsule.mjs";
+
+    document.querySelector("#clock").setConfig({
+      kind: "static", id: "clock", label: "14:32", mono: true, decorative: true,
+    });
+    document.querySelector("#dnd").setConfig({
+      kind: "toggle", id: "dnd", label: "DND", aria_label: "Do not disturb",
+      icon: '<circle cx="12" cy="12" r="9"/><path d="M8 12h8"/>',
+    }).addEventListener("capsule-toggle", (e) =>
+      e.target.update({ on: e.detail.on })
+        .setConfig({ aria_label: "Do not disturb: " + (e.detail.on ? "on" : "off") }));
+
+    const cal = document.querySelector("#cal").setConfig({
+      kind: "popup", id: "cal", label: "Calendar",
+      aria_label: "Calendar, 3 events today",
+      icon: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/>',
+    });
+
+    // simulate an async data fetch -> loading -> success, demonstrating data binding
+    cal.update({ state: "loading" });
+    setTimeout(() => cal.update({ state: "success" }), 1200);
+  </script>
+</body>
+</html>
