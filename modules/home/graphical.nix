@@ -13,6 +13,6 @@
     obs-studio
     obsidian
     mattermost-desktop
-    transmission
+    transmission_4
   ];
 }
