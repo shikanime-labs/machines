@@ -25,7 +25,12 @@
       location.auto_locate = true;
       plugins.enabled = [
         "noctalia/bitwarden"
+        "noctalia/kaomoji"
+        "noctalia/notes"
+        "noctalia/screen_recorder"
+        "noctalia/timer"
         "noctalia/translator"
+        "noctalia/wallhaven"
       ];
       shell = {
         font = "Fira Code";
