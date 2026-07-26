@@ -32,6 +32,11 @@
   hardware = {
     # WiFi / Bluetooth firmware for the laptop radios.
     enableRedistributableFirmware = true;
+
+    # Steam Input / Steam Controller udev rules (Valve's 60-steam-input.rules +
+    # 60-steam-vr.rules) so gamepads grant the seated user uaccess without root.
+    steam-hardware.enable = true;
+
     graphics = {
       enable = true;
       enable32Bit = true; # Gaming: 32-bit for Wine/Proton
