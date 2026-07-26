@@ -13,10 +13,25 @@
       };
       calendar.enabled = true;
       location.auto_locate = true;
-      plugins.enabled = [
-        "noctalia/bitwarden"
-        "noctalia/translator"
-      ];
+      # Load the Bitwarden vault-lookup plugin from this repo (path source).
+      # Location points at the official source dir, so the plugin id
+      # "shikanime/bitwarden" resolves to plugins/official/bitwarden/plugin.toml.
+      # (noctalia/translator is an upstream-official plugin: auto-seeded source,
+      # so it needs no source declaration.)
+      plugins = {
+        sources = [
+          {
+            kind = "path";
+            name = "machines-local";
+            location = "plugins/official";
+            enabled = true;
+          }
+        ];
+        enabled = [
+          "shikanime/bitwarden"
+          "noctalia/translator"
+        ];
+      };
       shell = {
         font = "Fira Code";
         polkit_agent = true;

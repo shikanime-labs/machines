@@ -25,8 +25,14 @@
           pavucontrol # audio mixer GUI (volume keys only step, no panel)
           playerctl # media-key control for MPRIS players
         ];
+
+        # Bitwarden CLI: required by the official/bitwarden Noctalia plugin, which
+        # shells out to `bw` for vault auth + credential lookup.
+        vaultUtils = [
+          bitwarden-cli
+        ];
       in
-      laptopSessionUtils;
+      laptopSessionUtils ++ vaultUtils;
   };
 
   hardware = {
