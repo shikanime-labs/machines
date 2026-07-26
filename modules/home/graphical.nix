@@ -6,6 +6,9 @@
     enable = true;
     systemd.enable = true;
     settings = {
+      # Disable bar/dock exclusive-zone reservation (was upstream default true).
+      bar.main.reserve_space = false;
+      dock.reserve_space = false;
       backdrop = {
         enabled = true;
         blur_intensity = 0.5; # default; 0.0 = no blur, 1.0 = max
