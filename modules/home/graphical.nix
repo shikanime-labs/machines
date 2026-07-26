@@ -27,8 +27,7 @@
       };
       theme = {
         mode = "auto";
-        source = "builtin";
-        builtin = "Catppuccin";
+        source = "wallpaper";
       };
     };
   };
