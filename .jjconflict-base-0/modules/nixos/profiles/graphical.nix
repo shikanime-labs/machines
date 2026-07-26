@@ -19,6 +19,7 @@
         # resolve on Niri's spawned PATH (compositor launches them directly).
         laptopSessionUtils = [
           brightnessctl # backlight/brightness keys under Niri
+          ddcutil # DDC/CI external monitor brightness/control
           fuzzel # app launcher; Niri's default config binds Super+R to it
           gparted-full # disk partition GUI (full FS tool set: resize/move any fs)
           pavucontrol # audio mixer GUI (volume keys only step, no panel)
