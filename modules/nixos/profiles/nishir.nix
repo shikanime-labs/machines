@@ -5,6 +5,7 @@ with lib;
 {
   imports = [
     ./machine.nix
+    ./wifi.nix
   ];
 
   networking = {

@@ -85,9 +85,6 @@
     secrets = {
       hermes-agent-api-server-key.sopsFile = ../../secrets/machine.enc.yaml;
       nix-access-token.sopsFile = ../../secrets/machine.enc.yaml;
-      wifi-sfr-e368.sopsFile = ../../secrets/machine.enc.yaml;
-      wifi-sfr-e368-5ghz.sopsFile = ../../secrets/machine.enc.yaml;
-      wifi-vintage-korean.sopsFile = ../../secrets/machine.enc.yaml;
     };
   };
 

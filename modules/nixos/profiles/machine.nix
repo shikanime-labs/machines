@@ -3,7 +3,6 @@
 {
   imports = [
     ./base.nix
-    ./wifi.nix
   ];
 
   services = {
