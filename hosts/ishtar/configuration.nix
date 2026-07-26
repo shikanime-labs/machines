@@ -7,6 +7,11 @@
     ../../modules/nixos/users/nishir.nix
   ];
 
+  hardware.nvidia.prime = {
+    intelBusId = "PCI:0:2:0";
+    nvidiaBusId = "PCI:1:0:0";
+  };
+
   # Colemak at the OS level (TTY + localed -> niri reads it).
   colemak.enable = true;
 
