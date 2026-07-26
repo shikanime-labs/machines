@@ -11,6 +11,7 @@
         blur_intensity = 0.5; # default; 0.0 = no blur, 1.0 = max
         tint_intensity = 0.3; # 0.0 = no tint, 1.0 = opaque
       };
+      calendar.enabled = true;
       location.auto_locate = true;
       shell = {
         font = "Fira Code";
