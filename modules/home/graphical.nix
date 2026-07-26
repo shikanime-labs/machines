@@ -87,6 +87,11 @@
         honor-xdg-activation-with-invalid-serial
     }
 
+    // Suppress the "Important Hotkeys" overlay popup at login; Mod+Shift+Slash still shows it.
+    hotkey-overlay {
+        skip-at-startup
+    }
+
     binds {
         Mod+Space { spawn-sh "noctalia msg panel-toggle launcher"; }
         Mod+S { spawn-sh "noctalia msg panel-toggle control-center"; }
