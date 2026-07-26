@@ -36,7 +36,6 @@
         font = "Fira Code";
         font_family = "Fira Code";
         polkit_agent = true;
-        greeter_sync.auto_sync = true;
       };
       theme = {
         mode = "auto";

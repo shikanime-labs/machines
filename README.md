@@ -84,10 +84,6 @@ no repo-owned theme schema or UI component to edit. The theme is set per user in
   derived from runtime IP geolocation. For a fixed-location, offline setup use
   `location.latitude`/`longitude` instead, or `location.custom_schedule` with
   explicit `sunrise`/`sunset` times.
-- `shell.greeter_sync.auto_sync` — when `true`, the shell pushes its resolved
-  theme (auto → day/night) into the greeter, so the login screen follows the
-  same schedule. Off by default. Do not set `theme.mode` on the greeter: its
-  binary ignores `[theme]`; only the shell→greeter sync drives greeter theming.
 
 Plugins (e.g. `noctalia/translator`, the launcher `/tr` provider) are enabled
 under the same `programs.noctalia.settings.plugins.enabled` attrset — see
