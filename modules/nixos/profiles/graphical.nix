@@ -57,6 +57,8 @@
 
     noctalia-greeter.enable = true;
 
+    steam.enable = true;
+
     # Niri forces XWayland off (the wayland-session import passes enableXWayland=false).
     # Re-enable it so X11 apps actually start under Niri.
     xwayland.enable = true;
