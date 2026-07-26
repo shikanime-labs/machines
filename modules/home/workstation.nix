@@ -29,16 +29,12 @@ in
 
   home = {
     packages = with pkgs; [
-      bws
       cachix
       devenv
       docker-credential-helpers
-      graphify
       pass
       qpdf
-      qwen-code
       rclone
-      rtk
       secretspec
       wget
       zip
@@ -47,15 +43,9 @@ in
   };
 
   programs = {
-    antigravity-cli.enable = true;
-
     bat.enable = true;
 
     carapace.enable = true;
-
-    codex.enable = true;
-
-    claude-code.enable = true;
 
     command-not-found.enable = true;
 
