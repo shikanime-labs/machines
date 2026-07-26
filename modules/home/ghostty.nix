@@ -21,7 +21,7 @@ with lib;
     };
   };
 
-  xdg.configFile."ghostty/themes/catppuccin-frappe".source = mkIf (
-    !pkgs.stdenv.isLinux
-  ) "${config.catppuccin.sources.ghostty}/catppuccin-frappe.conf";
+  xdg.configFile."ghostty/themes/catppuccin-frappe" = mkIf (!pkgs.stdenv.isLinux) {
+    source = "${config.catppuccin.sources.ghostty}/catppuccin-frappe.conf";
+  };
 }
