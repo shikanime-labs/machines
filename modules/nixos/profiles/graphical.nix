@@ -6,30 +6,36 @@
     ./workstation.nix
   ];
 
-  # Gaming + laptop utilities the graphical session needs at the system level.
-  environment.systemPackages =
-    with pkgs;
-    let
-      # Wayland session utilities: launcher + media/backlight controls that must
-      # resolve on Niri's spawned PATH (compositor launches them directly).
-      laptopSessionUtils = [
-        brightnessctl # backlight/brightness keys under Niri
-        fuzzel # app launcher; Niri's default config binds Super+R to it
-        pavucontrol # audio mixer GUI (volume keys only step, no panel)
-        playerctl # media-key control for MPRIS players
-      ];
+  environment = {
+    # Niri's built-in default spawns `${env TERMINAL alacritty}` on Super+Enter.
+    # Point it at Ghostty (provided by the home config) without a full config.kdl.
+    sessionVariables.TERMINAL = "ghostty";
 
-      # Wine/Proton stack for running Windows games and their launchers.
-      windowsGaming = [
-        wine
-        wine64
-        winetricks
-        protonup-qt
-        bottles
-        heroic
-      ];
-    in
-    laptopSessionUtils ++ windowsGaming;
+    # Gaming + laptop utilities the graphical session needs at the system level.
+    systemPackages =
+      with pkgs;
+      let
+        # Wayland session utilities: launcher + media/backlight controls that must
+        # resolve on Niri's spawned PATH (compositor launches them directly).
+        laptopSessionUtils = [
+          brightnessctl # backlight/brightness keys under Niri
+          fuzzel # app launcher; Niri's default config binds Super+R to it
+          pavucontrol # audio mixer GUI (volume keys only step, no panel)
+          playerctl # media-key control for MPRIS players
+        ];
+
+        # Wine/Proton stack for running Windows games and their launchers.
+        windowsGaming = [
+          wine
+          wine64
+          winetricks
+          protonup-qt
+          bottles
+          heroic
+        ];
+      in
+      laptopSessionUtils ++ windowsGaming;
+  };
 
   hardware = {
     # WiFi / Bluetooth firmware for the laptop radios.
@@ -73,16 +79,19 @@
     thunderbird.enable = true;
 
     steam.enable = true;
-  };
 
-  # Flatpak sandboxing for graphical hosts. The module asserts xdg.portal.enable,
-  # so the portal must be on or the build fails.
-  xdg.portal.enable = true;
-  services.flatpak.enable = true;
+    # Niri forces XWayland off (the wayland-session import passes enableXWayland=false).
+    # Re-enable it so X11 apps actually start under Niri.
+    xwayland.enable = true;
+  };
 
   # greetd daemon. `default_session.user` defaults to "greeter" (auto-created by the module).
   # The Noctalia Greeter module sets default_session.command to its session binary.
   services = {
+    # Flatpak sandboxing for graphical hosts. The module asserts xdg.portal.enable,
+    # so the portal must be on or the build fails.
+    flatpak.enable = true;
+
     greetd.enable = true;
 
     # Secret Service daemon so Thunderbird's login manager stores credentials
@@ -93,11 +102,5 @@
     xserver.enable = true;
   };
 
-  # Niri forces XWayland off (the wayland-session import passes enableXWayland=false).
-  # Re-enable it so X11 apps actually start under Niri.
-  programs.xwayland.enable = true;
-
-  # Niri's built-in default spawns `${env TERMINAL alacritty}` on Super+Enter.
-  # Point it at Ghostty (provided by the home config) without a full config.kdl.
-  environment.sessionVariables.TERMINAL = "ghostty";
+  xdg.portal.enable = true;
 }
