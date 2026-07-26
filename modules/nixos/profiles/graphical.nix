@@ -23,18 +23,8 @@
           pavucontrol # audio mixer GUI (volume keys only step, no panel)
           playerctl # media-key control for MPRIS players
         ];
-
-        # Wine/Proton stack for running Windows games and their launchers.
-        windowsGaming = [
-          wine
-          wine64
-          winetricks
-          protonup-qt
-          bottles
-          heroic
-        ];
       in
-      laptopSessionUtils ++ windowsGaming;
+      laptopSessionUtils;
   };
 
   hardware = {
@@ -72,13 +62,6 @@
         theme.mode = "dark";
       };
     };
-
-    # Thunderbird mail client on the managed Ishtar workstation.
-    # Native IMAP/CardDAV/CalDAV does the sync; this module only configures it
-    # and force-installs the locked Ishtar MailExtension.
-    thunderbird.enable = true;
-
-    steam.enable = true;
 
     # Niri forces XWayland off (the wayland-session import passes enableXWayland=false).
     # Re-enable it so X11 apps actually start under Niri.
