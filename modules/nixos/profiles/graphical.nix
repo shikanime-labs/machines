@@ -44,7 +44,7 @@
     };
     bluetooth.enable = true;
     nvidia = {
-      open = true;
+      open = false; # proprietary/closed kernel module, per explicit request
       modesetting.enable = true;
       powerManagement.enable = true;
     };
