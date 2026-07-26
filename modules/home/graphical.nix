@@ -40,6 +40,27 @@
       theme = {
         mode = "auto";
         source = "wallpaper";
+        templates = {
+          builtin_ids = [
+            "ghostty"
+            "gtk3"
+            "gtk4"
+            "helix"
+            "niri"
+            "qt"
+            "starship"
+          ];
+          community_ids = [
+            "bat"
+            "discord"
+            "neovim"
+            "obs"
+            "obsidian"
+            "steam"
+            "zed"
+            "zen-browser"
+          ];
+        };
       };
     };
   };
