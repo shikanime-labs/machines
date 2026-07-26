@@ -57,7 +57,13 @@
 
     noctalia-greeter.enable = true;
 
-    steam.enable = true;
+    steam = {
+      enable = true;
+      localNetworkGameTransfers.openFirewall = true;
+      gamescopeSession.enable = true;
+      protontricks.enable = true;
+      remotePlay.openFirewall = true;
+    };
 
     # Niri forces XWayland off (the wayland-session import passes enableXWayland=false).
     # Re-enable it so X11 apps actually start under Niri.
