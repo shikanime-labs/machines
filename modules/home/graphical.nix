@@ -62,7 +62,6 @@
           ];
         };
       };
-      wallpaper.automation.enabled = true;
     };
   };
 
