@@ -79,4 +79,19 @@
   };
 
   xdg.portal.enable = true;
+
+  # polkit authentication agent. Niri is not GNOME, so the GNOME agent never
+  # autostarts; without it pkexec/gparted have no way to show the password
+  # prompt. Run it as a --user service bound to the graphical session.
+  systemd.user.services.polkit-gnome-auth-agent = {
+    description = "polkit authentication agent";
+    wantedBy = [ "graphical-session.target" ];
+    partOf = [ "graphical-session.target" ];
+    after = [ "graphical-session.target" ];
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+      Restart = "on-failure";
+    };
+  };
 }
