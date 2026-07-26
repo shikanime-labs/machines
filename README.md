@@ -89,6 +89,10 @@ no repo-owned theme schema or UI component to edit. The theme is set per user in
   same schedule. Off by default. Do not set `theme.mode` on the greeter: its
   binary ignores `[theme]`; only the shell→greeter sync drives greeter theming.
 
+Plugins (e.g. `noctalia/translator`, the launcher `/tr` provider) are enabled
+under the same `programs.noctalia.settings.plugins.enabled` attrset — see
+[docs/noctalia-plugins.md](docs/noctalia-plugins.md).
+
 ### `secrets/`
 
 Encrypted secrets managed by `sops-nix`.

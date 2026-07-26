@@ -13,6 +13,7 @@
       };
       calendar.enabled = true;
       location.auto_locate = true;
+      plugins.enabled = [ "noctalia/translator" ];
       shell = {
         font = "Fira Code";
         polkit_agent = true;
