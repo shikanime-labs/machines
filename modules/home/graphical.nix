@@ -40,6 +40,11 @@
       theme = {
         mode = "auto";
         source = "wallpaper";
+        templates = {
+          # Materialize Noctalia's built-in GTK4 theme (assets/templates/gtk/gtk4.css
+          # -> $XDG_CONFIG_HOME/gtk-4.0/noctalia.css). gtk3 is owned by t_a28d4c43.
+          builtin_ids = [ "gtk4" ];
+        };
       };
     };
   };
