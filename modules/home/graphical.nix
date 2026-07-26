@@ -6,14 +6,17 @@
     enable = true;
     systemd.enable = true;
     settings = {
-      shell.font = "Fira Code";
-      shell.greeter_sync.auto_sync = true;
+      location.auto_locate = true;
+      shell = {
+        font = "Fira Code";
+        polkit_agent = true;
+        greeter_sync.auto_sync = true;
+      };
       theme = {
         mode = "auto";
         source = "builtin";
         builtin = "Catppuccin";
       };
-      location.auto_locate = true;
     };
   };
 }
