@@ -19,7 +19,7 @@ in
         style = "bold lavender";
       };
       git_branch.style = "bold mauve";
-      palette = if pkgs.stdenv.isLinux then "catppuccin_latte" else "catppuccin_frappe";
+      palette = mkForce (if pkgs.stdenv.isLinux then "catppuccin_latte" else "catppuccin_frappe");
     }
     // settings;
   };
