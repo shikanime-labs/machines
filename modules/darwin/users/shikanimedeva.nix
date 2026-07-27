@@ -46,7 +46,7 @@ in
 
     shikanime.enable = true;
   };
-  
+
   programs = {
     bash.enable = true;
 
