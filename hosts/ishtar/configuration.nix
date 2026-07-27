@@ -93,6 +93,10 @@
     };
   };
 
+  # Re-enable the setuid pkexec wrapper so GUI tools that escalate via
+  # pkexec (gparted, etc.) can gain root from a non-root desktop session.
+  security.polkit.enablePkexecWrapper = true;
+
   users.users.shika = {
     extraGroups = [
       "wheel"
