@@ -84,6 +84,7 @@
     # encrypted (Niri ships no keyring today).
     gnome = {
       gnome-keyring.enable = true;
+      gnome-online-accounts.enable = true;
       gnome-software.enable = true;
       sushi.enable = true;
     };
