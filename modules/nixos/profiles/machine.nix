@@ -17,6 +17,8 @@
       };
     };
 
+    fail2ban.enable = true;
+
     openssh = {
       enable = true;
       openFirewall = true;
