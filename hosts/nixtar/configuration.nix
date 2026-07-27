@@ -102,10 +102,24 @@ in
   services = {
     openssh = {
       enable = true;
+      openFirewall = false;
+      settings = {
+        passwordAuthentication = false;
+        kbdInteractiveAuthentication = false;
+        listenAddress = "tailscale0";
+      };
+    };
+    tailscale = {
+      enable = true;
+      authKeyFile = config.sops.secrets.tailscale-authkey.path;
       openFirewall = true;
+      useRoutingFeatures = "server";
+      extraUpFlags = [ "--ssh" ];
     };
     xserver.videoDrivers = [ "nvidia" ];
   };
+
+  security.sudo.wheelNeedsPassword = true;
 
   sops = {
     age = {
@@ -115,6 +129,8 @@ in
     };
     defaultSopsFile = ../../secrets/nixtar.enc.yaml;
     defaultSopsFormat = "yaml";
+    secrets.tailscale-authkey = { };
+    secrets.builder-ssh-key = { };
   };
 
   users.users.shika = {

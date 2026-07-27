@@ -166,8 +166,15 @@ other machines.
 ## Related Repos
 
 This repository follows the same general shape as the other Shikanime
-configuration repos:
+configuration repositories:
 
 - `x-shikanime/manifests`
 - `shikanime-studio/knix`
 - `x-shikanime/colemak`
+
+## Zero-Trust follow-ups
+
+- ZT-2 — MFA on the SSH path: enforce IdP MFA in the Tailscale admin console
+  and ACL once `tailscale/acl.hujson` is populated.
+- ZT-8 — Rotate the committed password hashes in `nishir.nix` and
+  `ishtar/configuration.nix` on a 6-month calendar.

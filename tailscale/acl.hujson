@@ -1,0 +1,9 @@
+{
+	// policies: []
+	// Placeholder ACL. Replace with exported Tailscale ACL JSON after first
+	// policy-as-code sync. Do NOT edit policy rules here until CI diff check
+	// is enabled for tailscale/acl.hujson.
+	"groups": {},
+	"tagOwners": {},
+	"acls": []
+}

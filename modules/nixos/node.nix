@@ -49,9 +49,20 @@
       };
     };
 
+    fail2ban = {
+      enable = true;
+      maxretries = 5;
+    };
+
     openssh = {
       enable = true;
-      openFirewall = true;
+      openFirewall = false;
+      settings = {
+        passwordAuthentication = false;
+        kbdInteractiveAuthentication = false;
+        # Restrict direct internet-facing SSH to the Tailscale overlay.
+        listenAddress = "tailscale0";
+      };
     };
 
     tailscale = {

@@ -1,0 +1,39 @@
+name: Tailscale ACL drift check
+on:
+  push:
+    paths: ["tailscale/acl.hujson"]
+  pull_request:
+    paths: ["tailscale/acl.hujson"]
+
+jobs:
+  acl-diff:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Tailscale CLI
+        run: |
+          curl -fsSL https://tailscale.com/install.sh | sh -s -- -q
+
+      - name: Run ACL diff check
+        env:
+          TS_API_KEY: ${{ secrets.TAILSCALE_API_KEY }}
+          TS_TAILNET: ${{ vars.TS_TAILNET }}
+          TS_ACL_FILE: tailscale/acl.hujson
+        run: |
+          if [ -z "${TS_API_KEY:-}" ] || [ -z "${TS_TAILNET:-}" ]; then
+            echo "TAILSCALE_API_KEY or TS_TAILNET is not set; skipping ACL diff."
+            exit 0
+          fi
+          tailscale acl --json < "$TS_ACL_FILE" > /tmp/committed-acl.json
+          curl -fsSL -H "Authorization: Bearer ${TS_API_KEY}" \
+            "https://api.tailscale.com/api/v2/tailnet/${TS_TAILNET}/acl" \
+            > /tmp/console-acl.json
+          if ! diff -u /tmp/console-acl.json /tmp/committed-acl.json; then
+            echo "::error::Committed tailscale/acl.hujson diverges from console ACL."
+            exit 1
+          fi
