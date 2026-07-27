@@ -20,6 +20,7 @@
         "graphify-out/"
         ".graphify_cache/"
         "graphify_cache/"
+        ".worktrees/"
       ];
       settings.credential.helper = "manager";
     };
