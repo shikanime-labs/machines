@@ -21,6 +21,7 @@
       nautilus # file manager GUI
       pavucontrol # audio mixer GUI (volume keys only step, no panel)
       playerctl # media-key control for MPRIS players
+      xhost # lets gparted's root-launch wrapper grant root the Xwayland display
       xwayland-satellite # bridge x11 apps
     ];
   };
