@@ -103,6 +103,10 @@
         XF86AudioMute { spawn-sh "noctalia msg volume-mute"; }
         XF86MonBrightnessUp { spawn-sh "noctalia msg brightness-up"; }
         XF86MonBrightnessDown { spawn-sh "noctalia msg brightness-down"; }
+
+        // Screenshot: full screen (Print) and region (Mod+Shift+S) into swappy.
+        Print { spawn-sh "grim - | swappy -f -"; }
+        Mod+Shift+S { spawn-sh "grim -g \"$(slurp)\" - | swappy -f -"; }
     }
 
     // Laptop: lock + suspend on lid close (ishtar). logind HandleLidSwitch=ignore

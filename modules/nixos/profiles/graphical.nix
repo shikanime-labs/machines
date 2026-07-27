@@ -12,18 +12,31 @@
     sessionVariables.TERMINAL = "ghostty";
 
     # Gaming + laptop utilities the graphical session needs at the system level.
-    systemPackages = with pkgs; [
-      bottles # Wine/Windows app launcher
-      brightnessctl # backlight/brightness keys under Niri
-      ddcutil # DDC/CI external monitor brightness/control
-      fuzzel # app launcher; Niri's default config binds Super+R to it
-      gparted-full # disk partition GUI (full FS tool set: resize/move any fs)
-      nautilus # file manager GUI
-      pavucontrol # audio mixer GUI (volume keys only step, no panel)
-      playerctl # media-key control for MPRIS players
-      xhost # lets gparted's root-launch wrapper grant root the Xwayland display
-      xwayland-satellite # bridge x11 apps
-    ];
+    systemPackages =
+      with pkgs;
+      let
+        screenshot = [
+          grim # capture
+          slurp # region selection
+          swappy # annotate/edit captures
+        ];
+        wayland = [
+          xhost # lets gparted's root-launch wrapper grant root the Xwayland display
+          xwayland-satellite # bridge x11 apps
+        ];
+      in
+      [
+        bottles # Wine/Windows app launcher
+        brightnessctl # backlight/brightness keys under Niri
+        ddcutil # DDC/CI external monitor brightness/control
+        fuzzel # app launcher; Niri's default config binds Super+R to it
+        gparted-full # disk partition GUI (full FS tool set: resize/move any fs)
+        nautilus # file manager GUI
+        pavucontrol # audio mixer GUI (volume keys only step, no panel)
+        playerctl # media-key control for MPRIS players
+      ]
+      ++ screenshot
+      ++ wayland;
   };
 
   hardware = {
