@@ -1,4 +1,34 @@
+{ lib, pkgs, ... }:
+
 {
+  # GUI sudo: route `sudo` through polkit so the fleet-standard Noctalia
+  # polkit agent raises its password dialog in graphical sessions (see
+  # t_58a950d3 / t_d3a9bbfd). pkexec can't serve interactive-shell/edit
+  # requests (-i/-s/-e), so those fall through to the real sudo unchanged.
+  # On headless sessions (SSH, TTY) the real sudo runs too. Gated to Linux
+  # (the Noctalia agent is Wayland/Linux only); macOS keeps native sudo.
+  home.packages = lib.mkIf pkgs.stdenv.isLinux [
+    (pkgs.writeShellScriptBin "sudo" ''
+      real_sudo() {
+        for p in /run/wrappers/bin/sudo /run/current-system/sw/bin/sudo /usr/bin/sudo; do
+          [ -x "$p" ] && exec "$p" "$@"
+        done
+        echo "sudo: unable to locate the real sudo binary" >&2
+        exit 1
+      }
+      # pkexec cannot emulate sudo's interactive/shell/edit modes.
+      for a in "$@"; do
+        case "$a" in
+          -i|--login|-s|--shell|-e|--edit|--stdin) real_sudo "$@" ;;
+        esac
+      done
+      if [ -n "''${DISPLAY:-''${WAYLAND_DISPLAY:-}}" ] && command -v pkexec >/dev/null 2>&1; then
+        exec pkexec "$@"
+      fi
+      real_sudo "$@"
+    '')
+  ];
+
   # Global Noctalia desktop shell theme for graphical Linux hosts.
   # NixOS-level programs.noctalia has no `settings`; theming is home-manager only,
   # so this is the shared home module all graphical users import.
