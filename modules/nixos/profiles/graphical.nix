@@ -26,7 +26,6 @@
         ];
       in
       [
-        bottles # Wine/Windows app launcher
         brightnessctl # backlight/brightness keys under Niri
         ddcutil # DDC/CI external monitor brightness/control
         fuzzel # app launcher; Niri's default config binds Super+R to it
