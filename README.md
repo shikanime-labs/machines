@@ -65,6 +65,9 @@ Shared module layers.
   - `distributed.nix` - remote build machines and distributed build settings
   - `nishir.nix` - cluster node defaults: tailscale, SSH, Avahi, firewall tweaks
   - `nishir.nix` and `talashi.nix` - cluster-specific server profiles
+  - `ai.nix` - hermes-agent service, computer-use wiring; the `cua-driver`
+    binary (AT-SPI/D-Bus) is installed fleet-wide via `flake/nixos.nix` so
+    hermes-agent's `computer-use` extra can drive computer automation
 - `modules/darwin/` contains macOS host profiles
   - `base.nix`, `minimal.nix`, `workstation.nix`, `distributed.nix`
 - `modules/home/` contains shared Home Manager modules
