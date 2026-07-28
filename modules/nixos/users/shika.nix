@@ -20,6 +20,8 @@ in
     ../../../modules/home/zed-editor.nix
   ];
 
+  home.sessionVariables.SSH_AUTH_SOCK = "${config.home.homeDirectory}/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock";
+
   identities = {
     enable = true;
 

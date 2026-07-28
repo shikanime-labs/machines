@@ -19,6 +19,8 @@ in
     ../../../modules/home/zed-editor.nix
   ];
 
+  home.sessionVariables.SSH_AUTH_SOCK = "${config.home.homeDirectory}/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock";
+
   identities = {
     enable = true;
 
@@ -44,9 +46,7 @@ in
 
     shikanime.enable = true;
   };
-
-  home.sessionVariables.SSH_AUTH_SOCK = "${config.home.homeDirectory}/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock";
-
+  
   programs = {
     bash.enable = true;
 
