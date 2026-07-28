@@ -19,6 +19,7 @@ with lib;
         config.sops.templates.hermes-agent-matrix-env.path
       ];
       extraPackages = with pkgs; [
+        agent-browser
         curl
         corepack
         gh
