@@ -3,10 +3,13 @@
 {
   home.packages = [
     pkgs.git-credential-manager
+    pkgs.gh-stack
   ];
 
   programs = {
     delta.enable = true;
+
+    gh.extensions = with pkgs; [ gh-stack ];
 
     gh-dash.enable = true;
 
