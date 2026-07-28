@@ -61,7 +61,7 @@ let
 
   mkWorkstationsModules =
     _system:
-    mkAiModules
+    (mkAiModules _system)
     ++ baseModules
     ++ [
       { home-manager.sharedModules = workstationHomeModules; }
