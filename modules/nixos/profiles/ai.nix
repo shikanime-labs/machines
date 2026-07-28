@@ -8,176 +8,179 @@
 with lib;
 
 {
-  # cargo.nix / dist.nix-style: addToSystemPackages = true + extraPackages -> cargo.nix inherits?
-  services.hermes-agent = {
-    enable = true;
-    addToSystemPackages = true;
-    environmentFiles = [
-      config.sops.templates.hermes-agent-env.path
-      config.sops.templates.hermes-agent-matrix-env.path
-    ];
-    extraPackages = with pkgs; [
-      curl
-      corepack
-      gh
-      git
-      graphify
-      honcho
-      nodejs
-      rtk
-      yarn
-    ];
-    settings = {
-      context.engine = "lcm";
-      custom_providers = [
-        {
-          name = "aperture-anthropic";
-          base_url = "https://ai.taila659a.ts.net/v1";
-          api_mode = "anthropic_messages";
-          model = "glm-4.7";
-          models = [
-            "glm-4.7"
-            "glm-5.2"
-          ];
-        }
-        {
-          name = "aperture-openai";
-          base_url = "https://ai.taila659a.ts.net/v1";
-          api_mode = "chat_completions";
-          model = "stepfun/step-3.7-flash:free";
-          models = [
-            "tencent/hy3:free"
-            "mistral/labs-leanstral-1-5"
-            "openrouter/openrouter/free"
-            "stepfun/step-3.7-flash:free"
-          ];
-        }
+  services = {
+    cua-driver.enable = true;
+
+    hermes-agent = {
+      enable = true;
+      addToSystemPackages = true;
+      environmentFiles = [
+        config.sops.templates.hermes-agent-env.path
+        config.sops.templates.hermes-agent-matrix-env.path
       ];
-      documents."honcho.json" = builtins.toJSON {
-        baseUrl = "https://honcho.taila659a.ts.net";
-        hosts.hermes = {
-          peerName = config.networking.hostName;
-          aiPeer = "telsha";
-          workspace = "hermes";
-          observationMode = "directional";
-          writeFrequency = "async";
-          recallMode = "hybrid";
-          dialecticCadence = 3;
-          sessionStrategy = "per-session";
-          enabled = true;
-          saveMessages = true;
-          dialecticReasoningLevel = "low";
-          pinPeerName = false;
-        };
-      };
-      fallback_providers = [
-        {
-          api_mode = "chat_completions";
-          model = "poolside/laguna-s-2.1:free";
-          provider = "custom:aperture-openai";
-        }
-        {
-          api_mode = "chat_completions";
-          model = "labs-leanstral-1-5";
-          provider = "custom:aperture-openai";
-        }
-        {
-          api_mode = "chat_completions";
-          model = "stepfun/step-3.7-flash:free";
-          provider = "custom:aperture-openai";
-        }
+      extraPackages = with pkgs; [
+        curl
+        corepack
+        gh
+        git
+        graphify
+        honcho
+        nodejs
+        rtk
+        yarn
       ];
-      matrix = {
-        allowed_rooms = [ "!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net" ];
-        allowed_users = [
-          "@admin:matrix.taila659a.ts.net"
-          "@shikanime:matrix.taila659a.ts.net"
+      settings = {
+        context.engine = "lcm";
+        custom_providers = [
+          {
+            name = "aperture-anthropic";
+            base_url = "https://ai.taila659a.ts.net/v1";
+            api_mode = "anthropic_messages";
+            model = "glm-4.7";
+            models = [
+              "glm-4.7"
+              "glm-5.2"
+            ];
+          }
+          {
+            name = "aperture-openai";
+            base_url = "https://ai.taila659a.ts.net/v1";
+            api_mode = "chat_completions";
+            model = "stepfun/step-3.7-flash:free";
+            models = [
+              "tencent/hy3:free"
+              "mistral/labs-leanstral-1-5"
+              "openrouter/openrouter/free"
+              "stepfun/step-3.7-flash:free"
+            ];
+          }
         ];
+        documents."honcho.json" = builtins.toJSON {
+          baseUrl = "https://honcho.taila659a.ts.net";
+          hosts.hermes = {
+            peerName = config.networking.hostName;
+            aiPeer = "telsha";
+            workspace = "hermes";
+            observationMode = "directional";
+            writeFrequency = "async";
+            recallMode = "hybrid";
+            dialecticCadence = 3;
+            sessionStrategy = "per-session";
+            enabled = true;
+            saveMessages = true;
+            dialecticReasoningLevel = "low";
+            pinPeerName = false;
+          };
+        };
+        fallback_providers = [
+          {
+            api_mode = "chat_completions";
+            model = "poolside/laguna-s-2.1:free";
+            provider = "custom:aperture-openai";
+          }
+          {
+            api_mode = "chat_completions";
+            model = "labs-leanstral-1-5";
+            provider = "custom:aperture-openai";
+          }
+          {
+            api_mode = "chat_completions";
+            model = "stepfun/step-3.7-flash:free";
+            provider = "custom:aperture-openai";
+          }
+        ];
+        matrix = {
+          allowed_rooms = [ "!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net" ];
+          allowed_users = [
+            "@admin:matrix.taila659a.ts.net"
+            "@shikanime:matrix.taila659a.ts.net"
+          ];
+        };
+        memory.provider = "honcho";
+        model = {
+          default = "tencent/hy3:free";
+          provider = "custom:aperture-openai";
+          base_url = "https://ai.taila659a.ts.net/v1";
+        };
+        auxiliary = {
+          vision = {
+            provider = "custom:aperture-openai";
+            model = "openrouter/openrouter/free";
+            base_url = "https://ai.taila659a.ts.net/v1";
+          };
+          web_extract = {
+            provider = "custom:aperture-openai";
+            model = "openrouter/openrouter/free";
+            base_url = "https://ai.taila659a.ts.net/v1";
+          };
+          compression = {
+            provider = "custom:aperture-openai";
+            model = "openrouter/openrouter/free";
+            base_url = "https://ai.taila659a.ts.net/v1";
+          };
+          skills_hub = {
+            provider = "custom:aperture-openai";
+            model = "openrouter/openrouter/free";
+            base_url = "https://ai.taila659a.ts.net/v1";
+          };
+          approval = {
+            provider = "custom:aperture-openai";
+            model = "openrouter/openrouter/free";
+            base_url = "https://ai.taila659a.ts.net/v1";
+          };
+          mcp = {
+            provider = "custom:aperture-openai";
+            model = "openrouter/openrouter/free";
+            base_url = "https://ai.taila659a.ts.net/v1";
+          };
+          title_generation = {
+            provider = "custom:aperture-openai";
+            model = "openrouter/openrouter/free";
+            base_url = "https://ai.taila659a.ts.net/v1";
+          };
+          memory_query_rewrite = {
+            provider = "custom:aperture-anthropic:openai";
+            model = "auxiliary";
+            base_url = "https://ai.taila659a.ts.net/v1";
+          };
+          tts_audio_tags = {
+            provider = "custom:aperture-openai";
+            model = "openrouter/openrouter/free";
+            base_url = "https://ai.taila659a.ts.net/v1";
+          };
+          triage_specifier = {
+            provider = "custom:aperture-openai";
+            model = "openrouter/openrouter/free";
+            base_url = "https://ai.taila659a.ts.net/v1";
+          };
+          kanban_decomposer = {
+            provider = "custom:aperture-openai";
+            model = "openrouter/openrouter/free";
+            base_url = "https://ai.taila659a.ts.net/v1";
+          };
+          profile_describer = {
+            provider = "custom:aperture-openai";
+            model = "openrouter/openrouter/free";
+            base_url = "https://ai.taila659a.ts.net/v1";
+          };
+        };
+        mcp_servers.aperture = {
+          url = "https://ai.taila659a.ts.net/mcp";
+          enabled = true;
+        };
+        # Bare `hermes`/`hermes chat` launches the Ink TUI by default; token
+        # streaming on for live agent output. Explicit --cli/--tui still wins.
+        display = {
+          interface = "tui";
+          streaming = true;
+        };
       };
-      memory.provider = "honcho";
-      model = {
-        default = "tencent/hy3:free";
-        provider = "custom:aperture-openai";
-        base_url = "https://ai.taila659a.ts.net/v1";
-      };
-      auxiliary = {
-        vision = {
-          provider = "custom:aperture-openai";
-          model = "openrouter/openrouter/free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        web_extract = {
-          provider = "custom:aperture-openai";
-          model = "openrouter/openrouter/free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        compression = {
-          provider = "custom:aperture-openai";
-          model = "openrouter/openrouter/free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        skills_hub = {
-          provider = "custom:aperture-openai";
-          model = "openrouter/openrouter/free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        approval = {
-          provider = "custom:aperture-openai";
-          model = "openrouter/openrouter/free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        mcp = {
-          provider = "custom:aperture-openai";
-          model = "openrouter/openrouter/free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        title_generation = {
-          provider = "custom:aperture-openai";
-          model = "openrouter/openrouter/free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        memory_query_rewrite = {
-          provider = "custom:aperture-anthropic:openai";
-          model = "auxiliary";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        tts_audio_tags = {
-          provider = "custom:aperture-openai";
-          model = "openrouter/openrouter/free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        triage_specifier = {
-          provider = "custom:aperture-openai";
-          model = "openrouter/openrouter/free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        kanban_decomposer = {
-          provider = "custom:aperture-openai";
-          model = "openrouter/openrouter/free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        profile_describer = {
-          provider = "custom:aperture-openai";
-          model = "openrouter/openrouter/free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-      };
-      mcp_servers.aperture = {
-        url = "https://ai.taila659a.ts.net/mcp";
-        enabled = true;
-      };
-      # Bare `hermes`/`hermes chat` launches the Ink TUI by default; token
-      # streaming on for live agent output. Explicit --cli/--tui still wins.
-      display = {
-        interface = "tui";
-        streaming = true;
-      };
+      extraDependencyGroups = [
+        "computer-use"
+        "honcho"
+        "matrix"
+      ];
     };
-    extraDependencyGroups = [
-      "computer-use"
-      "honcho"
-      "matrix"
-    ];
   };
 
   sops = {
