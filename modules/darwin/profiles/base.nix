@@ -29,7 +29,7 @@ in
   sops = {
     secrets.nix-access-token = { };
     templates.nix-config.content = ''
-      extra-access-tokens = "github.com=${config.sops.placeholder.nix-access-token}"
+      extra-access-tokens = github.com=${config.sops.placeholder.nix-access-token}
     '';
   };
 
