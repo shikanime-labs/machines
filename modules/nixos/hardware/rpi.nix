@@ -13,8 +13,8 @@
   ];
 
   # Silences Raspberry Pi firmware debug flooding on all RPi hosts through
-  # fushi/nemishi/minish. 4 = warnings and above still appear.
-  boot.consoleLogLevel = 4;
+  # fushi/nemishi/minish. 3 = warnings and above still appear.
+  boot.consoleLogLevel = 3;
 
   nixpkgs.overlays = [
     (_: super: {
