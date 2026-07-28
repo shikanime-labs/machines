@@ -92,6 +92,12 @@ Plugins (e.g. `noctalia/translator`, the launcher `/tr` provider) are enabled
 under the same `programs.noctalia.settings.plugins.enabled` attrset — see
 [docs/noctalia-plugins.md](docs/noctalia-plugins.md).
 
+### Bitwarden biometric unlock
+
+Graphical NixOS hosts wire Bitwarden's fingerprint/PAM unlock and relocate its
+SSH agent socket — setup, enrollment, and troubleshooting live in
+[docs/bitwarden-biometric.md](docs/bitwarden-biometric.md).
+
 ### `secrets/`
 
 Encrypted secrets managed by `sops-nix`.
