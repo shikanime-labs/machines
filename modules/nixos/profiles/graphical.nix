@@ -26,6 +26,7 @@
         ];
       in
       [
+        bitwarden-desktop # password manager
         brightnessctl # backlight/brightness keys under Niri
         ddcutil # DDC/CI external monitor brightness/control
         fuzzel # app launcher; Niri's default config binds Super+R to it
@@ -36,6 +37,25 @@
       ]
       ++ screenshot
       ++ wayland;
+
+    # Host polkit policy for Bitwarden's "Unlock with system authentication".
+    # Required so the in-session polkit agent (Noctalia) can surface the
+    # fingerprint/password gate for the native Bitwarden app.
+    # No XML prolog: Nix indented strings keep the leading indent, and a
+    # polkit/libxml2 declaration must sit at byte 0 or the policy is dropped.
+    etc."polkit-1/actions/com.bitwarden.Bitwarden.policy".text = ''
+      <policyconfig>
+          <action id="com.bitwarden.Bitwarden.unlock">
+              <description>Unlock Bitwarden</description>
+              <message>Authenticate to unlock Bitwarden</message>
+              <defaults>
+                  <allow_any>no</allow_any>
+                  <allow_inactive>no</allow_inactive>
+                  <allow_active>auth_self</allow_active>
+              </defaults>
+          </action>
+      </policyconfig>
+    '';
   };
 
   hardware = {
@@ -117,6 +137,11 @@
       enable = true;
       videoDrivers = [ "nvidia" ];
     };
+
+    # Fingerprint reader stack. Wires pam_fprintd into the auth path so the
+    # polkit agent (Noctalia) can surface a fingerprint gate for Bitwarden's
+    # "Unlock with system authentication". Enroll with `fprintd-enroll` as the user.
+    fprintd.enable = true;
   };
 
   xdg.portal.enable = true;
