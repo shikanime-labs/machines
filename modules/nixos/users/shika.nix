@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ lib, ... }:
 
 with lib;
 
@@ -6,7 +6,7 @@ let
   toDhall = generators.toDhall { };
 in
 {
-  home-manager.users.shika = {
+  home-manager.users.shika = { config, ... }: {
     imports = [
       ../../../modules/home/ai.nix
       ../../../modules/home/base.nix
