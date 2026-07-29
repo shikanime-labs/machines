@@ -89,14 +89,9 @@ in
 
   networking.hostName = "nixtar";
 
-  programs.nix-ld = {
-    enable = true;
-    libraries = [
-      pkgs.stdenv.cc.cc.lib
-      pkgs.zlib
-      wsl-lib
-    ];
-  };
+  programs.nix-ld.libraries = [
+    wsl-lib
+  ];
 
   services = {
     openssh = {
@@ -125,14 +120,7 @@ in
     ];
   };
 
-  virtualisation.docker = {
-    autoPrune.enable = true;
-    rootless = {
-      enable = true;
-      setSocketVariable = true;
-      daemon.settings.features.cdi = true;
-    };
-  };
+  virtualisation.docker.rootless.daemon.settings.features.cdi = true;
 
   wsl = {
     enable = true;
