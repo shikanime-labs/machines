@@ -21,17 +21,7 @@ in
       ../../../modules/home/zed-editor.nix
     ];
 
-    # Bitwarden binds its SSH agent socket to BITWARDEN_SSH_AUTH_SOCK (falls back
-    # to $HOME/.bitwarden-ssh-agent.sock). Point both it and SSH_AUTH_SOCK at the
-    # XDG runtime dir so the socket lives under /run/user/$UID, not $HOME root.
-    home.sessionVariables =
-      let
-        bitwardenSshAuthSock = "${config.xdg.configHome}/bitwarden/.bitwarden-ssh-agent.sock";
-      in
-      {
-        BITWARDEN_SSH_AUTH_SOCK = bitwardenSshAuthSock;
-        SSH_AUTH_SOCK = bitwardenSshAuthSock;
-      };
+    home.sessionVariables.SSH_AUTH_SOCK = "${config.home.homeDirectory}/.bitwarden-ssh-agent.sock";
 
     identities = {
       enable = true;
