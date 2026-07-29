@@ -4,6 +4,7 @@
     ../../modules/nixos/profiles/leader.nix
     ../../modules/nixos/profiles/graphical.nix
     ../../modules/nixos/hardware/razer-blade.nix
+    ../../modules/nixos/users/meika.nix
     ../../modules/nixos/users/nishir.nix
     ../../modules/nixos/users/shika.nix
   ];
