@@ -1,4 +1,4 @@
-{ config, ... }:
+{ pkgs, config, ... }:
 
 {
   imports = [
@@ -55,6 +55,27 @@
   # zram swap so the kernel OOM-killer isn't the first responder on small nodes.
   # PSI is enabled by default on NixOS std kernel; that also lets systemd-oomd run.
   zramSwap.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    syncthing
+  ];
+
+  environment.etc."syncthing/config.xml".text = ''
+    <?xml version="1.0" encoding="UTF-8"?>
+    <directory version="27">
+      <gui enabled="true" tls="false" authentication="false" rawAddresses="true">
+        <address>127.0.0.1:8384</address>
+        <apikey></apikey>
+      </gui>
+      <options>
+        <defaults>
+          <listenAddresses>
+            <listenAddress>tcp://0.0.0.0:22000</listenAddress>
+          </listenAddresses>
+        </defaults>
+      </options>
+    </directory>
+  '';
 
   # Force glibc to prefer IPv4 over IPv6 for dual-stack destinations.
   networking.getaddrinfo.precedence = {
