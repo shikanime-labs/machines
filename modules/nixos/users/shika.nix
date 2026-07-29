@@ -26,7 +26,7 @@ in
     # XDG runtime dir so the socket lives under /run/user/$UID, not $HOME root.
     home.sessionVariables =
       let
-        bitwardenSshAuthSock = "${config.xdg.configHome}/.bitwarden-ssh-agent.sock";
+        bitwardenSshAuthSock = "${config.xdg.configHome}/bitwarden/.bitwarden-ssh-agent.sock";
       in
       {
         BITWARDEN_SSH_AUTH_SOCK = bitwardenSshAuthSock;
