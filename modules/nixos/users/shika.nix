@@ -68,8 +68,10 @@ in
 
   users.users.shika = {
     extraGroups = [
+      "audio"
       "hermes"
       "plugdev"
+      "video"
       "wheel"
     ];
     home = "/home/shika";
