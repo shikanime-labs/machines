@@ -78,6 +78,7 @@ in
 
   users.users.shika = {
     extraGroups = [
+      "hermes"
       "plugdev"
       "wheel"
     ];
