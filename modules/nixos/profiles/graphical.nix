@@ -29,6 +29,7 @@
         bitwarden-desktop # password manager
         brightnessctl # backlight/brightness keys under Niri
         ddcutil # DDC/CI external monitor brightness/control
+        element-desktop # Matrix client
         fuzzel # app launcher; Niri's default config binds Super+R to it
         gparted-full # disk partition GUI (full FS tool set: resize/move any fs)
         nautilus # file manager GUI
