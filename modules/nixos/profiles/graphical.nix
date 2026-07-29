@@ -152,6 +152,11 @@
     xserver = {
       enable = true;
       videoDrivers = [ "nvidia" ];
+
+      # GNOME desktop session — selectable at the greetd greeter
+      # as an alternative to Niri. The .desktop file lands in
+      # wayland-sessions and noctalia-greeter picks it up.
+      desktopManager.gnome.enable = true;
     };
 
     # Fingerprint reader stack. Wires pam_fprintd into the auth path so the
