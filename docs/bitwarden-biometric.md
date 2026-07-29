@@ -69,6 +69,19 @@ Both resolve to `$XDG_RUNTIME_DIR/.bitwarden-ssh-agent.sock` at runtime
 (`$XDG_RUNTIME_DIR` is set by elogind/pam on login). Enable **SSH agent** in
 Bitwarden's settings to populate keys.
 
+## Windows Hello
+
+**Short answer: not applicable on ishtar.**
+
+Windows Hello biometric authentication is Windows-only
+(WinRT/BiometricFramework). Linux has no equivalent API. The closest Linux
+biometric auth stack is fprintd (fingerprint) — already wired on ishtar via
+pam_fprintd + Noctalia polkit agent + Bitwarden desktop. A Windows Hello-style
+facial auth alternative (`howdy`) requires an IR camera, which ishtar does not
+have.
+
+For the full existing biometric unlock path, see the sections above.
+
 ## Troubleshooting
 
 - **No fingerprint prompt at all / polkit rejects the unlock.** Confirm the

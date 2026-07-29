@@ -92,6 +92,14 @@ Plugins (e.g. `noctalia/translator`, the launcher `/tr` provider) are enabled
 under the same `programs.noctalia.settings.plugins.enabled` attrset — see
 [docs/noctalia-plugins.md](docs/noctalia-plugins.md).
 
+### Authentication
+
+Authentication architecture for graphical hosts (Bitwarden biometric unlock,
+fprintd stack) lives in
+[docs/bitwarden-biometric.md](docs/bitwarden-biometric.md). The
+[docs/ishtar-auth.md](docs/ishtar-auth.md) doc covers the full auth stack
+including why Windows Hello is not applicable on ishtar.
+
 ### Bitwarden biometric unlock
 
 Graphical NixOS hosts wire Bitwarden's fingerprint/PAM unlock and relocate its
