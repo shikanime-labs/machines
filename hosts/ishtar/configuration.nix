@@ -5,6 +5,7 @@
     ../../modules/nixos/profiles/graphical.nix
     ../../modules/nixos/hardware/razer-blade.nix
     ../../modules/nixos/users/nishir.nix
+    ../../modules/nixos/users/shika.nix
   ];
 
   hardware.nvidia.prime = {
@@ -26,10 +27,6 @@
       fsType = "ext4";
     };
   };
-
-  home-manager.users.shika.imports = [
-    ../../modules/nixos/users/shika.nix
-  ];
 
   networking.hostName = "ishtar";
 
@@ -96,19 +93,6 @@
   # Re-enable the setuid pkexec wrapper so GUI tools that escalate via
   # pkexec (gparted, etc.) can gain root from a non-root desktop session.
   security.polkit.enablePkexecWrapper = true;
-
-  users.users.shika = {
-    extraGroups = [
-      "wheel"
-      "plugdev"
-    ];
-    home = "/home/shika";
-    initialHashedPassword = "$y$j9T$3nIVNUGT/i3/bS3kiaDC7.$KgHv3Ld.O989KuqPTkJlSHq4Uq47eLVES6mL2Vlo324";
-    isNormalUser = true;
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH+tp1Xfz7NomHCZuDPlfj3XW5hm9t0TiCyEeudRraoe"
-    ];
-  };
 
   system.stateVersion = "26.05";
 }

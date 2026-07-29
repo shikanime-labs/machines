@@ -1,4 +1,10 @@
 {
+  home-manager.users.nishir.imports = [
+    ../../../modules/home/base.nix
+    ../../../modules/home/helix.nix
+    ../../../modules/home/starship.nix
+  ];
+
   users.users.nishir = {
     extraGroups = [ "wheel" ];
     home = "/home/nishir";
