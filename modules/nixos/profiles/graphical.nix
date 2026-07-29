@@ -87,6 +87,21 @@
     # Niri compositor (ships wayland-sessions/niri.desktop; the greeter lists it).
     niri.enable = true;
 
+    # OBS Studio — video recording and live streaming with recommended plugins
+    # and virtual camera support (for Zoom/Teams). Hardware-accelerated on NVIDIA.
+    obs-studio = {
+      enable = true;
+      enableVirtualCamera = true;
+      plugins = with pkgs.obs-studio-plugins; [
+        obs-vkcapture # Vulkan/OpenGL game capture
+        advanced-scene-switcher # automated scene switching
+        input-overlay # show keyboard/gamepad input on stream
+        obs-composite-blur # blur filter with proper compositing
+        obs-backgroundremoval # background removal filter
+        obs-gstreamer # GStreamer source/encoder/filter
+      ];
+    };
+
     # Noctalia shell/bar as a systemd user service (auto-starts in the Wayland session).
     noctalia = {
       enable = true;
