@@ -87,6 +87,15 @@
     # Niri compositor (ships wayland-sessions/niri.desktop; the greeter lists it).
     niri.enable = true;
 
+    # Noctalia shell/bar as a systemd user service (auto-starts in the Wayland session).
+    noctalia = {
+      enable = true;
+      recommendedServices.enable = true;
+      systemd.enable = true;
+    };
+
+    noctalia-greeter.enable = true;
+
     # OBS Studio — video recording and live streaming with recommended plugins
     # and virtual camera support (for Zoom/Teams). Hardware-accelerated on NVIDIA.
     obs-studio = {
@@ -101,15 +110,6 @@
         obs-gstreamer # GStreamer source/encoder/filter
       ];
     };
-
-    # Noctalia shell/bar as a systemd user service (auto-starts in the Wayland session).
-    noctalia = {
-      enable = true;
-      recommendedServices.enable = true;
-      systemd.enable = true;
-    };
-
-    noctalia-greeter.enable = true;
 
     steam = {
       enable = true;
