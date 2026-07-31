@@ -71,13 +71,10 @@
           ];
         };
         git.private-commits = "description(substring:\"[private]\")";
-        templates = {
-          commit_trailers = ''
-            format_signed_off_by_trailer(self)
-            ++ if(!trailers.contains_key("Change-Id"), format_gerrit_change_id_trailer(self))
-          '';
-          git_push_bookmark = "\"shikanime/push-\" ++ change_id.short()";
-        };
+        templates.commit_trailers = ''
+          format_signed_off_by_trailer(self)
+          ++ if(!trailers.contains_key("Change-Id"), format_gerrit_change_id_trailer(self))
+        '';
         remotes.upstream.auto-track-bookmarks = "main";
         revset-aliases = {
           "closest_merge(to)" = "heads(::to & merges())";
