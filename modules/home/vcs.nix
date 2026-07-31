@@ -78,6 +78,7 @@
           '';
           git_push_bookmark = "\"shikanime/push-\" ++ change_id.short()";
         };
+        remotes.upstream.auto-track-bookmarks = "main";
         revset-aliases = {
           "closest_merge(to)" = "heads(::to & merges())";
           "nulls()" = "empty() & mutable()";
