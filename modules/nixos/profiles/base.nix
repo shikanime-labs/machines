@@ -46,6 +46,7 @@
         {
           name = "github";
           url = "https://github.com/shikanime-labs/machines.git";
+          poller.period = 600;
         }
         {
           name = "forgejo";
