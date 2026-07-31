@@ -33,7 +33,6 @@ in
       pass
       qpdf
       rclone
-      secretspec
       wget
       zip
     ];
