@@ -25,8 +25,6 @@ in
     flavor = "latte";
   };
 
-  colemak.enable = true;
-
   home = {
     packages = with pkgs; [
       cachix

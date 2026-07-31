@@ -14,9 +14,6 @@
     nvidiaBusId = "PCI:1:0:0";
   };
 
-  # Colemak at the OS level (TTY + localed -> niri reads it).
-  colemak.enable = true;
-
   # Windows dual-boot: mount Windows partition read-only
   fileSystems = {
     "/boot" = {

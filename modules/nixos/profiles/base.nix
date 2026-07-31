@@ -9,13 +9,16 @@
     ./minimal.nix
   ];
 
-  # UTF-8 locale so the TTY (and everything else) emits/renders multibyte
-  # and special characters instead of falling back to the C locale.
-  i18n.defaultLocale = "en_US.UTF-8";
+  # Colemak at the OS level (TTY + localed -> niri reads it).
+  colemak.enable = true;
 
   # Unicode console font so the bare TTY can actually draw those glyphs
   # (Cyrillic, box-drawing, etc.) instead of tofu blocks.
   console.font = "Lat2-Terminus16";
+
+  # UTF-8 locale so the TTY (and everything else) emits/renders multibyte
+  # and special characters instead of falling back to the C locale.
+  i18n.defaultLocale = "en_US.UTF-8";
 
   nix = {
     extraOptions = ''
