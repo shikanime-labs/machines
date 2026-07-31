@@ -94,7 +94,15 @@
       systemd.enable = true;
     };
 
-    noctalia-greeter.enable = true;
+    noctalia-greeter = {
+      enable = true;
+      # Colemak at the login screen: XKB "us" layout + "colemak" variant,
+      # written to greeter.toml's [keyboard] section (greeter-scoped, not system-wide).
+      settings.keyboard = {
+        layout = "us";
+        variant = "colemak";
+      };
+    };
 
     # OBS Studio — video recording and live streaming with recommended plugins
     # and virtual camera support (for Zoom/Teams). Hardware-accelerated on NVIDIA.
