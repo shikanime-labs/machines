@@ -205,7 +205,7 @@ with lib;
           };
         };
         mcp_servers.aperture = {
-          url = "https://ai.taila659a.ts.net/mcp";
+          url = "https://ai.taila659a.ts.net/v1/mcp";
           enabled = true;
         };
         # Bare `hermes`/`hermes chat` launches the Ink TUI by default; token
