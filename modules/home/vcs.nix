@@ -17,11 +17,6 @@
       lfs.enable = true;
       ignores = [
         ".hermes/"
-        "*.graphify"
-        "graphify_output/"
-        "graphify-out/"
-        ".graphify_cache/"
-        "graphify_cache/"
         ".worktrees/"
       ];
       settings.credential.helper = "manager";

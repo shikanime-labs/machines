@@ -24,7 +24,6 @@ with lib;
         corepack
         gh
         git
-        graphify
         honcho
         nodejs
         rtk
