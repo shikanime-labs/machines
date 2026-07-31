@@ -14,6 +14,7 @@
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     defaultSopsFile = ../../secrets/telsha.enc.yaml;
     defaultSopsFormat = "yaml";
+    secrets.nix-access-token.sopsFile = ../../secrets/machine.enc.yaml;
   };
 
   system.primaryUser = "shikanimedeva";
