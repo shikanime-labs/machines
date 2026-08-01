@@ -131,6 +131,10 @@
   # greetd daemon. `default_session.user` defaults to "greeter" (auto-created by the module).
   # The Noctalia Greeter module sets default_session.command to its session binary.
   services = {
+    # Comin declarative remote deployment — enables the systemd user service
+    # that applies NixOS configurations from a remote builder.
+    comin.desktop.enable = true;
+
     # GNOME desktop session — selectable at the greetd greeter
     # as an alternative to Niri. The .desktop file lands in
     # wayland-sessions and noctalia-greeter picks it up.
