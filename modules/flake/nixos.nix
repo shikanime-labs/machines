@@ -7,6 +7,12 @@ let
     inputs.sops-nix.nixosModules.default
     inputs.home-manager.nixosModules.default
     inputs.colemak.nixosModules.default
+    {
+      home-manager.sharedModules = [
+        inputs.colemak.homeModules.default
+        inputs.sops-nix.homeModules.default
+      ];
+    }
   ];
 
   clusterModules = [
@@ -50,21 +56,19 @@ let
     ++ baseModules
     ++ clusterModules;
 
-  workstationHomeModules = [
-    inputs.catppuccin.homeModules.default
-    inputs.colemak.homeModules.default
-    inputs.devlib.homeModules.default
-    inputs.identities.homeModules.default
-    inputs.sops-nix.homeModules.default
-    inputs.noctalia.homeModules.default
-  ];
-
   mkWorkstationsModules =
     _system:
     (mkAiModules _system)
     ++ baseModules
     ++ [
-      { home-manager.sharedModules = workstationHomeModules; }
+      {
+        home-manager.sharedModules = [
+          inputs.catppuccin.homeModules.default
+          inputs.devlib.homeModules.default
+          inputs.identities.homeModules.default
+          inputs.noctalia.homeModules.default
+        ];
+      }
     ];
 
   mkCatboxPackage =
@@ -84,7 +88,7 @@ let
       modules = [
         ../../hosts/ashira/configuration.nix
       ]
-      ++ (mkWorkstationsModules system);
+      ++ (mkBeelinkClusterModules system);
     };
 
   mkCatboxNixosConfiguration =
