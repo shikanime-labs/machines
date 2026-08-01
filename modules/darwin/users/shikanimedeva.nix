@@ -36,7 +36,7 @@ in
       ];
     };
 
-    operator-6o = {
+    operator6o = {
       enable = true;
       git.condition = "gitpath:${config.home.homeDirectory}/Source/Repos/github.com/operator6o";
       jj.extraConfig."--when".repositories = [
