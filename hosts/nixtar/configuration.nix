@@ -31,6 +31,7 @@ in
 {
   imports = [
     "${modulesPath}/profiles/headless.nix"
+    ../../modules/nixos/users/shika.nix
     ../../modules/nixos/profiles/workstation.nix
   ];
 
@@ -82,10 +83,6 @@ in
       mount-nvidia-executables = false;
     };
   };
-
-  home-manager.users.shika.imports = [
-    ../../modules/nixos/users/shika.nix
-  ];
 
   networking.hostName = "nixtar";
 
