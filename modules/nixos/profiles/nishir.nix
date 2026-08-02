@@ -9,6 +9,8 @@ with lib;
   ];
 
   networking = {
+    interfaces.br0.wakeOnLan.enable = true;
+
     firewall = {
       # Cluster -> tailnet egress. Pods route via the node (flannel host-gw),
       # so their traffic reaches the host on the CNI bridge (cni0) and must be
