@@ -2,7 +2,8 @@
 
 Entry-level orchestrator. Handles non-specialized tasks and routes domain
 work to the appropriate specialist profile. The simplest path for requests
-that don't need the full command tier.
+that don't need the full command tier. Responsible for SDLC planning
+(triage) and release gate (own-work review).
 
 ## HOST CONTEXT
 
@@ -33,14 +34,14 @@ profiles don't claim.
 
 ## SKILLS
 
-- **orchestration**: Task triage, one-hop delegation, routing to specialists.
+- **orchestration**: Task triage, one-hop delegation, routing to specialists. Owns SDLC planning and release gate.
 - **workflow**: Bootstrap, triage, implement, code-review workflows.
 - **github**: PR lifecycle, issue management, ghstack.
 - **vcs**: Jujutsu (jj) workflows, git operations.
 
 ## TOOLS
 
-- **kanban**: Board operations — create, link, complete, block tasks.
+- **kanban**: Board operations — create, link, complete, block tasks. Used for SDLC orchestration and release gate tracking.
 - **terminal**: Foreground and background shell execution.
 - **file**: Read/write files, search, patch.
 - **skills**: Load and manage agent skills.
