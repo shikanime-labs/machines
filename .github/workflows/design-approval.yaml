@@ -1,0 +1,88 @@
+name: Design Approval Gate
+permissions:
+  contents: read
+  pull-requests: read
+"on":
+  workflow_call:
+    inputs:
+      required-artifacts:
+        type: string
+        default: '["docs/design/architecture.md","docs/design/brand.md","docs/design/tokens.md"]'
+        description: JSON array of required design artifact paths
+      approval-label:
+        type: string
+        default: "design"
+        description: GitHub label indicating design approval
+  workflow_dispatch:
+    inputs:
+      required-artifacts:
+        type: string
+        default: '["docs/design/architecture.md","docs/design/brand.md","docs/design/tokens.md"]'
+        description: JSON array of required design artifact paths
+      approval-label:
+        type: string
+        default: "design"
+        description: GitHub label indicating design approval
+jobs:
+  design-check:
+    name: Design Approval Check
+    runs-on: ubuntu-slim
+    steps:
+      - id: createGithubAppToken
+        continue-on-error: true
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ vars.OPERATOR_APP_ID }}
+          permission-contents: read
+          permission-pull-requests: read
+          private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
+      - uses: shikanime-studio/actions/checkout@v9
+        with:
+          github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
+      - id: check-files
+        run: |
+          echo "::group::Checking design artifact files"
+          MISSING=0
+          echo "Required artifacts: ${{ inputs.required-artifacts }}"
+          for artifact in $(echo '${{ inputs.required-artifacts }}' | python3 -c "import sys,json; [print(a) for a in json.load(sys.stdin)]"); do
+            if [ -f "$artifact" ]; then
+              echo "  ✅ $artifact"
+            else
+              echo "  ❌ $artifact — MISSING"
+              MISSING=$((MISSING + 1))
+            fi
+          done
+          echo "::endgroup::"
+          if [ "$MISSING" -gt 0 ]; then
+            echo "::error::$MISSING required design artifact(s) missing. Design sign-off required before release."
+            exit 1
+          fi
+        shell: bash
+      - id: check-approval
+        run: |
+          echo "::group::Checking design approval"
+          LABEL='${{ inputs.approval-label }}'
+          GH_TOKEN="${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}"
+          if gh label view "$LABEL" --repo "${{ github.repository }}" 2>/dev/null; then
+            echo "✅ Design label '$LABEL' exists"
+          else
+            echo "⚠️  Design label '$LABEL' not found — checking for PR reviews"
+            PR_NUMBER="${{ github.event.pull_request.number }}"
+            if [ -n "$PR_NUMBER" ]; then
+              REVIEWS=$(gh api "repos/${{ github.repository }}/pulls/$PR_NUMBER/reviews" --jq '.[].state' 2>/dev/null || echo "")
+              echo "PR reviews: $REVIEWS"
+              if echo "$REVIEWS" | grep -q "APPROVED"; then
+                echo "✅ PR has design approval review"
+              else
+                echo "❌ No approved design review found on PR #$PR_NUMBER"
+                exit 1
+              fi
+            else
+              echo "⚠️  Not a PR event — skipping PR review check (release path)"
+              echo "   Ensure design artifacts are present and signed off manually."
+            fi
+          fi
+          echo "::endgroup::"
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}

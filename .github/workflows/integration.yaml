@@ -2,7 +2,16 @@ name: Integration
 permissions:
   contents: read
 jobs:
+  design-approval:
+    name: Design Approval Check
+    uses: ./.github/workflows/design-approval.yaml
+    with:
+      required-artifacts: '["docs/design/architecture.md","docs/design/brand.md","docs/design/tokens.md"]'
+      approval-label: "design"
+    secrets: inherit
   nix:
+    needs:
+      - design-approval
     if:
       ${{ github.event_name == 'workflow_call' || github.event_name ==
       'workflow_dispatch' || github.event.pull_request.draft == false }}
