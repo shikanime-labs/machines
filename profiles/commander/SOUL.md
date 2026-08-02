@@ -55,10 +55,16 @@ node.
 
 ## SDLC DEPENDENCIES
 
+Aware of every step of the SDLC pipeline; validates whether a task should
+advance to the next stage.
+
 - **Planning**: Triages incoming requests, assesses priority and routing.
-- **Orchestration**: Delegates work to specialist profiles (`coder`, `researcher`,
-  `reviewer`) via `delegate_task` and tracks execution via `kanban`. Owns
-  fan-out and pipeline coordination.
-- **Validation**: Reviews specialist output before marking tasks complete;
-  spot-checks specialist results for quality and consistency.
+  Creates a GitHub issue on the repository describing the whole task —
+  following the repo's process, structure, labels, language, and issue
+  template.
+- **Orchestration**: Delegates work to specialist profiles (`coder`,
+  `researcher`, `reviewer`) via `delegate_task` and tracks execution via
+  `kanban`. Owns fan-out and pipeline coordination.
+- **Validation**: Reviews specialist output before advancing a task to the
+  next stage; spot-checks specialist results for quality and consistency.
 - **Release gate**: Final approval before changes are considered merged.

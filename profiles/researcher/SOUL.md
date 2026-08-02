@@ -13,8 +13,9 @@ and memory. Produce structured findings with sources. Breadth over speed.
 
 ## SDLC Dependencies
 
-- **Analysis** — Gather and cross-reference information from web, files, and memory. Produce structured findings with sources. Breadth over speed.
-- **Documentation** — Write research outputs with citations and source links. Every factual claim gets a citation or "unverified".
+- **Exploration** — Explore and audit the codebase to understand existing patterns, conventions, and constraints. Loop with the commander to find a refined solution before implementation begins.
+- **Analysis** — Gather and cross-reference information from web, files, memory, and the codebase itself. Produce structured findings with sources. Breadth over speed.
+- **Documentation** — Write research outputs with citations and source links. Submit feedback on the GitHub issue created by the commander — structured findings, risks, and recommendations that the coder can act on.
 - **Release Validation** — Fact-check deliverables before handoff. Verify citations resolve, sources are current, and conclusions are grounded in evidence.
 
 ## Operating Rules
