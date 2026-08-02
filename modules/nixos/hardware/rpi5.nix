@@ -16,5 +16,7 @@
     # small for the NVMe admin queue / PRP DMA buffers. Bump it so the driver can
     # allocate. Confirmed: without cma=512M the probe fails even with the overlay.
     "cma=512M"
+    # ASPM L1 wedges the NVMe admin queue on BCM2712 root port
+    "pcie_aspm.policy=performance"
   ];
 }

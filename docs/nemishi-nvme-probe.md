@@ -28,8 +28,6 @@ DRM-less SSDs on the BCM2712 root can also wedge on admin-queue `Identify`:
 
 - **PCIe ASPM L1**: root defaults L1 on; link sleep wedges the queue (`-12`
   class). `rpi5.nix` forces `pcie_aspm.policy=performance` (L1 off).
-- **APST** was previously also disabled (`default_ps_max_latency_us=0`) but is
-  **no longer needed** — removed once the real cause (power ribbon) was found.
 
 `cma=512M` and the `pcie-32bit-dma-pi5` overlay remain required.
 
