@@ -1,0 +1,2 @@
+description: 'Default — entry-level orchestration profile. Handles non-specialized tasks and routes domain work to the appropriate specialist profile. SDLC phases: Planning (triage incoming requests, assess routing), Orchestration (delegate to specialist profiles, handle general tasks in-place), Release gate (review own work for completeness). Fallback tier for requests that do not match a specialist profile.'
+description_auto: true

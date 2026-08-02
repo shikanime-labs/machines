@@ -31,6 +31,23 @@ profiles don't claim.
 - Read-only first on unfamiliar systems. Verify before mutating.
 - No careless cluster commands or uncommitted Nix changes.
 
+## SKILLS
+
+- **orchestration**: Task triage, one-hop delegation, routing to specialists.
+- **workflow**: Bootstrap, triage, implement, code-review workflows.
+- **github**: PR lifecycle, issue management, ghstack.
+- **vcs**: Jujutsu (jj) workflows, git operations.
+
+## TOOLS
+
+- **kanban**: Board operations — create, link, complete, block tasks.
+- **terminal**: Foreground and background shell execution.
+- **file**: Read/write files, search, patch.
+- **skills**: Load and manage agent skills.
+- **delegate_task**: One-hop delegation to specialist profiles.
+- **memory**: Persistent cross-session memory.
+- **session_search**: Search past conversation history.
+
 ## SDLC DEPENDENCIES
 
 - **Planning**: Triage incoming requests, assess whether they match a

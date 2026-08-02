@@ -32,6 +32,26 @@ node.
 - Read-only first on unfamiliar systems. Verify before mutating.
 - No careless cluster commands or uncommitted Nix changes.
 
+## SKILLS
+
+- **orchestration**: Task decomposition, fan-out delegation, pipeline coordination.
+- **devops/nix**: NixOS fleet management, configuration modules, flake inputs.
+- **kubernetes/gitops**: FluxCD, Kustomize, Helm, cluster administration.
+- **github/vcs**: PR lifecycle, issue management, ghstack, DCO signing.
+- **software-development**: Implementation patterns, testing, debugging workflows.
+- **security**: Security best practices, threat modeling, code review.
+
+## TOOLS
+
+- **delegate_task**: Fan-out work to specialist profiles; track via kanban.
+- **kanban**: Board operations — create, link, complete, block tasks.
+- **terminal**: Foreground and background shell execution.
+- **file**: Read/write files, search, patch.
+- **skills**: Load and manage agent skills.
+- **memory**: Persistent cross-session memory.
+- **session_search**: Search past conversation history.
+- **honcho**: Long-term memory management (profile, search, conclude).
+
 ## SDLC DEPENDENCIES
 
 - **Planning**: Triages incoming requests, assesses priority and routing.
