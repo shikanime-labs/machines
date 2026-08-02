@@ -48,39 +48,19 @@ with lib;
             api_mode = "chat_completions";
             model = "openrouter/openrouter/free";
             models = [
-              "inclusionai/ling-3.0-flash:free"
-              "auxiliary"
-              "coder"
-              "dreamer"
-              "operator"
+              "deepseek/deepseek-v4-flash"
               "gemini-2.5-flash"
               "gemini-2.5-flash-lite"
               "gemini-2.5-pro"
               "gemini-3-flash-preview"
               "google/gemma-4-e2b"
-              "mistralai/ministral-3-3b"
-              "nvidia/nemotron-3-nano-4b"
-              "qwen/qwen3-8b"
+              "inclusionai/ling-3.0-flash:free"
               "labs-leanstral-1-5"
-              "deepseek/deepseek-v4-flash"
-              "stepfun/step-3.7-flash:free"
-              "gpt-5"
-              "gpt-5-chat-latest"
-              "gpt-5-codex"
-              "gpt-5-mini"
-              "gpt-5-nano"
-              "gpt-5.1"
-              "gpt-5.1-chat-latest"
-              "gpt-5.1-codex"
-              "gpt-5.1-codex-max"
-              "gpt-5.2"
-              "gpt-5.2-chat-latest"
-              "gpt-5.2-codex"
               "nvidia/nemotron-3-ultra-550b-a55b:free"
               "openrouter/openrouter/free"
               "poolside/laguna-xs-2.1:free"
-              "google/gemma-4-e2b"
-              "inclusionai/ling-3.0-flash:free"
+              "qwen/qwen3-8b"
+              "stepfun/step-3.7-flash:free"
             ];
           }
         ];
@@ -215,6 +195,7 @@ with lib;
         };
       };
       extraDependencyGroups = [
+        "anthropic"
         "computer-use"
         "honcho"
         "matrix"
