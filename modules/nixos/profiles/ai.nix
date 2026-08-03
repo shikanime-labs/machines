@@ -7,7 +7,63 @@
 
 with lib;
 
+let
+  # Fleet of A2A-capable Hermes agents — every host importing ai.nix is a peer.
+  # Hosts resolve each other over the Tailscale tailnet (*.taila659a.ts.net).
+  a2aPeers = [
+    "ashira"
+    "fushi"
+    "ishtar"
+    "manash"
+    "minish"
+    "nalsha"
+    "nemishi"
+    "nixtar"
+  ];
+
+  otherA2aPeers = builtins.filter (p: p != config.networking.hostName) a2aPeers;
+
+  # Generate an outbound a2a_agents entry for a single peer.
+  # timeout (120) and capabilities ([]) use plugin defaults.
+  mkA2aAgent = peer: {
+    url = "https://${peer}.taila659a.ts.net:9900";
+    auth = {
+      type = "bearer";
+      token = "\${env:A2A_OWN_TOKEN}";
+    };
+  };
+
+  # Generate outbound a2a_agents entries for all peers.
+  mkA2aAgents =
+    peers: builtins.listToAttrs (map (peer: lib.nameValuePair peer (mkA2aAgent peer)) peers);
+
+  # Generate a "name:token" pair for A2A_PEER_TOKENS.
+  mkA2aPeerToken = peer: "${peer}:${config.sops.placeholder."hermes-agent-a2a-token-${peer}"}";
+
+  # Comma-separated A2A_PEER_TOKENS value from the peer list.
+  mkA2aPeerTokens = peers: lib.concatStringsSep "," (map mkA2aPeerToken peers);
+
+  # Generate a sops secret entry for a peer's token.
+  mkA2aTokenSecret = peer: {
+    sopsFile = ../../secrets/machine.enc.yaml;
+    group = "hermes";
+    owner = "hermes";
+    restartUnits = [ "hermes-agent.service" ];
+  };
+
+  # Generate secret key name
+  mkA2aTokenSecretName = peer: "hermes-agent-a2a-token-${peer}";
+
+  # Generate sops secret entries for all peer tokens.
+  mkA2aTokenSecrets =
+    peers:
+    builtins.listToAttrs (
+      map (peer: lib.nameValuePair (mkA2aTokenSecretName peer) (mkA2aTokenSecret peer)) peers
+    );
+in
 {
+  networking.firewall.allowedTCPPorts = [ 9900 ];
+
   services = {
     cua-driver.enable = true;
 
@@ -17,6 +73,7 @@ with lib;
       environmentFiles = [
         config.sops.templates.hermes-agent-env.path
         config.sops.templates.hermes-agent-matrix-env.path
+        config.sops.templates.hermes-agent-a2a-env.path
       ];
       extraPackages = with pkgs; [
         agent-browser
@@ -193,6 +250,22 @@ with lib;
           interface = "tui";
           streaming = true;
         };
+        # Inbound: serves Agent Card + JSON-RPC on 0.0.0.0:9900. Per-peer
+        # tokens (A2A_PEER_TOKENS) authenticate each fleet member by name.
+        platforms.a2a.enabled = true;
+        # Outbound: every peer addressable via tailnet; presents own token.
+        a2a_agents = (mkA2aAgents otherA2aPeers);
+        # Enable the `a2a` toolset on gateway platforms.
+        platform_toolsets = {
+          matrix = [
+            "hermes-matrix"
+            "a2a"
+          ];
+          api_server = [
+            "hermes-api-server"
+            "a2a"
+          ];
+        };
       };
       extraDependencyGroups = [
         "anthropic"
@@ -221,7 +294,8 @@ with lib;
         restartUnits = [ "hermes-agent.service" ];
         mode = "0600";
       };
-    };
+    }
+    // (mkA2aTokenSecrets otherA2aPeers);
     templates = {
       hermes-agent-env = {
         content = ''
@@ -236,6 +310,16 @@ with lib;
           MATRIX_E2EE_MODE=required
           MATRIX_HOME_ROOM=!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net
           MATRIX_RECOVERY_KEY_FILE=${config.sops.secrets.hermes-agent-matrix-recovery-key.path}
+        '';
+        restartUnits = [ "hermes-agent.service" ];
+      };
+      hermes-agent-a2a-env = {
+        content = ''
+          A2A_HOST=0.0.0.0
+          A2A_PORT=9900
+          A2A_OWN_TOKEN=${config.sops.placeholder."${mkA2aTokenSecretName config.networking.hostName}"}
+          A2A_PEER_TOKENS=${mkA2aPeerTokens otherA2aPeers}
+          A2A_TRUSTED_PEERS=${lib.concatStringsSep "," otherA2aPeers}
         '';
         restartUnits = [ "hermes-agent.service" ];
       };
