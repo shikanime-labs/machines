@@ -45,7 +45,7 @@ let
 
   # Generate a sops secret entry for a peer's token.
   mkA2aTokenSecret = peer: {
-    sopsFile = ../../secrets/machine.enc.yaml;
+    sopsFile = ../../../secrets/machine.enc.yaml;
     group = "hermes";
     owner = "hermes";
     restartUnits = [ "hermes-agent.service" ];
