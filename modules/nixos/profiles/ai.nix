@@ -295,7 +295,7 @@ in
         mode = "0600";
       };
     }
-    // (mkA2aTokenSecrets otherA2aPeers);
+    // (mkA2aTokenSecrets a2aPeers);
     templates = {
       hermes-agent-env = {
         content = ''
@@ -317,6 +317,8 @@ in
         content = ''
           A2A_HOST=0.0.0.0
           A2A_PORT=9900
+          A2A_AGENT_NAME=${config.networking.hostName}
+          A2A_PUBLIC_URL=https://${config.networking.hostName}.taila659a.ts.net:9900
           A2A_OWN_TOKEN=${config.sops.placeholder."${mkA2aTokenSecretName config.networking.hostName}"}
           A2A_PEER_TOKENS=${mkA2aPeerTokens otherA2aPeers}
           A2A_TRUSTED_PEERS=${lib.concatStringsSep "," otherA2aPeers}

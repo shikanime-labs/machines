@@ -313,3 +313,6 @@ $RECYCLE.BIN/
 ###-------------------###
 
 .pre-commit-config.yaml
+
+# jj / nix managed worktrees (never track)
+.worktrees/
