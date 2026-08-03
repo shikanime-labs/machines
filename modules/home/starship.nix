@@ -13,13 +13,14 @@ in
 {
   programs.starship = {
     enable = true;
+    configPath = "${config.xdg.configHome}/starship/starship.toml";
     settings = {
       directory = {
         truncation_length = 4;
         style = "bold lavender";
       };
       git_branch.style = "bold mauve";
-      palette = mkForce (if pkgs.stdenv.isLinux then "catppuccin_latte" else "catppuccin_frappe");
+      palette = mkIf pkgs.stdenv.isLinux (mkForce "catppuccin_latte");
     }
     // settings;
   };
