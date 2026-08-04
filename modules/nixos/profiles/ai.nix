@@ -118,6 +118,7 @@ in
               "poolside/laguna-xs-2.1:free"
               "qwen/qwen3-8b"
               "stepfun/step-3.7-flash:free"
+              "tencent/hy3:free"
             ];
           }
         ];
@@ -139,6 +140,11 @@ in
           };
         };
         fallback_providers = [
+          {
+            api_mode = "chat_completions";
+            model = "inclusionai/ling-3.0-flash:free";
+            provider = "custom:aperture-openai";
+          }
           {
             api_mode = "chat_completions";
             model = "poolside/laguna-s-2.1:free";
@@ -169,7 +175,7 @@ in
         };
         memory.provider = "honcho";
         model = {
-          default = "inclusionai/ling-3.0-flash:free";
+          default = "tencent/hy3:free";
           provider = "custom:aperture-openai";
           base_url = "https://ai.taila659a.ts.net/v1";
         };
