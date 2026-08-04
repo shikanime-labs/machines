@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [
@@ -19,7 +19,10 @@
         ".hermes/"
         ".worktrees/"
       ];
-      settings.credential.helper = "manager";
+      settings = {
+        core.excludesFile = "${config.home.homeDirectory}/.config/git/ignore";
+        credential.helper = "manager";
+      };
     };
 
     jujutsu = {
