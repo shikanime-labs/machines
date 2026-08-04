@@ -10,32 +10,105 @@ with lib;
 let
   # Fleet of A2A-capable Hermes agents — every host importing ai.nix is a peer.
   # Hosts resolve each other over the Tailscale tailnet (*.taila659a.ts.net).
+  # Capability labels per fleet member — drive a2a_orchestrate(capability=…)
+  # routing. Reflects each host's actual role: build arch, k8s plane tier, GPU.
   a2aPeers = [
-    "ashira"
-    "fushi"
-    "ishtar"
-    "manash"
-    "minish"
-    "nalsha"
-    "nemishi"
-    "nixtar"
+    {
+      name = "ashira";
+      peerCapabilities = [
+        "build"
+        "build-x86"
+        "k8s-follower"
+      ];
+    }
+    {
+      name = "fushi";
+      peerCapabilities = [
+        "build"
+        "build-arm"
+        "k8s-node"
+      ];
+    }
+    {
+      name = "ishtar";
+      peerCapabilities = [
+        "graphical"
+        "media"
+        "nvidia"
+        "k8s-leader"
+      ];
+    }
+    {
+      name = "manash";
+      peerCapabilities = [
+        "build"
+        "build-x86"
+        "k8s-leader"
+      ];
+    }
+    {
+      name = "minish";
+      peerCapabilities = [
+        "build"
+        "build-arm"
+        "k8s-node"
+      ];
+    }
+    {
+      name = "nalsha";
+      peerCapabilities = [
+        "build"
+        "build-x86"
+        "k8s-follower"
+      ];
+    }
+    {
+      name = "nemishi";
+      peerCapabilities = [
+        "build"
+        "build-arm"
+        "k8s-node"
+      ];
+    }
+    {
+      name = "nixtar";
+      peerCapabilities = [
+        "nvidia"
+        "cuda"
+        "inference"
+      ];
+    }
+    {
+      name = "telsha";
+      peerCapabilities = [
+        "command"
+        "workstation"
+        "design"
+      ];
+    }
   ];
 
-  otherA2aPeers = builtins.filter (p: p != config.networking.hostName) a2aPeers;
+  otherA2aPeers = builtins.filter (p: p.name != config.networking.hostName) a2aPeers;
+
+  a2aPeerNames = map (p: p.name) a2aPeers;
+
+  otherA2aPeerNames = map (p: p.name) otherA2aPeers;
 
   # Generate an outbound a2a_agents entry for a single peer.
-  # timeout (120) and capabilities ([]) use plugin defaults.
-  mkA2aAgent = peer: {
-    url = "https://${peer}.taila659a.ts.net:9900";
-    auth = {
-      type = "bearer";
-      token = "\${env:A2A_OWN_TOKEN}";
+  mkA2aAgent =
+    { name, peerCapabilities }:
+    {
+      url = "https://${name}.taila659a.ts.net:9900";
+      auth = {
+        type = "bearer";
+        token = "\${env:A2A_OWN_TOKEN}";
+      };
+      capabilities = peerCapabilities;
     };
-  };
 
   # Generate outbound a2a_agents entries for all peers.
   mkA2aAgents =
-    peers: builtins.listToAttrs (map (peer: lib.nameValuePair peer (mkA2aAgent peer)) peers);
+    peers: builtins.listToAttrs (map (peer: lib.nameValuePair peer.name (mkA2aAgent peer)) peers);
 
   # Generate a "name:token" pair for A2A_PEER_TOKENS.
   mkA2aPeerToken = peer: "${peer}:${config.sops.placeholder."hermes-agent-a2a-token-${peer}"}";
@@ -299,7 +372,7 @@ in
         mode = "0600";
       };
     }
-    // (mkA2aTokenSecrets a2aPeers);
+    // (mkA2aTokenSecrets a2aPeerNames);
     templates = {
       hermes-agent-env = {
         content = ''
@@ -324,8 +397,8 @@ in
           A2A_AGENT_NAME=${config.networking.hostName}
           A2A_PUBLIC_URL=https://${config.networking.hostName}.taila659a.ts.net:9900
           A2A_OWN_TOKEN=${config.sops.placeholder."${mkA2aTokenSecretName config.networking.hostName}"}
-          A2A_PEER_TOKENS=${mkA2aPeerTokens otherA2aPeers}
-          A2A_TRUSTED_PEERS=${lib.concatStringsSep "," otherA2aPeers}
+          A2A_PEER_TOKENS=${mkA2aPeerTokens otherA2aPeerNames}
+          A2A_TRUSTED_PEERS=${lib.concatStringsSep "," otherA2aPeerNames}
         '';
         restartUnits = [ "hermes-agent.service" ];
       };
