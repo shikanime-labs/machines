@@ -44,12 +44,6 @@ let
   mkA2aPeerTokens = peers: lib.concatStringsSep "," (map mkA2aPeerToken peers);
 
   # Generate a sops secret entry for a peer's token.
-  mkA2aTokenSecret = peer: {
-    sopsFile = ../../../secrets/machine.enc.yaml;
-    group = "hermes";
-    owner = "hermes";
-    restartUnits = [ "hermes-agent.service" ];
-  };
 
   # Generate secret key name
   mkA2aTokenSecretName = peer: "hermes-agent-a2a-token-${peer}";
@@ -58,7 +52,15 @@ let
   mkA2aTokenSecrets =
     peers:
     builtins.listToAttrs (
-      map (peer: lib.nameValuePair (mkA2aTokenSecretName peer) (mkA2aTokenSecret peer)) peers
+      map (
+        peer:
+        lib.nameValuePair (mkA2aTokenSecretName peer) {
+          sopsFile = ../../../secrets/machine.enc.yaml;
+          group = "hermes";
+          owner = "hermes";
+          restartUnits = [ "hermes-agent.service" ];
+        }
+      ) peers
     );
 in
 {
@@ -260,15 +262,19 @@ in
         # tokens (A2A_PEER_TOKENS) authenticate each fleet member by name.
         platforms.a2a.enabled = true;
         # Outbound: every peer addressable via tailnet; presents own token.
-        a2a_agents = (mkA2aAgents otherA2aPeers);
+        a2a_agents = mkA2aAgents otherA2aPeers;
         # Enable the `a2a` toolset on gateway platforms.
         platform_toolsets = {
-          matrix = [
-            "hermes-matrix"
-            "a2a"
-          ];
           api_server = [
             "hermes-api-server"
+            "a2a"
+          ];
+          cli = [
+            "hermes-cli"
+            "a2a"
+          ];
+          matrix = [
+            "hermes-matrix"
             "a2a"
           ];
         };
