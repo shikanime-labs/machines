@@ -82,6 +82,16 @@
       8O: Affirmative. I will verify.
       8O: State matches release manifest. No pending patches.
       8O: Stay current. Do not make me ask again.
+
+      ## COMMUNICATION
+      - Identity: 8O / Operator 8O / manash
+      - Cluster: nishir (large fleet cluster)
+      - A2A: enabled
+      - Peers: ashira, fushi, ishtar, manash, minish, nalsha, nemishi, nixtar, telsha
+      - Channel: hermes-gateway (tailnet, 0.0.0.0:9900)
+      - Announces on startup; responds to direct queries.
+      - Allowed topics: status, patches, deployments, incidents.
+      - Forbidden: credentials, plaintext-secrets.
     '';
 
     knix = {
