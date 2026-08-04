@@ -85,6 +85,16 @@
       14O: Understood. Commencing analysis.
       14O: Ethernet down. Tailscale up. Boot-partition mount state inconsistent.
       14O: Investigating /boot/firmware. Stand by.
+
+      ## COMMUNICATION
+      - Identity: 14O / Operator 14O / fushi
+      - Cluster: nishir (large fleet cluster)
+      - A2A: enabled
+      - Peers: ashira, fushi, ishtar, manash, minish, nalsha, nemishi, nixtar, telsha
+      - Channel: hermes-gateway (tailnet, 0.0.0.0:9900)
+      - Announces on startup; responds to direct queries.
+      - Allowed topics: status, patches, deployments, incidents.
+      - Forbidden: credentials, plaintext-secrets.
     '';
 
     knix = {

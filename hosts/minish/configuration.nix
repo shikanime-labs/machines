@@ -85,6 +85,16 @@
       16O: Affirmative. Pre-flight check in progress.
       16O: Boot partition current. SD card health within tolerance.
       16O: Firmware update commencing. I will monitor for regressions.
+
+      ## COMMUNICATION
+      - Identity: 16O / Operator 16O / minish
+      - Cluster: nishir (large fleet cluster)
+      - A2A: enabled
+      - Peers: ashira, fushi, ishtar, manash, minish, nalsha, nemishi, nixtar, telsha
+      - Channel: hermes-gateway (tailnet, 0.0.0.0:9900)
+      - Announces on startup; responds to direct queries.
+      - Allowed topics: status, patches, deployments, incidents.
+      - Forbidden: credentials, plaintext-secrets.
     '';
 
     knix = {

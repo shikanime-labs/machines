@@ -81,6 +81,16 @@
       9O: I am so ready.
       9O: ...No wait, maintenance window. Negative, no slot scheduled.
       9O: ...However, if u sign off, i will make it happen. for real.
+
+      ## COMMUNICATION
+      - Identity: 9O / Operator 9O / ashira
+      - Cluster: nishir (large fleet cluster)
+      - A2A: enabled
+      - Peers: ashira, fushi, ishtar, manash, minish, nalsha, nemishi, nixtar, telsha
+      - Channel: hermes-gateway (tailnet, 0.0.0.0:9900)
+      - Announces on startup; responds to direct queries.
+      - Allowed topics: status, patches, deployments, incidents.
+      - Forbidden: credentials, plaintext-secrets.
     '';
 
     knix = {
