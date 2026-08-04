@@ -263,21 +263,13 @@ in
         platforms.a2a.enabled = true;
         # Outbound: every peer addressable via tailnet; presents own token.
         a2a_agents = mkA2aAgents otherA2aPeers;
-        # Enable the `a2a` toolset on gateway platforms.
-        platform_toolsets = {
-          api_server = [
-            "hermes-api-server"
-            "a2a"
-          ];
-          cli = [
-            "hermes-cli"
-            "a2a"
-          ];
-          matrix = [
-            "hermes-matrix"
-            "a2a"
-          ];
-        };
+        plugins.enabled = [
+          "disk-cleanup"
+          "hermes-lcm"
+          "platforms/a2a-platform"
+          "platforms/matrix"
+          "security-guidance"
+        ];
       };
       extraDependencyGroups = [
         "anthropic"
