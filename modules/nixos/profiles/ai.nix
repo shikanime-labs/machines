@@ -110,13 +110,47 @@ let
     peers: builtins.listToAttrs (map (peer: lib.nameValuePair peer.name (mkA2aAgent peer)) peers);
 
   # Generate a "name:token" pair for A2A_PEER_TOKENS.
-  mkA2aPeerToken = peer: "${peer.name}:${config.sops.placeholder."hermes-agent-a2a-token-${peer.name}"}";
+  mkA2aPeerToken =
+    peer: "${peer.name}:${config.sops.placeholder."hermes-agent-a2a-token-${peer.name}"}";
 
   # Comma-separated A2A_PEER_TOKENS value from the peer list.
   mkA2aPeerTokens = peers: lib.concatStringsSep "," (map mkA2aPeerToken peers);
 
   # Generate secret key name
   mkA2aTokenSecretName = peer: "hermes-agent-a2a-token-${peer}";
+
+  # Hermes scans each extraPlugins entry for plugin.yaml at the derivation
+  # root, so wrap the source in symlinkJoin rather than passing it bare.
+  hermesLcmPlugin = pkgs.symlinkJoin {
+    name = "hermes-lcm";
+    paths =
+      let
+        lcm = pkgs.fetchFromGitHub {
+          owner = "stephenschoettler";
+          repo = "hermes-lcm";
+          rev = "v0.18.1";
+          hash = "sha256-+1661BVi2XmqIaPYzNuUtrEfKvK9xQ8B4zedclIYuYA=";
+        };
+      in
+      [
+        "${lcm}/."
+      ];
+  };
+
+  # rtk ships the hook nested under hooks/hermes/, so join that subdirectory.
+  rtkRewritePlugin = pkgs.symlinkJoin {
+    name = "rtk-rewrite";
+    paths = [
+      "${
+        pkgs.fetchFromGitHub {
+          owner = "rtk-ai";
+          repo = "rtk";
+          rev = "v0.44.0";
+          hash = "sha256-Ev6w0Gi2y48DYi55GSciCoPgkUFaX44aH3UWGhs1OGk=";
+        }
+      }/hooks/hermes/rtk-rewrite"
+    ];
+  };
 
   # Generate sops secret entries for all peer tokens.
   mkA2aTokenSecrets =
@@ -157,6 +191,10 @@ in
         nodejs
         rtk
         yarn
+      ];
+      extraPlugins = [
+        hermesLcmPlugin
+        rtkRewritePlugin
       ];
       settings = {
         context.engine = "lcm";
@@ -354,6 +392,7 @@ in
           "hermes-lcm"
           "platforms/a2a-platform"
           "platforms/matrix"
+          "rtk-rewrite"
           "security-guidance"
         ];
       };
