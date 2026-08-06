@@ -78,14 +78,6 @@ let
         "inference"
       ];
     }
-    {
-      name = "telsha";
-      peerCapabilities = [
-        "command"
-        "workstation"
-        "design"
-      ];
-    }
   ];
 
   otherA2aPeers = builtins.filter (p: p.name != config.networking.hostName) a2aPeers;
@@ -236,7 +228,7 @@ in
           baseUrl = "https://honcho.taila659a.ts.net";
           hosts.hermes = {
             peerName = config.networking.hostName;
-            aiPeer = "telsha";
+            aiPeer = "hermes";
             workspace = "hermes";
             observationMode = "directional";
             writeFrequency = "async";
