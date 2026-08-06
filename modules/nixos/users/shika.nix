@@ -38,11 +38,11 @@ in
         ];
       };
 
-      operator6o = {
+      automata = {
         enable = true;
-        git.condition = "gitpath:${config.home.homeDirectory}/Source/Repos/github.com/operator6o";
+        git.condition = "gitpath:${config.home.homeDirectory}/Source/Repos/github.com/yorha-automata";
         jj.extraConfig."--when".repositories = [
-          "${config.home.homeDirectory}/Source/Repos/github.com/operator6o"
+          "${config.home.homeDirectory}/Source/Repos/github.com/yorha-automata"
         ];
       };
 
