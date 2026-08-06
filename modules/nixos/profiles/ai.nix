@@ -263,6 +263,22 @@ in
         platforms.a2a.enabled = true;
         # Outbound: every peer addressable via tailnet; presents own token.
         a2a_agents = mkA2aAgents otherA2aPeers;
+        # The `a2a` toolset ships off by default — enable it on every surface
+        # that must reach the fleet, or the a2a_* tools never register.
+        platform_toolsets = {
+          cli = [
+            "hermes-cli"
+            "a2a"
+          ];
+          matrix = [
+            "hermes-matrix"
+            "a2a"
+          ];
+          api_server = [
+            "hermes-api-server"
+            "a2a"
+          ];
+        };
         plugins.enabled = [
           "disk-cleanup"
           "hermes-lcm"
