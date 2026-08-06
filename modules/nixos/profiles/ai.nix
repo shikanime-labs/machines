@@ -98,7 +98,8 @@ let
   mkA2aAgent =
     { name, peerCapabilities }:
     {
-      url = "https://${name}.taila659a.ts.net:9900";
+      # `tailscale serve` fronts the loopback adapter with tailnet TLS.
+      url = "https://${name}.taila659a.ts.net:8443";
       auth = {
         type = "bearer";
         token = "\${env:A2A_OWN_TOKEN}";
@@ -137,7 +138,23 @@ let
     );
 in
 {
-  networking.firewall.allowedTCPPorts = [ 9900 ];
+  # A2A is reachable only through `tailscale serve` (TLS terminated by
+  # tailscaled on the tailnet address), so 9900 stays on loopback and the
+  # host firewall stays closed. 8443 is one of the ports serve allows for
+  # HTTPS; 443 is left to traefik.
+  systemd.services.tailscale-serve-hermes-a2a = {
+    description = "Expose the Hermes A2A endpoint via Tailscale serve (HTTPS)";
+    after = [ "tailscaled.service" ];
+    wants = [ "tailscaled.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "5s";
+      ExecStart = "${lib.getExe pkgs.tailscale} serve --yes --bg --https=8443 http://127.0.0.1:9900";
+    };
+  };
 
   services = {
     cua-driver.enable = true;
@@ -392,10 +409,10 @@ in
       };
       hermes-agent-a2a-env = {
         content = ''
-          A2A_HOST=0.0.0.0
+          A2A_HOST=127.0.0.1
           A2A_PORT=9900
           A2A_AGENT_NAME=${config.networking.hostName}
-          A2A_PUBLIC_URL=https://${config.networking.hostName}.taila659a.ts.net:9900
+          A2A_PUBLIC_URL=https://${config.networking.hostName}.taila659a.ts.net:8443
           A2A_OWN_TOKEN=${config.sops.placeholder."${mkA2aTokenSecretName config.networking.hostName}"}
           A2A_PEER_TOKENS=${mkA2aPeerTokens otherA2aPeerNames}
           A2A_TRUSTED_PEERS=${lib.concatStringsSep "," otherA2aPeerNames}

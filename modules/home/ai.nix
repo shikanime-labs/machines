@@ -32,10 +32,10 @@ in
     ];
 
     sessionVariables = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
-      A2A_HOST = "0.0.0.0";
+      A2A_HOST = "127.0.0.1";
       A2A_PORT = "9900";
       A2A_AGENT_NAME = a2aSelf;
-      A2A_PUBLIC_URL = "https://${a2aSelf}.taila659a.ts.net:9900";
+      A2A_PUBLIC_URL = "https://${a2aSelf}.taila659a.ts.net:8443";
       A2A_OWN_TOKEN = config.sops.placeholder."hermes-agent-a2a-token-${a2aSelf}";
       A2A_PEER_TOKENS = lib.concatStringsSep "," (map mkA2aPeerToken a2aOtherPeers);
       A2A_TRUSTED_PEERS = lib.concatStringsSep "," a2aOtherPeers;
