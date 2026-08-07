@@ -473,15 +473,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1786018893,
-        "narHash": "sha256-mTDmRYhTsbdZKEIKnXZIlHN+gFdCdJaUOcpgfYnJBQ8=",
-        "owner": "shikanime-studio",
+        "lastModified": 1786059277,
+        "narHash": "sha256-xnCzSQpgamnnW45J1ylSphO6NpEa7Su+kimQKIqCMts=",
+        "owner": "shikanime-labs",
         "repo": "knix",
-        "rev": "bb618f379db58627939ad1569117c77c162febd8",
+        "rev": "9a7a5237108e3b34bb1982a89c943c7245b3db5a",
         "type": "github"
       },
       "original": {
-        "owner": "shikanime-studio",
+        "owner": "shikanime-labs",
         "repo": "knix",
         "type": "github"
       }

@@ -75,7 +75,7 @@
     };
 
     knix = {
-      url = "github:shikanime-studio/knix";
+      url = "github:shikanime-labs/knix";
       inputs = {
         devenv.follows = "devenv";
         devlib.follows = "devlib";
