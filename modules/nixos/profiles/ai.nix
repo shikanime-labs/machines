@@ -397,6 +397,31 @@ in
     };
   };
 
+  # Expose the A2A agent over Tailscale. The agent serves plain HTTP on :9900;
+  # `serve --https` terminates TLS at the funnel and forwards to local HTTP,
+  # so peers reach https://<host>.taila659a.ts.net:9900. `serve --https` cannot
+  # target an HTTPS upstream, but the agent is plaintext HTTP, so this is valid.
+  # Runs after the declarative tailscale-serve unit (leader hosts) so set-config
+  # --all doesn't wipe the a2a service.
+  systemd.services.tailscale-serve-a2a = {
+    description = "Expose Hermes A2A agent via Tailscale serve";
+    after = [
+      "tailscaled.service"
+      "tailscale-serve.service"
+    ];
+    wants = [ "tailscaled.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "5s";
+    };
+    script = ''
+      ${getExe pkgs.tailscale} serve --yes --bg --https=9900 http://127.0.0.1:9900
+    '';
+  };
+
   sops = {
     secrets = {
       hermes-agent-api-server-key = {

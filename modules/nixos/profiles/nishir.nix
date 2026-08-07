@@ -64,7 +64,10 @@ with lib;
 
   systemd.services.tailscale-serve-syncthing = {
     description = "Expose RKE2 and Kubernetes APIs via Tailscale serve with HTTPS";
-    after = [ "tailscaled.service" ];
+    after = [
+      "tailscaled.service"
+      "tailscale-serve.service"
+    ];
     wants = [ "tailscaled.service" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
@@ -75,7 +78,6 @@ with lib;
     };
     script = ''
       ${getExe pkgs.tailscale} serve --yes --bg --service=svc:syncthing --http=80 https+insecure://127.0.0.1:443
-      ${getExe pkgs.tailscale} serve --yes --bg --service=svc:syncthing --https=443 https+insecure://127.0.0.1:443
     '';
   };
 }
