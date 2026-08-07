@@ -63,7 +63,7 @@ with lib;
   };
 
   systemd.services.tailscale-serve-syncthing = {
-    description = "Expose RKE2 and Kubernetes APIs via Tailscale serve with HTTPS";
+    description = "Expose RKE2 and Kubernetes APIs via Tailscale serve";
     after = [
       "tailscaled.service"
       "tailscale-serve.service"
