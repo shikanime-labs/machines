@@ -15,7 +15,7 @@ let
   a2aPeers = [
     {
       name = "ashira";
-      peerCapabilities = [
+      capabilities = [
         "build"
         "build-x86"
         "k8s-follower"
@@ -23,7 +23,7 @@ let
     }
     {
       name = "fushi";
-      peerCapabilities = [
+      capabilities = [
         "build"
         "build-arm"
         "k8s-node"
@@ -31,7 +31,7 @@ let
     }
     {
       name = "ishtar";
-      peerCapabilities = [
+      capabilities = [
         "graphical"
         "media"
         "nvidia"
@@ -40,7 +40,7 @@ let
     }
     {
       name = "manash";
-      peerCapabilities = [
+      capabilities = [
         "build"
         "build-x86"
         "k8s-leader"
@@ -48,7 +48,7 @@ let
     }
     {
       name = "minish";
-      peerCapabilities = [
+      capabilities = [
         "build"
         "build-arm"
         "k8s-node"
@@ -56,7 +56,7 @@ let
     }
     {
       name = "nalsha";
-      peerCapabilities = [
+      capabilities = [
         "build"
         "build-x86"
         "k8s-follower"
@@ -64,7 +64,7 @@ let
     }
     {
       name = "nemishi";
-      peerCapabilities = [
+      capabilities = [
         "build"
         "build-arm"
         "k8s-node"
@@ -72,7 +72,7 @@ let
     }
     {
       name = "nixtar";
-      peerCapabilities = [
+      capabilities = [
         "nvidia"
         "cuda"
         "inference"
@@ -87,14 +87,14 @@ let
 
   # Generate an outbound a2a_agents entry for a single peer.
   mkA2aAgent =
-    { name, peerCapabilities }:
+    { name, capabilities }:
     {
+      inherit capabilities;
       url = "https://${name}.taila659a.ts.net:9900";
       auth = {
         type = "bearer";
         token = "\${env:A2A_OWN_TOKEN}";
       };
-      capabilities = peerCapabilities;
     };
 
   # Generate outbound a2a_agents entries for all peers.
