@@ -23,6 +23,11 @@ in
 
     home.sessionVariables.SSH_AUTH_SOCK = "${config.home.homeDirectory}/.bitwarden-ssh-agent.sock";
 
+    # Use the same HERMES_HOME as the gateway service so interactive
+    # shells share state (sessions, skills, cron, kanban) with the
+    # system-wide hermes-agent.service.
+    home.sessionVariables.HERMES_HOME = "/var/lib/hermes/.hermes";
+
     identities = {
       enable = true;
 
