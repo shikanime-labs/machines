@@ -132,16 +132,18 @@ let
   # rtk ships the hook nested under hooks/hermes/, so join that subdirectory.
   rtkRewritePlugin = pkgs.symlinkJoin {
     name = "rtk-rewrite";
-    paths = [
-      "${
-        pkgs.fetchFromGitHub {
+    paths =
+      let
+        rtk = pkgs.fetchFromGitHub {
           owner = "rtk-ai";
           repo = "rtk";
           rev = "v0.44.0";
           hash = "sha256-Ev6w0Gi2y48DYi55GSciCoPgkUFaX44aH3UWGhs1OGk=";
-        }
-      }/hooks/hermes/rtk-rewrite"
-    ];
+        };
+      in
+      [
+        "${rtk}/hooks/hermes/rtk-rewrite"
+      ];
   };
 
   # Generate sops secret entries for all peer tokens.
@@ -160,6 +162,10 @@ let
     );
 in
 {
+  environment.systemPackages = with pkgs; [
+    rtk
+  ];
+
   networking.firewall.allowedTCPPorts = [ 9900 ];
 
   services = {
