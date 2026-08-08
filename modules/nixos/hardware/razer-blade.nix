@@ -1,3 +1,5 @@
+{ pkgs, ... }:
+
 {
   # UEFI laptop bootloader (Razer Blade 17, 2019). Windows dual-boot via systemd-boot.
   # Windows entry is automatically detected by systemd-boot.
@@ -11,6 +13,28 @@
 
   # CPU/device power management + suspend-on-lid-close.
   powerManagement.enable = true;
+
+  hardware = {
+    # NVDEC hardware video decode (browser/media players) on the dGPU.
+    graphics.extraPackages = with pkgs; [ nvidia-vaapi-driver ];
+
+    # NVIDIA GeForce RTX (Max-Q) dGPU — Razer Blade 17 specific.
+    nvidia = {
+      open = false; # proprietary/closed kernel module, per explicit request
+      modesetting.enable = true;
+      powerManagement = {
+        enable = true;
+        # Fine-grained RTD3: per-frame power-state transitions instead of a coarse
+        # on/off switch. Valid because prime.offload.enable is set (assertion:
+        # finegrained -> offload).
+        finegrained = true;
+      };
+      prime.offload = {
+        enable = true;
+        enableOffloadCmd = true; # provides `nvidia-offload` wrapper
+      };
+    };
+  };
 
   services = {
     fstrim.enable = true;
