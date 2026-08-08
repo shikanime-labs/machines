@@ -102,5 +102,12 @@
   # pkexec (gparted, etc.) can gain root from a non-root desktop session.
   security.polkit.enablePkexecWrapper = true;
 
+  # The openrazer module creates an `openrazer` group whose members come ONLY
+  # from hardware.openrazer.users. Without shika listed, openrazer-daemon.service
+  # exits 1 ("User is not a member of the openrazer group") and the user service
+  # hits start-limit-hit at boot. Host-specific, so set it here rather than the
+  # shared hardware module.
+  hardware.openrazer.users = [ "shika" ];
+
   system.stateVersion = "26.05";
 }
