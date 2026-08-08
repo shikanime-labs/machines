@@ -33,6 +33,10 @@ in
     "${modulesPath}/profiles/headless.nix"
     ../../modules/nixos/users/shika.nix
     ../../modules/nixos/profiles/workstation.nix
+    # Fleet A2A mesh: makes nixtar a full peer — serves the Hermes A2A agent
+    # on :9900, registers its per-peer token, and gains outbound a2a_agents
+    # + A2A_PEER_TOKENS/TRUSTED_PEERS for the other seven hosts.
+    ../../modules/nixos/profiles/ai.nix
   ];
 
   boot = {
