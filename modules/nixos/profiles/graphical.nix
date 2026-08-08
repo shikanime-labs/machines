@@ -70,12 +70,20 @@
     graphics = {
       enable = true;
       enable32Bit = true; # Gaming: 32-bit for Wine/Proton
+      # NVDEC hardware video decode (browser/media players) on the dGPU.
+      extraPackages = with pkgs; [ nvidia-vaapi-driver ];
     };
     bluetooth.enable = true;
     nvidia = {
       open = false; # proprietary/closed kernel module, per explicit request
       modesetting.enable = true;
-      powerManagement.enable = true;
+      powerManagement = {
+        enable = true;
+        # Fine-grained RTD3 for the Max-Q dGPU: per-frame power-state transitions
+        # instead of a coarse on/off switch. Valid because prime.offload.enable
+        # is set (assertion: finegrained -> offload).
+        finegrained = true;
+      };
       prime.offload = {
         enable = true;
         enableOffloadCmd = true; # provides `nvidia-offload` wrapper
