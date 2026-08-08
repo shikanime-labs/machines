@@ -278,5 +278,19 @@
 
     // X11 bridge for legacy X apps
     xwayland-satellite {}
+
+    // ── Keyboard layouts: Colemak default, QWERTY + AZERTY switchable ──
+    // Group 1 (default) Colemak, Group 2 QWERTY (us), Group 3 AZERTY (fr).
+    // Right-Win toggles the active group (Left-Win+Space is the Noctalia
+    // launcher, so avoid grp:win_space_toggle). Swap for grp:alt_shift_toggle
+    // or grp:caps_toggle if you prefer. grp_led:scroll lights ScrollLock to
+    // show a non-default group is active.
+    input {
+        keyboard {
+            xkb_layout "us,us,fr"
+            xkb_variant "colemak,,"
+            xkb_options "grp:rwin_toggle,grp_led:scroll"
+        }
+    }
   '';
 }
