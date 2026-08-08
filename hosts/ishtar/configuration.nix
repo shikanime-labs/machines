@@ -102,5 +102,48 @@
   # pkexec (gparted, etc.) can gain root from a non-root desktop session.
   security.polkit.enablePkexecWrapper = true;
 
+  # Fix permissions on shared Hermes state directory — the upstream
+  # hermes-agent NixOS module only pre-creates cron/sessions/logs/memories/plugins
+  # subdirs, but runtime code also creates kanban/, pastes/, skills/, lsp/,
+  # desktop/, etc.  Ensure ALL subdirectories are group-writable (2770) so
+  # interactive users in the 'hermes' group (like shika) can read/write.
+  system.activationScripts.hermes-permissions = {
+    text = ''
+      mkdir -p /var/lib/hermes/.hermes
+      chown -h hermes:hermes /var/lib/hermes /var/lib/hermes/.hermes
+      chmod 2770 /var/lib/hermes /var/lib/hermes/.hermes
+
+      for _subdir in cron sessions logs memories plugins kanban kanban/boards \
+                     pastes skills lsp desktop sandboxes scripts state \
+                     cache images platforms pending_messages; do
+        mkdir -p "/var/lib/hermes/.hermes/$_subdir"
+        chown hermes:hermes "/var/lib/hermes/.hermes/$_subdir"
+        chmod 2770 "/var/lib/hermes/.hermes/$_subdir"
+        find "/var/lib/hermes/.hermes/$_subdir" -type f -exec chmod g+rw {} + 2>/dev/null || true
+        if [ "$_subdir" = "skills" ]; then
+          find "/var/lib/hermes/.hermes/$_subdir" -type d -exec chmod 2770 {} + 2>/dev/null || true
+        fi
+      done
+
+      # Fix kanban board directories
+      for _board in /var/lib/hermes/.hermes/kanban/boards/*/; do
+        if [ -d "$_board" ]; then
+          chmod 2775 "$_board"
+          chown hermes:hermes "$_board"
+          find "$_board" -type f -exec chmod 664 {} + 2>/dev/null || true
+        fi
+      done
+
+      # Fix file permissions for shared state files
+      find /var/lib/hermes/.hermes -maxdepth 1 -name '*.db' -exec chmod 664 {} + 2>/dev/null || true
+      find /var/lib/hermes/.hermes -maxdepth 1 -name '*.lock' -exec chmod 664 {} + 2>/dev/null || true
+      find /var/lib/hermes/.hermes -maxdepth 1 -name '*.yaml' -exec chmod 664 {} + 2>/dev/null || true
+      find /var/lib/hermes/.hermes -maxdepth 1 -name '*.json' -exec chmod 664 {} + 2>/dev/null || true
+      find /var/lib/hermes/.hermes -maxdepth 1 -name '*.env' -exec chmod 664 {} + 2>/dev/null || true
+      find /var/lib/hermes/.hermes -maxdepth 1 -name '*.toml' -exec chmod 664 {} + 2>/dev/null || true
+      find /var/lib/hermes/.hermes -maxdepth 1 -name '*.md' -exec chmod 664 {} + 2>/dev/null || true
+    '';
+  };
+
   system.stateVersion = "26.05";
 }
