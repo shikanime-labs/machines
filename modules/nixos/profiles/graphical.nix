@@ -122,9 +122,22 @@
     steam = {
       enable = true;
       localNetworkGameTransfers.openFirewall = true;
-      gamescopeSession.enable = true;
       protontricks.enable = true;
       remotePlay.openFirewall = true;
+      # Run the client itself on the discrete NVIDIA GPU. On prime-offload this
+      # host defaults the Steam client to the Intel iGPU (and occasionally to the
+      # open-source NVK Mesa driver), so Steam's hardware report shows "no NVIDIA
+      # card". Pinning the offload env + NVIDIA-only Vulkan layer makes the
+      # proprietary driver the one Steam enumerates.
+      gamescopeSession = {
+        enable = true;
+        env = {
+          __NV_PRIME_RENDER_OFFLOAD = "1";
+          __NV_PRIME_RENDER_OFFLOAD_PROVIDER = "NVIDIA-G0";
+          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+          __VK_LAYER_NV_optimus = "NVIDIA_only";
+        };
+      };
     };
   };
 
@@ -166,10 +179,8 @@
     };
 
     # XWayland for the rare X11 app under Niri. Keep xserver on for the XWayland socket.
-    xserver = {
-      enable = true;
-      videoDrivers = [ "nvidia" ];
-    };
+    # videoDrivers = [ "nvidia" ] is supplied by nixos-hardware's common-gpu-nvidia.
+    xserver.enable = true;
 
     # Fingerprint reader stack. Wires pam_fprintd into the auth path so the
     # polkit agent (Noctalia) can surface a fingerprint gate for Bitwarden's
