@@ -42,6 +42,8 @@ in
   programs = {
     bat.enable = true;
 
+    btop.enable = true;
+
     carapace.enable = true;
 
     command-not-found.enable = true;
