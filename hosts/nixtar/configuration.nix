@@ -30,9 +30,10 @@ let
 in
 {
   imports = [
-    "${modulesPath}/profiles/headless.nix"
-    ../../modules/nixos/users/shika.nix
+    ../../modules/nixos/profiles/ai.nix
     ../../modules/nixos/profiles/workstation.nix
+    ../../modules/nixos/users/shika.nix
+    "${modulesPath}/profiles/headless.nix"
   ];
 
   boot = {
