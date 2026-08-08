@@ -33,7 +33,7 @@ resource "google_iam_workload_identity_pool_provider" "tfc" {
 
 module "service_accounts_iam" {
   source  = "terraform-google-modules/iam/google//modules/service_accounts_iam"
-  version = "~> 7.6"
+  version = "~> 8.0"
 
   service_accounts = module.service_accounts.emails_list
   project          = module.project.project_id
@@ -46,7 +46,7 @@ module "service_accounts_iam" {
 
 module "projects_iam" {
   source  = "terraform-google-modules/iam/google//modules/projects_iam"
-  version = "~> 7.7"
+  version = "~> 8.0"
 
   projects = [
     module.project.project_id,
