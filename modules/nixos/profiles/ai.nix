@@ -70,14 +70,6 @@ let
         "k8s-node"
       ];
     }
-    {
-      name = "nixtar";
-      capabilities = [
-        "nvidia"
-        "cuda"
-        "inference"
-      ];
-    }
   ];
 
   otherA2aPeers = builtins.filter (p: p.name != config.networking.hostName) a2aPeers;

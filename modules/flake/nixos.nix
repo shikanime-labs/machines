@@ -186,19 +186,6 @@ let
       ++ (mkRpi5ClusterModules system);
     };
 
-  mkNixtarNixosConfiguration =
-    system:
-    inputs.nixpkgs.lib.nixosSystem {
-      pkgs = import inputs.nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
-      modules = [
-        ../../hosts/nixtar/configuration.nix
-        inputs.nixos-wsl.nixosModules.default
-      ]
-      ++ (mkWorkstationsModules system);
-    };
 in
 {
   flake = {
@@ -210,7 +197,6 @@ in
       minish = mkMinishNixosConfiguration "aarch64-linux";
       nalsha = mkNalshaNixosConfiguration "x86_64-linux";
       nemishi = mkNemishiNixosConfiguration "aarch64-linux";
-      nixtar = mkNixtarNixosConfiguration "x86_64-linux";
     };
 
     packages = {
@@ -220,7 +206,6 @@ in
         ishtar = self.nixosConfigurations.ishtar.config.system.build.toplevel;
         manash = self.nixosConfigurations.manash.config.system.build.toplevel;
         nalsha = self.nixosConfigurations.nalsha.config.system.build.toplevel;
-        nixtar = self.nixosConfigurations.nixtar.config.system.build.tarballBuilder;
       };
       aarch64-linux = {
         catbox = mkCatboxPackage "aarch64-linux";

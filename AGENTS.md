@@ -1,8 +1,8 @@
 # Machines
 
-Shikanime's machine configuration for NixOS, nix-darwin, WSL, and shared Home
-Manager modules. Source of truth for every host Shikanime manages — see README
-for the full directory layout.
+Shikanime's machine configuration for NixOS, nix-darwin, and shared Home Manager
+modules. Source of truth for every host Shikanime manages — see README for the
+full directory layout.
 
 **Language:** Nix **License:** Apache-2.0
 

@@ -76,7 +76,7 @@
       - Identity: 13O / Operator 13O / ishtar
       - Cluster: nishir (large fleet cluster)
       - A2A: enabled
-      - Peers: ashira, fushi, ishtar, manash, minish, nalsha, nemishi, nixtar, telsha
+      - Peers: ashira, fushi, ishtar, manash, minish, nalsha, nemishi, telsha
       - Channel: hermes-gateway (tailnet, 0.0.0.0:9900)
       - Announces on startup; responds to direct queries.
       - Allowed topics: status, patches, deployments, incidents.

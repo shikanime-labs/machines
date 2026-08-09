@@ -6,14 +6,14 @@
 
 # Machines
 
-Shikanime's machine configuration repository for NixOS, nix-darwin, WSL, and
-related shared home modules.
+Shikanime's machine configuration repository for NixOS, nix-darwin, and related
+shared home modules.
 
 ## What This Repo Contains
 
 This flake is the source of truth for the machines I manage. It wires together:
 
-- host-specific NixOS, nix-darwin, and WSL configurations
+- host-specific NixOS and nix-darwin configurations
 - shared system modules for Linux and Darwin
 - shared Home Manager modules
 - encrypted secrets with `sops-nix`
@@ -48,7 +48,6 @@ Current hosts:
 - `nemishi` - NixOS ARM node
 - `ishtar` - NixOS GUI workstation (Razer Blade 17 (2019), Hyprland on Wayland +
   NVIDIA)
-- `nixtar` - NixOS on WSL
 - `catbox` - KubeVirt containerdisk (NixOS qcow2 wrapped as an OCI image)
 - `telsha` - nix-darwin host
 
@@ -121,7 +120,6 @@ The flake exposes these primary outputs:
 - `nixosConfigurations.minish`
 - `nixosConfigurations.nemishi`
 - `nixosConfigurations.ishtar`
-- `nixosConfigurations.nixtar`
 - `darwinConfigurations.telsha`
 - `packages.<system>.*` for the corresponding system builds, including `catbox`
 
@@ -151,8 +149,8 @@ nix build .#packages.x86_64-linux.catbox
 sudo nixos-rebuild switch --flake .#manash
 ```
 
-Replace `manash` with `ashira`, `nalsha`, `fushi`, `minish`, `nemishi`,
-`ishtar`, or `nixtar` as needed.
+Replace `manash` with `ashira`, `nalsha`, `fushi`, `minish`, `nemishi`, or
+`ishtar` as needed.
 
 ### Switch A Darwin Host
 
@@ -187,7 +185,6 @@ workstation-style machines:
 - `fushi`, `minish`, and `nemishi` are ARM Linux nodes with the same shared
   cluster profile shape
 - `ishtar` is a bare-metal GUI workstation (Hyprland on Wayland + NVIDIA)
-- `nixtar` is a WSL-based workstation profile
 - `telsha` is the Darwin workstation profile
 
 Several hosts share remote build configuration through
