@@ -46,6 +46,8 @@ Current hosts:
 - `fushi` - NixOS ARM node
 - `minish` - NixOS ARM node
 - `nemishi` - NixOS ARM node
+- `kushira` - NixOS inference node (Minisforum MS-S1 Max, Strix Halo)
+- `sashina` - NixOS inference node (Minisforum MS-S1 Max, Strix Halo)
 - `ishtar` - NixOS GUI workstation (Razer Blade 17 (2019), Hyprland on Wayland +
   NVIDIA)
 - `catbox` - KubeVirt containerdisk (NixOS qcow2 wrapped as an OCI image)
