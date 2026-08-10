@@ -203,7 +203,7 @@ in
             name = "aperture-openai";
             base_url = "https://ai.taila659a.ts.net/v1";
             api_mode = "chat_completions";
-            model = "openrouter/openrouter/free";
+            model = "tencent/hy3:free";
             models = [
               "deepseek/deepseek-v4-flash"
               "gemini-2.5-flash"
@@ -262,7 +262,7 @@ in
           }
           {
             api_mode = "chat_completions";
-            model = "openrouter/openrouter/free";
+            model = "tencent/hy3:free";
             provider = "custom:aperture-openai";
           }
         ];
@@ -282,67 +282,67 @@ in
         auxiliary = {
           vision = {
             provider = "custom:aperture-openai";
-            model = "openrouter/openrouter/free";
+            model = "tencent/hy3:free";
             base_url = "https://ai.taila659a.ts.net/v1";
           };
           web_extract = {
             provider = "custom:aperture-openai";
-            model = "openrouter/openrouter/free";
+            model = "tencent/hy3:free";
             base_url = "https://ai.taila659a.ts.net/v1";
           };
           compression = {
             provider = "custom:aperture-openai";
-            model = "openrouter/openrouter/free";
+            model = "tencent/hy3:free";
             base_url = "https://ai.taila659a.ts.net/v1";
           };
           skills_hub = {
             provider = "custom:aperture-openai";
-            model = "openrouter/openrouter/free";
+            model = "tencent/hy3:free";
             base_url = "https://ai.taila659a.ts.net/v1";
           };
           approval = {
             provider = "custom:aperture-openai";
-            model = "openrouter/openrouter/free";
+            model = "tencent/hy3:free";
             base_url = "https://ai.taila659a.ts.net/v1";
           };
           mcp = {
             provider = "custom:aperture-openai";
-            model = "openrouter/openrouter/free";
+            model = "tencent/hy3:free";
             base_url = "https://ai.taila659a.ts.net/v1";
           };
           title_generation = {
             provider = "custom:aperture-openai";
-            model = "openrouter/openrouter/free";
+            model = "tencent/hy3:free";
             base_url = "https://ai.taila659a.ts.net/v1";
           };
           memory_query_rewrite = {
             provider = "custom:aperture-anthropic:openai";
-            model = "openrouter/openrouter/free";
+            model = "tencent/hy3:free";
             base_url = "https://ai.taila659a.ts.net/v1";
           };
           tts_audio_tags = {
             provider = "custom:aperture-openai";
-            model = "openrouter/openrouter/free";
+            model = "tencent/hy3:free";
             base_url = "https://ai.taila659a.ts.net/v1";
           };
           triage_specifier = {
             provider = "custom:aperture-openai";
-            model = "openrouter/openrouter/free";
+            model = "tencent/hy3:free";
             base_url = "https://ai.taila659a.ts.net/v1";
           };
           kanban_decomposer = {
             provider = "custom:aperture-openai";
-            model = "openrouter/openrouter/free";
+            model = "tencent/hy3:free";
             base_url = "https://ai.taila659a.ts.net/v1";
           };
           profile_describer = {
             provider = "custom:aperture-openai";
-            model = "openrouter/openrouter/free";
+            model = "tencent/hy3:free";
             base_url = "https://ai.taila659a.ts.net/v1";
           };
           curator = {
             provider = "custom:aperture-openai";
-            model = "openrouter/openrouter/free";
+            model = "tencent/hy3:free";
             base_url = "https://ai.taila659a.ts.net/v1";
           };
         };
