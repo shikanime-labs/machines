@@ -10,10 +10,11 @@ bridge `br0` that carries all traffic — pod-to-pod, SSH, flannel, Longhorn.
 
 Configured inline in each hardware module — no custom abstraction module.
 
-| Module                         | Interfaces         | Bond                  | Bridge | DHCP |
-| ------------------------------ | ------------------ | --------------------- | ------ | ---- |
-| `modules/nixos/beelink-eq.nix` | `enp1s0`, `enp2s0` | `bond0` (balance-alb) | `br0`  | yes  |
-| `modules/nixos/rpi.nix`        | `end0`             | —                     | `br0`  | yes  |
+| Module                                        | Interfaces         | Bond                  | Bridge | DHCP |
+| --------------------------------------------- | ------------------ | --------------------- | ------ | ---- |
+| `modules/nixos/hardware/beelink-eq.nix`       | `enp1s0`, `enp2s0` | `bond0` (balance-alb) | `br0`  | yes  |
+| `modules/nixos/hardware/minisforum-ms-s1.nix` | `enp1s0`, `enp2s0` | `bond0` (balance-alb) | `br0`  | yes  |
+| `modules/nixos/hardware/rpi.nix`              | `end0`             | —                     | `br0`  | yes  |
 
 ### Beelink (dual 2.5G NIC, balance-alb bond)
 
@@ -98,5 +99,6 @@ Known names by hardware:
 | Hardware                     | Interface(s)       | Driver     |
 | ---------------------------- | ------------------ | ---------- |
 | Beelink (Intel N150, i226-V) | `enp1s0`, `enp2s0` | `igc`      |
+| Minisforum MS-S1 (RTL8127)   | `enp1s0`, `enp2s0` | `r8169`    |
 | Raspberry Pi CM4 (USB3 GigE) | `end0`             | `lan743x`  |
 | Older Raspberry Pi           | `eth0`             | `smsc95xx` |
