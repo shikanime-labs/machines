@@ -1,4 +1,4 @@
-{ config, ... }:
+{ ... }:
 
 {
   imports = [
@@ -25,7 +25,6 @@
     };
 
     tailscale = {
-      authKeyFile = config.sops.secrets.tailscale-authkey.path;
       enable = true;
       extraUpFlags = [
         "--accept-routes"
@@ -44,8 +43,6 @@
       };
     };
   };
-
-  sops.secrets.tailscale-authkey.restartUnits = [ "tailscaled.service" ];
 
   # XFS no longer panics on I/O errors: on USB-backed nodes a transient
   # enclosure I/O error was panicking the kernel and reboot-looping. Let XFS

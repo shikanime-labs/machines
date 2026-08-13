@@ -7,7 +7,7 @@
     ../../modules/nixos/profiles/builder.nix
     ../../modules/nixos/profiles/distributed.nix
     ../../modules/nixos/profiles/nishir.nix
-    ../../modules/nixos/profiles/machine.nix
+    ../../modules/nixos/profiles/server.nix
     ../../modules/nixos/hardware/rpi4.nix
     ../../modules/nixos/users/builder.nix
     ../../modules/nixos/users/nishir.nix
