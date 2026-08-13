@@ -287,9 +287,11 @@
     // show a non-default group is active.
     input {
         keyboard {
-            xkb_layout "us,us,fr"
-            xkb_variant "colemak,,"
-            xkb_options "grp:rwin_toggle,grp_led:scroll"
+            xkb {
+                layout "us,us,fr"
+                variant "colemak,,"
+                options "grp:rwin_toggle,grp_led:scroll"
+            }
         }
     }
   '';
