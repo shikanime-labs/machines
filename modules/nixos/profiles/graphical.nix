@@ -231,4 +231,22 @@
   # against this daemon, so the external polkit-gnome agent is intentionally
   # omitted to avoid two agents racing for the session-bus registration.
   security.polkit.enable = true;
+
+  # Expose LM Studio over Tailscale HTTPS (ts.net endpoint on :1234). Runs after
+  # tailscaled is up; `serve` persists in tailscaled state after first apply.
+  systemd.services.tailscale-serve-lmstudio = {
+    description = "Expose LM Studio over Tailscale serve";
+    after = [ "tailscaled.service" ];
+    wants = [ "tailscaled.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "5s";
+    };
+    script = ''
+      ${pkgs.tailscale}/bin/tailscale serve --yes --bg --https=1234 http://127.0.0.1:1234
+    '';
+  };
 }
