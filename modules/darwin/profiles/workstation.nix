@@ -24,6 +24,7 @@
       "firefox"
       "google-chrome"
       "google-drive"
+      "ibkr"
       "jellyfin-media-player"
       "lm-studio"
       "macfuse"
