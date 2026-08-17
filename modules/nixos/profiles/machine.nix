@@ -31,7 +31,7 @@
         "--ssh"
       ];
       openFirewall = true;
-      useRoutingFeatures = "server";
+      useRoutingFeatures = "both";
     };
 
     # Userspace hardware watchdog + system resource monitor
