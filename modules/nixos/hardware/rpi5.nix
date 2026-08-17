@@ -12,13 +12,9 @@
   };
 
   boot.kernelParams = [
-    # Probe -12 ENOMEM: 64 MiB default CMA too small for NVMe admin queue / PRP DMA.
-    "cma=512M"
-    # Probe -4 EINTR (admin queue timeout) on Samsung PM9B1 behind RP1 pcie:
-    # ASPM L1 wedges the link at init. `=off` fully disables L1.x; `policy=performance`
-    # still allows L1 entry and did not fix it. Verified 2026-08-02: enumerates,
-    # XFS mounts, 0 smart errors. Prior generations in extlinux if it regresses.
+    # BCM2712 external PCIe root (bus 0001) quirk: ASPM L1 wedges the NVMe admin
+    # queue on Samsung PM9B1-class drives (probe timeout). `=off` stops Linux from
+    # managing ASPM. Verified 2026-08-02: enumerates, XFS mounts, 0 smart errors.
     "pcie_aspm=off"
-    "nvme_core.default_ps_max_latency_us=0"
   ];
 }

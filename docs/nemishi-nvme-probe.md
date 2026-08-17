@@ -24,12 +24,26 @@ be > 0.
 
 ## Secondary tuning (Pi 5 host side, not the cause)
 
-DRM-less SSDs on the BCM2712 root can also wedge on admin-queue `Identify`:
+`rpi5.nix` keeps one host-side insurance setting:
 
-- **PCIe ASPM L1**: root defaults L1 on; link sleep wedges the queue (`-12`
-  class). `rpi5.nix` forces `pcie_aspm.policy=performance` (L1 off).
+- **PCIe ASPM L1**: the BCM2712 external PCIe root (bus `0001`) defaults L1 on;
+  on Samsung PM9B1-class drives L1 wedges the NVMe admin queue at init, a
+  separate `probe timeout` trap from the power-ribbon issue. `rpi5.nix` sets
+  `pcie_aspm=off` (stops Linux managing ASPM) as one-line insurance against it.
 
-`cma=512M` and the `pcie-32bit-dma-pi5` overlay remain required.
+The following were evaluated during the upstream nixos-hardware#1953 thread and
+**removed** from `rpi5.nix`:
+
+- `cma=512M` — Pi 5 DTB already reserves 64 MiB CMA; the drive's 64 MiB HMB
+  request is capped at 32 MiB (satisfies its minimum) and allocated outside CMA,
+  with HMB failure nonfatal. Not required.
+- `pcie-32bit-dma-pi5` overlay — changes DMA addressing and MSI routing; not
+  enabled globally without further investigation.
+- `nvme_core.default_ps_max_latency_us=0` (APST) — applied after the first
+  Identify command, so it cannot fix an initial Identify timeout.
+
+Restore any of the above only if you re-test in isolation and confirm it is
+required on this hardware.
 
 ## Live Verification (post-reseat, no rebuild)
 
@@ -41,12 +55,8 @@ ls -la /dev/nvme0n1                 # block device present
 
 ## History
 
-Earlier this doc blamed APST + ASPM for a "timeout, disable controller" probe
-failure. That log was from a _separate_ pre-power-ribbon state; the 0-byte /
-`No such device` symptom the host actually hit was pure missing 5V. The
-`nvme_core.default_ps_max_latency_us=0` workaround was stripped from `rpi5.nix`.
-
-`pcie_aspm.policy=performance` was reviewed for removal but **kept**: it guards
-a separate, real BCM2712 root-port quirk (ASPM L1 wedges the NVMe admin queue,
-probe `-12`). The power-ribbon fix was _our_ failure; this is a different
-hardware trap worth the one-line insurance.
+An earlier version of this doc blamed APST + ASPM for a "timeout, disable
+controller" probe failure and carried `cma=512M` + the `pcie-32bit-dma-pi5`
+overlay as required. The timeout log was from a _separate_ pre-power-ribbon
+state; the 0-byte / `No such device` symptom the host actually hit was pure
+missing 5V. After the upstream review, `rpi5.nix` carries only `pcie_aspm=off`.
