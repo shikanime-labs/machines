@@ -158,7 +158,10 @@ in
     rtk
   ];
 
-  networking.firewall.allowedTCPPorts = [ 9900 ];
+  networking.firewall.allowedTCPPorts = [
+    9900
+    8642
+  ];
 
   services = {
     cua-driver.enable = true;
@@ -417,6 +420,27 @@ in
     };
     script = ''
       ${getExe pkgs.tailscale} serve --yes --bg --https=9900 http://127.0.0.1:9900
+    '';
+  };
+
+  # Expose the Hermes api_server (peer DM target) over Tailscale. It serves
+  # plain HTTP on :8642; `serve --https` terminates TLS and forwards to it.
+  systemd.services.tailscale-serve-api = {
+    description = "Expose Hermes api_server via Tailscale serve";
+    after = [
+      "tailscaled.service"
+      "tailscale-serve.service"
+    ];
+    wants = [ "tailscaled.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "5s";
+    };
+    script = ''
+      ${getExe pkgs.tailscale} serve --yes --bg --https=8642 http://127.0.0.1:8642
     '';
   };
 
