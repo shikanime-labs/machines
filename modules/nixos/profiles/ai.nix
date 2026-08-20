@@ -214,7 +214,6 @@ in
               "inclusionai/ling-3.0-flash:free"
               "labs-leanstral-1-5"
               "nvidia/nemotron-3-ultra-550b-a55b:free"
-              "openrouter/openrouter/free"
               "poolside/laguna-xs-2.1:free"
               "qwen/qwen3-8b"
               "stepfun/step-3.7-flash:free"
@@ -316,7 +315,7 @@ in
             base_url = "https://ai.taila659a.ts.net/v1";
           };
           memory_query_rewrite = {
-            provider = "custom:aperture-anthropic:openai";
+            provider = "custom:aperture-openai";
             model = "tencent/hy3:free";
             base_url = "https://ai.taila659a.ts.net/v1";
           };
