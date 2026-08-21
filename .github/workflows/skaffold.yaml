@@ -17,6 +17,7 @@ permissions:
 jobs:
   build-render:
     name: Build & Render
+    if: ${{ github.event_name != 'pull_request' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -26,7 +27,7 @@ jobs:
         continue-on-error: true
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.OPERATOR_APP_ID }}
+          client-id: ${{ vars.OPERATOR_APP_ID }}
           permission-contents: read
           permission-packages: write
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
@@ -70,7 +71,9 @@ jobs:
           path: artifacts/skaffold-manifest.yaml
   build-render-profile:
     name: Build & Render (Profile)
-    if: ${{ needs['setup-profiles-jobs'].outputs.continue == 'true' }}
+    if: >-
+      ${{ github.event_name != 'pull_request' &&
+      needs['setup-profiles-jobs'].outputs.continue == 'true' }}
     runs-on: ubuntu-latest
     needs:
       - setup-profiles-jobs
@@ -86,7 +89,7 @@ jobs:
         continue-on-error: true
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.OPERATOR_APP_ID }}
+          client-id: ${{ vars.OPERATOR_APP_ID }}
           permission-contents: read
           permission-packages: write
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
@@ -126,7 +129,7 @@ jobs:
         continue-on-error: true
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.OPERATOR_APP_ID }}
+          client-id: ${{ vars.OPERATOR_APP_ID }}
           permission-contents: read
           permission-packages: write
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
