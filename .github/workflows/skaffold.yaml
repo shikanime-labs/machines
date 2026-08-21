@@ -17,6 +17,7 @@ permissions:
 jobs:
   build-render:
     name: Build & Render
+    if: ${{ github.event_name != 'pull_request' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -67,7 +68,9 @@ jobs:
           path: artifacts/skaffold-manifest.yaml
   build-render-profile:
     name: Build & Render (Profile)
-    if: ${{ needs['setup-profiles-jobs'].outputs.continue == 'true' }}
+    if: >-
+      ${{ github.event_name != 'pull_request' &&
+      needs['setup-profiles-jobs'].outputs.continue == 'true' }}
     runs-on: ubuntu-latest
     needs:
       - setup-profiles-jobs
