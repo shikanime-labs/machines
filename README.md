@@ -48,7 +48,7 @@ Current hosts:
 - `nemishi` - NixOS ARM node
 - `kushira` - NixOS inference node (Minisforum MS-S1 Max, Strix Halo)
 - `sashina` - NixOS inference node (Minisforum MS-S1 Max, Strix Halo)
-- `ishtar` - NixOS GUI workstation (Razer Blade 17 (2019), Hyprland on Wayland +
+- `nixtar` - NixOS GUI workstation (Razer Blade 17 (2019), Hyprland on Wayland +
   NVIDIA)
 - `catbox` - KubeVirt containerdisk (NixOS qcow2 wrapped as an OCI image)
 - `telsha` - nix-darwin host
@@ -84,7 +84,7 @@ no repo-owned theme schema or UI component to edit. The theme is set per user in
 
 - `theme.mode` — the auto-mode flag. `"auto"` follows the day/night schedule;
   set it to `"dark"` or `"light"` to disable auto and pin a fixed theme.
-- `location.auto_locate` — when `true` (current ishtar setting), the schedule is
+- `location.auto_locate` — when `true` (current nixtar setting), the schedule is
   derived from runtime IP geolocation. For a fixed-location, offline setup use
   `location.latitude`/`longitude` instead, or `location.custom_schedule` with
   explicit `sunrise`/`sunset` times.
@@ -121,7 +121,7 @@ The flake exposes these primary outputs:
 - `nixosConfigurations.fushi`
 - `nixosConfigurations.minish`
 - `nixosConfigurations.nemishi`
-- `nixosConfigurations.ishtar`
+- `nixosConfigurations.nixtar`
 - `darwinConfigurations.telsha`
 - `packages.<system>.*` for the corresponding system builds, including `catbox`
 
@@ -152,7 +152,7 @@ sudo nixos-rebuild switch --flake .#manash
 ```
 
 Replace `manash` with `ashira`, `nalsha`, `fushi`, `minish`, `nemishi`, or
-`ishtar` as needed.
+`nixtar` as needed.
 
 ### Switch A Darwin Host
 
@@ -186,7 +186,7 @@ workstation-style machines:
   distributed build settings, and cluster runner duties
 - `fushi`, `minish`, and `nemishi` are ARM Linux nodes with the same shared
   cluster profile shape
-- `ishtar` is a bare-metal GUI workstation (Hyprland on Wayland + NVIDIA)
+- `nixtar` is a bare-metal GUI workstation (Hyprland on Wayland + NVIDIA)
 - `telsha` is the Darwin workstation profile
 
 Several hosts share remote build configuration through

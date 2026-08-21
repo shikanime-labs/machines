@@ -117,7 +117,7 @@ let
       ++ (mkRpi4ClusterModules system);
     };
 
-  mkIshtarNixosConfiguration =
+  mkNixtarNixosConfiguration =
     system:
     inputs.nixpkgs.lib.nixosSystem {
       pkgs = import inputs.nixpkgs {
@@ -125,7 +125,7 @@ let
         config.allowUnfree = true;
       };
       modules = [
-        ../../hosts/ishtar/configuration.nix
+        ../../hosts/nixtar/configuration.nix
         inputs.nixos-hardware.nixosModules.common-cpu-intel
         inputs.nixos-hardware.nixosModules.common-pc-ssd
         inputs.nixos-hardware.nixosModules.common-gpu-nvidia
@@ -192,7 +192,7 @@ in
     nixosConfigurations = {
       ashira = mkAshiraNixosConfiguration "x86_64-linux";
       fushi = mkFushiNixosConfiguration "aarch64-linux";
-      ishtar = mkIshtarNixosConfiguration "x86_64-linux";
+      nixtar = mkNixtarNixosConfiguration "x86_64-linux";
       manash = mkManashNixosConfiguration "x86_64-linux";
       minish = mkMinishNixosConfiguration "aarch64-linux";
       nalsha = mkNalshaNixosConfiguration "x86_64-linux";
@@ -203,7 +203,7 @@ in
       x86_64-linux = {
         ashira = self.nixosConfigurations.ashira.config.system.build.toplevel;
         catbox = mkCatboxPackage "x86_64-linux";
-        ishtar = self.nixosConfigurations.ishtar.config.system.build.toplevel;
+        nixtar = self.nixosConfigurations.nixtar.config.system.build.toplevel;
         manash = self.nixosConfigurations.manash.config.system.build.toplevel;
         nalsha = self.nixosConfigurations.nalsha.config.system.build.toplevel;
       };

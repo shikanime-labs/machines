@@ -270,7 +270,7 @@
         Mod+Shift+P { power-off-monitors; }
     }
 
-    // Laptop: lock + suspend on lid close (ishtar). logind HandleLidSwitch=ignore
+    // Laptop: lock + suspend on lid close (nixtar). logind HandleLidSwitch=ignore
     // set at the NixOS level so systemd doesn't also suspend.
     switch-events {
         lid-close { spawn "noctalia" "msg" "session" "lock-and-suspend"; }
