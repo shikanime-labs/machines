@@ -93,7 +93,7 @@
     defaultSopsFile = ../../secrets/ishtar.enc.yaml;
     defaultSopsFormat = "yaml";
     secrets = {
-      hermes-agent-api-server-key.sopsFile = ../../secrets/machine.enc.yaml;
+      hermes-agent-api-server-key.sopsFile = ../../secrets/ishtar.enc.yaml;
       nix-access-token.sopsFile = ../../secrets/machine.enc.yaml;
     };
   };
