@@ -23,11 +23,11 @@ jobs:
       packages: write
     steps:
       - id: createGithubAppToken
-        continue-on-error: true
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.OPERATOR_APP_ID }}
+          client-id: ${{ vars.OPERATOR_APP_CLIENT_ID }}
           permission-contents: read
+          permission-packages: write
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
       - uses: shikanime-studio/actions/checkout@v9
         with:
@@ -36,7 +36,7 @@ jobs:
             }}
       - uses: docker/login-action@v4
         with:
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ steps.createGithubAppToken.outputs.token }}
           registry: ghcr.io
           username: ${{ github.actor }}
       - uses: shikanime-studio/actions/nix/setup@v9
@@ -81,11 +81,11 @@ jobs:
         include: ${{ fromJSON(needs['setup-profiles-jobs'].outputs.matrix) }}
     steps:
       - id: createGithubAppToken
-        continue-on-error: true
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.OPERATOR_APP_ID }}
+          client-id: ${{ vars.OPERATOR_APP_CLIENT_ID }}
           permission-contents: read
+          permission-packages: write
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
       - uses: shikanime-studio/actions/checkout@v9
         with:
@@ -94,7 +94,7 @@ jobs:
             }}
       - uses: docker/login-action@v4
         with:
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ steps.createGithubAppToken.outputs.token }}
           registry: ghcr.io
           username: ${{ github.actor }}
       - uses: shikanime-studio/actions/nix/setup@v9
@@ -119,11 +119,11 @@ jobs:
       matrix: ${{ steps.setup-profiles-jobs.outputs.matrix }}
     steps:
       - id: createGithubAppToken
-        continue-on-error: true
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.OPERATOR_APP_ID }}
+          client-id: ${{ vars.OPERATOR_APP_CLIENT_ID }}
           permission-contents: read
+          permission-packages: write
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
       - uses: shikanime-studio/actions/checkout@v9
         with:
