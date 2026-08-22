@@ -8,3 +8,6 @@ build:
         buildCommand:
           nix run github:shikanime-studio/nix-containers -- skaffold build
       image: ghcr.io/shikanime-labs/machines/catbox
+  tagPolicy:
+    customTemplate:
+      template: latest
