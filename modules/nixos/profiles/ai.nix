@@ -12,7 +12,7 @@ let
   # Hosts resolve each other over the Tailscale tailnet (*.taila659a.ts.net).
   # Capability labels per fleet member — drive a2a_orchestrate(capability=…)
   # routing. Reflects each host's actual role: build arch, k8s plane tier, GPU.
-  a2aPeers = [
+  peers = [
     {
       name = "ashira";
       capabilities = [
@@ -72,7 +72,7 @@ let
     }
   ];
 
-  otherA2aPeers = builtins.filter (p: p.name != config.networking.hostName) a2aPeers;
+  otherPeers = builtins.filter (p: p.name != config.networking.hostName) peers;
 
   # Generate trusted peer names
   mkA2aTrustedPeers = peers: lib.concatStringsSep "," (map (p: p.name) peers);
@@ -121,7 +121,7 @@ let
     );
 
   # Generate "HERMES_PEER_<NAME>_KEY=<placeholder>" lines for every other peer.
-  mkPeerKeyEnv =
+  mkPeerKeyEnvs =
     peers:
     lib.concatStringsSep "\n" (
       map (
@@ -409,11 +409,11 @@ in
         # tokens (A2A_PEER_TOKENS) authenticate each fleet member by name.
         platforms.a2a.enabled = true;
         # Outbound: every peer addressable via tailnet; presents own token.
-        a2a_agents = mkA2aAgents otherA2aPeers;
+        a2a_agents = mkA2aAgents otherPeers;
         # Bot-mode peer mesh (hermes peer): each fleet host exposes its own
         # api_server and dials the others. Names/URLs here; keys via
         # HERMES_PEER_<NAME>_KEY (hermes-agent-peer-keys-env template).
-        bot_peers = mkBotPeers otherA2aPeers;
+        bot_peers = mkBotPeers otherPeers;
         # The `a2a` toolset ships off by default — enable it on every surface
         # that must reach the fleet, or the a2a_* tools never register.
         platform_toolsets = {
@@ -508,8 +508,8 @@ in
         mode = "0600";
       };
     }
-    // (mkA2aTokenSecrets a2aPeers)
-    // (mkPeerApiServerKeySecrets a2aPeers);
+    // (mkA2aTokenSecrets peers)
+    // (mkPeerApiServerKeySecrets peers);
     templates = {
       hermes-agent-env = {
         content = ''
@@ -518,9 +518,7 @@ in
         '';
       };
       hermes-agent-peer-keys-env = {
-        content = ''
-          ${mkPeerKeyEnv otherA2aPeers}
-        '';
+        content = toString (mkPeerKeyEnvs otherPeers);
         restartUnits = [ "hermes-agent.service" ];
       };
       hermes-agent-matrix-env = {
@@ -540,8 +538,8 @@ in
           A2A_AGENT_NAME=${config.networking.hostName}
           A2A_PUBLIC_URL=https://${config.networking.hostName}.taila659a.ts.net:9900
           A2A_OWN_TOKEN=${config.sops.placeholder."${mkA2aTokenSecretName config.networking.hostName}"}
-          A2A_PEER_TOKENS=${mkA2aPeerTokens otherA2aPeers}
-          A2A_TRUSTED_PEERS=${mkA2aTrustedPeers otherA2aPeers}
+          A2A_PEER_TOKENS=${mkA2aPeerTokens otherPeers}
+          A2A_TRUSTED_PEERS=${mkA2aTrustedPeers otherPeers}
         '';
         restartUnits = [ "hermes-agent.service" ];
       };
