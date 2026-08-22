@@ -30,15 +30,6 @@ let
       ];
     }
     {
-      name = "ishtar";
-      capabilities = [
-        "graphical"
-        "media"
-        "nvidia"
-        "k8s-leader"
-      ];
-    }
-    {
       name = "manash";
       capabilities = [
         "build"
@@ -68,6 +59,15 @@ let
         "build"
         "build-arm"
         "k8s-node"
+      ];
+    }
+    {
+      name = "nixtar";
+      capabilities = [
+        "graphical"
+        "media"
+        "nvidia"
+        "k8s-leader"
       ];
     }
   ];

@@ -85,7 +85,7 @@
       - Identity: 12O / Operator 12O / nalsha
       - Cluster: nishir (large fleet cluster)
       - A2A: enabled
-      - Peers: ashira, fushi, ishtar, manash, minish, nalsha, nemishi, telsha
+      - Peers: ashira, fushi, manash, minish, nalsha, nemishi, nixtar, telsha
       - Channel: hermes-gateway (tailnet, 0.0.0.0:9900)
       - Announces on startup; responds to direct queries.
       - Allowed topics: status, patches, deployments, incidents.

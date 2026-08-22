@@ -24,7 +24,7 @@
 
         identities = {
           enable = true;
-          ishtar.enable = true;
+          nixtar.enable = true;
           telsha.enable = true;
         };
 
@@ -94,7 +94,7 @@
               ashira = [
                 "age1mel902ydxqv4yh798t5en336am9zwykapy8rtfvq4yprzr79t5wqzxe8ph"
               ];
-              ishtar = [
+              nixtar = [
                 "age16tla3k0j70er5q526nrt6kqzzw7ds62dazlsknjxuhp7q4yq3ydqhxv8gy"
               ];
               fushi = [
@@ -118,10 +118,10 @@
 
               nishir = ashira ++ fushi ++ manash ++ minish ++ nalsha ++ nemishi;
 
-              workstations = ishtar ++ telsha;
+              workstations = nixtar ++ telsha;
 
               identities =
-                config.devenv.shells.default.identities.ishtar.ageKeys
+                config.devenv.shells.default.identities.nixtar.ageKeys
                 ++ config.devenv.shells.default.identities.telsha.ageKeys;
             in
             [
@@ -136,10 +136,6 @@
               {
                 path_regex = "secrets/fushi.enc.yaml";
                 age = fushi ++ identities;
-              }
-              {
-                path_regex = "secrets/ishtar.enc.yaml";
-                age = ishtar ++ identities;
               }
               {
                 path_regex = "secrets/machine.enc.yaml";
@@ -160,6 +156,10 @@
               {
                 path_regex = "secrets/nemishi.enc.yaml";
                 age = nemishi ++ identities;
+              }
+              {
+                path_regex = "secrets/nixtar.enc.yaml";
+                age = nixtar ++ identities;
               }
               {
                 path_regex = "secrets/nishir.enc.yaml";

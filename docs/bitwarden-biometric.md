@@ -1,7 +1,7 @@
 # Bitwarden Biometric (Fingerprint) Unlock on NixOS
 
 How the fingerprint-unlock path for the Bitwarden desktop app is wired on
-graphical NixOS hosts (currently `ishtar`), and how to enroll, use, and
+graphical NixOS hosts (currently `nixtar`), and how to enroll, use, and
 troubleshoot it.
 
 ## What this enables
@@ -12,7 +12,7 @@ through the in-session polkit agent (Noctalia) instead of Bitwarden's own master
 password prompt. The SSH agent socket that Bitwarden exposes is also relocated
 off `$HOME` into the XDG runtime dir.
 
-Face recognition (`howdy`) is intentionally **not** wired — `ishtar` has no IR
+Face recognition (`howdy`) is intentionally **not** wired — `nixtar` has no IR
 camera.
 
 ## Config chain
