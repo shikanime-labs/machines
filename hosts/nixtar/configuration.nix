@@ -93,7 +93,6 @@
     defaultSopsFile = ../../secrets/nixtar.enc.yaml;
     defaultSopsFormat = "yaml";
     secrets = {
-      hermes-agent-api-server-key.sopsFile = ../../secrets/machine.enc.yaml;
       nix-access-token.sopsFile = ../../secrets/machine.enc.yaml;
     };
   };
