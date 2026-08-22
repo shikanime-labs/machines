@@ -103,6 +103,51 @@ let
   # Generate secret key name
   mkA2aTokenSecretName = peer: "hermes-agent-a2a-token-${peer}";
 
+  # Per-host api_server key name for the Hermes peer mesh. Each fleet host
+  # runs its own api_server with a distinct API_SERVER_KEY and dials peers
+  # using HERMES_PEER_<NAME>_KEY (that peer's key).
+  mkPeerApiServerKeyName = peer: "hermes-agent-api-server-key-${peer}";
+
+  # Render the bot_peers roster (name + tailnet URL) for the other hosts.
+  mkBotPeers =
+    peers:
+    builtins.listToAttrs (
+      map (
+        peer:
+        lib.nameValuePair peer.name {
+          url = "https://${peer.name}.taila659a.ts.net:8642";
+        }
+      ) peers
+    );
+
+  # Generate "HERMES_PEER_<NAME>_KEY=<placeholder>" lines for every other peer.
+  mkPeerKeyEnv =
+    peers:
+    lib.concatStringsSep "\n" (
+      map (
+        peer:
+        let
+          secretName = mkPeerApiServerKeyName peer.name;
+        in
+        "HERMES_PEER_${lib.toUpper peer.name}_KEY=${config.sops.placeholder.${secretName}}"
+      ) peers
+    );
+
+  # Sops secret definitions for every host's per-host api_server key.
+  mkPeerApiServerKeySecrets =
+    peers:
+    builtins.listToAttrs (
+      map (
+        peer:
+        lib.nameValuePair (mkPeerApiServerKeyName peer.name) {
+          sopsFile = ../../../secrets/machine.enc.yaml;
+          group = "hermes";
+          owner = "hermes";
+          restartUnits = [ "hermes-agent.service" ];
+        }
+      ) peers
+    );
+
   # Hermes scans each extraPlugins entry for plugin.yaml at the derivation
   # root, so wrap the source in symlinkJoin rather than passing it bare.
   hermesLcmPlugin = pkgs.symlinkJoin {
@@ -173,6 +218,7 @@ in
         config.sops.templates.hermes-agent-env.path
         config.sops.templates.hermes-agent-matrix-env.path
         config.sops.templates.hermes-agent-a2a-env.path
+        config.sops.templates.hermes-agent-peer-keys-env.path
       ];
       extraPackages = with pkgs; [
         agent-browser
@@ -364,6 +410,10 @@ in
         platforms.a2a.enabled = true;
         # Outbound: every peer addressable via tailnet; presents own token.
         a2a_agents = mkA2aAgents otherA2aPeers;
+        # Bot-mode peer mesh (hermes peer): each fleet host exposes its own
+        # api_server and dials the others. Names/URLs here; keys via
+        # HERMES_PEER_<NAME>_KEY (hermes-agent-peer-keys-env template).
+        bot_peers = mkBotPeers otherA2aPeers;
         # The `a2a` toolset ships off by default — enable it on every surface
         # that must reach the fleet, or the a2a_* tools never register.
         platform_toolsets = {
@@ -446,11 +496,6 @@ in
 
   sops = {
     secrets = {
-      hermes-agent-api-server-key = {
-        group = "hermes";
-        owner = "hermes";
-        restartUnits = [ "hermes-agent.service" ];
-      };
       hermes-agent-matrix-access-token = {
         group = "hermes";
         owner = "hermes";
@@ -463,13 +508,20 @@ in
         mode = "0600";
       };
     }
-    // (mkA2aTokenSecrets a2aPeers);
+    // (mkA2aTokenSecrets a2aPeers)
+    // (mkPeerApiServerKeySecrets a2aPeers);
     templates = {
       hermes-agent-env = {
         content = ''
           API_SERVER_ENABLED=true
-          API_SERVER_KEY=${config.sops.placeholder.hermes-agent-api-server-key}
+          API_SERVER_KEY=${config.sops.placeholder."${mkPeerApiServerKeyName config.networking.hostName}"}
         '';
+      };
+      hermes-agent-peer-keys-env = {
+        content = ''
+          ${mkPeerKeyEnv otherA2aPeers}
+        '';
+        restartUnits = [ "hermes-agent.service" ];
       };
       hermes-agent-matrix-env = {
         content = ''
