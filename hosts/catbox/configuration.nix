@@ -12,6 +12,10 @@
     ../../modules/nixos/users/automata.nix
   ];
 
+  # Fresh OVMF NVRAM each boot: write the systemd-boot entry as a real EFI
+  # Boot variable instead of relying on fallback-path detection.
+  boot.loader.efi.canTouchEfiVariables = true;
+
   containerdisk = {
     name = "ghcr.io/shikanime-labs/machines/catbox";
     settings.LABELS = {
