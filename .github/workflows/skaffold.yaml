@@ -49,7 +49,6 @@ jobs:
       - id: direnv
         uses: shikanime-studio/actions/direnv@v9
       - id: skaffold
-        env: ${{ fromJSON(steps.direnv.outputs.env) }}
         uses: shikanime-studio/actions/skaffold/integration@v9
         with:
           push: ${{ inputs.push }}
@@ -106,8 +105,7 @@ jobs:
             }}
       - id: direnv
         uses: shikanime-studio/actions/direnv@v9
-      - env: ${{ fromJSON(steps.direnv.outputs.env) }}
-        uses: shikanime-studio/actions/skaffold/integration@v9
+      - uses: shikanime-studio/actions/skaffold/integration@v9
         with:
           profile: ${{ matrix.name }}
           push: ${{ inputs.push }}
