@@ -213,6 +213,10 @@ in
 
     hermes-agent = {
       enable = true;
+      # Newer hermes-agent module asserts this when `documents` is set: the files
+      # install into workingDirectory, and the default differs per module so it
+      # must be chosen explicitly rather than inherited.
+      workingDirectory = "/var/lib/hermes";
       addToSystemPackages = true;
       environmentFiles = [
         config.sops.templates.hermes-agent-env.path
