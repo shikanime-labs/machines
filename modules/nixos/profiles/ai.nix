@@ -316,7 +316,7 @@ in
           }
         ];
         matrix = {
-          allowed_rooms = [ "!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net" ];
+          allowed_rooms = [ "#automata:matrix.taila659a.ts.net" ];
           allowed_users = [
             "@admin:matrix.taila659a.ts.net"
             "@shikanime:matrix.taila659a.ts.net"
@@ -526,7 +526,7 @@ in
           MATRIX_HOMESERVER=https://matrix.taila659a.ts.net/
           MATRIX_ACCESS_TOKEN=${config.sops.placeholder.hermes-agent-matrix-access-token}
           MATRIX_E2EE_MODE=required
-          MATRIX_HOME_ROOM=!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net
+          MATRIX_HOME_ROOM=#automata:matrix.taila659a.ts.net
           MATRIX_RECOVERY_KEY_FILE=${config.sops.secrets.hermes-agent-matrix-recovery-key.path}
         '';
         restartUnits = [ "hermes-agent.service" ];
