@@ -123,7 +123,6 @@ in
     extraPackages = with pkgs; [
       agent-browser
       curl
-      corepack
       gh
       git
       nodejs
