@@ -11,6 +11,7 @@ let
       home-manager.sharedModules = [
         inputs.catppuccin.homeModules.default
         inputs.colemak.homeModules.default
+        inputs.hermes-agent.homeManagerModules.default
         inputs.sops-nix.homeModules.default
       ];
     }
