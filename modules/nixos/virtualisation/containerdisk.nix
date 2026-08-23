@@ -30,6 +30,10 @@ in
   };
 
   # Reference: https://github.com/kubevirt/kubevirt/blob/main/docs/container-register-disks.md
+  # KubeVirt q35 exposes the guest console on ttyS0; without it the kernel
+  # sends output to invisible VGA and panic=1 reboots silently.
+  config.boot.kernelParams = [ "console=ttyS0" ];
+
   config.system.build.containerdiskImage = pkgs.dockerTools.buildImage {
     inherit (cfg) name;
 
