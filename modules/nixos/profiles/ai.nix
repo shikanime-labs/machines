@@ -148,40 +148,8 @@ let
       ) peers
     );
 
-  # Hermes scans each extraPlugins entry for plugin.yaml at the derivation
-  # root, so wrap the source in symlinkJoin rather than passing it bare.
-  hermesLcmPlugin = pkgs.symlinkJoin {
-    name = "hermes-lcm";
-    paths =
-      let
-        lcm = pkgs.fetchFromGitHub {
-          owner = "stephenschoettler";
-          repo = "hermes-lcm";
-          rev = "v0.18.1";
-          hash = "sha256-+1661BVi2XmqIaPYzNuUtrEfKvK9xQ8B4zedclIYuYA=";
-        };
-      in
-      [
-        "${lcm}/."
-      ];
-  };
-
-  # rtk ships the hook nested under hooks/hermes/, so join that subdirectory.
-  rtkRewritePlugin = pkgs.symlinkJoin {
-    name = "rtk-rewrite";
-    paths =
-      let
-        rtk = pkgs.fetchFromGitHub {
-          owner = "rtk-ai";
-          repo = "rtk";
-          rev = "v0.44.0";
-          hash = "sha256-Ev6w0Gi2y48DYi55GSciCoPgkUFaX44aH3UWGhs1OGk=";
-        };
-      in
-      [
-        "${rtk}/hooks/hermes/rtk-rewrite"
-      ];
-  };
+  hermesLcmPlugin = import ../../../pkgs/hermes-plugin-lcm { inherit pkgs; };
+  rtkRewritePlugin = import ../../../pkgs/hermes-plugin-rtk-rewrite { inherit pkgs; };
 
   # Generate sops secret entries for all peer tokens.
   mkA2aTokenSecrets =

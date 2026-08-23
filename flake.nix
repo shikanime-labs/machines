@@ -168,6 +168,7 @@
       {
         imports = [
           ./modules/flake/devenv.nix
+          ./modules/flake/packages.nix
           devenv.flakeModule
           devlib.flakeModule
           darwinFlakeModule
