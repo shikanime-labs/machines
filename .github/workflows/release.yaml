@@ -45,17 +45,17 @@ jobs:
         continue-on-error: true
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.OPERATOR_APP_ID }}
+          client-id: ${{ vars.OPERATOR_APP_CLIENT_ID }}
           permission-contents: write
           permission-workflows: write
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
-      - uses: shikanime-studio/actions/nix/setup@v9
+      - uses: shikanime-labs/actions/nix/setup@v9
         with:
           github-token: ${{ steps.createGithubAppToken.outputs.token }}
-      - uses: shikanime-studio/actions/checkout@v9
+      - uses: shikanime-labs/actions/checkout@v9
         with:
           github-token: ${{ steps.createGithubAppToken.outputs.token }}
-      - uses: shikanime-studio/actions/release@v9
+      - uses: shikanime-labs/actions/release@v9
         with:
           github-token: ${{ steps.createGithubAppToken.outputs.token }}
           ref: ${{ github.ref_name || github.event.inputs.ref_name }}

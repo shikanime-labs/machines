@@ -15,16 +15,16 @@ jobs:
       - id: createGithubAppToken
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.OPERATOR_APP_ID }}
+          client-id: ${{ vars.OPERATOR_APP_CLIENT_ID }}
           permission-contents: write
           permission-issues: write
           permission-pull-requests: write
           permission-workflows: write
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
-      - uses: shikanime-studio/actions/nix/setup@v9
+      - uses: shikanime-labs/actions/nix/setup@v9
         with:
           github-token: ${{ steps.createGithubAppToken.outputs.token }}
-      - uses: shikanime-studio/actions/command/backport@v9
+      - uses: shikanime-labs/actions/command/backport@v9
         with:
           github-token: ${{ steps.createGithubAppToken.outputs.token }}
           gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
@@ -39,18 +39,18 @@ jobs:
       - id: createGithubAppToken
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.OPERATOR_APP_ID }}
+          client-id: ${{ vars.OPERATOR_APP_CLIENT_ID }}
           permission-contents: write
           permission-issues: write
           permission-pull-requests: write
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
-      - uses: shikanime-studio/actions/nix/setup@v9
+      - uses: shikanime-labs/actions/nix/setup@v9
         with:
           github-token: ${{ steps.createGithubAppToken.outputs.token }}
-      - uses: shikanime-studio/actions/command/close@v9
+      - uses: shikanime-labs/actions/command/close@v9
         with:
           github-token: ${{ steps.createGithubAppToken.outputs.token }}
-          username: operator6o
+          username: yorha-automata
   land:
     if:
       github.event.issue.pull_request != null &&
@@ -61,25 +61,25 @@ jobs:
       - id: createGithubAppToken
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.OPERATOR_APP_ID }}
+          client-id: ${{ vars.OPERATOR_APP_CLIENT_ID }}
           permission-administration: read
           permission-contents: write
           permission-issues: write
           permission-pull-requests: write
           permission-workflows: write
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
-      - uses: shikanime-studio/actions/nix/setup@v9
+      - uses: shikanime-labs/actions/nix/setup@v9
         with:
           github-token: ${{ steps.createGithubAppToken.outputs.token }}
-      - uses: shikanime-studio/actions/command/land@v9
+      - uses: shikanime-labs/actions/command/land@v9
         with:
-          email: operator6o@shikanime.studio
-          fullname: Operator 6O
+          email: automata@shikanime.studio
+          fullname: Automata
           github-token: ${{ steps.createGithubAppToken.outputs.token }}
           gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           sign-commits: true
-          username: operator6o
+          username: yorha-automata
   rebase:
     if:
       github.event.issue.pull_request != null &&
@@ -89,24 +89,24 @@ jobs:
       - id: createGithubAppToken
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.OPERATOR_APP_ID }}
+          client-id: ${{ vars.OPERATOR_APP_CLIENT_ID }}
           permission-contents: write
           permission-issues: write
           permission-pull-requests: write
           permission-workflows: write
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
-      - uses: shikanime-studio/actions/nix/setup@v9
+      - uses: shikanime-labs/actions/nix/setup@v9
         with:
           github-token: ${{ steps.createGithubAppToken.outputs.token }}
-      - uses: shikanime-studio/actions/command/rebase@v9
+      - uses: shikanime-labs/actions/command/rebase@v9
         with:
-          email: operator6o@shikanime.studio
-          fullname: Operator 6O
+          email: automata@shikanime.studio
+          fullname: Automata
           github-token: ${{ steps.createGithubAppToken.outputs.token }}
           gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           sign-commits: true
-          username: operator6o
+          username: yorha-automata
   run:
     if:
       github.event.issue.pull_request != null &&
@@ -116,14 +116,14 @@ jobs:
       - id: createGithubAppToken
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.OPERATOR_APP_ID }}
+          client-id: ${{ vars.OPERATOR_APP_CLIENT_ID }}
           permission-contents: write
           permission-issues: write
           permission-pull-requests: write
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
-      - uses: shikanime-studio/actions/nix/setup@v9
+      - uses: shikanime-labs/actions/nix/setup@v9
         with:
           github-token: ${{ steps.createGithubAppToken.outputs.token }}
-      - uses: shikanime-studio/actions/command/run@v9
+      - uses: shikanime-labs/actions/command/run@v9
         with:
           github-token: ${{ steps.createGithubAppToken.outputs.token }}

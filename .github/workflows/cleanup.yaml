@@ -13,13 +13,13 @@ jobs:
       - id: createGithubAppToken
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.OPERATOR_APP_ID }}
+          client-id: ${{ vars.OPERATOR_APP_CLIENT_ID }}
           permission-contents: write
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
-      - uses: shikanime-studio/actions/nix/setup@v9
+      - uses: shikanime-labs/actions/nix/setup@v9
         with:
           github-token: ${{ steps.createGithubAppToken.outputs.token }}
-      - uses: shikanime-studio/actions/cleanup@v9
+      - uses: shikanime-labs/actions/cleanup@v9
         with:
           github-token: ${{ steps.createGithubAppToken.outputs.token }}
           pull-request-url: ${{ github.event.pull_request.html_url }}

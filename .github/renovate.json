@@ -3,6 +3,7 @@
   "extends": ["config:best-practices", "security:openssf-scorecard"],
   "nix": { "enabled": true },
   "postUpgradeTasks": {
+    "allowedCommands": ["nix fmt"],
     "commands": ["nix fmt"],
     "executionMode": "branch",
     "fileFilters": ["**/*.nix"],

@@ -26,10 +26,10 @@ jobs:
         continue-on-error: true
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.OPERATOR_APP_ID }}
+          client-id: ${{ vars.OPERATOR_APP_CLIENT_ID }}
           permission-contents: read
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
-      - uses: shikanime-studio/actions/checkout@v9
+      - uses: shikanime-labs/actions/checkout@v9
         with:
           github-token:
             ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN
@@ -39,7 +39,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
           username: ${{ github.actor }}
-      - uses: shikanime-studio/actions/nix/setup@v9
+      - uses: shikanime-labs/actions/nix/setup@v9
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
           extra-platforms: arm64
@@ -47,9 +47,9 @@ jobs:
             ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN
             }}
       - id: direnv
-        uses: shikanime-studio/actions/direnv@v9
+        uses: shikanime-labs/actions/direnv@v9
       - id: skaffold
-        uses: shikanime-studio/actions/skaffold/integration@v9
+        uses: shikanime-labs/actions/skaffold/integration@v9
         with:
           push: ${{ inputs.push }}
       - name: Save manifest
@@ -83,10 +83,10 @@ jobs:
         continue-on-error: true
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.OPERATOR_APP_ID }}
+          client-id: ${{ vars.OPERATOR_APP_CLIENT_ID }}
           permission-contents: read
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
-      - uses: shikanime-studio/actions/checkout@v9
+      - uses: shikanime-labs/actions/checkout@v9
         with:
           github-token:
             ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN
@@ -96,7 +96,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
           username: ${{ github.actor }}
-      - uses: shikanime-studio/actions/nix/setup@v9
+      - uses: shikanime-labs/actions/nix/setup@v9
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
           extra-platforms: arm64
@@ -104,8 +104,8 @@ jobs:
             ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN
             }}
       - id: direnv
-        uses: shikanime-studio/actions/direnv@v9
-      - uses: shikanime-studio/actions/skaffold/integration@v9
+        uses: shikanime-labs/actions/direnv@v9
+      - uses: shikanime-labs/actions/skaffold/integration@v9
         with:
           profile: ${{ matrix.name }}
           push: ${{ inputs.push }}
@@ -120,15 +120,15 @@ jobs:
         continue-on-error: true
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.OPERATOR_APP_ID }}
+          client-id: ${{ vars.OPERATOR_APP_CLIENT_ID }}
           permission-contents: read
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
-      - uses: shikanime-studio/actions/checkout@v9
+      - uses: shikanime-labs/actions/checkout@v9
         with:
           github-token:
             ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN
             }}
-      - uses: shikanime-studio/actions/nix/setup@v9
+      - uses: shikanime-labs/actions/nix/setup@v9
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
           extra-platforms: arm64
@@ -136,4 +136,4 @@ jobs:
             ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN
             }}
       - id: setup-profiles-jobs
-        uses: shikanime-studio/actions/skaffold/setup-profiles-jobs@v9
+        uses: shikanime-labs/actions/skaffold/setup-profiles-jobs@v9
