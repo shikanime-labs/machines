@@ -183,6 +183,15 @@ let
       ];
   };
 
+  # Optional skills ship inside the hermes-agent package (share/hermes-agent/
+  # optional-skills) but are not active until installed, and `hermes skills
+  # install` is imperative. Expose just this one through skills.external_dirs,
+  # which the skill scanner reads as <dir>/<skill>/SKILL.md.
+  qmdSkill = pkgs.runCommand "hermes-skill-qmd" { } ''
+    mkdir -p $out
+    ln -s ${config.services.hermes-agent.package}/share/hermes-agent/optional-skills/research/qmd $out/qmd
+  '';
+
   # Generate sops secret entries for all peer tokens.
   mkA2aTokenSecrets =
     peers:
@@ -233,6 +242,7 @@ in
         honcho
         nodejs
         rtk
+        sqlite
         yarn
       ];
       extraPlugins = [
@@ -442,6 +452,10 @@ in
           "rtk-rewrite"
           "security-guidance"
         ];
+        # Optional skills are opt-in and normally installed imperatively.
+        # external_dirs keeps the install declarative — qmd needs nodejs >= 22
+        # and sqlite with extension support, both in extraPackages.
+        skills.external_dirs = [ "${qmdSkill}" ];
       };
       extraDependencyGroups = [
         "anthropic"
