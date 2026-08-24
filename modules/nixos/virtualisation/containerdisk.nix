@@ -34,6 +34,13 @@ in
   # sends output to invisible VGA and panic=1 reboots silently.
   config.boot.kernelParams = [ "console=ttyS0" ];
 
+  # KubeVirt exposes containerDisks as virtio (/dev/vda); without these the
+  # initrd cannot see the root disk and boot times out into a panic=1 loop.
+  config.boot.initrd.availableKernelModules = [
+    "virtio_pci"
+    "virtio_blk"
+  ];
+
   config.system.build.containerdiskImage = pkgs.dockerTools.buildImage {
     inherit (cfg) name;
 
