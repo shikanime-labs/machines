@@ -8,7 +8,7 @@ jobs:
         GH_TOKEN: ${{ secrets.WAKABOX_GITHUB_TOKEN }}
         GIST_ID: ${{ vars.WAKABOX_GITHUB_GIST_ID }}
         WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
-      uses: matchai/waka-box@v5.0.0
+      uses: matchai/waka-box@7c3b60d16e050e453b8bfe7ef484f171928a8726 # v5.0.0
 name: Wakabox
 'on':
   schedule:
