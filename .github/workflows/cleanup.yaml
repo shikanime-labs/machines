@@ -6,15 +6,15 @@ jobs:
     runs-on: ubuntu-slim
     steps:
     - id: createGithubAppToken
-      uses: actions/create-github-app-token@v3
+      uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
       with:
         client-id: ${{ vars.OPERATOR_APP_CLIENT_ID }}
         permission-contents: write
         private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
-    - uses: shikanime-labs/actions/nix/setup@v9
+    - uses: shikanime-labs/actions/nix/setup@5993d4d95befc190a14c0d143583683d203ad8d1 # v9
       with:
         github-token: ${{ steps.createGithubAppToken.outputs.token }}
-    - uses: shikanime-labs/actions/cleanup@v9
+    - uses: shikanime-labs/actions/cleanup@5993d4d95befc190a14c0d143583683d203ad8d1 # v9
       with:
         github-token: ${{ steps.createGithubAppToken.outputs.token }}
         pull-request-url: ${{ github.event.pull_request.html_url }}
