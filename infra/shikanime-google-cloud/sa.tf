@@ -1,6 +1,6 @@
 module "service_accounts" {
   source  = "terraform-google-modules/service-accounts/google"
-  version = "~> 3.0"
+  version = "~> 4.0"
 
   project_id   = module.project.project_id
   names        = ["infra-operator"]
