@@ -47,14 +47,10 @@
     };
   };
 
-  # Radeon 8060S (gfx1151) needs firmware plus userspace graphics libraries so
-  # ROCm compute and VAAPI both reach /dev/dri/renderD128.
+  # Radeon 8060S (gfx1151) needs firmware so ROCm compute and VAAPI reach
+  # /dev/dri/renderD128. Userspace graphics libs + amdgpu initrd come from
+  # nixos-hardware's common-gpu-amd.
   hardware.enableRedistributableFirmware = true;
-
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
 
   services.fstrim.enable = true;
 

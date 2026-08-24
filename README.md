@@ -121,6 +121,8 @@ The flake exposes these primary outputs:
 - `nixosConfigurations.fushi`
 - `nixosConfigurations.minish`
 - `nixosConfigurations.nemishi`
+- `nixosConfigurations.sashina`
+- `nixosConfigurations.kushira`
 - `nixosConfigurations.nixtar`
 - `darwinConfigurations.telsha`
 - `packages.<system>.*` for the corresponding system builds, including `catbox`
