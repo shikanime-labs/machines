@@ -85,7 +85,7 @@
   };
 
   sops = {
-    defaultSopsFile = ../../secrets/nishir.enc.yaml;
+    defaultSopsFile = ../../secrets/sashina.enc.yaml;
     defaultSopsFormat = "yaml";
     secrets = {
       nix-access-token.sopsFile = ../../secrets/machine.enc.yaml;
