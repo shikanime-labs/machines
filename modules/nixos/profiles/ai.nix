@@ -70,6 +70,20 @@ let
         "k8s-leader"
       ];
     }
+    {
+      name = "sashina";
+      capabilities = [
+        "build-x86"
+        "k8s-node"
+      ];
+    }
+    {
+      name = "kushira";
+      capabilities = [
+        "build-x86"
+        "k8s-node"
+      ];
+    }
   ];
 
   otherPeers = builtins.filter (p: p.name != config.networking.hostName) peers;
