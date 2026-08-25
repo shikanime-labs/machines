@@ -32,7 +32,8 @@ GPU/ROCm acceleration lives entirely in
 
 - `hardware.enableRedistributableFirmware = true` — Radeon 8060S (gfx1151)
   microcode so the compute stack reaches `/dev/dri/renderD128`.
-- `hardware.graphics.enable = true` + `enable32Bit` (inherited from nixos-hardware `common-gpu-amd`) — Mesa/ROCm userspace.
+- `hardware.graphics.enable = true` + `enable32Bit` (inherited from
+  nixos-hardware `common-gpu-amd`) — Mesa/ROCm userspace.
 - `boot.kernelParams = [ "amdgpu.gttsize=98304" "ttm.pages_limit=25165824" ]` —
   96 GiB GTT carve-out for the unified-memory iGPU.
 
