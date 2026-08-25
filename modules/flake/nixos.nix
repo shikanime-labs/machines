@@ -40,6 +40,17 @@ let
     ++ baseModules
     ++ clusterModules;
 
+  mkMsS1ClusterModules =
+    system:
+    [
+      inputs.nixos-hardware.nixosModules.common-cpu-amd
+      inputs.nixos-hardware.nixosModules.common-pc-ssd
+      inputs.nixos-hardware.nixosModules.common-gpu-amd
+    ]
+    ++ (mkAiModules system)
+    ++ baseModules
+    ++ clusterModules;
+
   mkRpi4ClusterModules =
     system:
     [
@@ -59,8 +70,8 @@ let
     ++ clusterModules;
 
   mkWorkstationsModules =
-    _system:
-    (mkAiModules _system)
+    system:
+    (mkAiModules system)
     ++ baseModules
     ++ [
       {
@@ -136,29 +147,56 @@ let
     };
 
   mkManashNixosConfiguration =
-    _system:
+    system:
     inputs.nixpkgs.lib.nixosSystem {
       pkgs = import inputs.nixpkgs {
-        system = "x86_64-linux";
+        inherit system;
         config.allowUnfree = true;
       };
       modules = [
         ../../hosts/manash/configuration.nix
       ]
-      ++ (mkBeelinkClusterModules "x86_64-linux");
+      ++ (mkBeelinkClusterModules system);
     };
 
   mkMinishNixosConfiguration =
-    _system:
+    system:
     inputs.nixpkgs.lib.nixosSystem {
       pkgs = import inputs.nixpkgs {
-        system = "aarch64-linux";
+        inherit system;
         config.allowUnfree = true;
       };
       modules = [
         ../../hosts/minish/configuration.nix
       ]
-      ++ (mkRpi4ClusterModules "aarch64-linux");
+      ++ (mkRpi4ClusterModules system);
+    };
+
+  # MS-S1 Max (Strix Halo, gfx1151): x86_64 worker + ROCm inference.
+  mkSashinaNixosConfiguration =
+    system:
+    inputs.nixpkgs.lib.nixosSystem {
+      pkgs = import inputs.nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+      modules = [
+        ../../hosts/sashina/configuration.nix
+      ]
+      ++ (mkMsS1ClusterModules system);
+    };
+
+  mkKushiraNixosConfiguration =
+    system:
+    inputs.nixpkgs.lib.nixosSystem {
+      pkgs = import inputs.nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+      modules = [
+        ../../hosts/kushira/configuration.nix
+      ]
+      ++ (mkMsS1ClusterModules system);
     };
 
   mkNalshaNixosConfiguration =
@@ -198,15 +236,19 @@ in
       minish = mkMinishNixosConfiguration "aarch64-linux";
       nalsha = mkNalshaNixosConfiguration "x86_64-linux";
       nemishi = mkNemishiNixosConfiguration "aarch64-linux";
+      sashina = mkSashinaNixosConfiguration "x86_64-linux";
+      kushira = mkKushiraNixosConfiguration "x86_64-linux";
     };
 
     packages = {
       x86_64-linux = {
         ashira = self.nixosConfigurations.ashira.config.system.build.toplevel;
         catbox = mkCatboxPackage "x86_64-linux";
-        nixtar = self.nixosConfigurations.nixtar.config.system.build.toplevel;
+        kushira = self.nixosConfigurations.kushira.config.system.build.toplevel;
         manash = self.nixosConfigurations.manash.config.system.build.toplevel;
         nalsha = self.nixosConfigurations.nalsha.config.system.build.toplevel;
+        nixtar = self.nixosConfigurations.nixtar.config.system.build.toplevel;
+        sashina = self.nixosConfigurations.sashina.config.system.build.toplevel;
       };
       aarch64-linux = {
         catbox = mkCatboxPackage "aarch64-linux";

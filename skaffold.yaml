@@ -6,7 +6,9 @@ build:
   artifacts:
     - custom:
         buildCommand:
-          nix run github:shikanime-studio/nix-containers/29ee036601b500007fb1c30f542a51876536676c -- skaffold build
+          nix run
+          github:shikanime-studio/nix-containers/29ee036601b500007fb1c30f542a51876536676c
+          -- skaffold build
       image: ghcr.io/shikanime-labs/machines/catbox
   tagPolicy:
     customTemplate:

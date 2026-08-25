@@ -22,25 +22,27 @@ Target model: **DeepSeek V4 Flash 0731** — 284B total parameters, 13B active
 - `sashina` — `role = "rpc"`: runs `llama-rpc-server` only, exposing its GPU to
   kushira over `:50052`.
 
-Both nodes must have the same GGUF present at `services.inference.model` before
-the service starts (the model is loaded locally on each for its layer slice).
+Both nodes must have the same GGUF present locally (the model is loaded locally
+on each for its layer slice) before the inference service starts.
 
 ## Configuration
 
-`modules/nixos/profiles/inference.nix` defines `services.inference`:
+GPU/ROCm acceleration lives entirely in
+`modules/nixos/hardware/minisforum-ms-s1.nix` (imported by both hosts):
 
-| Option    | Role   | Meaning                                                              |
-| --------- | ------ | -------------------------------------------------------------------- |
-| `enable`  | both   | enable the inference stack                                           |
-| `role`    | both   | `server` (primary) or `rpc` (shard backend)                          |
-| `model`   | both   | GGUF path; must exist on both nodes                                  |
-| `peer`    | server | `host:port` of the rpc shard (e.g. `sashina.taila659a.ts.net:50052`) |
-| `rpcPort` | rpc    | port the rpc server listens on (default `50052`)                     |
+- `hardware.enableRedistributableFirmware = true` — Radeon 8060S (gfx1151)
+  microcode so the compute stack reaches `/dev/dri/renderD128`.
+- `hardware.graphics.enable = true` + `enable32Bit` (inherited from nixos-hardware `common-gpu-amd`) — Mesa/ROCm userspace.
+- `boot.kernelParams = [ "amdgpu.gttsize=98304" "ttm.pages_limit=25165824" ]` —
+  96 GiB GTT carve-out for the unified-memory iGPU.
 
-The package is
-`pkgs.llama-cpp.override { rocmSupport = true; rpcSupport = true; }` — ROCm for
-gfx1151, plus the `llama-rpc-server` binary. `ngl = 999` offloads all layers to
-the iGPU; `flash-attn = "on"`; `ctx-size` defaults to 128k.
+The llama.cpp inference _service_ (server/rpc roles, `:8080`/`:50052`) is not
+yet wired as a module — the nodes are provisioned with acceleration enabled and
+the worker/RKE2 stack; the inference service is deferred until the nodes are
+online. When added back, the ROCm package is
+`pkgs.llama-cpp.override { rocmSupport = true; rpcSupport = true; }` —
+`ngl = 999` offloads all layers to the iGPU; `flash-attn = "on"`; `ctx-size`
+128k.
 
 ## ponytail notes
 
