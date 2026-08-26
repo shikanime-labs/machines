@@ -84,6 +84,14 @@ let
         "k8s-node"
       ];
     }
+    {
+      name = "telsha";
+      capabilities = [
+        "command"
+        "workstation"
+        "darwin"
+      ];
+    }
   ];
 
   otherPeers = builtins.filter (p: p.name != config.networking.hostName) peers;
