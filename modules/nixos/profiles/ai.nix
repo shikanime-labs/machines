@@ -85,6 +85,13 @@ let
       ];
     }
     {
+      name = "nishir";
+      capabilities = [
+        "build-x86"
+        "k8s-leader"
+      ];
+    }
+    {
       name = "telsha";
       capabilities = [
         "command"
