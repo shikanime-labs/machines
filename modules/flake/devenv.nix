@@ -21,7 +21,7 @@
           inputs.devlib.devenvModules.shikanime
           inputs.identities.devenvModules.default
         ];
-        env.SOPS_AGE_KEY = "\\${{ secrets.CATBOX_SOPS_KEY }}";
+        env.SOPS_AGE_KEY = "\${{ secrets.CATBOX_SOPS_KEY }}";
 
         identities = {
           enable = true;
