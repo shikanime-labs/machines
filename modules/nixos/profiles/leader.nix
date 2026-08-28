@@ -52,21 +52,6 @@
           ];
         in
         ashira ++ manash ++ nalsha ++ nishir;
-
-      traefik.extraConfig.ports = {
-        syncthing = {
-          port = 22000;
-          expose.default = true;
-          exposedPort = 22000;
-          protocol = "TCP";
-        };
-        syncthing-udp = {
-          port = 22000;
-          expose.default = true;
-          exposedPort = 22000;
-          protocol = "UDP";
-        };
-      };
     };
 
     # Expose RKE2 API (9345) and Kubernetes API (6443) as a single Tailscale Service.
