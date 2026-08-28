@@ -5,6 +5,7 @@
     ../../modules/nixos/profiles/distributed.nix
     ../../modules/nixos/profiles/leader.nix
     ../../modules/nixos/profiles/nishir.nix
+    ../../modules/nixos/profiles/nixbot.nix
     ../../modules/nixos/profiles/server.nix
     ../../modules/nixos/hardware/beelink-eq.nix
     ../../modules/nixos/users/builder.nix
@@ -110,6 +111,9 @@
       codeberg-runner-token.sopsFile = ../../secrets/builder.enc.yaml;
       forgejo-runner-token.sopsFile = ../../secrets/builder.enc.yaml;
       nix-access-token.sopsFile = ../../secrets/machine.enc.yaml;
+      nixbot-app-secret.sopsFile = ../../secrets/manash.enc.yaml;
+      nixbot-oauth-secret.sopsFile = ../../secrets/manash.enc.yaml;
+      nixbot-webhook-secret.sopsFile = ../../secrets/manash.enc.yaml;
       rke2-token.sopsFile = ../../secrets/nishir.enc.yaml;
       wifi-sfr-e368.sopsFile = ../../secrets/wifi.enc.yaml;
       wifi-sfr-e368-5ghz.sopsFile = ../../secrets/wifi.enc.yaml;

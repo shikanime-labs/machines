@@ -155,6 +155,7 @@ let
       };
       modules = [
         ../../hosts/manash/configuration.nix
+        inputs.nixbot.nixosModules.nixbot
       ]
       ++ (mkBeelinkClusterModules system);
     };
