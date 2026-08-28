@@ -93,6 +93,13 @@ Plugins (e.g. `noctalia/translator`, the launcher `/tr` provider) are enabled
 under the same `programs.noctalia.settings.plugins.enabled` attrset — see
 [docs/noctalia-plugins.md](docs/noctalia-plugins.md).
 
+### NFS share-manager recovery
+
+When a Longhorn volume served over NFS (share-manager export) leaves pods stuck
+in `ContainerCreating` — stale ClusterIP mounts, or a wedged kubelet operation
+queue — the fix is in
+[docs/nishir-nfs-recovery.md](docs/nishir-nfs-recovery.md).
+
 ### Bitwarden biometric unlock
 
 Graphical NixOS hosts wire Bitwarden's fingerprint/PAM unlock and relocate its
