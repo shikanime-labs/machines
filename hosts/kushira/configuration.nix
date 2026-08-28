@@ -2,7 +2,7 @@
   imports = [
     ../../modules/nixos/profiles/ai.nix
     ../../modules/nixos/profiles/agent.nix
-    ../../modules/nixos/profiles/builder.nix
+    ../../modules/nixos/profiles/forgejo.nix
     ../../modules/nixos/profiles/distributed.nix
     ../../modules/nixos/profiles/nishir.nix
     ../../modules/nixos/profiles/server.nix

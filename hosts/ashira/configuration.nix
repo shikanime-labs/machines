@@ -1,7 +1,7 @@
 {
   imports = [
     ../../modules/nixos/profiles/ai.nix
-    ../../modules/nixos/profiles/builder.nix
+    ../../modules/nixos/profiles/forgejo.nix
     ../../modules/nixos/profiles/distributed.nix
     ../../modules/nixos/profiles/follower.nix
     ../../modules/nixos/profiles/nishir.nix
