@@ -103,10 +103,8 @@ let
 
   otherPeers = builtins.filter (p: p.name != config.networking.hostName) peers;
 
-  # Generate trusted peer names
   mkA2aTrustedPeers = peers: lib.concatStringsSep "," (map (p: p.name) peers);
 
-  # Generate an outbound a2a_agents entry for a single peer.
   mkA2aAgent =
     { name, capabilities }:
     {
@@ -118,18 +116,14 @@ let
       };
     };
 
-  # Generate outbound a2a_agents entries for all peers.
   mkA2aAgents =
     peers: builtins.listToAttrs (map (peer: lib.nameValuePair peer.name (mkA2aAgent peer)) peers);
 
-  # Generate a "name:token" pair for A2A_PEER_TOKENS.
   mkA2aPeerToken =
     peer: "${peer.name}:${config.sops.placeholder."hermes-agent-a2a-token-${peer.name}"}";
 
-  # Comma-separated A2A_PEER_TOKENS value from the peer list.
   mkA2aPeerTokens = peers: lib.concatStringsSep "," (map mkA2aPeerToken peers);
 
-  # Generate secret key name
   mkA2aTokenSecretName = peer: "hermes-agent-a2a-token-${peer}";
 
   # Per-host api_server key name for the Hermes peer mesh. Each fleet host
@@ -137,7 +131,6 @@ let
   # using HERMES_PEER_<NAME>_KEY (that peer's key).
   mkPeerApiServerKeyName = peer: "hermes-agent-api-server-key-${peer}";
 
-  # Render the bot_peers roster (name + tailnet URL) for the other hosts.
   mkBotPeers =
     peers:
     builtins.listToAttrs (
@@ -149,7 +142,6 @@ let
       ) peers
     );
 
-  # Generate "HERMES_PEER_<NAME>_KEY=<placeholder>" lines for every other peer.
   mkPeerKeyEnvs =
     peers:
     lib.concatStringsSep "\n" (
@@ -162,7 +154,6 @@ let
       ) peers
     );
 
-  # Sops secret definitions for every host's per-host api_server key.
   mkPeerApiServerKeySecrets =
     peers:
     builtins.listToAttrs (
@@ -180,7 +171,6 @@ let
   hermesLcmPlugin = import ../../../pkgs/hermes-plugin-lcm { inherit pkgs; };
   rtkRewritePlugin = import ../../../pkgs/hermes-plugin-rtk-rewrite { inherit pkgs; };
 
-  # Generate sops secret entries for all peer tokens.
   mkA2aTokenSecrets =
     peers:
     builtins.listToAttrs (
@@ -496,6 +486,18 @@ in
 
   sops = {
     secrets = {
+      hermes-agent-a2a-token-catbox = {
+        sopsFile = ../../../secrets/machine.enc.yaml;
+        group = "hermes";
+        owner = "hermes";
+        restartUnits = [ "hermes-agent.service" ];
+      };
+      hermes-agent-api-server-key-catbox = {
+        sopsFile = ../../../secrets/machine.enc.yaml;
+        group = "hermes";
+        owner = "hermes";
+        restartUnits = [ "hermes-agent.service" ];
+      };
       hermes-agent-matrix-access-token = {
         group = "hermes";
         owner = "hermes";

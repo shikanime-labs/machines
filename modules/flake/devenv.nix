@@ -147,7 +147,7 @@
               }
               {
                 path_regex = "secrets/machine.enc.yaml";
-                age = identities ++ nishir ++ workstations;
+                age = catbox ++ identities ++ nishir ++ workstations;
               }
               {
                 path_regex = "secrets/manash.enc.yaml";
