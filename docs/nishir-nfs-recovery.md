@@ -41,8 +41,8 @@ ssh <consumer-node> 'mount | grep downloads-whisparr'
 # → stale mounts show an old IP different from the current Service ClusterIP
 
 # 2. share-manager pod health
-$K -n longhorn-system get pod share-manager-downloads-whisparr-data
-# → must be Running; if in CrashLoopBackOff, resolve that first
+$K -n longhorn-system get pods -l app=share-manager -o name
+# → each pod must show Running; if any in CrashLoopBackOff, resolve that first
 
 # 3. Reachability test from consumer node (dry, no side effect)
 ssh <consumer-node> \
@@ -54,9 +54,10 @@ ssh <consumer-node> \
 
 # 4. Confirm no NPO wedge
 ssh <consumer-node> \
-  'grep -i "downloads-whisparr-data" /var/lib/rancher/rke2/agent/logs/kubelet.log | tail -30'
+  'grep -i "downloads-whisparr-data" \
+    /var/lib/rancher/rke2/agent/logs/kubelet.log | tail -30'
 # → look for: repeated pod_workers "context deadline exceeded" + a
-#   nestedpendingoperations "device is busy" line referencing a deleted pod UID
+#   nestedpendingoperations "device is busy" referencing a deleted pod UID
 ```
 
 ## Fix (ordered)
@@ -69,7 +70,7 @@ ssh <consumer-node>
 umount -l <mountpoint>
 # e.g.:
 umount -l 10.104.70.211:/downloads-whisparr-data
-# leave the subpath dirs under /var/lib/kubelet/pods/<dead-pod> — kubelet cleans them
+# leave the subpath dirs under /var/lib/kubelet/pods/<dead-pod>
 ```
 
 ### Step 2: Restart kubelet
@@ -82,7 +83,8 @@ holds).
 ssh <consumer-node>
 systemctl restart rke2-server
 # wait for node Ready
-$K get node <node>  # must show Ready (not NotReady)
+kubectl --context nishir-k8s-operator.taila659a.ts.net \
+  get node <node>  # must show Ready (not NotReady)
 ```
 
 The queue-clearing is the key side effect — kubelet replays its operation log
@@ -95,17 +97,19 @@ restart it, but the supervisor may not be a direct cgroup parent — restarting
 ### Step 3: Recreate the stuck pod(s)
 
 ```bash
-$K -n <ns> delete pod <pod>
-# StatefulSet recreates it immediately — verify: kubectl get pod <pod>
+kubectl --context nishir-k8s-operator.taila659a.ts.net -n <ns> delete pod <pod>
+# StatefulSet recreates it immediately — verify:
+kubectl --context nishir-k8s-operator.taila659a.ts.net \
+  -n <ns> get pod <pod>
 ```
 
-Creating the pod in place does NOT clear the wedge — only a healthy kubelet on a
-healthy node does.
+Recreating the pod in place does NOT clear the wedge — only a healthy kubelet on
+a healthy node does.
 
 ### Step 4: Verify
 
 ```bash
-$K -n <ns> get pod <pod>
+kubectl --context nishir-k8s-operator.taila659a.ts.net -n <ns> get pod <pod>
 # → 1/1 Running
 ssh <consumer-node> 'mount | grep downloads-whisparr'
 # → shows the current ClusterIP, not a stale old IP
@@ -124,8 +128,8 @@ ssh <consumer-node> \
 - **Do not patch `/etc/exports` or `/tmp/vfs.conf`** on any host.
 - **Do not force-delete the Longhorn volume.** The share-manager pod was healthy
   the whole time.
-- **Do not restart individual kubelet pods on RKE2.** Use
-  `systemctl restart rke2-server` to get a clean kubelet. Individual `kubelet`
+- Do NOT restart individual kubelet processes on RKE2. Use
+  `systemctl restart rke2-server` to get a clean kubelet. Individual kubelet
   restarts can conflict with the RKE2 supervisor.
 
 ## Related: share-manager subpath cleanup failure
