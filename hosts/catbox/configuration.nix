@@ -9,8 +9,11 @@
     "${modulesPath}/profiles/headless.nix"
     ../../modules/nixos/virtualisation/containerdisk.nix
     ../../modules/nixos/profiles/minimal.nix
+    ../../modules/nixos/profiles/ai.nix
     ../../modules/nixos/users/automata.nix
   ];
+
+  networking.hostName = "catbox";
 
   # Fresh OVMF NVRAM each boot: write the systemd-boot entry as a real EFI
   # Boot variable instead of relying on fallback-path detection.
