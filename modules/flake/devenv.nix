@@ -21,6 +21,7 @@
           inputs.devlib.devenvModules.shikanime
           inputs.identities.devenvModules.default
         ];
+        env.SOPS_AGE_KEY = "\\${{ secrets.CATBOX_SOPS_KEY }}";
 
         identities = {
           enable = true;
@@ -119,6 +120,10 @@
                 "age1eak84xcr44yfqsg843rfu2xajxsyvjwh67a630htpnd0scy7yu5szjfh8d"
               ];
 
+              catbox = [
+                "age1etnd6hnt6776vqsnadny72t55whnlav8xp8e7rx3fd4lz7ms8dfsjsrnul"
+              ];
+
               nishir = ashira ++ fushi ++ manash ++ minish ++ nalsha ++ nemishi;
 
               workstations = ishtar ++ nixtar ++ telsha;
@@ -159,6 +164,10 @@
               {
                 path_regex = "secrets/nemishi.enc.yaml";
                 age = identities ++ nemishi;
+              }
+              {
+                path_regex = "secrets/catbox.enc.yaml";
+                age = catbox ++ identities;
               }
               {
                 path_regex = "secrets/nixtar.enc.yaml";
