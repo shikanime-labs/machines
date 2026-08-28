@@ -64,7 +64,10 @@ in
 
     distributedBuilds = true;
 
-    settings.builders-use-substitutes = true;
+    settings = {
+      trusted-users = [ "builder" ];
+      builders-use-substitutes = true;
+    };
   };
 
   programs.ssh.knownHosts = mkSshKnownHosts [

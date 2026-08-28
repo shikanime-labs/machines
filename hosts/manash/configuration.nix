@@ -1,7 +1,7 @@
 {
   imports = [
     ../../modules/nixos/profiles/ai.nix
-    ../../modules/nixos/profiles/builder.nix
+    ../../modules/nixos/profiles/forgejo.nix
     ../../modules/nixos/profiles/distributed.nix
     ../../modules/nixos/profiles/leader.nix
     ../../modules/nixos/profiles/nishir.nix
@@ -110,6 +110,7 @@
       codeberg-runner-token.sopsFile = ../../secrets/builder.enc.yaml;
       forgejo-runner-token.sopsFile = ../../secrets/builder.enc.yaml;
       nix-access-token.sopsFile = ../../secrets/machine.enc.yaml;
+      rke2-token.sopsFile = ../../secrets/nishir.enc.yaml;
       wifi-sfr-e368.sopsFile = ../../secrets/wifi.enc.yaml;
       wifi-sfr-e368-5ghz.sopsFile = ../../secrets/wifi.enc.yaml;
       wifi-vintage-korean.sopsFile = ../../secrets/wifi.enc.yaml;
