@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 
@@ -135,10 +136,28 @@
     };
   };
 
-  # Required for node-exporter textfile collector.
-  systemd.tmpfiles.rules = [
-    "d /var/lib/node_exporter/textfile_collector 0755 root root -"
-  ];
+  systemd = {
+    # Host log pipeline: journald -> vlagent -> vlinsert.
+    services.vlagent = {
+      description = "VictoriaLogs agent (host journal -> victorialogs)";
+      wantedBy = [ "multi-user.target" ];
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
+      serviceConfig = {
+        ExecStart = "${pkgs.vlagent}/bin/vlagent -remoteWrite.url=https://logs.taila659a.ts.net/insert/0/logs";
+        User = "vlagent";
+        SupplementaryGroups = [ "systemd-journal" ];
+        Restart = "always";
+        RestartSec = "5s";
+        DynamicUser = true;
+      };
+    };
+
+    # Required for node-exporter textfile collector.
+    tmpfiles.rules = [
+      "d /var/lib/node_exporter/textfile_collector 0755 root root -"
+    ];
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
