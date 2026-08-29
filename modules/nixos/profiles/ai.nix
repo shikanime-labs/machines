@@ -12,7 +12,8 @@ let
   # Hosts resolve each other over the Tailscale tailnet (*.taila659a.ts.net).
   # Capability labels per fleet member — drive a2a_orchestrate(capability=…)
   # routing. Reflects each host's actual role: build arch, k8s plane tier, GPU.
-  peers = [
+  # Cluster nodes — full mesh among themselves, reachable from workstations.
+  clusterPeers = [
     {
       name = "ashira";
       capabilities = [
@@ -26,6 +27,13 @@ let
       capabilities = [
         "build"
         "build-arm"
+        "k8s-node"
+      ];
+    }
+    {
+      name = "kushira";
+      capabilities = [
+        "build-x86"
         "k8s-node"
       ];
     }
@@ -62,11 +70,9 @@ let
       ];
     }
     {
-      name = "nixtar";
+      name = "nishir";
       capabilities = [
-        "graphical"
-        "media"
-        "nvidia"
+        "build-x86"
         "k8s-leader"
       ];
     }
@@ -77,17 +83,24 @@ let
         "k8s-node"
       ];
     }
+  ];
+
+  # Workstation leaf callers — may reach cluster nodes, never reachable themselves.
+  # catbox is a client-only member (mkCatboxPackage) but is a recognised peer.
+  workstationPeers = [
     {
-      name = "kushira";
+      name = "catbox";
       capabilities = [
-        "build-x86"
-        "k8s-node"
+        "command"
+        "workstation"
       ];
     }
     {
-      name = "nishir";
+      name = "nixtar";
       capabilities = [
-        "build-x86"
+        "graphical"
+        "media"
+        "nvidia"
         "k8s-leader"
       ];
     }
@@ -101,28 +114,14 @@ let
     }
   ];
 
-  otherPeers = builtins.filter (p: p.name != config.networking.hostName) peers;
+  peers = clusterPeers ++ workstationPeers;
 
-  # Directional A2A: workstations reach cluster nodes, never the reverse;
-  # cluster↔cluster stays full mesh. darwin/telsha has no A2A server surface
-  # but is still excluded from the reachable set.
-  workstationNames = [
-    "nixtar"
-    "telsha"
-    "catbox"
-  ];
-  workstationPeers = builtins.filter (p: builtins.elem p.name workstationNames) peers;
-  clusterPeers = builtins.filter (p: !(builtins.elem p.name workstationNames)) peers;
+  # Drop the host itself so no host dials or trusts its own entry.
+  mkSelfExcludedPeers = peers: builtins.filter (p: p.name != config.networking.hostName) peers;
 
-  # Outbound: both classes reach only cluster nodes.
-  outboundPeers = clusterPeers;
-  # Inbound: cluster accepts both classes; workstations accept none, so the
-  # boundary cannot be reversed by a workstation.
-  trustedPeers =
-    if builtins.elem config.networking.hostName workstationNames then
-      [ ]
-    else
-      (workstationPeers ++ clusterPeers);
+  otherPeers = mkSelfExcludedPeers peers;
+  otherClusterPeers = mkSelfExcludedPeers clusterPeers;
+  otherWorkstationPeers = mkSelfExcludedPeers workstationPeers;
 
   mkA2aTrustedPeers = peers: lib.concatStringsSep "," (map (p: p.name) peers);
 
@@ -419,9 +418,15 @@ in
         # Inbound: serves Agent Card + JSON-RPC on 0.0.0.0:9900. Per-peer
         # tokens (A2A_PEER_TOKENS) authenticate each fleet member by name.
         platforms.a2a.enabled = true;
-        # Outbound: every peer addressable via tailnet; presents own token.
-        # Directional: workstations reach only cluster nodes; cluster hosts reach all.
-        a2a_agents = mkA2aAgents outboundPeers;
+        # Outbound: every host dials only non-self cluster nodes.
+        # Outbound: cluster hosts dial only cluster peers; workstations dial
+        # cluster peers plus other workstations (self-excluded via partitions).
+        a2a_agents = mkA2aAgents (
+          if builtins.any (p: p.name == config.networking.hostName) workstationPeers then
+            otherClusterPeers ++ otherWorkstationPeers
+          else
+            otherClusterPeers
+        );
         # Bot-mode peer mesh (hermes peer): each fleet host exposes its own
         # api_server and dials the others. Names/URLs here; keys via
         # HERMES_PEER_<NAME>_KEY (hermes-agent-peer-keys-env template).
@@ -563,9 +568,18 @@ in
           A2A_PUBLIC_URL=https://${config.networking.hostName}.taila659a.ts.net:9900
           A2A_OWN_TOKEN=${config.sops.placeholder."${mkA2aTokenSecretName config.networking.hostName}"}
           A2A_PEER_TOKENS=${mkA2aPeerTokens otherPeers}
-          # Inbound allow-list: cluster hosts accept all peers; workstations accept
-          # none, so the directional boundary cannot be reversed by a workstation.
-          A2A_TRUSTED_PEERS=${mkA2aTrustedPeers trustedPeers}
+          # Inbound allow-list: cluster hosts accept all non-self peers;
+          # workstations accept other workstations only (never clusters, never
+          # themselves), so the boundary stays cluster→workstation one-way for
+          # cluster traffic while workstation↔workstation is permitted.
+          A2A_TRUSTED_PEERS=${
+            mkA2aTrustedPeers (
+              if builtins.any (p: p.name == config.networking.hostName) workstationPeers then
+                otherWorkstationPeers
+              else
+                (otherClusterPeers ++ otherWorkstationPeers)
+            )
+          }
         '';
         restartUnits = [ "hermes-agent.service" ];
       };
