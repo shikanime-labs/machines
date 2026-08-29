@@ -103,6 +103,27 @@ let
 
   otherPeers = builtins.filter (p: p.name != config.networking.hostName) peers;
 
+  # Directional A2A: workstations reach cluster nodes, never the reverse;
+  # cluster↔cluster stays full mesh. darwin/telsha has no A2A server surface
+  # but is still excluded from the reachable set.
+  workstationNames = [
+    "nixtar"
+    "telsha"
+    "catbox"
+  ];
+  workstationPeers = builtins.filter (p: builtins.elem p.name workstationNames) peers;
+  clusterPeers = builtins.filter (p: !(builtins.elem p.name workstationNames)) peers;
+
+  # Outbound: both classes reach only cluster nodes.
+  outboundPeers = clusterPeers;
+  # Inbound: cluster accepts both classes; workstations accept none, so the
+  # boundary cannot be reversed by a workstation.
+  trustedPeers =
+    if builtins.elem config.networking.hostName workstationNames then
+      [ ]
+    else
+      (workstationPeers ++ clusterPeers);
+
   mkA2aTrustedPeers = peers: lib.concatStringsSep "," (map (p: p.name) peers);
 
   mkA2aAgent =
@@ -399,7 +420,8 @@ in
         # tokens (A2A_PEER_TOKENS) authenticate each fleet member by name.
         platforms.a2a.enabled = true;
         # Outbound: every peer addressable via tailnet; presents own token.
-        a2a_agents = mkA2aAgents otherPeers;
+        # Directional: workstations reach only cluster nodes; cluster hosts reach all.
+        a2a_agents = mkA2aAgents outboundPeers;
         # Bot-mode peer mesh (hermes peer): each fleet host exposes its own
         # api_server and dials the others. Names/URLs here; keys via
         # HERMES_PEER_<NAME>_KEY (hermes-agent-peer-keys-env template).
@@ -541,7 +563,9 @@ in
           A2A_PUBLIC_URL=https://${config.networking.hostName}.taila659a.ts.net:9900
           A2A_OWN_TOKEN=${config.sops.placeholder."${mkA2aTokenSecretName config.networking.hostName}"}
           A2A_PEER_TOKENS=${mkA2aPeerTokens otherPeers}
-          A2A_TRUSTED_PEERS=${mkA2aTrustedPeers otherPeers}
+          # Inbound allow-list: cluster hosts accept all peers; workstations accept
+          # none, so the directional boundary cannot be reversed by a workstation.
+          A2A_TRUSTED_PEERS=${mkA2aTrustedPeers trustedPeers}
         '';
         restartUnits = [ "hermes-agent.service" ];
       };
