@@ -70,5 +70,15 @@ in
         StandardErrorPath = "/var/log/vmagent.log";
       };
     };
+    vlagent = {
+      command = "${pkgs.vlagent}/bin/vlagent -fileCollector.glob=/var/log/**/*.log -remoteWrite.url=https://logs.taila659a.ts.net/insert/0/logs";
+      serviceConfig = {
+        Label = "org.nixos.vlagent";
+        RunAtLoad = true;
+        KeepAlive = true;
+        StandardOutPath = "/var/log/vlagent.log";
+        StandardErrorPath = "/var/log/vlagent.log";
+      };
+    };
   };
 }
