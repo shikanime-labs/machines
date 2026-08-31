@@ -13,6 +13,9 @@ full directory layout.
 - sops-nix — encrypted secrets (`secrets/*.enc.yaml`)
 - devenv — repository dev shell
 - treefmt-nix — formatting (`nix fmt`)
+- Nix style: prefer dotted-attribute assignment (`a.b.c = v;`) over nested
+  record literals (`a = { b = { c = v; }; };`) when setting a single leaf under
+  a shared parent key. Run `nix fmt` before committing.
 - comin — declarative remote deployment
 
 ## Common Commands
