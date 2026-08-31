@@ -52,9 +52,16 @@ jobs:
       - id: direnv
         uses: shikanime-labs/actions/direnv@5993d4d95befc190a14c0d143583683d203ad8d1
       - name: Run flake check
-        run:
-          nix flake check --accept-flake-config --no-pure-eval --system "${{
-          matrix.system }}"
+        run: |
+          case "${{ matrix.system }}" in
+            aarch64-darwin)
+              # Native darwin: nix flake check covers darwinConfigurations.
+              nix flake check --accept-flake-config --no-pure-eval --system "${{ matrix.system }}" ;;
+            *)
+              # ponytail: x86_64 runner can't cross-build aarch64 nixosConfigurations
+              # (whiskers is aarch64-only); build only this system's packages map.
+              nix build --accept-flake-config --no-pure-eval ".#packages.${{ matrix.system }}" ;;
+          esac
         shell: bash
   packages:
     name: Packages
