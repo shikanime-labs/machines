@@ -41,6 +41,8 @@ jobs:
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
           cachix-name: ${{ inputs['cachix-name'] }}
+          extra-platforms:
+            ${{ matrix.system == 'x86_64-linux' && 'arm64' || '' }}
           github-token:
             ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN
             }}
@@ -81,6 +83,8 @@ jobs:
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
           cachix-name: ${{ inputs['cachix-name'] }}
+          extra-platforms:
+            ${{ matrix.system == 'x86_64-linux' && 'arm64' || '' }}
           github-token:
             ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN
             }}
