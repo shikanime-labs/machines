@@ -41,6 +41,7 @@ jobs:
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
           cachix-name: ${{ inputs['cachix-name'] }}
+          extra-platforms: arm64
           github-token:
             ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN
             }}
@@ -52,23 +53,7 @@ jobs:
       - id: direnv
         uses: shikanime-labs/actions/direnv@5993d4d95befc190a14c0d143583683d203ad8d1
       - name: Run flake check
-        run: |
-          case "${{ matrix.system }}" in
-            aarch64-darwin)
-              # Native darwin: nix flake check covers darwinConfigurations.
-              nix flake check --accept-flake-config --no-pure-eval --system "${{ matrix.system }}" ;;
-            *)
-              # ponytail: x86_64 runner can't cross-build aarch64 nixosConfigurations
-              # (whiskers is aarch64-only). `nix flake check --system` does not scope
-              # nixosConfigurations, so build only this system's packages map. The
-              # flake enumerates each host under its own arch; enumerate names
-              # (the `*` glob double-prepends the system and fails) and build each.
-              for p in $(nix eval --raw --accept-flake-config --no-pure-eval \
-                ".#packages.${{ matrix.system }}" \
-                --apply 'ps: builtins.concatStringsSep " " (builtins.attrNames ps)'); do
-                nix build --accept-flake-config --no-pure-eval ".#packages.${{ matrix.system }}.$p"
-              done ;;
-          esac
+        run: nix flake check --accept-flake-config --no-pure-eval --system "${{ matrix.system }}"
         shell: bash
   packages:
     name: Packages
@@ -95,6 +80,7 @@ jobs:
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
           cachix-name: ${{ inputs['cachix-name'] }}
+          extra-platforms: arm64
           github-token:
             ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN
             }}
