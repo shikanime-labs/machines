@@ -60,7 +60,9 @@ jobs:
             *)
               # ponytail: x86_64 runner can't cross-build aarch64 nixosConfigurations
               # (whiskers is aarch64-only); build only this system's packages map.
-              nix build --accept-flake-config --no-pure-eval ".#packages.${{ matrix.system }}" ;;
+              # `.#packages.<system>.*` builds every derivation under the system
+              # (the flake enumerates each host under its own arch).
+              nix build --accept-flake-config --no-pure-eval ".#packages.${{ matrix.system }}.*" ;;
           esac
         shell: bash
   packages:
