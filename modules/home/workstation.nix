@@ -66,15 +66,6 @@ in
 
     hermes-agent.enable = true;
 
-    rbw = {
-      enable = true;
-      settings = {
-        base_url = "https://vaultwarden.i.shikanime.studio/";
-        email = "shikalegend@gmail.com";
-        pinentry = pkgs.pinentry-all;
-      };
-    };
-
     jujutsu.settings."merge-tools".mergiraf."merge-tool-edits-conflict-markers" = true;
 
     mergiraf = {
