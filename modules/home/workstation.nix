@@ -35,11 +35,20 @@ in
       docker-credential-helpers
       pass
       qpdf
+      rbw
       rclone
       wget
       zip
     ];
     sessionPath = [ "${config.home.homeDirectory}/.local/bin" ];
+    sessionVariables."SSH_ASKPASS" = "${config.home.homeDirectory}/.local/bin/ssh-askpass";
+
+    file.".local/bin/ssh-askpass" = {
+      enable = true;
+      source = pkgs.writeScriptBin "ssh-askpass" (
+        pkgs.writeScript "ssh-askpass" (builtins.readFile ./ssh-askpass)
+      );
+    };
   };
 
   programs = {
@@ -70,7 +79,7 @@ in
       enable = true;
       settings = {
         base_url = "https://vaultwarden.i.shikanime.studio/";
-        pinentry = pkgs.pinentry-all;
+        email = "william.phetsinorath@shikanime.studio";
       };
     };
 
