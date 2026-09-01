@@ -35,6 +35,7 @@ in
       docker-credential-helpers
       pass
       qpdf
+      rbw
       rclone
       wget
       zip
