@@ -6,25 +6,6 @@
   services = {
     knix = {
       enable = true;
-      addons.flux.operator.extraConfig.web.ingress = {
-        enabled = true;
-        annotations."tailscale.com/tags" = "tag:web";
-        className = "tailscale";
-        hosts = [
-          {
-            host = "nishir-flux";
-            paths = [
-              {
-                path = "/";
-                pathType = "ImplementationSpecific";
-              }
-            ];
-          }
-        ];
-        tls = [
-          { hosts = [ "nishir-flux" ]; }
-        ];
-      };
       # Tailscale IP SANs — required because agents resolve hostnames to IPv6
       # first; without these the load balancer's TLS handshake to the supervisor
       # port (9345) fails with "tls: internal error".
