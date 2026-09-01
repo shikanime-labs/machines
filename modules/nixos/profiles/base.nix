@@ -46,7 +46,7 @@
       remotes = [
         {
           name = "forgejo";
-          url = "https://forgejo.taila659a.ts.net/shikanime-labs/machines.git";
+          url = "https://forgejo.i.shikanime.studio/shikanime-labs/machines.git";
         }
       ];
     };
@@ -132,7 +132,7 @@
           ];
         }
       ];
-      remoteWrite.url = "https://telemetry.taila659a.ts.net/insert/0/prometheus";
+      remoteWrite.url = "https://telemetry.i.shikanime.studio/insert/0/prometheus";
     };
   };
 
