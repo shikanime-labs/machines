@@ -35,11 +35,33 @@ in
       docker-credential-helpers
       pass
       qpdf
+      rbw
       rclone
       wget
       zip
     ];
     sessionPath = [ "${config.home.homeDirectory}/.local/bin" ];
+    sessionVariables."SSH_ASKPASS" = "${config.home.homeDirectory}/.local/bin/ssh-askpass";
+
+    file.".local/bin/ssh-askpass" = {
+      enable = true;
+      source = pkgs.writeScriptBin "ssh-askpass" ''
+        #!/bin/sh
+        # SSH_ASKPASS protocol: stdin = prompt text, stdout = passphrase
+        prompt="$(cat)"
+        key="$(echo "$prompt" | sed -n 's/.*for \(.*\)/\1/p')"
+        basename="$(basename "$key")"
+
+        # Try matching by basename first, then fallback to ssh- prefix
+        match="$(rbw list --ignorecase --field name "$basename" 2>/dev/null | head -1)"
+        if [ -n "$match" ]; then
+          rbw get "$match"
+        else
+          echo "$prompt" >&2
+          rbw get "ssh-${basename}"
+        fi
+      '';
+    };
   };
 
   programs = {
@@ -70,7 +92,7 @@ in
       enable = true;
       settings = {
         base_url = "https://vaultwarden.i.shikanime.studio/";
-        pinentry = pkgs.pinentry-all;
+        email = "william.phetsinorath@shikanime.studio";
       };
     };
 
