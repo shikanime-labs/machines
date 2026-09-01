@@ -70,6 +70,7 @@ in
       enable = true;
       settings = {
         base_url = "https://vaultwarden.i.shikanime.studio/";
+        email = "shikalegend@gmail.com";
         pinentry = pkgs.pinentry-all;
       };
     };
