@@ -1,0 +1,20 @@
+#!/bin/sh
+# SSH_ASKPASS protocol: stdin = prompt text, stdout = passphrase
+prompt="$(cat)"
+key="$(echo "$prompt" | sed -n 's/.*for \(.*\)/\1/p')"
+
+if [ -z "$key" ]; then
+  echo "Usage: ssh-askpass <prompt>" >&2
+  exit 1
+fi
+
+# Sanitize key for Bitwarden search (replace / with _)
+key_safe="$(printf "%s" "$key" | tr '/' '_')"
+
+# Try matching by key first, then fallback to ssh- prefix
+match="$(rbw list --ignorecase --field name "$key_safe" 2>/dev/null | head -1)"
+if [ -n "$match" ]; then
+  rbw get "$match"
+else
+  rbw get "ssh-${key_safe}"
+fi
