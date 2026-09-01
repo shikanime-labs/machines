@@ -185,6 +185,10 @@
                 path_regex = "secrets/telsha.enc.yaml";
                 age = identities ++ telsha;
               }
+              {
+                path_regex = "secrets/wifi.enc.yaml";
+                age = identities ++ nishir;
+              }
             ];
         };
 
