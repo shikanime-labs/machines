@@ -25,8 +25,8 @@ with lib;
 
       icon_theme = mkForce {
         mode = "system";
-        light = if pkgs.stdenv.isLinux then mkForce "noctalia" else mkForce "Catppuccin Latte";
-        dark = if pkgs.stdenv.isLinux then mkForce "noctalia" else mkForce "Catppuccin Frappé";
+        light = if pkgs.stdenv.hostPlatform.isLinux then mkForce "noctalia" else mkForce "Catppuccin Latte";
+        dark = if pkgs.stdenv.hostPlatform.isLinux then mkForce "noctalia" else mkForce "Catppuccin Frappé";
       };
 
       language_models = {
@@ -66,8 +66,8 @@ with lib;
 
       theme = {
         mode = "system";
-        light = if pkgs.stdenv.isLinux then mkForce "noctalia" else mkForce "Catppuccin Latte";
-        dark = if pkgs.stdenv.isLinux then mkForce "noctalia" else mkForce "Catppuccin Frappé";
+        light = if pkgs.stdenv.hostPlatform.isLinux then mkForce "noctalia" else mkForce "Catppuccin Latte";
+        dark = if pkgs.stdenv.hostPlatform.isLinux then mkForce "noctalia" else mkForce "Catppuccin Frappé";
       };
 
       vim_mode = true;

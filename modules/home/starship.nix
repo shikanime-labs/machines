@@ -20,7 +20,7 @@ in
         style = "bold lavender";
       };
       git_branch.style = "bold mauve";
-      palette = mkIf pkgs.stdenv.isLinux (mkForce "catppuccin_latte");
+      palette = mkIf pkgs.stdenv.hostPlatform.isLinux (mkForce "catppuccin_latte");
     }
     // settings;
   };
