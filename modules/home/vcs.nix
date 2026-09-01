@@ -39,7 +39,7 @@
             "--onto"
             "trunk()"
             "--source"
-            "roots(trunk()..) & mutable()"
+            "branch_heads()"
             "--simplify-parents"
           ];
           stack = [
@@ -77,10 +77,8 @@
         revset-aliases = {
           "closest_merge(to)" = "heads(::to & merges())";
           "nulls()" = "empty() & mutable()";
-        };
-        ui = {
-          default-command = "log";
-          movement.edit = true;
+          "stacked()" = "ancestors(reachable(trunk(), mutable()), 2) & mutable()";
+          "branch_heads()" = "roots(trunk()..) & mutable() & ~tags()";
         };
       };
     };
