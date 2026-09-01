@@ -12,7 +12,7 @@
         enable = true;
         name = config.networking.hostName;
         tokenFile = config.sops.templates.forgejo-runner-token.path;
-        url = "https://forgejo.taila659a.ts.net";
+        url = "https://forgejo.i.shikanime.studio";
         labels = [
           "docker:docker://node:22-bookworm"
           "nixos-latest:docker://nixos/nix"

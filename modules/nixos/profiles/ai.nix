@@ -282,7 +282,7 @@ in
           }
         ];
         documents."honcho.json" = builtins.toJSON {
-          baseUrl = "https://honcho.taila659a.ts.net";
+          baseUrl = "https://honcho.i.shikanime.studio";
           hosts.hermes = {
             peerName = config.networking.hostName;
             aiPeer = "hermes";
