@@ -250,7 +250,7 @@ in
         custom_providers = [
           {
             name = "aperture-anthropic";
-            base_url = "https://ai.taila659a.ts.net/v1";
+            base_url = "https://ai.i.shikanime.studio/v1";
             api_mode = "anthropic_messages";
             model = "glm-4.7";
             models = [
@@ -260,7 +260,7 @@ in
           }
           {
             name = "aperture-openai";
-            base_url = "https://ai.taila659a.ts.net/v1";
+            base_url = "https://ai.i.shikanime.studio/v1";
             api_mode = "chat_completions";
             model = "tencent/hy3:free";
             models = [
@@ -336,77 +336,77 @@ in
         model = {
           default = "tencent/hy3:free";
           provider = "custom:aperture-openai";
-          base_url = "https://ai.taila659a.ts.net/v1";
+          base_url = "https://ai.i.shikanime.studio/v1";
         };
         auxiliary = {
           vision = {
             provider = "custom:aperture-openai";
             model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
+            base_url = "https://ai.i.shikanime.studio/v1";
           };
           web_extract = {
             provider = "custom:aperture-openai";
             model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
+            base_url = "https://ai.i.shikanime.studio/v1";
           };
           compression = {
             provider = "custom:aperture-openai";
             model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
+            base_url = "https://ai.i.shikanime.studio/v1";
           };
           skills_hub = {
             provider = "custom:aperture-openai";
             model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
+            base_url = "https://ai.i.shikanime.studio/v1";
           };
           approval = {
             provider = "custom:aperture-openai";
             model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
+            base_url = "https://ai.i.shikanime.studio/v1";
           };
           mcp = {
             provider = "custom:aperture-openai";
             model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
+            base_url = "https://ai.i.shikanime.studio/v1";
           };
           title_generation = {
             provider = "custom:aperture-openai";
             model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
+            base_url = "https://ai.i.shikanime.studio/v1";
           };
           memory_query_rewrite = {
             provider = "custom:aperture-anthropic:openai";
             model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
+            base_url = "https://ai.i.shikanime.studio/v1";
           };
           tts_audio_tags = {
             provider = "custom:aperture-openai";
             model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
+            base_url = "https://ai.i.shikanime.studio/v1";
           };
           triage_specifier = {
             provider = "custom:aperture-openai";
             model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
+            base_url = "https://ai.i.shikanime.studio/v1";
           };
           kanban_decomposer = {
             provider = "custom:aperture-openai";
             model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
+            base_url = "https://ai.i.shikanime.studio/v1";
           };
           profile_describer = {
             provider = "custom:aperture-openai";
             model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
+            base_url = "https://ai.i.shikanime.studio/v1";
           };
           curator = {
             provider = "custom:aperture-openai";
             model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
+            base_url = "https://ai.i.shikanime.studio/v1";
           };
         };
         mcp_servers.aperture = {
-          url = "https://ai.taila659a.ts.net/v1/mcp";
+          url = "https://ai.i.shikanime.studio/v1/mcp";
           enabled = true;
         };
         # Bare `hermes`/`hermes chat` launches the Ink TUI by default; token
