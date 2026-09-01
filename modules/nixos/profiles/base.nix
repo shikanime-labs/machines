@@ -144,7 +144,7 @@
       after = [ "network-online.target" ];
       wants = [ "network-online.target" ];
       serviceConfig = {
-        ExecStart = "${pkgs.vlagent}/bin/vlagent -remoteWrite.url=https://logs.taila659a.ts.net/insert/0/logs";
+        ExecStart = "${pkgs.vlagent}/bin/vlagent -remoteWrite.url=https://logs.i.shikanime.studio/insert/0/logs";
         User = "vlagent";
         SupplementaryGroups = [ "systemd-journal" ];
         Restart = "always";

@@ -71,7 +71,7 @@ in
       };
     };
     vlagent = {
-      command = "${pkgs.vlagent}/bin/vlagent -fileCollector.glob=/var/log/**/*.log -remoteWrite.url=https://logs.taila659a.ts.net/insert/0/logs";
+      command = "${pkgs.vlagent}/bin/vlagent -fileCollector.glob=/var/log/**/*.log -remoteWrite.url=https://logs.i.shikanime.studio/insert/0/logs";
       serviceConfig = {
         Label = "org.nixos.vlagent";
         RunAtLoad = true;
