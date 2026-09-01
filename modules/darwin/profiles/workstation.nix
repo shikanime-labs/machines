@@ -26,7 +26,6 @@
       "google-drive"
       "ibkr"
       "jellyfin-media-player"
-      "lm-studio"
       "macfuse"
       "mattermost"
       "microsoft-edge"
