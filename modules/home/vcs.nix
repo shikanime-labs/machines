@@ -31,7 +31,7 @@
         aliases = {
           prune = [
             "abandon"
-            "nulls()"
+            "empty() & mutable()"
             "conflicts()"
           ];
           restack = [
@@ -75,10 +75,16 @@
         '';
         remotes.upstream.auto-track-bookmarks = "main";
         revset-aliases = {
+          # Merge commits closest to `to` that are ancestors of @.
           "closest_merge(to)" = "heads(::to & merges())";
-          "nulls()" = "empty() & mutable()";
+          # Mutable commits stacked within 2 hops of the mutable trunk frontier.
           "stacked()" = "ancestors(reachable(trunk(), mutable()), 2) & mutable()";
+          # Mutable branch heads off trunk, excluding tagged releases.
           "branch_heads()" = "roots(trunk()..) & mutable() & ~tags()";
+        };
+        ui = {
+          default-command = "log";
+          movement.edit = true;
         };
       };
     };
