@@ -1,0 +1,84 @@
+{ config, pkgs, ... }:
+
+let
+  # Defaults (cpu, cpufreq, diskstats, filesystem, loadavg, meminfo,
+  # netdev, stat, systemd, processes, thermal_zone) — same set the
+  # victoria-metrics-k8s-stack node-exporter DaemonSet uses on servers.
+  vmagentConfig = pkgs.writeText "vmagent.yml" ''
+    scrape_configs:
+      - job_name: "node"
+        static_configs:
+          - targets: ["127.0.0.1:9100"]
+      - job_name: "comin"
+        static_configs:
+          - targets: ["127.0.0.1:4243"]
+  '';
+in
+{
+  imports = [
+    ../minimal/default.nix
+  ];
+
+  nix = {
+    extraOptions = ''
+      !include ${config.sops.templates.nix-config.path}
+    '';
+    settings.experimental-features = "flakes nix-command";
+  };
+
+  sops = {
+    secrets.nix-access-token = { };
+    templates.nix-config.content = ''
+      extra-access-tokens = github.com=${config.sops.placeholder.nix-access-token}
+    '';
+  };
+
+  services.comin = {
+    enable = true;
+    # Node exporter listens on localhost only — vmagent scrapes from 127.0.0.1.
+    exporter.listen_address = "127.0.0.1";
+    remotes = [
+      {
+        name = "forgejo";
+        url = "https://forgejo.i.shikanime.studio/shikanime-labs/machines.git";
+      }
+    ];
+  };
+
+  launchd.daemons = {
+    node-exporter = {
+      command = "${pkgs.prometheus-node-exporter}/bin/node_exporter --web.listen-address=127.0.0.1:9100";
+      serviceConfig = {
+        Label = "org.nixos.node-exporter";
+        RunAtLoad = true;
+        KeepAlive = true;
+        StandardOutPath = "/var/log/node-exporter.log";
+        StandardErrorPath = "/var/log/node-exporter.log";
+      };
+    };
+    vmagent = {
+      command = ''
+        ${pkgs.victoriametrics}/bin/vmagent \
+          -promscrape.config=${vmagentConfig} \
+          -remoteWrite.url=https://telemetry.i.shikanime.studio/insert/0/prometheus
+      '';
+      serviceConfig = {
+        Label = "org.nixos.vmagent";
+        RunAtLoad = true;
+        KeepAlive = true;
+        StandardOutPath = "/var/log/vmagent.log";
+        StandardErrorPath = "/var/log/vmagent.log";
+      };
+    };
+    vlagent = {
+      command = "${pkgs.vlagent}/bin/vlagent -fileCollector.glob=/var/log/**/*.log -remoteWrite.url=https://logs.i.shikanime.studio/insert/0/logs";
+      serviceConfig = {
+        Label = "org.nixos.vlagent";
+        RunAtLoad = true;
+        KeepAlive = true;
+        StandardOutPath = "/var/log/vlagent.log";
+        StandardErrorPath = "/var/log/vlagent.log";
+      };
+    };
+  };
+}
