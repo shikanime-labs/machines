@@ -188,87 +188,155 @@
           inputs.noctalia-greeter.nixosModules.default
           { services.cua-driver.package = inputs.cua.packages.${system}.default; }
         ];
-        mkBeelinkClusterModules = system: [
-          inputs.nixos-hardware.nixosModules.common-cpu-intel
-          inputs.nixos-hardware.nixosModules.common-pc-ssd
-        ] ++ (mkAiModules system) ++ baseModules ++ clusterModules;
-        mkMsS1ClusterModules = system: [
-          inputs.nixos-hardware.nixosModules.common-cpu-amd
-          inputs.nixos-hardware.nixosModules.common-pc-ssd
-          inputs.nixos-hardware.nixosModules.common-gpu-amd
-        ] ++ (mkAiModules system) ++ baseModules ++ clusterModules;
-        mkRpi4ClusterModules = system: [
-          inputs.nixos-hardware.nixosModules.raspberry-pi-4
-        ] ++ (mkAiModules system) ++ baseModules ++ clusterModules;
-        mkRpi5ClusterModules = system: [
-          inputs.nixos-hardware.nixosModules.raspberry-pi-5
-        ] ++ (mkAiModules system) ++ baseModules ++ clusterModules;
-        mkWorkstationsModules = system: (mkAiModules system) ++ baseModules ++ [
-          {
-            home-manager.sharedModules = [
-              inputs.devlib.homeModules.default
-              inputs.identities.homeModules.default
-              inputs.noctalia.homeModules.default
-            ];
-          }
-        ];
-        mkCatboxPackage = system:
-          let catbox = mkCatboxNixosConfiguration system; in
+        mkBeelinkClusterModules =
+          system:
+          [
+            inputs.nixos-hardware.nixosModules.common-cpu-intel
+            inputs.nixos-hardware.nixosModules.common-pc-ssd
+          ]
+          ++ (mkAiModules system)
+          ++ baseModules
+          ++ clusterModules;
+        mkMsS1ClusterModules =
+          system:
+          [
+            inputs.nixos-hardware.nixosModules.common-cpu-amd
+            inputs.nixos-hardware.nixosModules.common-pc-ssd
+            inputs.nixos-hardware.nixosModules.common-gpu-amd
+          ]
+          ++ (mkAiModules system)
+          ++ baseModules
+          ++ clusterModules;
+        mkRpi4ClusterModules =
+          system:
+          [
+            inputs.nixos-hardware.nixosModules.raspberry-pi-4
+          ]
+          ++ (mkAiModules system)
+          ++ baseModules
+          ++ clusterModules;
+        mkRpi5ClusterModules =
+          system:
+          [
+            inputs.nixos-hardware.nixosModules.raspberry-pi-5
+          ]
+          ++ (mkAiModules system)
+          ++ baseModules
+          ++ clusterModules;
+        mkWorkstationsModules =
+          system:
+          (mkAiModules system)
+          ++ baseModules
+          ++ [
+            {
+              home-manager.sharedModules = [
+                inputs.devlib.homeModules.default
+                inputs.identities.homeModules.default
+                inputs.noctalia.homeModules.default
+              ];
+            }
+          ];
+        mkCatboxPackage =
+          system:
+          let
+            catbox = mkCatboxNixosConfiguration system;
+          in
           catbox.config.system.build.containerdiskImage;
-        mkAshiraNixosConfiguration = system:
+        mkAshiraNixosConfiguration =
+          system:
           inputs.nixpkgs.lib.nixosSystem {
-            pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+            };
             modules = [ ./hosts/ashira/configuration.nix ] ++ (mkBeelinkClusterModules system);
           };
-        mkCatboxNixosConfiguration = system:
+        mkCatboxNixosConfiguration =
+          system:
           inputs.nixpkgs.lib.nixosSystem {
-            pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+            };
             modules = [ ./hosts/catbox/configuration.nix ] ++ (mkWorkstationsModules system);
           };
-        mkFushiNixosConfiguration = system:
+        mkFushiNixosConfiguration =
+          system:
           inputs.nixpkgs.lib.nixosSystem {
-            pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+            };
             modules = [ ./hosts/fushi/configuration.nix ] ++ (mkRpi4ClusterModules system);
           };
-        mkNixtarNixosConfiguration = system:
+        mkNixtarNixosConfiguration =
+          system:
           inputs.nixpkgs.lib.nixosSystem {
-            pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+            };
             modules = [
               ./hosts/nixtar/configuration.nix
               inputs.nixos-hardware.nixosModules.common-cpu-intel
               inputs.nixos-hardware.nixosModules.common-pc-ssd
               inputs.nixos-hardware.nixosModules.common-gpu-nvidia
               inputs.knix.nixosModules.default
-            ] ++ (mkWorkstationsModules system);
+            ]
+            ++ (mkWorkstationsModules system);
           };
-        mkManashNixosConfiguration = system:
+        mkManashNixosConfiguration =
+          system:
           inputs.nixpkgs.lib.nixosSystem {
-            pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+            };
             modules = [ ./hosts/manash/configuration.nix ] ++ (mkBeelinkClusterModules system);
           };
-        mkMinishNixosConfiguration = system:
+        mkMinishNixosConfiguration =
+          system:
           inputs.nixpkgs.lib.nixosSystem {
-            pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+            };
             modules = [ ./hosts/minish/configuration.nix ] ++ (mkRpi4ClusterModules system);
           };
-        mkSashinaNixosConfiguration = system:
+        mkSashinaNixosConfiguration =
+          system:
           inputs.nixpkgs.lib.nixosSystem {
-            pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+            };
             modules = [ ./hosts/sashina/configuration.nix ] ++ (mkMsS1ClusterModules system);
           };
-        mkKushiraNixosConfiguration = system:
+        mkKushiraNixosConfiguration =
+          system:
           inputs.nixpkgs.lib.nixosSystem {
-            pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+            };
             modules = [ ./hosts/kushira/configuration.nix ] ++ (mkMsS1ClusterModules system);
           };
-        mkNalshaNixosConfiguration = system:
+        mkNalshaNixosConfiguration =
+          system:
           inputs.nixpkgs.lib.nixosSystem {
-            pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+            };
             modules = [ ./hosts/nalsha/configuration.nix ] ++ (mkBeelinkClusterModules system);
           };
-        mkNemishiNixosConfiguration = system:
+        mkNemishiNixosConfiguration =
+          system:
           inputs.nixpkgs.lib.nixosSystem {
-            pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+            };
             modules = [ ./hosts/nemishi/configuration.nix ] ++ (mkRpi5ClusterModules system);
           };
       in
