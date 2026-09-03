@@ -218,23 +218,23 @@
         mkAshiraNixosConfiguration = system:
           inputs.nixpkgs.lib.nixosSystem {
             pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
-            modules = [ ../../hosts/ashira/configuration.nix ] ++ (mkBeelinkClusterModules system);
+            modules = [ ./hosts/ashira/configuration.nix ] ++ (mkBeelinkClusterModules system);
           };
         mkCatboxNixosConfiguration = system:
           inputs.nixpkgs.lib.nixosSystem {
             pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
-            modules = [ ../../hosts/catbox/configuration.nix ] ++ (mkWorkstationsModules system);
+            modules = [ ./hosts/catbox/configuration.nix ] ++ (mkWorkstationsModules system);
           };
         mkFushiNixosConfiguration = system:
           inputs.nixpkgs.lib.nixosSystem {
             pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
-            modules = [ ../../hosts/fushi/configuration.nix ] ++ (mkRpi4ClusterModules system);
+            modules = [ ./hosts/fushi/configuration.nix ] ++ (mkRpi4ClusterModules system);
           };
         mkNixtarNixosConfiguration = system:
           inputs.nixpkgs.lib.nixosSystem {
             pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
             modules = [
-              ../../hosts/nixtar/configuration.nix
+              ./hosts/nixtar/configuration.nix
               inputs.nixos-hardware.nixosModules.common-cpu-intel
               inputs.nixos-hardware.nixosModules.common-pc-ssd
               inputs.nixos-hardware.nixosModules.common-gpu-nvidia
@@ -244,32 +244,32 @@
         mkManashNixosConfiguration = system:
           inputs.nixpkgs.lib.nixosSystem {
             pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
-            modules = [ ../../hosts/manash/configuration.nix ] ++ (mkBeelinkClusterModules system);
+            modules = [ ./hosts/manash/configuration.nix ] ++ (mkBeelinkClusterModules system);
           };
         mkMinishNixosConfiguration = system:
           inputs.nixpkgs.lib.nixosSystem {
             pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
-            modules = [ ../../hosts/minish/configuration.nix ] ++ (mkRpi4ClusterModules system);
+            modules = [ ./hosts/minish/configuration.nix ] ++ (mkRpi4ClusterModules system);
           };
         mkSashinaNixosConfiguration = system:
           inputs.nixpkgs.lib.nixosSystem {
             pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
-            modules = [ ../../hosts/sashina/configuration.nix ] ++ (mkMsS1ClusterModules system);
+            modules = [ ./hosts/sashina/configuration.nix ] ++ (mkMsS1ClusterModules system);
           };
         mkKushiraNixosConfiguration = system:
           inputs.nixpkgs.lib.nixosSystem {
             pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
-            modules = [ ../../hosts/kushira/configuration.nix ] ++ (mkMsS1ClusterModules system);
+            modules = [ ./hosts/kushira/configuration.nix ] ++ (mkMsS1ClusterModules system);
           };
         mkNalshaNixosConfiguration = system:
           inputs.nixpkgs.lib.nixosSystem {
             pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
-            modules = [ ../../hosts/nalsha/configuration.nix ] ++ (mkBeelinkClusterModules system);
+            modules = [ ./hosts/nalsha/configuration.nix ] ++ (mkBeelinkClusterModules system);
           };
         mkNemishiNixosConfiguration = system:
           inputs.nixpkgs.lib.nixosSystem {
             pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
-            modules = [ ../../hosts/nemishi/configuration.nix ] ++ (mkRpi5ClusterModules system);
+            modules = [ ./hosts/nemishi/configuration.nix ] ++ (mkRpi5ClusterModules system);
           };
       in
       {
@@ -299,7 +299,7 @@
               config.allowUnfree = true;
             };
             modules = [
-              ../../hosts/telsha/darwin-configuration.nix
+              ./hosts/telsha/darwin-configuration.nix
               inputs.home-manager.darwinModules.default
               inputs.comin.darwinModules.comin
               inputs.sops-nix.darwinModules.default
