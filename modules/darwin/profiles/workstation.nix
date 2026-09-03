@@ -70,4 +70,42 @@
       StandardErrorPath = "/var/log/tailscale-serve-lmstudio.log";
     };
   };
+
+  # A2A agent mesh (telsha). The Hermes agent serves plain HTTP on :9900 and
+  # the api_server on :8642; Tailscale serve terminates TLS and forwards to
+  # localhost, so peers reach https://telsha.taila659a.ts.net:9900. Advertise
+  # the automata + workstation tags so the tailnet ACL grants/deny backstop
+  # cover this host. Idempotent; re-applied at boot.
+  launchd.daemons.tailscale-up-a2a = {
+    command = "/Applications/Tailscale.app/Contents/MacOS/Tailscale up --advertise-tags=tag:automata,tag:workstation";
+    serviceConfig = {
+      Label = "org.nixos.tailscale-up-a2a";
+      RunAtLoad = true;
+      KeepAlive = false;
+      StandardOutPath = "/var/log/tailscale-up-a2a.log";
+      StandardErrorPath = "/var/log/tailscale-up-a2a.log";
+    };
+  };
+
+  launchd.daemons.tailscale-serve-a2a = {
+    command = "/Applications/Tailscale.app/Contents/MacOS/Tailscale serve --yes --bg --https=9900 http://127.0.0.1:9900";
+    serviceConfig = {
+      Label = "org.nixos.tailscale-serve-a2a";
+      RunAtLoad = true;
+      KeepAlive = false;
+      StandardOutPath = "/var/log/tailscale-serve-a2a.log";
+      StandardErrorPath = "/var/log/tailscale-serve-a2a.log";
+    };
+  };
+
+  launchd.daemons.tailscale-serve-api = {
+    command = "/Applications/Tailscale.app/Contents/MacOS/Tailscale serve --yes --bg --https=8642 http://127.0.0.1:8642";
+    serviceConfig = {
+      Label = "org.nixos.tailscale-serve-api";
+      RunAtLoad = true;
+      KeepAlive = false;
+      StandardOutPath = "/var/log/tailscale-serve-api.log";
+      StandardErrorPath = "/var/log/tailscale-serve-api.log";
+    };
+  };
 }
