@@ -7,16 +7,16 @@ let
 in
 {
   imports = [
-    ../../../modules/home/ai.nix
-    ../../../modules/home/base.nix
-    ../../../modules/home/cloud.nix
-    ../../../modules/home/fontconfig.nix
-    ../../../modules/home/ghostty.nix
-    ../../../modules/home/helix.nix
-    ../../../modules/home/starship.nix
-    ../../../modules/home/vcs.nix
-    ../../../modules/home/workstation.nix
-    ../../../modules/home/zed-editor.nix
+    ../../modules/profiles/ai/home.nix
+    ../../modules/profiles/base/home.nix
+    ../../modules/apps/cloud/home.nix
+    ../../modules/apps/fontconfig/home.nix
+    ../../modules/apps/ghostty/home.nix
+    ../../modules/apps/helix/home.nix
+    ../../modules/apps/starship/home.nix
+    ../../modules/apps/vcs/home.nix
+    ../../modules/profiles/workstation/home.nix
+    ../../modules/apps/zed-editor/home.nix
   ];
 
   home.sessionVariables.SSH_AUTH_SOCK = "${config.home.homeDirectory}/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock";

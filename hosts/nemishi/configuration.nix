@@ -2,15 +2,15 @@
 
 {
   imports = [
-    ../../modules/nixos/profiles/ai.nix
-    ../../modules/nixos/profiles/agent.nix
-    ../../modules/nixos/profiles/forgejo.nix
-    ../../modules/nixos/profiles/distributed.nix
-    ../../modules/nixos/profiles/nishir.nix
-    ../../modules/nixos/profiles/server.nix
-    ../../modules/nixos/hardware/rpi5.nix
-    ../../modules/nixos/users/builder.nix
-    ../../modules/nixos/users/nishir.nix
+    ../../modules/profiles/ai/nixos.nix
+    ../../modules/profiles/agent/nixos.nix
+    ../../modules/profiles/forgejo/nixos.nix
+    ../../modules/profiles/distributed/nixos.nix
+    ../../modules/profiles/nishir/nixos.nix
+    ../../modules/profiles/server/nixos.nix
+    ../../modules/hardware/rpi5/nixos.nix
+    ../../modules/users/builder/nixos.nix
+    ../../modules/users/nishir/nixos.nix
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
   ];
 

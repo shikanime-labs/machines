@@ -1,12 +1,12 @@
 {
   imports = [
-    ../../modules/nixos/profiles/ai.nix
-    ../../modules/nixos/profiles/leader.nix
-    ../../modules/nixos/profiles/graphical.nix
+    ../../modules/profiles/ai/nixos.nix
+    ../../modules/profiles/leader/nixos.nix
+    ../../modules/profiles/graphical/nixos.nix
     ../../modules/nixos/hardware/razer-blade.nix
-    ../../modules/nixos/users/meika.nix
-    ../../modules/nixos/users/nishir.nix
-    ../../modules/nixos/users/shika.nix
+    ../../modules/users/meika/nixos.nix
+    ../../modules/users/nishir/nixos.nix
+    ../../modules/users/shika/nixos.nix
   ];
 
   hardware.nvidia.prime = {

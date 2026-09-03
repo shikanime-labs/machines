@@ -8,9 +8,9 @@
   imports = [
     "${modulesPath}/profiles/headless.nix"
     ../../modules/nixos/virtualisation/containerdisk.nix
-    ../../modules/nixos/profiles/minimal.nix
-    ../../modules/nixos/profiles/ai.nix
-    ../../modules/nixos/users/automata.nix
+    ../../modules/profiles/minimal/nixos.nix
+    ../../modules/profiles/ai/nixos.nix
+    ../../modules/users/automata/nixos.nix
   ];
 
   # Fresh OVMF NVRAM each boot: write the systemd-boot entry as a real EFI
