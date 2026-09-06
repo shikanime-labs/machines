@@ -119,12 +119,18 @@
               telsha = [
                 "age1eak84xcr44yfqsg843rfu2xajxsyvjwh67a630htpnd0scy7yu5szjfh8d"
               ];
+              sashina = [
+                "age1jvnns30egk0uh6ad2tj0ddhz6pvcvctfakglt0n2nef9pv45usrqdkr2sl"
+              ];
+              kushira = [
+                "age1jvnns30egk0uh6ad2tj0ddhz6pvcvctfakglt0n2nef9pv45usrqdkr2sl"
+              ];
 
               catbox = [
                 "age1etnd6hnt6776vqsnadny72t55whnlav8xp8e7rx3fd4lz7ms8dfsjsrnul"
               ];
 
-              nishir = ashira ++ fushi ++ manash ++ minish ++ nalsha ++ nemishi;
+              nishir = ashira ++ fushi ++ manash ++ minish ++ nalsha ++ nemishi ++ sashina;
 
               workstations = ishtar ++ nixtar ++ telsha;
 
@@ -180,6 +186,14 @@
               {
                 path_regex = "secrets/shikanime.enc.yaml";
                 age = identities;
+              }
+              {
+                path_regex = "secrets/sashina.enc.yaml";
+                age = identities ++ sashina;
+              }
+              {
+                path_regex = "secrets/kushira.enc.yaml";
+                age = identities ++ kushira;
               }
               {
                 path_regex = "secrets/telsha.enc.yaml";
