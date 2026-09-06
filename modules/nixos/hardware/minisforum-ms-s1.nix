@@ -65,8 +65,8 @@
       # Realtek RTL8127. Names assumed to match the Beelink enumeration —
       # confirm with `ip -br link` on first boot before install.
       interfaces = [
-        "enp1s0"
-        "enp2s0"
+        "enp97s0"
+        "enp98s0"
       ];
       driverOptions = {
         mode = "balance-alb";
