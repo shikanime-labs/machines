@@ -6,11 +6,13 @@
 
     # Strix Halo has no dedicated VRAM: the iGPU carves its working set out of
     # the 128GB unified LPDDR5X via GTT. The defaults cap GTT at roughly half
-    # of RAM, which is not enough to keep a large model resident. 96GiB GTT
-    # (gttsize is MiB) with a matching TTM page limit (96GiB / 4KiB pages).
+    # of RAM, which is not enough to keep a large model resident. Give the
+    # iGPU the full 128GiB ceiling (gttsize is MiB) with a matching TTM page
+    # limit (128GiB / 4KiB pages) — GTT is demand-paged, so this is an upper
+    # bound, not a reservation; pages commit only when the GPU touches them.
     kernelParams = [
-      "amdgpu.gttsize=98304"
-      "ttm.pages_limit=25165824"
+      "amdgpu.gttsize=131072"
+      "ttm.pages_limit=33554432"
     ];
 
     loader = {

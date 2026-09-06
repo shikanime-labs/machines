@@ -34,8 +34,8 @@ GPU/ROCm acceleration lives entirely in
   microcode so the compute stack reaches `/dev/dri/renderD128`.
 - `hardware.graphics.enable = true` + `enable32Bit` (inherited from
   nixos-hardware `common-gpu-amd`) — Mesa/ROCm userspace.
-- `boot.kernelParams = [ "amdgpu.gttsize=98304" "ttm.pages_limit=25165824" ]` —
-  96 GiB GTT carve-out for the unified-memory iGPU.
+- `boot.kernelParams = [ "amdgpu.gttsize=131072" "ttm.pages_limit=33554432" ]` —
+  full 128 GiB GTT ceiling for the unified-memory iGPU.
 
 The llama.cpp inference _service_ (server/rpc roles, `:8080`/`:50052`) is not
 yet wired as a module — the nodes are provisioned with acceleration enabled and
@@ -51,6 +51,6 @@ online. When added back, the ROCm package is
   RPC-bound, move to a USB4 ring first (community measured ~8 µs vs ~65 µs)
   before any other tuning.
 - `ctx-size` is intentionally conservative at 128k; raise toward 1M only with
-  measured VRAM/KV headroom — the 96 GiB GTT cap on Strix Halo bounds it.
+  measured VRAM/KV headroom — the 128 GiB GTT cap on Strix Halo bounds it.
 - The model file is not fetched by the module — stage it manually (e.g. via
   `hf download unsloth/DeepSeek-V4-Flash-0731-GGUF --include "*UD-IQ4_XS*"`).
