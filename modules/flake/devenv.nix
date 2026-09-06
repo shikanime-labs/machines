@@ -120,7 +120,7 @@
                 "age1eak84xcr44yfqsg843rfu2xajxsyvjwh67a630htpnd0scy7yu5szjfh8d"
               ];
               sashina = [
-                "age1jvnns30egk0uh6ad2tj0ddhz6pvcvctfakglt0n2nef9pv45usrqdkr2sl"
+                "age1jlcz9e0gznqzc6a3l3x0cu76l7v9vmwjuf489lxwncvgll7g8v0sjwa50d"
               ];
               kushira = [
                 "age1jvnns30egk0uh6ad2tj0ddhz6pvcvctfakglt0n2nef9pv45usrqdkr2sl"
