@@ -140,6 +140,33 @@ in
 
       custom_providers = [
         {
+          name = "shikanime-anthropic";
+          base_url = "https://inference.i.shikanime.studio/anthropic";
+          api_mode = "anthropic_messages";
+          key_env = "SKS_API_KEY";
+          model = "z-ai/glm-5.3-flash";
+          models = [
+            "z-ai/glm-5.3-flash"
+            "z-ai/glm-5.3"
+            "qwen/qwen3.8-27b"
+            "qwen/qwen3.8-flash"
+            "deepseek/deepseek-v4-flash"
+          ];
+        }
+        {
+          name = "shikanime-openai";
+          base_url = "https://inference.i.shikanime.studio/v1";
+          api_mode = "chat_completions";
+          key_env = "SKS_API_KEY";
+          model = "poolside/laguna-s-2.1:free";
+          models = [
+            "poolside/laguna-s-2.1:free"
+            "qwen/qwen3.8-flash"
+            "qwen/qwen3.8-27b"
+            "deepseek/deepseek-v4-flash"
+          ];
+        }
+        {
           name = "aperture-anthropic";
           base_url = "https://ai.taila659a.ts.net/v1";
           api_mode = "anthropic_messages";
@@ -175,18 +202,13 @@ in
 
       fallback_providers = [
         {
-          api_mode = "chat_completions";
-          model = "inclusionai/ling-3.0-flash:free";
-          provider = "custom:aperture-openai";
+          api_mode = "anthropic_messages";
+          model = "z-ai/glm-5.3";
+          provider = "custom:shikanime-anthropic";
         }
         {
           api_mode = "chat_completions";
-          model = "poolside/laguna-s-2.1:free";
-          provider = "custom:aperture-openai";
-        }
-        {
-          api_mode = "chat_completions";
-          model = "labs-leanstral-1-5";
+          model = "deepseek/deepseek-v4-flash";
           provider = "custom:aperture-openai";
         }
         {
@@ -195,84 +217,16 @@ in
           provider = "custom:aperture-openai";
         }
         {
-          api_mode = "chat_completions";
-          model = "tencent/hy3:free";
-          provider = "custom:aperture-openai";
+          api_mode = "anthropic_messages";
+          model = "deepseek/deepseek-v4-flash";
+          provider = "custom:shikanime-anthropic";
         }
       ];
 
       model = {
-        default = "tencent/hy3:free";
-        provider = "custom:aperture-openai";
-        base_url = "https://ai.taila659a.ts.net/v1";
-      };
-
-      auxiliary = {
-        vision = {
-          provider = "custom:aperture-openai";
-          model = "tencent/hy3:free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        web_extract = {
-          provider = "custom:aperture-openai";
-          model = "tencent/hy3:free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        compression = {
-          provider = "custom:aperture-openai";
-          model = "tencent/hy3:free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        skills_hub = {
-          provider = "custom:aperture-openai";
-          model = "tencent/hy3:free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        approval = {
-          provider = "custom:aperture-openai";
-          model = "tencent/hy3:free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        mcp = {
-          provider = "custom:aperture-openai";
-          model = "tencent/hy3:free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        title_generation = {
-          provider = "custom:aperture-openai";
-          model = "tencent/hy3:free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        memory_query_rewrite = {
-          provider = "custom:aperture-anthropic:openai";
-          model = "tencent/hy3:free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        tts_audio_tags = {
-          provider = "custom:aperture-openai";
-          model = "tencent/hy3:free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        triage_specifier = {
-          provider = "custom:aperture-openai";
-          model = "tencent/hy3:free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        kanban_decomposer = {
-          provider = "custom:aperture-openai";
-          model = "tencent/hy3:free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        profile_describer = {
-          provider = "custom:aperture-openai";
-          model = "tencent/hy3:free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        curator = {
-          provider = "custom:aperture-openai";
-          model = "tencent/hy3:free";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
+        default = "qwen/qwen3.8-27b";
+        provider = "custom:shikanime-anthropic";
+        base_url = "https://inference.i.shikanime.studio/anthropic";
       };
 
       mcp_servers.aperture = {
