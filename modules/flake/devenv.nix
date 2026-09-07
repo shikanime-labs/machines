@@ -123,14 +123,14 @@
                 "age1jlcz9e0gznqzc6a3l3x0cu76l7v9vmwjuf489lxwncvgll7g8v0sjwa50d"
               ];
               kushira = [
-                "age1jvnns30egk0uh6ad2tj0ddhz6pvcvctfakglt0n2nef9pv45usrqdkr2sl"
+                "age1c6g7vw6zn6mnjxxwyhpjl5usv5crwlj54fhe9djqgu2yzh5u2amsa6tu3v"
               ];
 
               catbox = [
                 "age1etnd6hnt6776vqsnadny72t55whnlav8xp8e7rx3fd4lz7ms8dfsjsrnul"
               ];
 
-              nishir = ashira ++ fushi ++ manash ++ minish ++ nalsha ++ nemishi ++ sashina;
+              nishir = ashira ++ fushi ++ manash ++ minish ++ nalsha ++ nemishi ++ sashina ++ kushira;
 
               workstations = ishtar ++ nixtar ++ telsha;
 
