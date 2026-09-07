@@ -27,7 +27,7 @@
 
   services = {
     knix = {
-      nodeIP = "192.168.1.91";
+      nodeIP = "192.168.1.91,2a02:8424:7899:f201:94eb:8d1:325a:c6e9";
       labels = {
         "beta.kubernetes.io/instance-type" = "minisforum-ms-s1";
         "node.kubernetes.io/instance-type" = "minisforum-ms-s1";
