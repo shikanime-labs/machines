@@ -1,4 +1,9 @@
 {
+  pkgs,
+  ...
+}:
+
+{
   imports = [
     ../../modules/nixos/profiles/ai.nix
     ../../modules/nixos/profiles/agent.nix
@@ -10,6 +15,52 @@
     ../../modules/nixos/users/builder.nix
     ../../modules/nixos/users/nishir.nix
   ];
+
+  # llama.cpp router — ROCm (gfx1151) + RPC backend, mirroring the runtime
+  # flags the in-cluster LWS used. The Envoy AI Gateway's local-floor Backend
+  # points at this host on the service port.
+  services.llama-cpp = {
+    enable = true;
+    package = pkgs.llama-cpp.override {
+      rocmSupport = true;
+      rpcSupport = true;
+    };
+    openFirewall = true;
+    settings = {
+      host = "0.0.0.0";
+      port = 8080;
+      # Router preset: section names MUST equal the gateway's
+      # modelNameOverride route keys.
+      models-preset = "/etc/llama-cpp/models-preset.ini";
+      models-dir = "/var/lib/llama-cpp/models";
+      models-max = 5;
+      models-autoload = true;
+      embeddings = true;
+      ctx-size = 32768;
+      flash-attn = "on";
+      cache-type-k = "q8_0";
+      cache-type-v = "q8_0";
+      n-gpu-layers = 999;
+      mmap = false;
+    };
+  };
+
+  environment.etc."llama-cpp/models-preset.ini".text = ''
+    [deepseek/deepseek-v4-flash-0731]
+    hf = unsloth/DeepSeek-V4-Flash-0731-GGUF:UD-Q3_K_M
+
+    [z-ai/glm-5.3-flash]
+    hf = unsloth/GLM-5.3-Flash-GGUF:UD-IQ3_XXS
+
+    [qwen/qwen3.8-27b]
+    hf = unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_XL
+
+    [qwen/qwen3.8-flash]
+    hf = unsloth/Qwen3.8-Flash-Next-GGUF:UD-Q4_K_XL
+
+    [qwen/qwen3-embedding-8b]
+    hf = Qwen/Qwen3-Embedding-8B-GGUF:Q6_K
+  '';
 
   networking = {
     hostName = "sashina";
