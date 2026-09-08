@@ -7,14 +7,14 @@ build:
     - custom:
         buildCommand:
           nix run
-          github:shikanime-studio/nix-containers/2775566e9b407443abb8446f519234a2ddc1927e
-          -- skaffold build
+          github:shikanime-labs/wharf/86473d6e4aedb3a872a771c890dbaca06c0c74e0
+          -- skaffold build --flake .#catbox
       image: ghcr.io/shikanime-labs/machines/catbox
     - custom:
         buildCommand:
           nix run
-          github:shikanime-studio/nix-containers/2775566e9b407443abb8446f519234a2ddc1927e
-          -- skaffold build
+          github:shikanime-labs/wharf/86473d6e4aedb3a872a771c890dbaca06c0c74e0
+          -- skaffold build --flake .#llama-cpp
       image: ghcr.io/shikanime-labs/machines/llama-cpp
   tagPolicy:
     customTemplate:
