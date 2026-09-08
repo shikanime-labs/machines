@@ -21,6 +21,7 @@ let
 
   hermesLcmPlugin = import ../../pkgs/hermes-plugin-lcm { inherit pkgs; };
   rtkRewritePlugin = import ../../pkgs/hermes-plugin-rtk-rewrite { inherit pkgs; };
+  ponytailPlugin = import ../../pkgs/hermes-plugin-ponytail { inherit pkgs; };
 in
 {
   catppuccin = {
@@ -118,6 +119,7 @@ in
     extraPlugins = [
       hermesLcmPlugin
       rtkRewritePlugin
+      ponytailPlugin
     ];
 
     extraPackages = with pkgs; [
@@ -235,16 +237,25 @@ in
       };
 
       display = {
+        busy_input_mode = "steer";
         interface = "tui";
         streaming = true;
       };
 
-      plugins.enabled = [
-        "disk-cleanup"
-        "hermes-lcm"
-        "rtk-rewrite"
-        "security-guidance"
-      ];
+      plugins = {
+        enabled = [
+          "disk-cleanup"
+          "hermes-lcm"
+          "ponytail"
+          "rtk-rewrite"
+          "security-guidance"
+        ];
+        entries = {
+          hermes-lcm.allow_tool_override = true;
+          ponytail.allow_tool_override = true;
+          rtk-rewrite.allow_tool_override = true;
+        };
+      };
     };
   };
 
