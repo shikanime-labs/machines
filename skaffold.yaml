@@ -8,13 +8,13 @@ build:
         buildCommand:
           nix run
           github:shikanime-labs/wharf/d1faf2b6
-          -- skaffold build --flake . --platforms linux/amd64,linux/arm64
+          -- skaffold build --flake . --accept-flake-config
       image: ghcr.io/shikanime-labs/machines/catbox
     - custom:
         buildCommand:
           nix run
           github:shikanime-labs/wharf/d1faf2b6
-          -- skaffold build --flake . --platforms linux/amd64
+          -- build --flake . --accept-flake-config --platforms linux/amd64
       image: ghcr.io/shikanime-labs/machines/llama-cpp
   tagPolicy:
     customTemplate:
