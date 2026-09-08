@@ -71,7 +71,12 @@ in
       };
     };
     vlagent = {
-      command = "${pkgs.vlagent}/bin/vlagent -fileCollector.glob=/var/log/**/*.log -remoteWrite.url=https://logs.i.shikanime.studio/insert/0/logs";
+      command = ''
+        ${pkgs.bash}/bin/bash -c 'mkdir -p /var/lib/vlagent && exec ${pkgs.vlagent}/bin/vlagent \
+          -fileCollector.glob=/var/log/**/*.log \
+          -remoteWrite.tmpDataPath=/var/lib/vlagent \
+          -remoteWrite.url=https://logs.i.shikanime.studio/insert/0/logs'
+      '';
       serviceConfig = {
         Label = "org.nixos.vlagent";
         RunAtLoad = true;
