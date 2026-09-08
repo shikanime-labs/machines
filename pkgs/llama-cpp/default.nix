@@ -1,10 +1,8 @@
-# ROCm llama.cpp OCI image (gfx1151 Strix Halo) for the nix-containers
-# Skaffold builder. The host kernel provides the amdgpu driver and exposes
-# /dev/kfd + /dev/dri; the image carries only the ROCm userland.
 {
   pkgs,
   lib,
-}:
+} :
+
 let
   llama-cpp = pkgs.llama-cpp.override {
     rocmSupport = true;
@@ -12,7 +10,7 @@ let
   };
 in
 pkgs.dockerTools.buildLayeredImage {
-  name = "llama-cpp-oci";
+  name = "llama-cpp";
   tag = "latest";
 
   contents = [
@@ -40,7 +38,7 @@ pkgs.dockerTools.buildLayeredImage {
   };
 
   meta = with lib; {
-    description = "llama.cpp ROCm (gfx1151) inference server container";
+    description = "llama.cpp ROCm inference server container";
     platforms = [ "x86_64-linux" ];
   };
 }
