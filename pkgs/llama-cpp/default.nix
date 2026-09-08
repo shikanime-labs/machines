@@ -1,7 +1,7 @@
 {
   pkgs,
   lib,
-} :
+}:
 
 let
   llama-cpp = pkgs.llama-cpp.override {
