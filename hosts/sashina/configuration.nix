@@ -28,7 +28,9 @@
     openFirewall = true;
     settings = {
       host = "0.0.0.0";
-      port = 8080;
+      # 8080 is taken by k3s node-local-dns (node-cache on 169.254.20.10)
+      # on every cluster node; use 18080 for the host-level service.
+      port = 18080;
       # Router preset: section names MUST equal the gateway's
       # modelNameOverride route keys.
       models-preset = "/etc/llama-cpp/models-preset.ini";
