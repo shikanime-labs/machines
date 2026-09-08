@@ -6,15 +6,13 @@ build:
   artifacts:
     - custom:
         buildCommand:
-          nix run
-          github:shikanime-labs/wharf/d1faf2b6
-          -- skaffold build --flake . --accept-flake-config
+          nix run github:shikanime-labs/wharf/d1faf2b6 -- skaffold build --flake
+          . --accept-flake-config
       image: ghcr.io/shikanime-labs/machines/catbox
     - custom:
         buildCommand:
-          nix run
-          github:shikanime-labs/wharf/d1faf2b6
-          -- build --flake . --accept-flake-config --platforms linux/amd64
+          nix run github:shikanime-labs/wharf/d1faf2b6 -- skaffold build --flake
+          . --accept-flake-config
       image: ghcr.io/shikanime-labs/machines/llama-cpp
   tagPolicy:
     customTemplate:
