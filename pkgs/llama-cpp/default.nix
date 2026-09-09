@@ -1,13 +1,11 @@
 {
   pkgs,
   system,
+  rocmSupport ? system == "x86_64-linux",
+  vulkanSupport ? system == "aarch64-linux",
   ...
 }:
 
-let
-  rocmSupport = system == "x86_64-linux";
-  vulkanSupport = system == "aarch64-linux";
-in
 (pkgs.llama-cpp.override {
   inherit rocmSupport vulkanSupport;
   rpcSupport = true;
