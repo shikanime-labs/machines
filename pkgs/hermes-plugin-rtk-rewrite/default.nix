@@ -7,8 +7,8 @@ pkgs.symlinkJoin {
       pkgs.fetchFromGitHub {
         owner = "rtk-ai";
         repo = "rtk";
-        rev = "v0.44.0";
-        hash = "sha256-Ev6w0Gi2y48DYi55GSciCoPgkUFaX44aH3UWGhs1OGk=";
+        rev = "v0.45.0";
+        hash = "sha256-weAyHM0nWLrM8JRbbXIfjUsHtAep3DOFyTO+M3BZ/iU=";
       }
     }/hooks/hermes/rtk-rewrite"
   ];
