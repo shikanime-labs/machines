@@ -559,9 +559,9 @@ in
       };
       hermes-agent-matrix-env = {
         content = ''
-          MATRIX_HOMESERVER=https://matrix.taila659a.ts.net/
           MATRIX_ACCESS_TOKEN=${config.sops.placeholder.hermes-agent-matrix-access-token}
           MATRIX_E2EE_MODE=required
+          MATRIX_HOMESERVER=https://matrix.taila659a.ts.net/
           MATRIX_HOME_ROOM=#automata:matrix.taila659a.ts.net
           MATRIX_RECOVERY_KEY_FILE=${config.sops.secrets.hermes-agent-matrix-recovery-key.path}
         '';
@@ -569,11 +569,11 @@ in
       };
       hermes-agent-a2a-env = {
         content = ''
-          A2A_PORT=9900
           A2A_AGENT_NAME=${config.networking.hostName}
-          A2A_PUBLIC_URL=https://${config.networking.hostName}.taila659a.ts.net:9900
           A2A_OWN_TOKEN=${config.sops.placeholder."${mkA2aTokenSecretName config.networking.hostName}"}
           A2A_PEER_TOKENS=${mkA2aPeerTokens otherPeers}
+          A2A_PORT=9900
+          A2A_PUBLIC_URL=https://${config.networking.hostName}.taila659a.ts.net:9900
           # Inbound allow-list: cluster hosts accept all non-self peers;
           # workstations accept other workstations only (never clusters, never
           # themselves), so the boundary stays cluster→workstation one-way for
