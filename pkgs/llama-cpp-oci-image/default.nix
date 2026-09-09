@@ -6,8 +6,11 @@
 }:
 
 let
-  rocmSupport = system == "x86_64-linux";
-  llama-cpp = pkgs.callPackage ../llama-cpp/default.nix { inherit system; };
+  llama-cpp = pkgs.callPackage ../llama-cpp/default.nix {
+    inherit system;
+    rocmSupport = false;
+    vulkanSupport = false;
+  };
 in
 pkgs.dockerTools.buildLayeredImage {
   name = "llama-cpp-oci-image";
@@ -20,27 +23,16 @@ pkgs.dockerTools.buildLayeredImage {
   ];
 
   config = {
-    Entrypoint = [ "${llama-cpp}/bin/ggml-rpc-server" ];
-    Cmd = [
-      "--host"
-      "0.0.0.0"
-      "--port"
-      "50052"
-    ];
+    Entrypoint = [ "${llama-cpp}/bin/llama-server" ];
     ExposedPorts = {
-      "50052/tcp" = { };
+      "8080/tcp" = { };
     };
-    Env = lib.optionals rocmSupport [ "HIP_VISIBLE_DEVICES=0" ];
     User = "65532:65532";
     WorkingDir = "/";
   };
 
   meta = with lib; {
-    description =
-      if rocmSupport then
-        "llama.cpp ROCm RPC server container"
-      else
-        "llama.cpp Vulkan RPC server container";
+    description = "llama.cpp server container";
     platforms = [
       "x86_64-linux"
       "aarch64-linux"

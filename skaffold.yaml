@@ -14,6 +14,11 @@ build:
           nix run github:shikanime-labs/wharf/0059c49 -- skaffold build --flake
           .#llama-cpp-oci-image --option accept-flake-config=true
       image: ghcr.io/shikanime-labs/machines/llama-cpp
+    - custom:
+        buildCommand:
+          nix run github:shikanime-labs/wharf/0059c49 -- skaffold build --flake
+          .#llama-cpp-rpc-oci-image --option accept-flake-config=true
+      image: ghcr.io/shikanime-labs/machines/llama-cpp-rpc
   tagPolicy:
     customTemplate:
       template: latest
