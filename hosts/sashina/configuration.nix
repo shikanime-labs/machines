@@ -21,7 +21,7 @@
   # points at this host on the service port.
   services.llama-cpp = {
     enable = true;
-    package = pkgs.callPackage ../../pkgs/llama-cpp/package.nix {
+    package = pkgs.callPackage ../../pkgs/llama-cpp/default.nix {
       inherit (pkgs) system;
     };
     openFirewall = true;
