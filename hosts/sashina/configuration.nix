@@ -21,9 +21,8 @@
   # points at this host on the service port.
   services.llama-cpp = {
     enable = true;
-    package = pkgs.llama-cpp.override {
-      rocmSupport = true;
-      rpcSupport = true;
+    package = pkgs.callPackage ../../pkgs/llama-cpp/default.nix {
+      inherit (pkgs) system;
     };
     openFirewall = true;
     settings = {
