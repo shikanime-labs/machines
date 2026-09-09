@@ -1,4 +1,3 @@
-{ self, ... }:
 { inputs, ... }:
 
 let
@@ -240,22 +239,17 @@ in
       kushira = mkKushiraNixosConfiguration "x86_64-linux";
     };
 
-    packages = {
-      x86_64-linux = {
-        ashira = self.nixosConfigurations.ashira.config.system.build.toplevel;
-        catbox = mkCatboxPackage "x86_64-linux";
-        kushira = self.nixosConfigurations.kushira.config.system.build.toplevel;
-        manash = self.nixosConfigurations.manash.config.system.build.toplevel;
-        nalsha = self.nixosConfigurations.nalsha.config.system.build.toplevel;
-        nixtar = self.nixosConfigurations.nixtar.config.system.build.toplevel;
-        sashina = self.nixosConfigurations.sashina.config.system.build.toplevel;
-      };
-      aarch64-linux = {
-        catbox = mkCatboxPackage "aarch64-linux";
-        fushi = self.nixosConfigurations.fushi.config.system.build.toplevel;
-        minish = self.nixosConfigurations.minish.config.system.build.toplevel;
-        nemishi = self.nixosConfigurations.nemishi.config.system.build.toplevel;
+  };
+
+  perSystem =
+    {
+      lib,
+      system,
+      ...
+    }:
+    {
+      packages = lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
+        catbox-oci-image = mkCatboxPackage system;
       };
     };
-  };
 }

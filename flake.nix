@@ -163,7 +163,6 @@
       with flake-parts-lib;
       let
         darwinFlakeModule = importApply ./modules/flake/darwin.nix { inherit self; };
-        nixosFlakeModule = importApply ./modules/flake/nixos.nix { inherit self; };
       in
       {
         imports = [
@@ -173,7 +172,7 @@
           devlib.flakeModule
           darwinFlakeModule
           git-hooks.flakeModule
-          nixosFlakeModule
+          ./modules/flake/nixos.nix
           treefmt-nix.flakeModule
         ];
         systems = [
