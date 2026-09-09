@@ -256,35 +256,30 @@ in
         context.engine = "lcm";
         custom_providers = [
           {
-            name = "aperture-anthropic";
-            base_url = "https://ai.taila659a.ts.net/v1";
+            name = "shikanime-anthropic";
             api_mode = "anthropic_messages";
-            model = "glm-4.7";
+            base_url = "https://inference.i.shikanime.studio/anthropic";
+            key_env = "SKS_API_KEY";
+            model = "z-ai/glm-5.3-flash";
             models = [
-              "glm-4.7"
-              "glm-5.2"
+              "z-ai/glm-5.3-flash"
+              "z-ai/glm-5.3"
+              "qwen/qwen3.8-27b"
+              "qwen/qwen3.8-flash"
+              "deepseek/deepseek-v4-flash"
             ];
           }
           {
-            name = "aperture-openai";
-            base_url = "https://ai.taila659a.ts.net/v1";
+            name = "shikanime-openai";
             api_mode = "chat_completions";
-            model = "tencent/hy3:free";
+            base_url = "https://inference.i.shikanime.studio/v1";
+            key_env = "SKS_API_KEY";
+            model = "poolside/laguna-s-2.1:free";
             models = [
+              "poolside/laguna-s-2.1:free"
+              "qwen/qwen3.8-flash"
+              "qwen/qwen3.8-27b"
               "deepseek/deepseek-v4-flash"
-              "gemini-2.5-flash"
-              "gemini-2.5-flash-lite"
-              "gemini-2.5-pro"
-              "gemini-3-flash-preview"
-              "google/gemma-4-e2b"
-              "inclusionai/ling-3.0-flash:free"
-              "labs-leanstral-1-5"
-              "nvidia/nemotron-3-ultra-550b-a55b:free"
-              "openrouter/openrouter/free"
-              "poolside/laguna-xs-2.1:free"
-              "qwen/qwen3-8b"
-              "stepfun/step-3.7-flash:free"
-              "tencent/hy3:free"
             ];
           }
         ];
@@ -307,29 +302,14 @@ in
         };
         fallback_providers = [
           {
-            api_mode = "chat_completions";
-            model = "inclusionai/ling-3.0-flash:free";
-            provider = "custom:aperture-openai";
+            api_mode = "anthropic_messages";
+            model = "z-ai/glm-5.3";
+            provider = "custom:shikanime-anthropic";
           }
           {
-            api_mode = "chat_completions";
-            model = "poolside/laguna-s-2.1:free";
-            provider = "custom:aperture-openai";
-          }
-          {
-            api_mode = "chat_completions";
-            model = "labs-leanstral-1-5";
-            provider = "custom:aperture-openai";
-          }
-          {
-            api_mode = "chat_completions";
-            model = "stepfun/step-3.7-flash:free";
-            provider = "custom:aperture-openai";
-          }
-          {
-            api_mode = "chat_completions";
-            model = "tencent/hy3:free";
-            provider = "custom:aperture-openai";
+            api_mode = "anthropic_messages";
+            model = "deepseek/deepseek-v4-flash";
+            provider = "custom:shikanime-anthropic";
           }
         ];
         matrix = {
@@ -341,80 +321,9 @@ in
         };
         memory.provider = "honcho";
         model = {
-          default = "tencent/hy3:free";
-          provider = "custom:aperture-openai";
-          base_url = "https://ai.taila659a.ts.net/v1";
-        };
-        auxiliary = {
-          vision = {
-            provider = "custom:aperture-openai";
-            model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
-          };
-          web_extract = {
-            provider = "custom:aperture-openai";
-            model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
-          };
-          compression = {
-            provider = "custom:aperture-openai";
-            model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
-          };
-          skills_hub = {
-            provider = "custom:aperture-openai";
-            model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
-          };
-          approval = {
-            provider = "custom:aperture-openai";
-            model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
-          };
-          mcp = {
-            provider = "custom:aperture-openai";
-            model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
-          };
-          title_generation = {
-            provider = "custom:aperture-openai";
-            model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
-          };
-          memory_query_rewrite = {
-            provider = "custom:aperture-anthropic:openai";
-            model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
-          };
-          tts_audio_tags = {
-            provider = "custom:aperture-openai";
-            model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
-          };
-          triage_specifier = {
-            provider = "custom:aperture-openai";
-            model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
-          };
-          kanban_decomposer = {
-            provider = "custom:aperture-openai";
-            model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
-          };
-          profile_describer = {
-            provider = "custom:aperture-openai";
-            model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
-          };
-          curator = {
-            provider = "custom:aperture-openai";
-            model = "tencent/hy3:free";
-            base_url = "https://ai.taila659a.ts.net/v1";
-          };
-        };
-        mcp_servers.aperture = {
-          url = "https://ai.taila659a.ts.net/v1/mcp";
-          enabled = true;
+          default = "qwen/qwen3.8-27b";
+          provider = "custom:shikanime-anthropic";
+          base_url = "https://inference.i.shikanime.studio/anthropic";
         };
         # Bare `hermes`/`hermes chat` launches the Ink TUI by default; token
         # streaming on for live agent output. Explicit --cli/--tui still wins.
@@ -422,7 +331,7 @@ in
           interface = "tui";
           streaming = true;
         };
-        # Inbound: serves Agent Card + JSON-RPC on 0.0.0.0:9900. Per-peer
+        # Inbound: serves Agent Card + JSON-RPC on the loopback bind (:9900). Per-peer
         # tokens (A2A_PEER_TOKENS) authenticate each fleet member by name.
         platforms.a2a.enabled = true;
         # Outbound: every host dials only non-self cluster nodes.

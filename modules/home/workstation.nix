@@ -168,38 +168,6 @@ in
             "deepseek/deepseek-v4-flash"
           ];
         }
-        {
-          name = "aperture-anthropic";
-          base_url = "https://ai.taila659a.ts.net/v1";
-          api_mode = "anthropic_messages";
-          model = "glm-4.7";
-          models = [
-            "glm-4.7"
-            "glm-5.2"
-          ];
-        }
-        {
-          name = "aperture-openai";
-          base_url = "https://ai.taila659a.ts.net/v1";
-          api_mode = "chat_completions";
-          model = "tencent/hy3:free";
-          models = [
-            "deepseek/deepseek-v4-flash"
-            "gemini-2.5-flash"
-            "gemini-2.5-flash-lite"
-            "gemini-2.5-pro"
-            "gemini-3-flash-preview"
-            "google/gemma-4-e2b"
-            "inclusionai/ling-3.0-flash:free"
-            "labs-leanstral-1-5"
-            "nvidia/nemotron-3-ultra-550b-a55b:free"
-            "openrouter/openrouter/free"
-            "poolside/laguna-xs-2.1:free"
-            "qwen/qwen3-8b"
-            "stepfun/step-3.7-flash:free"
-            "tencent/hy3:free"
-          ];
-        }
       ];
 
       fallback_providers = [
@@ -207,16 +175,6 @@ in
           api_mode = "anthropic_messages";
           model = "z-ai/glm-5.3";
           provider = "custom:shikanime-anthropic";
-        }
-        {
-          api_mode = "chat_completions";
-          model = "deepseek/deepseek-v4-flash";
-          provider = "custom:aperture-openai";
-        }
-        {
-          api_mode = "chat_completions";
-          model = "stepfun/step-3.7-flash:free";
-          provider = "custom:aperture-openai";
         }
         {
           api_mode = "anthropic_messages";
@@ -229,11 +187,6 @@ in
         default = "qwen/qwen3.8-27b";
         provider = "custom:shikanime-anthropic";
         base_url = "https://inference.i.shikanime.studio/anthropic";
-      };
-
-      mcp_servers.aperture = {
-        url = "https://ai.taila659a.ts.net/v1/mcp";
-        enabled = true;
       };
 
       display = {
