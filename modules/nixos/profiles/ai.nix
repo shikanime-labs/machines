@@ -216,6 +216,7 @@ in
     "adm"
     "systemd-journal"
   ];
+
   networking.firewall.allowedTCPPorts = [
     9900
     8642
