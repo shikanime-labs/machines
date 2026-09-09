@@ -210,12 +210,6 @@ in
     rtk
   ];
 
-  # Fleet agents self-check node health (journalctl -u, dmesg). Read-only
-  # journal access only — deliberately NOT wheel (no sudo for agents).
-  users.users.hermes.extraGroups = [
-    "adm"
-    "systemd-journal"
-  ];
   networking.firewall.allowedTCPPorts = [
     9900
     8642
@@ -471,61 +465,6 @@ in
     };
   };
 
-  # SupplementaryGroups on the unit (not just users.users.hermes.extraGroups):
-  # extraGroups updates /etc/group but the switch does not restart services for
-  # it, so the running agent keeps its old groups. A unit-file attribute makes
-  # the switch restart hermes-agent.service with adm/systemd-journal applied.
-  systemd.services.hermes-agent.serviceConfig.SupplementaryGroups = [
-    "adm"
-    "systemd-journal"
-  ];
-
-  # Expose the A2A agent over Tailscale. The agent serves plain HTTP on :9900;
-  # `serve --https` terminates TLS at the funnel and forwards to local HTTP,
-  # so peers reach https://<host>.taila659a.ts.net:9900. `serve --https` cannot
-  # target an HTTPS upstream, but the agent is plaintext HTTP, so this is valid.
-  # Runs after the declarative tailscale-serve unit (leader hosts) so set-config
-  # --all doesn't wipe the a2a service.
-  systemd.services.tailscale-serve-a2a = {
-    description = "Expose Hermes A2A agent via Tailscale serve";
-    after = [
-      "tailscaled.service"
-      "tailscale-serve.service"
-    ];
-    wants = [ "tailscaled.service" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      Restart = "on-failure";
-      RestartSec = "5s";
-    };
-    script = ''
-      ${getExe pkgs.tailscale} serve --yes --bg --https=9900 http://127.0.0.1:9900
-    '';
-  };
-
-  # Expose the Hermes api_server (peer DM target) over Tailscale. It serves
-  # plain HTTP on :8642; `serve --https` terminates TLS and forwards to it.
-  systemd.services.tailscale-serve-api = {
-    description = "Expose Hermes api_server via Tailscale serve";
-    after = [
-      "tailscaled.service"
-      "tailscale-serve.service"
-    ];
-    wants = [ "tailscaled.service" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      Restart = "on-failure";
-      RestartSec = "5s";
-    };
-    script = ''
-      ${getExe pkgs.tailscale} serve --yes --bg --https=8642 http://127.0.0.1:8642
-    '';
-  };
-
   sops = {
     secrets = {
       hermes-agent-a2a-token-catbox = {
@@ -599,4 +538,68 @@ in
       };
     };
   };
+
+  systemd.services = {
+    # Expose the A2A agent over Tailscale. The agent serves plain HTTP on :9900;
+    # `serve --https` terminates TLS at the funnel and forwards to local HTTP,
+    # so peers reach https://<host>.taila659a.ts.net:9900. `serve --https` cannot
+    # target an HTTPS upstream, but the agent is plaintext HTTP, so this is valid.
+    # Runs after the declarative tailscale-serve unit (leader hosts) so set-config
+    # --all doesn't wipe the a2a service.
+    tailscale-serve-a2a = {
+      description = "Expose Hermes A2A agent via Tailscale serve";
+      after = [
+        "tailscaled.service"
+        "tailscale-serve.service"
+      ];
+      wants = [ "tailscaled.service" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        Restart = "on-failure";
+        RestartSec = "5s";
+      };
+      script = ''
+        ${getExe pkgs.tailscale} serve --yes --bg --https=9900 http://127.0.0.1:9900
+      '';
+    };
+
+    # Expose the Hermes api_server (peer DM target) over Tailscale. It serves
+    # plain HTTP on :8642; `serve --https` terminates TLS and forwards to it.
+    tailscale-serve-api = {
+      description = "Expose Hermes api_server via Tailscale serve";
+      after = [
+        "tailscaled.service"
+        "tailscale-serve.service"
+      ];
+      wants = [ "tailscaled.service" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        Restart = "on-failure";
+        RestartSec = "5s";
+      };
+      script = ''
+        ${getExe pkgs.tailscale} serve --yes --bg --https=8642 http://127.0.0.1:8642
+      '';
+    };
+  };
+
+  # Fleet agents self-check node health (journalctl -u, dmesg). Read-only
+  # journal access only — deliberately NOT wheel (no sudo for agents).
+  users.users.hermes.extraGroups = [
+    "adm"
+    "systemd-journal"
+  ];
+
+  # SupplementaryGroups on the unit (not just users.users.hermes.extraGroups):
+  # extraGroups updates /etc/group but the switch does not restart services for
+  # it, so the running agent keeps its old groups. A unit-file attribute makes
+  # the switch restart hermes-agent.service with adm/systemd-journal applied.
+  systemd.services.hermes-agent.serviceConfig.SupplementaryGroups = [
+    "adm"
+    "systemd-journal"
+  ];
 }
