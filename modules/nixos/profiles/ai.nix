@@ -210,6 +210,13 @@ in
     rtk
   ];
 
+  # Fleet agents self-check node health (journalctl -u, dmesg). Read-only
+  # journal access only — deliberately NOT wheel (no sudo for agents).
+  users.users.hermes.extraGroups = [
+    "adm"
+    "systemd-journal"
+  ];
+
   networking.firewall.allowedTCPPorts = [
     9900
     8642
