@@ -3,12 +3,12 @@
   system,
   rocmSupport ? system == "x86_64-linux",
   vulkanSupport ? system == "aarch64-linux",
-  rpcSupport ? false,
   ...
 }:
 
 (pkgs.llama-cpp.override {
-  inherit rocmSupport vulkanSupport rpcSupport;
+  inherit rocmSupport vulkanSupport;
+  rpcSupport = true;
 }).overrideAttrs
   (_old: {
     version = "0.4.0-glm5next";

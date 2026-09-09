@@ -7,9 +7,8 @@
 
 let
   rocmSupport = system == "x86_64-linux";
-  vulkanSupport = system == "aarch64-linux";
-  llama-cpp = pkgs.callPackage ../llama-cpp/default.nix {
-    inherit system rocmSupport vulkanSupport;
+  llama-cpp-rpc = pkgs.callPackage ../llama-cpp-rpc/default.nix {
+    inherit system;
   };
 in
 pkgs.dockerTools.buildLayeredImage {
@@ -19,11 +18,11 @@ pkgs.dockerTools.buildLayeredImage {
   contents = [
     pkgs.dockerTools.caCertificates
     pkgs.dockerTools.usrBinEnv
-    llama-cpp
+    llama-cpp-rpc
   ];
 
   config = {
-    Entrypoint = [ "${llama-cpp}/bin/ggml-rpc-server" ];
+    Entrypoint = [ "${llama-cpp-rpc}/bin/ggml-rpc-server" ];
     Cmd = [
       "--host"
       "0.0.0.0"
