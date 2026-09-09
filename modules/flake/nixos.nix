@@ -249,6 +249,7 @@ in
     }:
     {
       packages = lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
+        catbox = mkCatboxPackage system;
         catbox-oci-image = mkCatboxPackage system;
       };
     };
