@@ -562,7 +562,6 @@ in
       };
       hermes-agent-a2a-env = {
         content = ''
-          A2A_HOST=0.0.0.0
           A2A_PORT=9900
           A2A_AGENT_NAME=${config.networking.hostName}
           A2A_PUBLIC_URL=https://${config.networking.hostName}.taila659a.ts.net:9900
