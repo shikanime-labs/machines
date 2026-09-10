@@ -84,12 +84,7 @@
   services.fstrim.enable = true;
 
   systemd = {
-    # Direct USB4 peer link (kushira <-> sashina) carrying the llama.cpp
-    # ggml RPC traffic (~8 us vs ~65 us over the 10G bond). IPv4LL keeps
-    # the link self-configuring; the routable /29 addresses live in each
-    # host's configuration.nix on this same unit. 10.66.0.3-.5 are pinned
-    # for the Multus pod attachments (manifests apps/llama-cpp*). MTU
-    # 65522 is the thunderbolt-net driver max (TBNET_MAX_MTU - ETH_HLEN).
+    # USB4 peer link for llama.cpp RPC; host /29s in configuration.nix, pods pin .3-.5.
     network.networks."40-thunderbolt" = {
       matchConfig.Driver = "thunderbolt-net";
       linkConfig = {

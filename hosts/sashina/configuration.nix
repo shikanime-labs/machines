@@ -29,9 +29,7 @@
     ];
   };
 
-  # Static address on the USB4 peer link (see
-  # modules/nixos/hardware/minisforum-ms-s1.nix "40-thunderbolt"); kushira
-  # holds 10.66.0.2/29 and the Multus pod attachments pin 10.66.0.3-.5.
+  # USB4 peer link /29 (kushira .2; Multus pods .3-.5).
   systemd.network.networks."40-thunderbolt".address = [ "10.66.0.1/29" ];
 
   services = {
