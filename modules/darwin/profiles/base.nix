@@ -75,7 +75,7 @@ in
         ${pkgs.bash}/bin/bash -c 'mkdir -p /var/lib/vlagent && exec ${pkgs.vlagent}/bin/vlagent \
           -fileCollector.glob=/var/log/**/*.log \
           -remoteWrite.tmpDataPath=/var/lib/vlagent \
-          -remoteWrite.url=https://logs.i.shikanime.studio/insert/0/logs'
+          -remoteWrite.url=https://logs.i.shikanime.studio/insert/native'
       '';
       serviceConfig = {
         Label = "org.nixos.vlagent";
