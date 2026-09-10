@@ -69,15 +69,23 @@
   ];
 
   networking = {
-    # Realtek RTL8127 ports, one bridge each.
-    bridges = {
-      # br0: LAN uplink.
-      br0.interfaces = [ "enp97s0" ];
-      # br1: direct node-to-node peer link to kushira for llama.cpp RPC
-      # (10.66.0.0/29, pods .3-.5); covered by the profile's br+ glob.
-      br1.interfaces = [ "enp98s0" ];
+    bonds.bond0 = {
+      # Realtek RTL8127. Names assumed to match the Beelink enumeration —
+      # confirm with `ip -br link` on first boot before install.
+      interfaces = [
+        "enp97s0"
+        "enp98s0"
+      ];
+      driverOptions = {
+        mode = "balance-alb";
+        miimon = "100";
+      };
     };
 
+    bridges.br0.interfaces = [ "bond0" ];
+
+    # balance-alb (mode 6): aggregates both 10G NICs without switch-side LACP,
+    # same reason as the Beelinks — the NETGEAR MS308 is unmanaged.
     useNetworkd = true;
   };
 
