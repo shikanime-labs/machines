@@ -29,8 +29,11 @@
     ];
   };
 
-  # USB4 peer link /29 (kushira .2; Multus pods .3-.5).
-  systemd.network.networks."40-thunderbolt".address = [ "10.66.0.1/29" ];
+  # Direct peer link to kushira (.2); Multus pods pin .3-.5.
+  systemd.network.networks."40-sashina-br1" = {
+    matchConfig.Name = "br1";
+    address = [ "10.66.0.1/29" ];
+  };
 
   services = {
     knix = {

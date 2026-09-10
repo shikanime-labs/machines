@@ -25,8 +25,11 @@
     ];
   };
 
-  # USB4 peer link /29 (sashina .1; Multus pods .3-.5).
-  systemd.network.networks."40-thunderbolt".address = [ "10.66.0.2/29" ];
+  # Direct peer link to sashina (.1); Multus pods pin .3-.5.
+  systemd.network.networks."40-kushira-br1" = {
+    matchConfig.Name = "br1";
+    address = [ "10.66.0.2/29" ];
+  };
 
   services = {
     knix = {
@@ -67,7 +70,7 @@
       ## DIALOGUE
       U: "Is the cluster healthy?"
       20O: Affirmative.
-      20O: Both Halos report GPU and bond uplink nominal.
+      20O: Both Halos report GPU and uplink nominal.
       20O: ...Ensure sashina's shard remains provisioned before any reload.
 
       U: "Deploy the new model."
