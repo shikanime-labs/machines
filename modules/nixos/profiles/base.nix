@@ -138,6 +138,11 @@
   services.vlagent = {
     enable = true;
     remoteWrite.url = "https://logs.i.shikanime.studio/insert/native";
+    # Collect host logs incl. /var/log/pods/** (k8s container stdout: envoy
+    # dataplane, controllers). Without a glob the file collector ingests nothing.
+    extraArgs = [
+      "-fileCollector.glob=/var/log/**/*.log"
+    ];
   };
 
   systemd = {
