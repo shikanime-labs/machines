@@ -209,6 +209,8 @@ in
           rtk-rewrite.allow_tool_override = true;
         };
       };
+
+      sessions.auto_prune = true;
     };
   };
 
