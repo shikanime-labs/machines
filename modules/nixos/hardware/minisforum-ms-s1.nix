@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 
 {
   boot = {
@@ -85,24 +85,17 @@
 
   systemd = {
     # Direct USB4 peer link (kushira <-> sashina) carrying the llama.cpp
-    # ggml RPC traffic (~8 us vs ~65 us over the 10G bond). Static /29 —
-    # no DHCP server exists on a bare cable. sashina .1, kushira .2;
-    # 10.66.0.3-.5 are pinned for the Multus pod attachments (manifests
-    # apps/llama-cpp*). MTU 65522 is the thunderbolt-net driver max
-    # (TBNET_MAX_MTU - ETH_HLEN). The address block is keyed by hostName
-    # so this single unit serves both peers; networkd binds the first
-    # matching .network exclusively, so hosts/sashina must not add a
-    # second tb-matching unit.
+    # ggml RPC traffic (~8 us vs ~65 us over the 10G bond). IPv4LL keeps
+    # the link self-configuring; the routable /29 addresses live in each
+    # host's configuration.nix on this same unit. 10.66.0.3-.5 are pinned
+    # for the Multus pod attachments (manifests apps/llama-cpp*). MTU
+    # 65522 is the thunderbolt-net driver max (TBNET_MAX_MTU - ETH_HLEN).
     network.networks."40-thunderbolt" = {
       matchConfig.Driver = "thunderbolt-net";
       linkConfig = {
         MTUBytes = 65522;
         RequiredForOnline = "no";
       };
-      networkConfig.LinkLocalAddressing = "no";
-      address = [
-        (if config.networking.hostName == "sashina" then "10.66.0.1/29" else "10.66.0.2/29")
-      ];
     };
 
     # NIC performance tuning: hardware offloads + RPS for both RTL8127 ports.

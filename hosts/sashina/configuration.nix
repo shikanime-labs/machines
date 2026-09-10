@@ -29,6 +29,11 @@
     ];
   };
 
+  # Static address on the USB4 peer link (see
+  # modules/nixos/hardware/minisforum-ms-s1.nix "40-thunderbolt"); kushira
+  # holds 10.66.0.2/29 and the Multus pod attachments pin 10.66.0.3-.5.
+  systemd.network.networks."40-thunderbolt".address = [ "10.66.0.1/29" ];
+
   services = {
     knix = {
       nodeIP = "192.168.1.79,2a02:8424:7899:f201:94eb:8d1:325a:e4a0";
