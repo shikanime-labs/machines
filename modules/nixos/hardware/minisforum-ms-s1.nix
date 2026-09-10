@@ -20,8 +20,6 @@
       "net.core.busy_read" = 50;
     };
 
-    kernelModules = [ "thunderbolt-net" ];
-
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot.enable = true;
@@ -74,40 +72,21 @@
   ];
 
   networking = {
-    bonds.bond0 = {
-      # Realtek RTL8127. Names assumed to match the Beelink enumeration —
-      # confirm with `ip -br link` on first boot before install.
-      interfaces = [
-        "enp97s0"
-        "enp98s0"
-      ];
-      driverOptions = {
-        mode = "balance-alb";
-        miimon = "100";
-      };
+    # Realtek RTL8127 ports, one bridge each.
+    bridges = {
+      # br0: LAN uplink.
+      br0.interfaces = [ "enp97s0" ];
+      # br1: direct node-to-node peer link to kushira for llama.cpp RPC
+      # (10.66.0.0/29, pods .3-.5); covered by the profile's br+ glob.
+      br1.interfaces = [ "enp98s0" ];
     };
 
-    bridges.br0.interfaces = [ "bond0" ];
-
-    # balance-alb (mode 6): aggregates both 10G NICs without switch-side LACP,
-    # same reason as the Beelinks — the NETGEAR MS308 is unmanaged.
-    # ponytail: mode 6 is unverified at 10G; drop bond0 and bridge enp1s0
-    # directly if per-flow throughput regresses.
     useNetworkd = true;
   };
 
   services.fstrim.enable = true;
 
   systemd = {
-    # USB4 peer link for llama.cpp RPC; host /29s in configuration.nix, pods pin .3-.5.
-    network.networks."40-thunderbolt" = {
-      matchConfig.Driver = "thunderbolt-net";
-      linkConfig = {
-        MTUBytes = 65522;
-        RequiredForOnline = "no";
-      };
-    };
-
     # NIC performance tuning: hardware offloads + RPS for both RTL8127 ports.
     services.network-nic-performance = {
       after = [ "network-online.target" ];

@@ -18,8 +18,6 @@ with lib;
         ip6tables -I INPUT -i br+ -j ACCEPT
         iptables -I FORWARD -i br+ -j ACCEPT
         ip6tables -I FORWARD -i br+ -j ACCEPT
-        iptables -I INPUT -i tb+ -j ACCEPT
-        iptables -I FORWARD -i tb+ -j ACCEPT
         iptables -I FORWARD -i cni+ -o tailscale0 -j ACCEPT
         ip6tables -I FORWARD -i cni+ -o tailscale0 -j ACCEPT
       '';
@@ -28,8 +26,6 @@ with lib;
         ip6tables -D INPUT -i br+ -j ACCEPT 2>/dev/null || true
         iptables -D FORWARD -i br+ -j ACCEPT 2>/dev/null || true
         ip6tables -D FORWARD -i br+ -j ACCEPT 2>/dev/null || true
-        iptables -D INPUT -i tb+ -j ACCEPT 2>/dev/null || true
-        iptables -D FORWARD -i tb+ -j ACCEPT 2>/dev/null || true
         iptables -D FORWARD -i cni+ -o tailscale0 -j ACCEPT 2>/dev/null || true
         ip6tables -I FORWARD -i cni+ -o tailscale0 -j ACCEPT 2>/dev/null || true
       '';
