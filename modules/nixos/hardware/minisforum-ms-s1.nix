@@ -99,16 +99,13 @@
   services.fstrim.enable = true;
 
   systemd = {
-    # Direct USB4 peer link (kushira <-> sashina). IPv4LL keeps it
-    # config-free; no DHCP server exists on a bare cable. MTU 65522 is
-    # the thunderbolt-net driver max (TBNET_MAX_MTU - ETH_HLEN).
+    # USB4 peer link for llama.cpp RPC; host /29s in configuration.nix, pods pin .3-.5.
     network.networks."40-thunderbolt" = {
       matchConfig.Driver = "thunderbolt-net";
       linkConfig = {
         MTUBytes = 65522;
         RequiredForOnline = "no";
       };
-      networkConfig.LinkLocalAddressing = "ipv4";
     };
 
     # NIC performance tuning: hardware offloads + RPS for both RTL8127 ports.
