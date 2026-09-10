@@ -58,6 +58,36 @@
 
   hardware.enableRedistributableFirmware = true;
 
+  # OpenCL via the ROCm runtime ICD (complement to the Mesa GL/Vulkan stack
+  # that nixos-hardware's common-gpu-amd supplies).
+  hardware.amdgpu.opencl.enable = true;
+
+  # /opt/rocm compatibility path: HIP consumer binaries hard-code that
+  # location, which FHS distributions provide and NixOS does not.
+  systemd.tmpfiles.rules =
+    let
+      rocmEnv = pkgs.symlinkJoin {
+        name = "rocm-combined";
+        paths = with pkgs.rocmPackages; [
+          clr
+          hipblas
+          rocblas
+        ];
+      };
+    in
+    [ "L+ /opt/rocm - - - - ${rocmEnv}" ];
+
+  environment = {
+    # GPU observability and compute-verification tooling.
+    systemPackages = with pkgs; [
+      clinfo
+      nvtopPackages.amd
+      radeontop
+      rocmPackages.rocminfo
+      rocmPackages.rocm-smi
+    ];
+  };
+
   networking = {
     bonds.bond0 = {
       # Realtek RTL8127. Names assumed to match the Beelink enumeration —

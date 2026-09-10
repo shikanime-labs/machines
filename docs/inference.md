@@ -33,9 +33,19 @@ GPU/ROCm acceleration lives entirely in
 - `hardware.enableRedistributableFirmware = true` — Radeon 8060S (gfx1151)
   microcode so the compute stack reaches `/dev/dri/renderD128`.
 - `hardware.graphics.enable = true` + `enable32Bit` (inherited from
-  nixos-hardware `common-gpu-amd`) — Mesa/ROCm userspace.
+  nixos-hardware `common-gpu-amd`) — Mesa/ROCm userspace (RADV default).
+- `hardware.amdgpu.opencl.enable = true` — OpenCL via the ROCm runtime ICD.
+- A tmpfiles rule symlinks `/opt/rocm` at a `rocm-combined` bundle
+  (rocblas/hipblas/clr) — HIP consumer binaries hard-code that path.
+- `clinfo`, `nvtop`, `radeontop`, `rocminfo`, `rocm-smi` in
+  `environment.systemPackages` for verification and observability.
 - `boot.kernelParams = [ "amdgpu.gttsize=131072" "ttm.pages_limit=33554432" ]` —
   full 128 GiB GTT ceiling for the unified-memory iGPU.
+
+Global `rocmSupport` is set on the two hosts' package sets in
+`modules/flake/nixos.nix` (`mkSashina`/`mkKushira` instantiate `pkgs`
+explicitly, so module-level `nixpkgs.config` would not reach them) — every
+package exposing the knob builds against ROCm/HIP.
 
 The llama.cpp inference _service_ (server/rpc roles, `:8080`/`:50052`) is not
 yet wired as a module — the nodes are provisioned with acceleration enabled and

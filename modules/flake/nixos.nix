@@ -171,13 +171,19 @@ let
       ++ (mkRpi4ClusterModules system);
     };
 
-  # MS-S1 Max (Strix Halo, gfx1151): x86_64 worker + ROCm inference.
+  # MS-S1 Max (Strix Halo, gfx1151): x86_64 worker + ROCm inference. The
+  # package set is instantiated here (not via module nixpkgs.config), so the
+  # ROCm knob lives beside allowUnfree — module-level nixpkgs.config would
+  # not reach this instance.
   mkSashinaNixosConfiguration =
     system:
     inputs.nixpkgs.lib.nixosSystem {
       pkgs = import inputs.nixpkgs {
         inherit system;
-        config.allowUnfree = true;
+        config = {
+          allowUnfree = true;
+          rocmSupport = true;
+        };
       };
       modules = [
         ../../hosts/sashina/configuration.nix
@@ -190,7 +196,10 @@ let
     inputs.nixpkgs.lib.nixosSystem {
       pkgs = import inputs.nixpkgs {
         inherit system;
-        config.allowUnfree = true;
+        config = {
+          allowUnfree = true;
+          rocmSupport = true;
+        };
       };
       modules = [
         ../../hosts/kushira/configuration.nix
