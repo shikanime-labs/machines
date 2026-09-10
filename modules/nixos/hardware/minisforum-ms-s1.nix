@@ -56,7 +56,22 @@
     };
   };
 
-  hardware.enableRedistributableFirmware = true;
+  # OpenCL via the ROCm runtime ICD; firmware so compute reaches
+  # /dev/dri/renderD128 (Mesa GL/Vulkan userspace comes from nixos-hardware's
+  # common-gpu-amd).
+  hardware = {
+    amdgpu.opencl.enable = true;
+    enableRedistributableFirmware = true;
+  };
+
+  # GPU observability and compute-verification tooling.
+  environment.systemPackages = with pkgs; [
+    clinfo
+    nvtopPackages.amd
+    radeontop
+    rocmPackages.rocminfo
+    rocmPackages.rocm-smi
+  ];
 
   networking = {
     bonds.bond0 = {
