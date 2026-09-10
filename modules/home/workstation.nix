@@ -96,11 +96,13 @@ in
         "ashira.taila659a.ts.net" = mkSshHeadlessHost "nishir";
         "catbox.taila659a.ts.net" = mkSshHeadlessHost "shika";
         "fushi.taila659a.ts.net" = mkSshHeadlessHost "nishir";
+        "kushira.taila659a.ts.net" = mkSshHeadlessHost "nishir";
         "manash.taila659a.ts.net" = mkSshHeadlessHost "nishir";
         "minish.taila659a.ts.net" = mkSshHeadlessHost "nishir";
         "nalsha.taila659a.ts.net" = mkSshHeadlessHost "nishir";
         "nemishi.taila659a.ts.net" = mkSshHeadlessHost "nishir";
         "nixtar.taila659a.ts.net" = mkSshWorkstationHost "shika";
+        "sashina.taila659a.ts.net" = mkSshHeadlessHost "nishir";
         "thinkcentre-m710t.tailfb4bb2.ts.net" = mkSshWorkstationHost "william-phetsinorath";
       };
     };

@@ -36,8 +36,10 @@ in
   nix = {
     buildMachines = mkBuildMachines [
       (mkBeelinkBuildMachine "ashira")
+      (mkBeelinkBuildMachine "kushira")
       (mkBeelinkBuildMachine "manash")
       (mkBeelinkBuildMachine "nalsha")
+      (mkBeelinkBuildMachine "sashina")
       (mkRpiBuildMachine "fushi")
       (mkRpiBuildMachine "minish")
       (mkRpiBuildMachine "nemishi")

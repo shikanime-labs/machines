@@ -55,8 +55,10 @@ in
   nix = {
     buildMachines = mkBuildMachines [
       (mkBeelinkBuildMachine "ashira")
+      (mkBeelinkBuildMachine "kushira")
       (mkBeelinkBuildMachine "manash")
       (mkBeelinkBuildMachine "nalsha")
+      (mkBeelinkBuildMachine "sashina")
       (mkRpiBuildMachine "fushi")
       (mkRpiBuildMachine "minish")
       (mkRpiBuildMachine "nemishi")
@@ -90,6 +92,14 @@ in
     (mkSshKnownHost {
       hostName = "nalsha";
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGAFFXlS4bbJnvo2CaPdKPHX2EFyrfF/KHfcwsVgOffE";
+    })
+    (mkSshKnownHost {
+      hostName = "kushira";
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGFPJ7GiWGH7MpJDlRz2Y+38U9AMnWELE/h7oGO6ec4K";
+    })
+    (mkSshKnownHost {
+      hostName = "sashina";
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIII1QSdrWGafRNTuyBxRhm8NNLG+37Zfk3+i42sUbEB3";
     })
   ];
 }
