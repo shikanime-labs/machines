@@ -137,7 +137,7 @@
 
   services.vlagent = {
     enable = true;
-    remoteWrite.url = "https://logs.i.shikanime.studio/insert/0/logs";
+    remoteWrite.url = "https://logs.i.shikanime.studio/insert/native";
   };
 
   systemd = {
