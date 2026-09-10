@@ -14,9 +14,6 @@
     }
     // lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
       packages = {
-        llama-cpp = pkgs.callPackage ../../pkgs/llama-cpp/default.nix {
-          inherit system;
-        };
         llama-cpp-oci-image = pkgs.callPackage ../../pkgs/llama-cpp-oci-image/default.nix {
           inherit system;
         };
