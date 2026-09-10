@@ -21,7 +21,7 @@ attrset. The Nix TOML renderer emits exactly what Noctalia's
 `config_service.cpp` parser expects (`[plugins] enabled=[...]`):
 
 ```nix
-# modules/home/graphical.nix  (shared home module for graphical Linux hosts)
+# modules/home/graphical/default.nix  (shared home module for graphical Linux hosts)
 programs.noctalia = {
   enable = true;
   settings = {

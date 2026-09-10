@@ -15,8 +15,18 @@
   powerManagement.enable = true;
 
   hardware = {
-    # NVDEC hardware video decode (browser/media players) on the dGPU.
-    graphics.extraPackages = with pkgs; [ nvidia-vaapi-driver ];
+    # WiFi / Bluetooth firmware for the laptop radios.
+    enableRedistributableFirmware = true;
+
+    bluetooth.enable = true;
+
+    graphics = {
+      enable = true;
+      enable32Bit = true; # Gaming: 32-bit for Wine/Proton
+
+      # NVDEC hardware video decode (browser/media players) on the dGPU.
+      extraPackages = with pkgs; [ nvidia-vaapi-driver ];
+    };
 
     # NVIDIA GeForce RTX (Max-Q) dGPU — Razer Blade 17 specific.
     nvidia = {

@@ -1,8 +1,15 @@
 {
+  pkgs,
+  ...
+}:
+
+{
   imports = [
     ../../modules/nixos/profiles/ai.nix
     ../../modules/nixos/profiles/leader.nix
-    ../../modules/nixos/profiles/graphical.nix
+    ../../modules/nixos/profiles/machine.nix
+    ../../modules/nixos/profiles/workstation.nix
+    ../../modules/nixos/profiles/graphical
     ../../modules/nixos/hardware/razer-blade.nix
     ../../modules/nixos/users/meika.nix
     ../../modules/nixos/users/nishir.nix
@@ -84,6 +91,24 @@
     '';
   };
 
+  # Expose LM Studio over Tailscale HTTPS (ts.net endpoint on :1234). Runs after
+  # tailscaled is up; `serve` persists in tailscaled state after first apply.
+  systemd.services.tailscale-serve-lmstudio = {
+    after = [ "tailscaled.service" ];
+    description = "Expose LM Studio over Tailscale serve";
+    script = ''
+      ${pkgs.tailscale}/bin/tailscale serve --yes --bg --https=1234 http://127.0.0.1:1234
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "5s";
+    };
+    wantedBy = [ "multi-user.target" ];
+    wants = [ "tailscaled.service" ];
+  };
+
   sops = {
     age = {
       generateKey = true;
@@ -96,10 +121,6 @@
       nix-access-token.sopsFile = ../../secrets/machine.enc.yaml;
     };
   };
-
-  # Re-enable the setuid pkexec wrapper so GUI tools that escalate via
-  # pkexec (gparted, etc.) can gain root from a non-root desktop session.
-  security.polkit.enablePkexecWrapper = true;
 
   # The openrazer module creates an `openrazer` group whose members come ONLY
   # from hardware.openrazer.users. Without shika listed, openrazer-daemon.service
