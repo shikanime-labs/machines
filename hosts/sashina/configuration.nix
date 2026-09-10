@@ -29,12 +29,6 @@
     ];
   };
 
-  # Direct peer link to kushira (.2); Multus pods pin .3-.5.
-  systemd.network.networks."40-sashina-br1" = {
-    matchConfig.Name = "br1";
-    address = [ "10.66.0.1/29" ];
-  };
-
   services = {
     knix = {
       nodeIP = "192.168.1.79,2a02:8424:7899:f201:94eb:8d1:325a:e4a0";
