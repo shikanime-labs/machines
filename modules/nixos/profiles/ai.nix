@@ -320,6 +320,7 @@ in
           ];
         };
         memory.provider = "honcho";
+        sessions.auto_prune = true;
         model = {
           default = "qwen/qwen3.8-27b";
           provider = "custom:shikanime-anthropic";
