@@ -64,9 +64,6 @@
 
   # GPU observability and compute-verification tooling.
   environment.systemPackages = with pkgs; [
-    clinfo
-    nvtopPackages.amd
-    radeontop
     rocmPackages.rocminfo
     rocmPackages.rocm-smi
   ];

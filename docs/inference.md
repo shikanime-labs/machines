@@ -35,8 +35,8 @@ GPU/ROCm acceleration lives entirely in
 - `hardware.graphics.enable = true` + `enable32Bit` (inherited from
   nixos-hardware `common-gpu-amd`) — Mesa/ROCm userspace (RADV default).
 - `hardware.amdgpu.opencl.enable = true` — OpenCL via the ROCm runtime ICD.
-- `clinfo`, `nvtop`, `radeontop`, `rocminfo`, `rocm-smi` in
-  `environment.systemPackages` for verification and observability.
+- `rocminfo`, `rocm-smi` in `environment.systemPackages` for verification and
+  observability.
 - `boot.kernelParams = [ "amdgpu.gttsize=131072" "ttm.pages_limit=33554432" ]` —
   full 128 GiB GTT ceiling for the unified-memory iGPU.
 
