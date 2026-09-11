@@ -7,10 +7,12 @@
 
 let
   rocmSupport = system == "x86_64-linux";
-  vulkanSupport = system == "aarch64-linux";
-  llama-cpp = pkgs.callPackage ../llama-cpp/default.nix {
-    inherit system rocmSupport vulkanSupport;
-  };
+  rpc-llama-cpp = pkgs.llama-cpp.override { rpcSupport = true; };
+  llama-cpp =
+    if rocmSupport then
+      pkgs.llama-cpp-rocm.override { llama-cpp = rpc-llama-cpp; }
+    else
+      pkgs.llama-cpp-vulkan.override { llama-cpp = rpc-llama-cpp; };
 in
 pkgs.dockerTools.buildLayeredImage {
   name = "llama-cpp-rpc-oci-image";

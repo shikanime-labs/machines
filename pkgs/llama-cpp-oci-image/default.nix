@@ -1,15 +1,14 @@
 {
   pkgs,
   lib,
-  system,
   ...
 }:
 
 let
-  llama-cpp = pkgs.callPackage ../llama-cpp/default.nix {
-    inherit system;
+  llama-cpp = pkgs.llama-cpp.override {
     rocmSupport = false;
     vulkanSupport = false;
+    rpcSupport = true;
   };
 in
 pkgs.dockerTools.buildLayeredImage {
