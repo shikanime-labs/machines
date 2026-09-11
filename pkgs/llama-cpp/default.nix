@@ -8,11 +8,11 @@
   rpcSupport = true;
 }).overrideAttrs
   (_old: {
-    version = "0.4.0-glm5next";
+    version = "0.4.0";
     src = pkgs.fetchFromGitHub {
-      owner = "unslothai";
+      owner = "ggml-org";
       repo = "llama.cpp";
-      rev = "d94f44e79aa219d8057e8de21f95360a187ebf41";
-      hash = "sha256-Z4OGKjsegqMu0Bj/EtPDkZuf4URCqvGvA4egEz52WmE=";
+      rev = "8ea290247c87ced2ab245b056ffe96dbcf90d36c";
+      hash = "sha256-xfYNmpyXP/Uhg2zetwcBSMwvM5dK807K4dpdzonBlKA=";
     };
   })
