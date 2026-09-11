@@ -17,9 +17,6 @@
         llama-cpp-oci-image = pkgs.callPackage ../../pkgs/llama-cpp-oci-image/default.nix {
           inherit system;
         };
-        llama-cpp-rpc-oci-image = pkgs.callPackage ../../pkgs/llama-cpp-rpc-oci-image/default.nix {
-          inherit system;
-        };
       };
     };
 }
