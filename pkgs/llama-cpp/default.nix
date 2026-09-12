@@ -3,9 +3,8 @@
   ...
 }:
 
-(pkgs.llama-cpp.override {
-  vulkanSupport = true;
-  rpcSupport = true;
+(pkgs.llama-cpp-vulkan.override {
+  llama-cpp = pkgs.llama-cpp.override { rpcSupport = true; };
 }).overrideAttrs
   (_old: {
     version = "0.4.0";

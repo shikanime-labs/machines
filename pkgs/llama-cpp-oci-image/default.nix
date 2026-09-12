@@ -15,7 +15,12 @@ pkgs.dockerTools.buildLayeredImage {
     pkgs.dockerTools.caCertificates
     pkgs.dockerTools.usrBinEnv
     llama-cpp
-  ];
+  ] ++ lib.optional pkgs.stdenv.hostPlatform.isx86_64 pkgs.mesa;
+
+  extraCommands = lib.optionalString pkgs.stdenv.hostPlatform.isx86_64 ''
+    mkdir -p etc/vulkan/icd.d
+    ln -sf ${pkgs.mesa}/share/vulkan/icd.d/*.json etc/vulkan/icd.d/
+  '';
 
   config = {
     Entrypoint = [ "${llama-cpp}/bin/llama-server" ];
@@ -25,6 +30,8 @@ pkgs.dockerTools.buildLayeredImage {
       "--port"
       "9931"
     ];
+    Env = lib.optional pkgs.stdenv.hostPlatform.isx86_64
+      "VK_DRIVER_FILES=${pkgs.mesa}/share/vulkan/icd.d/radeon_icd.${pkgs.stdenv.hostPlatform.parsed.cpu.name}.json";
     ExposedPorts = {
       "9931/tcp" = { };
     };
