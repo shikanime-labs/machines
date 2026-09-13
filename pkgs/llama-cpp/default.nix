@@ -11,7 +11,7 @@
     src = pkgs.fetchFromGitHub {
       owner = "ggml-org";
       repo = "llama.cpp";
-      rev = "8ea290247c87ced2ab245b056ffe96dbcf90d36c";
-      hash = "sha256-xfYNmpyXP/Uhg2zetwcBSMwvM5dK807K4dpdzonBlKA=";
+      rev = "18443257a30c884d5332abb8e7dc43c7ffe42fda";
+      hash = "sha256-4XdNU5CTc1hsOA+EZTUwUVqXKkjP6SFgUEaAZbtVVXM=";
     };
   })
