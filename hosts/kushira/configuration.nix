@@ -25,6 +25,8 @@
     ];
   };
 
+  systemd.network.networks."40-br1".address = [ "10.66.0.2/29" ];
+
   services = {
     knix = {
       nodeIP = "192.168.1.91,2a02:8424:7899:f201:94eb:8d1:325a:c6e9";
