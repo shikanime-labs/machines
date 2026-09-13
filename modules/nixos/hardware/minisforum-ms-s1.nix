@@ -82,7 +82,10 @@
       };
     };
 
-    bridges.br0.interfaces = [ "bond0" ];
+    bridges = {
+      br0.interfaces = [ "bond0" ];
+      br1.interfaces = [ "thunderbolt0" ];
+    };
 
     # balance-alb (mode 6): aggregates both 10G NICs without switch-side LACP,
     # same reason as the Beelinks — the NETGEAR MS308 is unmanaged.
@@ -92,6 +95,11 @@
   services.fstrim.enable = true;
 
   systemd = {
+    network.networks."40-br1" = {
+      matchConfig.Name = "br1";
+      linkConfig.RequiredForOnline = "no";
+    };
+
     # NIC performance tuning: hardware offloads + RPS for both RTL8127 ports.
     services.network-nic-performance = {
       after = [ "network-online.target" ];
