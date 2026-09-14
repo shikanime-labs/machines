@@ -43,7 +43,10 @@ pkgs.dockerTools.buildLayeredImage {
       lib.optionals pkgs.stdenv.hostPlatform.isx86_64 [
         "VK_DRIVER_FILES=${pkgs.mesa}/share/vulkan/icd.d/radeon_icd.${pkgs.stdenv.hostPlatform.parsed.cpu.name}.json"
       ]
-      ++ [ "HOME=/home/llama" ];
+      ++ [
+        "HOME=/home/llama"
+        "MESA_SHADER_CACHE_DIR=/home/llama/.cache"
+      ];
     ExposedPorts = {
       "9931/tcp" = { };
     };
