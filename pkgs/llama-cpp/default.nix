@@ -18,5 +18,7 @@
       # rpc: single-threaded accept loop starves every connection after the
       # first (router mode holds one long-lived RPC connection per model).
       ./rpc-thread-per-connection.patch
+      # metrics: monitor scrape (/metrics) must not require an API key.
+      ./metrics-public.patch
     ];
   })
