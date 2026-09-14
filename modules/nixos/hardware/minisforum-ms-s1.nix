@@ -98,6 +98,7 @@
     network.networks."40-br1" = {
       matchConfig.Name = "br1";
       linkConfig.RequiredForOnline = "no";
+      networkConfig.ConfigureWithoutCarrier = "yes";
     };
 
     # NIC performance tuning: hardware offloads + RPS for both RTL8127 ports.
