@@ -1,0 +1,22 @@
+diff --git a/ggml/src/ggml-rpc/ggml-rpc.cpp b/ggml/src/ggml-rpc/ggml-rpc.cpp
+index 9aa5883d8..8d954435b 100644
+--- a/ggml/src/ggml-rpc/ggml-rpc.cpp
++++ b/ggml/src/ggml-rpc/ggml-rpc.cpp
+@@ -2112,8 +2112,15 @@ void ggml_backend_rpc_start_server(const char * endpoint, const char * cache_dir
+         }
+         printf("Accepted client connection\n");
+         fflush(stdout);
+-        rpc_serve_client(backends, cache_dir, client_socket);
+-        printf("Client connection closed\n");
++        // Serve each connection on its own thread: the RPC dispatcher
++        // connections are long-lived (one per model in router mode), and a
++        // single-threaded accept loop would starve every later client in the
++        // kernel backlog forever (recv() on the first connection never
++        // returns while that client is alive).
++        std::thread([backends, cache_dir, client_socket]() {
++            rpc_serve_client(backends, cache_dir, client_socket);
++        }).detach();
++        printf("Client connection accepted for serving\n");
+         fflush(stdout);
+     }
+     rpc_transport_shutdown();
