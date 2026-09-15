@@ -11,8 +11,8 @@
     src = pkgs.fetchFromGitHub {
       owner = "ggml-org";
       repo = "llama.cpp";
-      rev = "18443257a30c884d5332abb8e7dc43c7ffe42fda";
-      hash = "sha256-4XdNU5CTc1hsOA+EZTUwUVqXKkjP6SFgUEaAZbtVVXM=";
+      rev = "96ffdc41ceb055e1c2d3d96667ae6d9f0ccb710b";
+      hash = "sha256-uFsYilaXd0Aay7ywDvFgVPw25xpPtcE4maXy4cBzpk8=";
     };
     patches = [
       # rpc: single-threaded accept loop starves every connection after the
