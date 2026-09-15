@@ -2,7 +2,7 @@
   home-manager.users.meika = {
     imports = [
       ../../../modules/home/base.nix
-      ../../../modules/home/graphical.nix
+      ../../../modules/home/graphical
       ../../../modules/home/ghostty.nix
       ../../../modules/home/starship.nix
       ../../../modules/home/workstation.nix
