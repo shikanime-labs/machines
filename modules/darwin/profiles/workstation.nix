@@ -14,10 +14,12 @@
       "pinentry-mac"
       "pinentry"
       "pkg-config"
+      {
+        name = "victorialogs";
+        start_service = true;
+      }
     ];
     casks = [
-      "affinity"
-      "android-studio"
       "appcleaner"
       "dbeaver-community"
       "discord"
@@ -31,7 +33,6 @@
       "macfuse"
       "mattermost"
       "microsoft-edge"
-      "microsoft-teams"
       "obs"
       "rancher"
       "spotify"
