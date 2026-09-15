@@ -24,10 +24,10 @@ pkgs.dockerTools.buildLayeredImage {
   '';
   fakeRootCommands = ''
     ${pkgs.dockerTools.shadowSetup}
-    groupadd -g 65532 llama-cpp
-    useradd -u 65532 -g 65532 -d /home/llama-cpp -M llama-cpp
-    mkdir -p /home/llama-cpp
-    chown llama-cpp:llama-cpp /home/llama-cpp
+    groupadd -g 65532 llama.cpp
+    useradd -u 65532 -g 65532 -d /home/llama.cpp -M llama.cpp
+    mkdir -p /home/llama.cpp
+    chown llama.cpp:llama.cpp /home/llama.cpp
   '';
   enableFakechroot = true;
 
@@ -43,7 +43,7 @@ pkgs.dockerTools.buildLayeredImage {
       lib.optionals pkgs.stdenv.hostPlatform.isx86_64 [
         "VK_DRIVER_FILES=${pkgs.mesa}/share/vulkan/icd.d/radeon_icd.${pkgs.stdenv.hostPlatform.parsed.cpu.name}.json"
       ]
-      ++ [ "HOME=/home/llama-cpp" ];
+      ++ [ "HOME=/home/llama.cpp" ];
     ExposedPorts = {
       "9931/tcp" = { };
     };
