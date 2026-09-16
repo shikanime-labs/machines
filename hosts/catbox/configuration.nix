@@ -1,6 +1,5 @@
 {
   config,
-  lib,
   modulesPath,
   pkgs,
   ...
@@ -105,31 +104,11 @@
   # auth with the tailscale-authkey entry in catbox's own sops file.
   services.tailscale.authKeyFile = config.sops.secrets.tailscale-authkey.path;
 
-  # AI-module provider credentials, migrated from the manifests app
-  # (apps/hermes-agent overlays/nishir hermes-agent secret). Rendered as a
-  # single env template and appended to the module's environmentFiles.
-  services.hermes-agent.environmentFiles = [
-    config.sops.templates.hermes-agent-providers-env.path
-  ];
-
-  sops.secrets = lib.listToAttrs (
-    map
-      (name: {
-        inherit name;
-        value = {
-          restartUnits = [ "hermes-agent.service" ];
-        }
-        // (lib.optionalAttrs (name == "SKS_API_KEY") {
-          # Shared fleet-wide credential: lives in machine.enc.yaml.
-          sopsFile = ../../secrets/machine.enc.yaml;
-        });
-      })
-      [
-        "SKS_API_KEY"
-        "GITHUB_TOKEN"
-        "tailscale-authkey"
-      ]
-  );
+  # base.nix (via machine.nix) requires the nix-access-token entry; it lives
+  # in the shared machine.enc.yaml like SKS_API_KEY/GITHUB_TOKEN (declared in
+  # profiles/ai.nix).
+  sops.secrets.nix-access-token.sopsFile = ../../secrets/machine.enc.yaml;
+  sops.secrets.tailscale-authkey.restartUnits = [ "tailscaled.service" ];
 
   sops = {
     age = {
@@ -138,10 +117,6 @@
     };
     defaultSopsFile = ../../secrets/catbox.enc.yaml;
     defaultSopsFormat = "yaml";
-    templates.hermes-agent-providers-env.content = ''
-      SKS_API_KEY=${config.sops.placeholder.SKS_API_KEY}
-      GITHUB_TOKEN=${config.sops.placeholder.GITHUB_TOKEN}
-    '';
   };
 
   virtualisation.docker = {

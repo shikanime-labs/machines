@@ -237,6 +237,7 @@ in
         config.sops.templates.hermes-agent-matrix-env.path
         config.sops.templates.hermes-agent-a2a-env.path
         config.sops.templates.hermes-agent-peer-keys-env.path
+        config.sops.templates.hermes-agent-providers-env.path
       ];
       extraPackages = with pkgs; [
         agent-browser
@@ -462,6 +463,18 @@ in
         restartUnits = [ "hermes-agent.service" ];
         mode = "0600";
       };
+      SKS_API_KEY = {
+        sopsFile = ../../../secrets/machine.enc.yaml;
+        group = "hermes";
+        owner = "hermes";
+        restartUnits = [ "hermes-agent.service" ];
+      };
+      GITHUB_TOKEN = {
+        sopsFile = ../../../secrets/machine.enc.yaml;
+        group = "hermes";
+        owner = "hermes";
+        restartUnits = [ "hermes-agent.service" ];
+      };
     }
     // (mkA2aTokenSecrets peers)
     // (mkPeerApiServerKeySecrets peers);
@@ -483,6 +496,13 @@ in
           MATRIX_E2EE_MODE=required
           MATRIX_HOME_ROOM=#automata:matrix.taila659a.ts.net
           MATRIX_RECOVERY_KEY_FILE=${config.sops.secrets.hermes-agent-matrix-recovery-key.path}
+        '';
+        restartUnits = [ "hermes-agent.service" ];
+      };
+      hermes-agent-providers-env = {
+        content = ''
+          SKS_API_KEY=${config.sops.placeholder.SKS_API_KEY}
+          GITHUB_TOKEN=${config.sops.placeholder.GITHUB_TOKEN}
         '';
         restartUnits = [ "hermes-agent.service" ];
       };
