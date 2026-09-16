@@ -106,7 +106,7 @@
       after = [ "network-online.target" ];
       description = "Enable NIC hardware offloads and RPS";
       script = ''
-        for iface in enp1s0 enp2s0; do
+        for iface in enp97s0 enp98s0; do
           ip link show "$iface" >/dev/null 2>&1 || continue
           ${pkgs.ethtool}/bin/ethtool -K "$iface" rx-udp-gro-forwarding on rx-gro-list off
           ${pkgs.ethtool}/bin/ethtool -K "$iface" tso on gso on sg on tx on rx on 2>/dev/null || true
