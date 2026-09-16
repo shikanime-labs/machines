@@ -52,6 +52,8 @@ in
     ];
 
     settings = {
+      agent.verify_on_stop = "auto";
+
       context.engine = "lcm";
 
       custom_providers = [
@@ -104,8 +106,12 @@ in
       };
 
       display = {
+        bell_on_complete = true;
+        bell_on_prompt = true;
         busy_input_mode = "steer";
         interface = "tui";
+        show_cost = true;
+        show_reasoning = true;
         streaming = true;
       };
 
