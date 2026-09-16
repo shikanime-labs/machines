@@ -253,6 +253,7 @@ in
         rtkRewritePlugin
       ];
       settings = {
+        agent.verify_on_stop = "auto";
         context.engine = "lcm";
         custom_providers = [
           {
@@ -329,7 +330,12 @@ in
         # Bare `hermes`/`hermes chat` launches the Ink TUI by default; token
         # streaming on for live agent output. Explicit --cli/--tui still wins.
         display = {
+          bell_on_complete = true;
+          bell_on_prompt = true;
+          busy_input_mode = "steer";
           interface = "tui";
+          show_cost = true;
+          show_reasoning = true;
           streaming = true;
         };
         # Inbound: serves Agent Card + JSON-RPC on the loopback bind (:9900). Per-peer
