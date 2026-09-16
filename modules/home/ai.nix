@@ -2,6 +2,7 @@
 
 let
   hermesLcmPlugin = import ../../pkgs/hermes-plugin-lcm { inherit pkgs; };
+  memoryWikiPlugin = import ../../pkgs/hermes-plugin-memory-wiki { inherit pkgs; };
   rtkRewritePlugin = import ../../pkgs/hermes-plugin-rtk-rewrite { inherit pkgs; };
   ponytailPlugin = import ../../pkgs/hermes-plugin-ponytail { inherit pkgs; };
 in
@@ -30,6 +31,7 @@ in
 
     extraPlugins = [
       hermesLcmPlugin
+      memoryWikiPlugin
       rtkRewritePlugin
       ponytailPlugin
     ];
@@ -111,6 +113,7 @@ in
         enabled = [
           "disk-cleanup"
           "hermes-lcm"
+          "memory-wiki"
           "ponytail"
           "rtk-rewrite"
           "security-guidance"
