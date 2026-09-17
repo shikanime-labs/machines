@@ -4,6 +4,8 @@
   boot = {
     binfmt.emulatedSystems = [ "aarch64-linux" ];
 
+    kernelModules = [ "thunderbolt-net" ];
+
     # Strix Halo has no dedicated VRAM: the iGPU carves its working set out of
     # the 128GB unified LPDDR5X via GTT. The defaults cap GTT at roughly half
     # of RAM, which is not enough to keep a large model resident. Give the
