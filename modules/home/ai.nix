@@ -89,18 +89,18 @@ in
       fallback_providers = [
         {
           api_mode = "anthropic_messages";
-          model = "z-ai/glm-5.3";
+          model = "qwen/qwen3.8-flash";
           provider = "custom:shikanime-anthropic";
         }
         {
           api_mode = "anthropic_messages";
-          model = "deepseek/deepseek-v4-flash";
+          model = "qwen/qwen3.8-27b";
           provider = "custom:shikanime-anthropic";
         }
       ];
 
       model = {
-        default = "qwen/qwen3.8-27b";
+        default = "z-ai/glm-5.3-flash";
         provider = "custom:shikanime-anthropic";
         base_url = "https://inference.i.shikanime.studio/anthropic";
       };
