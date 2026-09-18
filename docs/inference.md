@@ -17,10 +17,11 @@ Target model: **DeepSeek V4 Flash 0731** — 284B total parameters, 13B active
 
 ## Topology
 
-- `kushira` — `role = "server"`: runs `llama-server`, offloads the rest to the
-  rpc peer. Exposes OpenAI-compatible API on `:8080`.
-- `sashina` — `role = "rpc"`: runs `llama-rpc-server` only, exposing its GPU to
-  kushira over `:50052`.
+- `sashina` — `role = "server"`: runs `llama-server`, offloads the rest to the
+  rpc peer. Exposes the OpenAI-compatible API in-pod on `:47149` (net1
+  `10.66.1.100`), fronted by the gateway plane.
+- `kushira` — `role = "rpc"`: runs `ggml-rpc-server` only, exposing its GPU to
+  sashina over `:50052` (net1 `10.66.1.1`).
 
 Both nodes must have the same GGUF present locally (the model is loaded locally
 on each for its layer slice) before the inference service starts.
@@ -45,10 +46,11 @@ Global `rocmSupport` is set on the two hosts' package sets in
 explicitly, so module-level `nixpkgs.config` would not reach them) — every
 package exposing the knob builds against ROCm/HIP.
 
-The llama.cpp inference _service_ (server/rpc roles, `:8080`/`:50052`) is not
-yet wired as a module — the nodes are provisioned with acceleration enabled and
-the worker/RKE2 stack; the inference service is deferred until the nodes are
-online. When added back, the ROCm package is
+The llama.cpp inference _service_ now runs as the `shikanime/llama-cpp` (server)
+and `shikanime/llama-cpp-worker` (`ggml-rpc-server --cache`) statefulsets on the
+nishir cluster; the RPC plane rides the Thunderbolt link via macvlan (`net1`,
+`10.66.1.0/24`) NADs, pinned to the Halo nodes. When migrating to a NixOS
+module, the ROCm package is
 `pkgs.llama-cpp.override { rocmSupport = true; rpcSupport = true; }` —
 `ngl = 999` offloads all layers to the iGPU; `flash-attn = "on"`; `ctx-size`
 128k.
