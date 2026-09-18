@@ -142,11 +142,11 @@
     # dataplane, controllers). Without a glob the file collector ingests nothing.
     extraArgs = [
       "-fileCollector.glob=/var/log/**/*.log"
+      "-tmpDataPath=/var/cache/vlagent"
     ];
   };
 
   systemd = {
-
     # Required for node-exporter textfile collector.
     tmpfiles.rules = [
       "d /var/lib/node_exporter/textfile_collector 0755 root root -"
