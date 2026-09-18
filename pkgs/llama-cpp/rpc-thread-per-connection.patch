@@ -1,18 +1,42 @@
+Upstream ggml-org/llama.cpp#28916 (head 2e4a127), applied on pin 96ffdc4.
+Backported while the PR is open: without the mutex hunks, thread-per-connection
+lets two router children race backend compute and stored_graphs.
+
 diff --git a/ggml/src/ggml-rpc/ggml-rpc.cpp b/ggml/src/ggml-rpc/ggml-rpc.cpp
-index 9aa5883d8..8d954435b 100644
+index cc7d7206933f..69fb10aed980 100644
 --- a/ggml/src/ggml-rpc/ggml-rpc.cpp
 +++ b/ggml/src/ggml-rpc/ggml-rpc.cpp
-@@ -2112,8 +2112,15 @@ void ggml_backend_rpc_start_server(const char * endpoint, const char * cache_dir
+@@ -1678,6 +1678,8 @@ ggml_tensor * rpc_server::create_node(uint64_t id,
+     return result;
+ }
+ 
++static std::mutex compute_mutex; // serializes backend compute across connection threads
++
+ bool rpc_server::graph_compute(const std::vector<uint8_t> & input) {
+     // serialization format:
+     // | device (4 bytes) | n_nodes (4 bytes) | nodes (n_nodes * sizeof(uint64_t) | n_tensors (4 bytes) | tensors (n_tensors * sizeof(rpc_tensor)) |
+@@ -1746,6 +1748,7 @@ bool rpc_server::graph_compute(const std::vector<uint8_t> & input) {
+             graph->use_counts[hash_pos] = tensor_ptrs.at(id)->use_count;
+         }
+     }
++    std::lock_guard<std::mutex> lock(compute_mutex);
+     ggml_status status = ggml_backend_graph_compute(backends[device], graph);
+     GGML_ASSERT(status == GGML_STATUS_SUCCESS && "Unsuccessful graph computations are not supported with RPC");
+     stored_graphs[device].graph = graph;
+@@ -1762,6 +1765,7 @@ bool rpc_server::graph_recompute(const rpc_msg_graph_recompute_req & request) {
+     }
+     ggml_cgraph * graph = stored_graphs[device].graph;
+     LOG_DBG("[%s] device: %u\n", __func__, device);
++    std::lock_guard<std::mutex> lock(compute_mutex);
+     ggml_status status = ggml_backend_graph_compute(backends[device], graph);
+     GGML_ASSERT(status == GGML_STATUS_SUCCESS && "Unsuccessful graph computations are not supported with RPC");
+     return true;
+@@ -2118,8 +2122,10 @@ void ggml_backend_rpc_start_server(const char * endpoint, const char * cache_dir
          }
          printf("Accepted client connection\n");
          fflush(stdout);
 -        rpc_serve_client(backends, cache_dir, client_socket);
 -        printf("Client connection closed\n");
-+        // Serve each connection on its own thread: the RPC dispatcher
-+        // connections are long-lived (one per model in router mode), and a
-+        // single-threaded accept loop would starve every later client in the
-+        // kernel backlog forever (recv() on the first connection never
-+        // returns while that client is alive).
 +        std::thread([backends, cache_dir, client_socket]() {
 +            rpc_serve_client(backends, cache_dir, client_socket);
 +        }).detach();
