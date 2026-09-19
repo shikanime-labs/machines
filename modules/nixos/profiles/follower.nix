@@ -10,5 +10,8 @@
     tokenFile = config.sops.secrets.rke2-token.path;
   };
 
-  sops.secrets.rke2-token.restartUnits = [ "rke2-server.service" ];
+  sops.secrets.rke2-token = {
+    sopsFile = ../../../secrets/nishir.enc.yaml;
+    restartUnits = [ "rke2-server.service" ];
+  };
 }

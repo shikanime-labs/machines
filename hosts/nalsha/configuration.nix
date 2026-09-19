@@ -104,13 +104,5 @@
   sops = {
     defaultSopsFile = ../../secrets/nalsha.enc.yaml;
     defaultSopsFormat = "yaml";
-    secrets = {
-      codeberg-runner-token.sopsFile = ../../secrets/builder.enc.yaml;
-      forgejo-runner-token.sopsFile = ../../secrets/builder.enc.yaml;
-      rke2-token.sopsFile = ../../secrets/nishir.enc.yaml;
-      wifi-sfr-e368.sopsFile = ../../secrets/wifi.enc.yaml;
-      wifi-sfr-e368-5ghz.sopsFile = ../../secrets/wifi.enc.yaml;
-      wifi-vintage-korean.sopsFile = ../../secrets/wifi.enc.yaml;
-    };
   };
 }

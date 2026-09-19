@@ -24,8 +24,14 @@
 
   sops = {
     secrets = {
-      codeberg-runner-token.restartUnits = [ "codeberg-runner-${config.networking.hostName}.service" ];
-      forgejo-runner-token.restartUnits = [ "forgejo-runner-${config.networking.hostName}.service" ];
+      codeberg-runner-token = {
+        sopsFile = ../../../secrets/builder.enc.yaml;
+        restartUnits = [ "codeberg-runner-${config.networking.hostName}.service" ];
+      };
+      forgejo-runner-token = {
+        sopsFile = ../../../secrets/builder.enc.yaml;
+        restartUnits = [ "forgejo-runner-${config.networking.hostName}.service" ];
+      };
     };
     templates = {
       codeberg-runner-token.content = ''
