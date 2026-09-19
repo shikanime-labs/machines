@@ -1,3 +1,5 @@
+{ inputs, ... }:
+
 {
   perSystem =
     {
@@ -19,6 +21,9 @@
         };
         llama-cpp-oci-image = pkgs.callPackage ../../pkgs/llama-cpp-oci-image/default.nix {
           inherit system;
+        };
+        hermes-agent-oci-image = pkgs.callPackage ../../pkgs/hermes-agent-oci-image/default.nix {
+          hermes-agent = inputs.hermes-agent.packages.${system}.default;
         };
       };
     };
