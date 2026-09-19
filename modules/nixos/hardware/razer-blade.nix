@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   # UEFI laptop bootloader (Razer Blade 17, 2019). Windows dual-boot via systemd-boot.
@@ -39,5 +44,30 @@
   services = {
     fstrim.enable = true;
     udisks2.enable = true;
+
+    # NVIDIA host monitoring: exporter + vmagent scrape job, keyed on
+    # hardware.nvidia.enabled so GPU-less hosts stop scraping a dead 9835.
+    prometheus.exporters.nvidia-gpu = lib.mkIf config.hardware.nvidia.enabled {
+      enable = true;
+      listenAddress = "127.0.0.1";
+    };
+    vmagent.prometheusConfig.scrape_configs = lib.mkIf config.hardware.nvidia.enabled [
+      {
+        job_name = "nvidia-gpu";
+        static_configs = [
+          { targets = [ "127.0.0.1:9835" ]; }
+        ];
+        relabel_configs = [
+          {
+            target_label = "instance";
+            replacement = config.networking.hostName;
+          }
+          {
+            target_label = "cluster";
+            replacement = "nishir";
+          }
+        ];
+      }
+    ];
   };
 }
