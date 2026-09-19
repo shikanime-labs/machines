@@ -64,8 +64,10 @@ in
 
     environment.systemPackages = [ pkgs.usbutils ];
 
-    # KubeVirt seeds cloud-config via NoCloud; always enabled.
-    services.cloud-init.enable = true;
+    services = {
+      cloud-init.enable = true;
+      qemuGuest.enable = true;
+    };
 
     systemd.services = {
       kernel-module-loader = {
