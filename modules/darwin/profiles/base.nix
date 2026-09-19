@@ -27,9 +27,9 @@ in
   };
 
   sops = {
-    secrets.nix-access-token = { };
+    secrets.nix-github-access-token.sopsFile = ../../../secrets/machine.enc.yaml;
     templates.nix-config.content = ''
-      extra-access-tokens = github.com=${config.sops.placeholder.nix-access-token}
+      extra-access-tokens = github.com=${config.sops.placeholder.nix-github-access-token}
     '';
   };
 

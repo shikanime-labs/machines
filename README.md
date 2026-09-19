@@ -58,9 +58,8 @@ Current hosts:
 Shared module layers.
 
 - `modules/nixos/` contains Linux host profiles
-  - `base.nix` - common NixOS defaults, `comin`, and Nix access token wiring
-  - `minimal.nix` - baseline Nix settings, GC, auto-upgrade, and Home Manager
-    defaults
+  - `base.nix` - common NixOS defaults, `comin`, Nix access token wiring, GC,
+    auto-upgrade, and Home Manager defaults
   - `workstation.nix` - workstation-oriented tooling and desktop defaults
   - `follower.nix` - server defaults shared by cluster nodes
   - `distributed.nix` - remote build machines and distributed build settings
@@ -70,7 +69,7 @@ Shared module layers.
     binary (AT-SPI/D-Bus) is installed fleet-wide via `flake/nixos.nix` so
     hermes-agent's `computer-use` extra can drive computer automation
 - `modules/darwin/` contains macOS host profiles
-  - `base.nix`, `minimal.nix`, `workstation.nix`, `distributed.nix`
+  - `base.nix`, `workstation.nix`, `distributed.nix`
 - `modules/home/` contains shared Home Manager modules
   - shell, editor, font, VCS, and workstation-specific settings
 - `modules/flake/` contains flake-parts glue for NixOS, Darwin, and devenv

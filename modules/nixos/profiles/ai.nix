@@ -463,13 +463,13 @@ in
         restartUnits = [ "hermes-agent.service" ];
         mode = "0600";
       };
-      SKS_API_KEY = {
+      sks-api-key = {
         sopsFile = ../../../secrets/machine.enc.yaml;
         group = "hermes";
         owner = "hermes";
         restartUnits = [ "hermes-agent.service" ];
       };
-      GITHUB_TOKEN = {
+      hermes-agent-github-token = {
         sopsFile = ../../../secrets/machine.enc.yaml;
         group = "hermes";
         owner = "hermes";
@@ -501,8 +501,8 @@ in
       };
       hermes-agent-providers-env = {
         content = ''
-          SKS_API_KEY=${config.sops.placeholder.SKS_API_KEY}
-          GITHUB_TOKEN=${config.sops.placeholder.GITHUB_TOKEN}
+          SKS_API_KEY=${config.sops.placeholder.sks-api-key}
+          GITHUB_TOKEN=${config.sops.placeholder.hermes-agent-github-token}
         '';
         restartUnits = [ "hermes-agent.service" ];
       };
