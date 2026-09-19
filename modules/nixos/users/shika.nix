@@ -13,7 +13,7 @@ in
       ../../../modules/home/cloud.nix
       ../../../modules/home/fontconfig.nix
       ../../../modules/home/ghostty.nix
-      ../../../modules/home/graphical.nix
+      ../../../modules/home/graphical
       ../../../modules/home/helix.nix
       ../../../modules/home/starship.nix
       ../../../modules/home/vcs.nix

@@ -1,0 +1,7 @@
+// Niri configuration entry point (Noctalia v5 Niri compositor spec).
+// Omarchy-style split: look-and-feel first, bindings after — niri includes are
+// positional, and all sections here occur once, so the partition is
+// behavior-identical to the previous single-file config.
+
+include "looknfeel.kdl"
+include "binds.kdl"
