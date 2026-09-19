@@ -93,7 +93,6 @@
     defaultSopsFile = ../../secrets/nixtar.enc.yaml;
     defaultSopsFormat = "yaml";
     secrets = {
-      nix-access-token.sopsFile = ../../secrets/machine.enc.yaml;
     };
   };
 

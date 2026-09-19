@@ -14,16 +14,19 @@
   sops = {
     secrets = {
       wifi-sfr-e368 = {
+        sopsFile = ../../../secrets/wifi.enc.yaml;
         owner = "wpa_supplicant";
         group = "wpa_supplicant";
         restartUnits = [ "wpa_supplicant.service" ];
       };
       wifi-sfr-e368-5ghz = {
+        sopsFile = ../../../secrets/wifi.enc.yaml;
         owner = "wpa_supplicant";
         group = "wpa_supplicant";
         restartUnits = [ "wpa_supplicant.service" ];
       };
       wifi-vintage-korean = {
+        sopsFile = ../../../secrets/wifi.enc.yaml;
         owner = "wpa_supplicant";
         group = "wpa_supplicant";
         restartUnits = [ "wpa_supplicant.service" ];

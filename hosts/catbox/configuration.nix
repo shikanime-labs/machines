@@ -8,7 +8,7 @@
   imports = [
     "${modulesPath}/profiles/headless.nix"
     ../../modules/nixos/virtualisation/containerdisk.nix
-    ../../modules/nixos/profiles/minimal.nix
+    ../../modules/nixos/profiles/server.nix
     ../../modules/nixos/profiles/ai.nix
     ../../modules/nixos/users/automata.nix
   ];
@@ -59,7 +59,7 @@
     (`ghcr.io/shikanime-labs/machines/catbox`). Ephemeral: fresh OVMF NVRAM
     each boot; the age key arrives via virtiofs "sops-key" volume from Flux,
     mounted read-only at `/var/lib/sops-nix`. Imports: `headless.nix`,
-    `containerdisk.nix`, `minimal.nix`, `ai.nix`. A2A client only: dials the
+    (`machine.nix`, `server.nix`), `containerdisk.nix`, `ai.nix`. A2A client only: dials the
     fleet with its own token; peers do not route to it, so it stays out of the
     `peers` list. Rootless Docker, openssh, nix-ld.
 

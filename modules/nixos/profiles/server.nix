@@ -10,5 +10,5 @@
   # human-run `tailscale up` at the console/GUI instead of an automated token.
   services.tailscale.authKeyFile = config.sops.secrets.tailscale-authkey.path;
 
-  sops.secrets.tailscale-authkey.restartUnits = [ "tailscaled.service" ];
+  sops.secrets.tailscale-authkey.restartUnits = [ "tailscaled-autoconnect.service" ];
 }
