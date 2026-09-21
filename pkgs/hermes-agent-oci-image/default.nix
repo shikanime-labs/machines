@@ -11,6 +11,7 @@ pkgs.dockerTools.buildLayeredImage {
   contents = [
     pkgs.dockerTools.caCertificates
     pkgs.dockerTools.usrBinEnv
+    pkgs.openssh
     hermes-agent
   ];
 
