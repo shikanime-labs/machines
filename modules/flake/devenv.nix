@@ -23,6 +23,8 @@
         ];
         env.SOPS_AGE_KEY = "\${{ secrets.CATBOX_SOPS_KEY }}";
 
+        tasks."devlib:sops:updatekeys".process.start.enable = lib.mkForce false;
+
         identities = {
           enable = true;
           nixtar.enable = true;
