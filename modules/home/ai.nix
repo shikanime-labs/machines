@@ -92,11 +92,6 @@ in
           model = "qwen/qwen3.8-flash";
           provider = "custom:shikanime-anthropic";
         }
-        {
-          api_mode = "anthropic_messages";
-          model = "qwen/qwen3.8-27b";
-          provider = "custom:shikanime-anthropic";
-        }
       ];
 
       model = {
