@@ -132,6 +132,18 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    wharf = {
+      url = "github:shikanime-labs/wharf";
+      inputs = {
+        devenv.follows = "devenv";
+        devlib.follows = "devlib";
+        flake-parts.follows = "flake-parts";
+        git-hooks.follows = "git-hooks";
+        nixpkgs.follows = "nixpkgs";
+        treefmt-nix.follows = "treefmt-nix";
+      };
+    };
   };
 
   nixConfig = {

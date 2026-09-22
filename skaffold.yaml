@@ -6,23 +6,23 @@ build:
   artifacts:
     - custom:
         buildCommand:
-          nix run github:shikanime-labs/wharf/0059c49 -- skaffold build --flake
-          .#catbox-oci-image --option accept-flake-config=true
+          wharf skaffold build --flake .#catbox-oci-image --option
+          accept-flake-config=true
       image: ghcr.io/shikanime-labs/machines/catbox
     - custom:
         buildCommand:
-          nix run github:shikanime-labs/wharf/0059c49 -- skaffold build --flake
-          .#huggingface-oci-image --option accept-flake-config=true
+          wharf skaffold build --flake .#huggingface-oci-image --option
+          accept-flake-config=true
       image: ghcr.io/shikanime-labs/machines/huggingface
     - custom:
         buildCommand:
-          nix run github:shikanime-labs/wharf/0059c49 -- skaffold build --flake
-          .#hermes-agent-oci-image --option accept-flake-config=true
+          wharf skaffold build --flake .#hermes-agent-oci-image --option
+          accept-flake-config=true
       image: ghcr.io/shikanime-labs/machines/hermes-agent
     - custom:
         buildCommand:
-          nix run github:shikanime-labs/wharf/0059c49 -- skaffold build --flake
-          .#llama-cpp-oci-image --option accept-flake-config=true
+          wharf skaffold build --flake .#llama-cpp-oci-image --option
+          accept-flake-config=true
       image: ghcr.io/shikanime-labs/machines/llama-cpp
   tagPolicy:
     customTemplate:
