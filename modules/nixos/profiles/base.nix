@@ -46,6 +46,11 @@
       exporter.listen_address = "127.0.0.1";
       remotes = [
         {
+          name = "github";
+          url = "https://github.com/shikanime-labs/machines.git";
+          poller.period = 600;
+        }
+        {
           name = "forgejo";
           url = "https://forgejo.i.shikanime.studio/shikanime-labs/machines.git";
         }
