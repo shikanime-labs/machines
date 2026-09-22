@@ -85,6 +85,7 @@
           [
             age
             skaffold
+            inputs.wharf.packages.${pkgs.system}.default
           ]
           ++ lib.optional stdenv.hostPlatform.isLinux nixos-facter;
 
