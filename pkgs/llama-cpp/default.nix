@@ -28,5 +28,8 @@ llama-cpp-gpu.overrideAttrs (_old: {
     ./rpc-thread-per-connection.patch
     # metrics: monitor scrape (/metrics) must not require an API key.
     ./metrics-public.patch
+    # rpc server replies GRAPH_COMPUTE before compute finishes, so the next
+    # decode token's transfers overlap the current graph.
+    ./rpc-pipelined-graph-compute.patch
   ];
 })
