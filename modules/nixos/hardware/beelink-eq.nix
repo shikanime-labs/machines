@@ -1,6 +1,14 @@
 { pkgs, ... }:
 
 {
+  # RKE2 kubelet reserves scaled to this hardware class; without them
+  # allocatable equals physical RAM and a large pod can OOM system daemons.
+  services.knix.extraConfig.kubelet-arg = [
+    "kube-reserved=cpu=250m,memory=1Gi"
+    "system-reserved=cpu=250m,memory=512Mi"
+    "eviction-hard=memory.available<500Mi"
+  ];
+
   boot = {
     binfmt.emulatedSystems = [ "aarch64-linux" ];
     loader = {

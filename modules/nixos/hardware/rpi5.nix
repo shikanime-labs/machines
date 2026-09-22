@@ -1,4 +1,12 @@
 {
+  # RKE2 kubelet reserves scaled to this hardware class; without them
+  # allocatable equals physical RAM and a large pod can OOM system daemons.
+  services.knix.extraConfig.kubelet-arg = [
+    "kube-reserved=cpu=100m,memory=512Mi"
+    "system-reserved=cpu=100m,memory=256Mi"
+    "eviction-hard=memory.available<300Mi"
+  ];
+
   imports = [
     ./rpi.nix
   ];
