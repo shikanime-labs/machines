@@ -308,11 +308,6 @@ in
             model = "qwen/qwen3.8-flash";
             provider = "custom:shikanime-anthropic";
           }
-          {
-            api_mode = "anthropic_messages";
-            model = "qwen/qwen3.8-27b";
-            provider = "custom:shikanime-anthropic";
-          }
         ];
         matrix = {
           allowed_rooms = [ "#automata:matrix.taila659a.ts.net" ];
