@@ -27,7 +27,7 @@ jobs:
     secrets:
       CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
       OPERATOR_PRIVATE_KEY: ${{ secrets.OPERATOR_PRIVATE_KEY }}
-    uses: ./.github/workflows/nix.yaml
+    uses: $/.github/workflows/nix.yaml
     with:
       cachix-name: shikanime
   release:
@@ -69,4 +69,4 @@ jobs:
     secrets:
       CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
       OPERATOR_PRIVATE_KEY: ${{ secrets.OPERATOR_PRIVATE_KEY }}
-    uses: ./.github/workflows/skaffold.yaml
+    uses: $/.github/workflows/skaffold.yaml
