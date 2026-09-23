@@ -49,6 +49,7 @@ in
     extraDependencyGroups = [
       "anthropic"
       "computer-use"
+      "honcho"
     ];
 
     settings = {
