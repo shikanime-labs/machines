@@ -27,7 +27,6 @@ let
     powershell-editor-services
     prisma_7
     pyright
-    rust-analyzer
     shellcheck
     svelte-language-server
     terraform-ls
