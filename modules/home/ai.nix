@@ -4,6 +4,38 @@ let
   hermesLcmPlugin = import ../../pkgs/hermes-plugin-lcm { inherit pkgs; };
   memoryWikiPlugin = import ../../pkgs/hermes-plugin-memory-wiki { inherit pkgs; };
   ponytailPlugin = import ../../pkgs/hermes-plugin-ponytail { inherit pkgs; };
+
+  lspBackends = with pkgs; [
+    astro-language-server
+    bash-language-server
+    beamPackages.elixir-ls
+    clang-tools
+    clojure-lsp
+    dart
+    dockerfile-language-server
+    gleam
+    gopls
+    haskell-language-server
+    intelephense
+    jdt-language-server
+    julia
+    kotlin-language-server
+    lua-language-server
+    nixd
+    ocamlPackages.ocaml-lsp
+    powershell
+    powershell-editor-services
+    prisma_7
+    pyright
+    rust-analyzer
+    shellcheck
+    svelte-language-server
+    terraform-ls
+    typescript-language-server
+    vue-language-server
+    yaml-language-server
+    zls
+  ];
 in
 {
   home.packages = with pkgs; [
@@ -34,14 +66,17 @@ in
       ponytailPlugin
     ];
 
-    extraPackages = with pkgs; [
-      agent-browser
-      curl
-      gh
-      git
-      nodejs
-      yarn
-    ];
+    extraPackages =
+      with pkgs;
+      [
+        agent-browser
+        curl
+        gh
+        git
+        nodejs
+        yarn
+      ]
+      ++ lspBackends;
 
     extraDependencyGroups = [
       "anthropic"
@@ -119,6 +154,10 @@ in
           ponytail.allow_tool_override = true;
         };
       };
+
+      lsp.servers.powershell.command = [
+        "${pkgs.powershell-editor-services}/lib/powershell-editor-services"
+      ];
 
       memory.provider = "honcho";
 
