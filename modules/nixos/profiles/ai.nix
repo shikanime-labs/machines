@@ -280,7 +280,6 @@ in
         rtkRewritePlugin
       ];
       settings = {
-        agent.verify_on_stop = "auto";
         context.engine = "lcm";
         custom_providers = [
           {
