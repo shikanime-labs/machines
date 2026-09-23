@@ -99,6 +99,7 @@
   };
 
   sops = {
+    useSystemdActivation = true;
     age = {
       generateKey = true;
       keyFile = "/var/lib/sops-nix/key.txt";
