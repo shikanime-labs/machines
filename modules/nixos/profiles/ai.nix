@@ -114,6 +114,17 @@ let
     }
   ];
 
+  # The a2a hubs — workstations route through them, never direct to cluster nodes.
+  hubPeers = [
+    {
+      name = "nishir";
+      capabilities = [
+        "command"
+        "workstation"
+      ];
+    }
+  ];
+
   peers = clusterPeers ++ workstationPeers;
 
   # Drop the host itself so no host dials or trusts its own entry.
@@ -122,6 +133,21 @@ let
   otherPeers = mkSelfExcludedPeers peers;
   otherClusterPeers = mkSelfExcludedPeers clusterPeers;
   otherWorkstationPeers = mkSelfExcludedPeers workstationPeers;
+
+  # Peer list for this host's role in the hub-and-spoke mesh: the hub dials
+  # the whole fleet, workstations dial only the hub, cluster nodes dial
+  # cluster peers. Self-excluded either way.
+  fleetPeers =
+    let
+      isHub = builtins.any (p: p.name == config.networking.hostName) hubPeers;
+      isWorkstation = builtins.any (p: p.name == config.networking.hostName) workstationPeers;
+    in
+    if isHub then
+      otherClusterPeers ++ otherWorkstationPeers
+    else if isWorkstation then
+      mkSelfExcludedPeers hubPeers
+    else
+      otherClusterPeers;
 
   mkA2aTrustedPeers = peers: lib.concatStringsSep "," (map (p: p.name) peers);
 
@@ -337,15 +363,9 @@ in
         # Inbound: serves Agent Card + JSON-RPC on the loopback bind (:9900). Per-peer
         # tokens (A2A_PEER_TOKENS) authenticate each fleet member by name.
         platforms.a2a.enabled = true;
-        # Outbound: every host dials only non-self cluster nodes.
-        # Outbound: cluster hosts dial only cluster peers; workstations dial
-        # cluster peers plus other workstations (self-excluded via partitions).
-        a2a_agents = mkA2aAgents (
-          if builtins.any (p: p.name == config.networking.hostName) workstationPeers then
-            otherClusterPeers ++ otherWorkstationPeers
-          else
-            otherClusterPeers
-        );
+        # Outbound: per-host peer selection (hub dials everything,
+        # workstations only the hub, cluster nodes only cluster peers).
+        a2a_agents = mkA2aAgents fleetPeers;
         # Bot-mode peer mesh (hermes peer): each fleet host exposes its own
         # api_server and dials the others. Names/URLs here; keys via
         # HERMES_PEER_<NAME>_KEY (hermes-agent-peer-keys-env template).
@@ -514,18 +534,9 @@ in
           A2A_PUBLIC_URL=https://${config.networking.hostName}.taila659a.ts.net:9900
           A2A_OWN_TOKEN=${config.sops.placeholder."${mkA2aTokenSecretName config.networking.hostName}"}
           A2A_PEER_TOKENS=${mkA2aPeerTokens otherPeers}
-          # Inbound allow-list: cluster hosts accept all non-self peers;
-          # workstations accept other workstations only (never clusters, never
-          # themselves), so the boundary stays cluster→workstation one-way for
-          # cluster traffic while workstation↔workstation is permitted.
-          A2A_TRUSTED_PEERS=${
-            mkA2aTrustedPeers (
-              if builtins.any (p: p.name == config.networking.hostName) workstationPeers then
-                otherWorkstationPeers
-              else
-                (otherClusterPeers ++ otherWorkstationPeers)
-            )
-          }
+          # Inbound allow-list: same per-host selection (hub accepts all,
+          # cluster hosts cluster-only, workstations hub+workstations).
+          A2A_TRUSTED_PEERS=${mkA2aTrustedPeers fleetPeers}
         '';
         restartUnits = [ "hermes-agent.service" ];
       };
