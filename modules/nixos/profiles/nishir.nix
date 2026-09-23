@@ -68,6 +68,16 @@ with lib;
 
   };
 
+  # Tailscaled reconciles its own ip rules on reconfigure and wipes foreign
+  # ones, so the rule must be re-asserted rather than installed once.
+  systemd.timers.cluster-policy-route = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnBootSec = "30s";
+      OnUnitActiveSec = "30s";
+    };
+  };
+
   systemd.services.cluster-policy-route = {
     description = "Policy route: pod-source -> Tailscale routing table 52";
     wants = [ "tailscaled.service" ];
@@ -75,19 +85,15 @@ with lib;
       "tailscaled.service"
       "networking-ready.target"
     ];
-    wantedBy = [ "multi-user.target" ];
     # iprule needs iproute2; the policy route must be installed after Tailscale
     # populates table 52 with peer/CGNAT routes.
     path = [ pkgs.iproute2 ];
     script = ''
-      ip rule add from 10.244.0.0/16 lookup 52 prio 5000
-    '';
-    preStop = ''
       ip rule del from 10.244.0.0/16 lookup 52 prio 5000 2>/dev/null || true
+      ip rule add from 10.244.0.0/16 lookup 52 prio 5000
     '';
     serviceConfig = {
       Type = "oneshot";
-      RemainAfterExit = true;
     };
   };
 }
