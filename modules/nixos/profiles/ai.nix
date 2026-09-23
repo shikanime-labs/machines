@@ -215,7 +215,6 @@ let
     );
 
   hermesLcmPlugin = import ../../../pkgs/hermes-plugin-lcm { inherit pkgs; };
-  rtkRewritePlugin = import ../../../pkgs/hermes-plugin-rtk-rewrite { inherit pkgs; };
 
   mkA2aTokenSecrets =
     peers:
@@ -232,10 +231,6 @@ let
     );
 in
 {
-  environment.systemPackages = with pkgs; [
-    rtk
-  ];
-
   # Fleet agents self-check node health (journalctl -u, dmesg). Read-only
   # journal access only — deliberately NOT wheel (no sudo for agents).
   users.users.hermes.extraGroups = [
@@ -272,12 +267,10 @@ in
         git
         honcho
         nodejs
-        rtk
         yarn
       ];
       extraPlugins = [
         hermesLcmPlugin
-        rtkRewritePlugin
       ];
       settings = {
         agent.verify_on_stop = "auto";
@@ -391,7 +384,6 @@ in
           "hermes-lcm"
           "platforms/a2a-platform"
           "platforms/matrix"
-          "rtk-rewrite"
           "security-guidance"
         ];
       };

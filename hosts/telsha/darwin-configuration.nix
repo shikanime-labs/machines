@@ -1,6 +1,5 @@
 {
   imports = [
-    ../../modules/darwin/profiles/ai.nix
     ../../modules/darwin/profiles/distributed.nix
     ../../modules/darwin/profiles/workstation.nix
   ];

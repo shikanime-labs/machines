@@ -3,7 +3,6 @@
 let
   hermesLcmPlugin = import ../../pkgs/hermes-plugin-lcm { inherit pkgs; };
   memoryWikiPlugin = import ../../pkgs/hermes-plugin-memory-wiki { inherit pkgs; };
-  rtkRewritePlugin = import ../../pkgs/hermes-plugin-rtk-rewrite { inherit pkgs; };
   ponytailPlugin = import ../../pkgs/hermes-plugin-ponytail { inherit pkgs; };
 in
 {
@@ -32,7 +31,6 @@ in
     extraPlugins = [
       hermesLcmPlugin
       memoryWikiPlugin
-      rtkRewritePlugin
       ponytailPlugin
     ];
 
@@ -42,7 +40,6 @@ in
       gh
       git
       nodejs
-      rtk
       yarn
     ];
 
@@ -117,13 +114,11 @@ in
           "hermes-lcm"
           "memory-wiki"
           "ponytail"
-          "rtk-rewrite"
           "security-guidance"
         ];
         entries = {
           hermes-lcm.allow_tool_override = true;
           ponytail.allow_tool_override = true;
-          rtk-rewrite.allow_tool_override = true;
         };
       };
 
