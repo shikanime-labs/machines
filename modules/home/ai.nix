@@ -23,7 +23,7 @@ in
 
   # Hermes Agent — declarative config ported from modules/nixos/profiles/ai.nix,
   # minus the fleet/gateway/automation surface (matrix, a2a, bot_peers,
-  # platforms, platform_toolsets, honcho memory, sops environmentFiles).
+  # platforms, platform_toolsets, sops environmentFiles).
   # backend.mode defaults to "none" and gateway.enable defaults to false, so
   # enabling the service writes config.yaml without launching any daemon.
   services.hermes-agent = {
@@ -125,6 +125,8 @@ in
           rtk-rewrite.allow_tool_override = true;
         };
       };
+
+      memory.provider = "honcho";
 
       sessions.auto_prune = true;
     };
