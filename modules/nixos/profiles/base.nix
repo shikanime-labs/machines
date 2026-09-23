@@ -118,7 +118,7 @@
           ];
         }
       ];
-      remoteWrite.url = "https://telemetry.i.shikanime.studio/insert/0/prometheus";
+      remoteWrite.url = "https://metrics.i.shikanime.studio/insert/0/prometheus";
     };
   };
 
