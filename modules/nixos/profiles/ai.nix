@@ -6,13 +6,7 @@
 }:
 
 with lib;
-
 let
-  # Fleet of A2A-capable Hermes agents — every host importing ai.nix is a peer.
-  # Hosts resolve each other over the Tailscale tailnet (*.taila659a.ts.net).
-  # Capability labels per fleet member — drive a2a_orchestrate(capability=…)
-  # routing. Reflects each host's actual role: build arch, k8s plane tier, GPU.
-  # Cluster nodes — full mesh among themselves, reachable from workstations.
   clusterPeers = [
     {
       name = "ashira";
@@ -85,8 +79,6 @@ let
     }
   ];
 
-  # Workstation leaf callers — may reach cluster nodes, never reachable themselves.
-  # catbox is a client-only member (mkCatboxPackage) but is a recognised peer.
   workstationPeers = [
     {
       name = "catbox";
@@ -114,7 +106,6 @@ let
     }
   ];
 
-  # The a2a hubs — workstations route through them, never direct to cluster nodes.
   hubPeers = [
     {
       name = "nishir";
@@ -127,16 +118,12 @@ let
 
   peers = clusterPeers ++ workstationPeers;
 
-  # Drop the host itself so no host dials or trusts its own entry.
   mkSelfExcludedPeers = peers: builtins.filter (p: p.name != config.networking.hostName) peers;
 
   otherPeers = mkSelfExcludedPeers peers;
   otherClusterPeers = mkSelfExcludedPeers clusterPeers;
   otherWorkstationPeers = mkSelfExcludedPeers workstationPeers;
 
-  # Peer list for this host's role in the hub-and-spoke mesh: the hub dials
-  # the whole fleet, workstations dial only the hub, cluster nodes dial
-  # cluster peers. Self-excluded either way.
   fleetPeers =
     let
       isHub = builtins.any (p: p.name == config.networking.hostName) hubPeers;
@@ -172,9 +159,6 @@ let
 
   mkA2aTokenSecretName = peer: "hermes-agent-a2a-token-${peer}";
 
-  # Per-host api_server key name for the Hermes peer mesh. Each fleet host
-  # runs its own api_server with a distinct API_SERVER_KEY and dials peers
-  # using HERMES_PEER_<NAME>_KEY (that peer's key).
   mkPeerApiServerKeyName = peer: "hermes-agent-api-server-key-${peer}";
 
   mkBotPeers =
@@ -231,14 +215,13 @@ let
     );
 in
 {
-  # Fleet agents self-check node health (journalctl -u, dmesg). Read-only
-  # journal access only — deliberately NOT wheel (no sudo for agents).
   users.users.hermes.extraGroups = [
     "adm"
     "systemd-journal"
   ];
 
   networking.firewall.allowedTCPPorts = [
+    9119
     9900
     8642
   ];
@@ -248,9 +231,6 @@ in
 
     hermes-agent = {
       enable = true;
-      # Newer hermes-agent module asserts this when `documents` is set: the files
-      # install into workingDirectory, and the default differs per module so it
-      # must be chosen explicitly rather than inherited.
       workingDirectory = "/var/lib/hermes";
       addToSystemPackages = true;
       environmentFiles = [
@@ -274,6 +254,7 @@ in
       ];
       settings = {
         context.engine = "lcm";
+        dashboard.public_url = "https://${config.networking.hostName}.taila659a.ts.net";
         custom_providers = [
           {
             name = "shikanime-anthropic";
@@ -341,8 +322,6 @@ in
           provider = "custom:shikanime-anthropic";
           base_url = "https://inference.i.shikanime.studio/anthropic";
         };
-        # Bare `hermes`/`hermes chat` launches the Ink TUI by default; token
-        # streaming on for live agent output. Explicit --cli/--tui still wins.
         display = {
           bell_on_complete = true;
           bell_on_prompt = true;
@@ -352,18 +331,9 @@ in
           show_reasoning = true;
           streaming = true;
         };
-        # Inbound: serves Agent Card + JSON-RPC on the loopback bind (:9900). Per-peer
-        # tokens (A2A_PEER_TOKENS) authenticate each fleet member by name.
         platforms.a2a.enabled = true;
-        # Outbound: per-host peer selection (hub dials everything,
-        # workstations only the hub, cluster nodes only cluster peers).
         a2a_agents = mkA2aAgents fleetPeers;
-        # Bot-mode peer mesh (hermes peer): each fleet host exposes its own
-        # api_server and dials the others. Names/URLs here; keys via
-        # HERMES_PEER_<NAME>_KEY (hermes-agent-peer-keys-env template).
         bot_peers = mkBotPeers otherPeers;
-        # The `a2a` toolset ships off by default — enable it on every surface
-        # that must reach the fleet, or the a2a_* tools never register.
         platform_toolsets = {
           cli = [
             "hermes-cli"
@@ -392,24 +362,15 @@ in
         "honcho"
         "matrix"
       ];
+      backend.mode = "dashboard";
     };
   };
 
-  # SupplementaryGroups on the unit (not just users.users.hermes.extraGroups):
-  # extraGroups updates /etc/group but the switch does not restart services for
-  # it, so the running agent keeps its old groups. A unit-file attribute makes
-  # the switch restart hermes-agent.service with adm/systemd-journal applied.
   systemd.services.hermes-agent.serviceConfig.SupplementaryGroups = [
     "adm"
     "systemd-journal"
   ];
 
-  # Expose the A2A agent over Tailscale. The agent serves plain HTTP on :9900;
-  # `serve --https` terminates TLS at the funnel and forwards to local HTTP,
-  # so peers reach https://<host>.taila659a.ts.net:9900. `serve --https` cannot
-  # target an HTTPS upstream, but the agent is plaintext HTTP, so this is valid.
-  # Runs after the declarative tailscale-serve unit (leader hosts) so set-config
-  # --all doesn't wipe the a2a service.
   systemd.services.tailscale-serve-a2a = {
     description = "Expose Hermes A2A agent via Tailscale serve";
     after = [
@@ -429,8 +390,6 @@ in
     '';
   };
 
-  # Expose the Hermes api_server (peer DM target) over Tailscale. It serves
-  # plain HTTP on :8642; `serve --https` terminates TLS and forwards to it.
   systemd.services.tailscale-serve-api = {
     description = "Expose Hermes api_server via Tailscale serve";
     after = [
@@ -525,8 +484,6 @@ in
           A2A_PUBLIC_URL=https://${config.networking.hostName}.taila659a.ts.net:9900
           A2A_OWN_TOKEN=${config.sops.placeholder."${mkA2aTokenSecretName config.networking.hostName}"}
           A2A_PEER_TOKENS=${mkA2aPeerTokens otherPeers}
-          # Inbound allow-list: same per-host selection (hub accepts all,
-          # cluster hosts cluster-only, workstations hub+workstations).
           A2A_TRUSTED_PEERS=${mkA2aTrustedPeers fleetPeers}
         '';
         restartUnits = [ "hermes-agent.service" ];
