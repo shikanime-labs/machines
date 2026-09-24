@@ -89,7 +89,15 @@
         A2A_HOST = "0.0.0.0";
         API_SERVER_HOST = "0.0.0.0";
       };
-      settings.dashboard.public_url = "https://automata.i.shikanime.studio";
+      settings = {
+        dashboard = {
+          public_url = "https://automata.i.shikanime.studio";
+          oauth.self_hosted = {
+            issuer = "https://accounts.i.shikanime.studio";
+            client_id = "hermes-agent";
+          };
+        };
+      };
     };
 
     openssh = {
