@@ -65,7 +65,8 @@ in
       command = ''
         ${pkgs.victoriametrics}/bin/vmagent \
           -promscrape.config=${vmagentConfig} \
-          -remoteWrite.url=https://metrics.i.shikanime.studio/insert/0/prometheus
+          -remoteWrite.url=https://metrics.i.shikanime.studio/insert/0/prometheus \
+          -remoteWrite.tmpDataPath=/var/lib/vmagent
       '';
       serviceConfig = {
         Label = "org.nixos.vmagent";
