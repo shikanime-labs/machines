@@ -115,6 +115,12 @@
               target_label = "cluster";
               replacement = "nishir";
             }
+            # Match the vmks bundled node rules, which select
+            # job="node-exporter".
+            {
+              target_label = "job";
+              replacement = "node-exporter";
+            }
           ];
         }
       ];
