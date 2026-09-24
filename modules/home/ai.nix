@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   hermesLcmPlugin = import ../../pkgs/hermes-plugin-lcm { inherit pkgs; };
@@ -45,8 +50,6 @@ in
     antigravity-cli.enable = true;
 
     codex.enable = true;
-
-    claude-code.enable = true;
 
     hermes-agent.enable = true;
   };
@@ -163,4 +166,32 @@ in
       sessions.auto_prune = true;
     };
   };
+
+  programs.claude-code = {
+    enable = true;
+    settings = {
+      apiKeyHelper = "${config.home.homeDirectory}/.claude/sks-api-key.sh";
+      env = {
+        ANTHROPIC_BASE_URL = "https://inference.i.shikanime.studio/anthropic";
+        ANTHROPIC_MODEL = "z-ai/glm-5.3-flash";
+        ANTHROPIC_SMALL_FAST_MODEL = "qwen/qwen3.8-flash";
+      };
+    };
+  };
+
+  # Runtime-generated at activation: SKS_API_KEY is read from wherever the
+  # host keeps it (darwin ~/.hermes/.env, NixOS rendered sops env) and never
+  # enters the world-readable store.
+  home.activation.sksApiEnv = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    keyFile="$HOME/.hermes/.env"
+    [ -f "$keyFile" ] || keyFile="/run/secrets/rendered/hermes-agent-providers-env"
+    key="$(grep '^SKS_API_KEY=' "$keyFile" 2>/dev/null | cut -d= -f2-)"
+    if [ -n "$key" ]; then
+      mkdir -p "$HOME/.qwen" "$HOME/.claude"
+      printf 'OPENAI_API_KEY=%s\nOPENAI_BASE_URL=%s\nOPENAI_MODEL=%s\n' "$key" "https://inference.i.shikanime.studio/v1" "z-ai/glm-5.3-flash" > "$HOME/.qwen/.env"
+      chmod 600 "$HOME/.qwen/.env"
+    fi
+    printf '#!/bin/sh\ngrep '"'"'^SKS_API_KEY='"'"' "%s" | cut -d= -f2-\n' "$keyFile" > "$HOME/.claude/sks-api-key.sh"
+    chmod 700 "$HOME/.claude/sks-api-key.sh"
+  '';
 }
