@@ -4,8 +4,14 @@ with lib;
 
 {
   imports = [
+    ./ai.nix
+    ./distributed.nix
+    ./forgejo.nix
     ./machine.nix
+    ./server.nix
     ./wifi.nix
+    ../users/builder.nix
+    ../users/nishir.nix
   ];
 
   networking = {
@@ -68,26 +74,66 @@ with lib;
 
   };
 
-  systemd.services.cluster-policy-route = {
-    description = "Policy route: pod-source -> Tailscale routing table 52";
-    wants = [ "tailscaled.service" ];
-    after = [
-      "tailscaled.service"
-      "networking-ready.target"
-    ];
-    wantedBy = [ "multi-user.target" ];
-    # iprule needs iproute2; the policy route must be installed after Tailscale
-    # populates table 52 with peer/CGNAT routes.
-    path = [ pkgs.iproute2 ];
-    script = ''
-      ip rule add from 10.244.0.0/16 lookup 52 prio 5000
-    '';
-    preStop = ''
-      ip rule del from 10.244.0.0/16 lookup 52 prio 5000 2>/dev/null || true
-    '';
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
+  systemd.services = {
+    cluster-policy-route = {
+      description = "Policy route: pod-source -> Tailscale routing table 52";
+      wants = [ "tailscaled.service" ];
+      after = [
+        "tailscaled.service"
+        "networking-ready.target"
+      ];
+      wantedBy = [ "multi-user.target" ];
+      # iprule needs iproute2; the policy route must be installed after Tailscale
+      # populates table 52 with peer/CGNAT routes.
+      path = [ pkgs.iproute2 ];
+      script = ''
+        ip rule add from 10.244.0.0/16 lookup 52 prio 5000
+      '';
+      preStop = ''
+        ip rule del from 10.244.0.0/16 lookup 52 prio 5000 2>/dev/null || true
+      '';
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+      };
+    };
+
+    tailscale-serve-a2a = {
+      description = "Expose Hermes A2A agent via Tailscale serve";
+      after = [
+        "tailscaled.service"
+        "tailscale-serve.service"
+      ];
+      wants = [ "tailscaled.service" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        Restart = "on-failure";
+        RestartSec = "5s";
+      };
+      script = ''
+        ${getExe pkgs.tailscale} serve --yes --bg --https=9900 http://127.0.0.1:9900
+      '';
+    };
+
+    tailscale-serve-api = {
+      description = "Expose Hermes api_server via Tailscale serve";
+      after = [
+        "tailscaled.service"
+        "tailscale-serve.service"
+      ];
+      wants = [ "tailscaled.service" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        Restart = "on-failure";
+        RestartSec = "5s";
+      };
+      script = ''
+        ${getExe pkgs.tailscale} serve --yes --bg --https=8642 http://127.0.0.1:8642
+      '';
     };
   };
 }
