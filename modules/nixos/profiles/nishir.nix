@@ -64,6 +64,8 @@ with lib;
         url = "https://github.com/shikanime-labs/manifests.git";
       };
 
+      addons.flux.operator.configSecretName = "flux-web-config";
+
       # Bridge interface — flannel, firewall, and sysctl rules all target br0.
       # Bonded on Beelink (bond0 -> br0), single-NIC on RPi (end0 -> br0).
       interface = "br0";
