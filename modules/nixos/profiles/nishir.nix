@@ -1,4 +1,9 @@
-{ lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -64,6 +69,8 @@ with lib;
         url = "https://github.com/shikanime-labs/manifests.git";
       };
 
+      addons.flux.operator.extraConfig.web.configSecretName = "flux-web";
+
       # Bridge interface — flannel, firewall, and sysctl rules all target br0.
       # Bonded on Beelink (bond0 -> br0), single-NIC on RPi (end0 -> br0).
       interface = "br0";
@@ -72,6 +79,48 @@ with lib;
       canal.backend = "host-gw";
     };
 
+  };
+
+  # The flux-web Secret seeds from sops on server nodes only — agents would
+  # race eight idempotent appliers for one Secret.
+  sops.secrets.flux-web-client-secret = mkIf (config.services.knix.role == "server") {
+    sopsFile = ../../../secrets/machine.enc.yaml;
+    restartUnits = [ "flux-web-secret.service" ];
+  };
+  sops.templates."flux-operator-config.json" = mkIf (config.services.knix.role == "server") {
+    content = ''
+      apiVersion: web.fluxcd.controlplane.io/v1
+      kind: Config
+      spec:
+        baseURL: https://flux.i.shikanime.studio
+        authentication:
+          type: OAuth2
+          oauth2:
+            provider: OIDC
+            clientID: flux
+            clientSecret: ${config.sops.placeholder."flux-web-client-secret"}
+            issuerURL: https://accounts.i.shikanime.studio
+    '';
+  };
+
+  systemd.services.flux-web-secret = mkIf (config.services.knix.role == "server") {
+    description = "Seed the flux-web Secret from the sops template";
+    after = [ "rke2-server.service" ];
+    wants = [ "rke2-server.service" ];
+    wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.kubectl ];
+    script = ''
+      until ${pkgs.kubectl}/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml get namespace flux-system >/dev/null 2>&1; do
+        sleep 5
+      done
+      ${pkgs.kubectl}/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml -n flux-system create secret generic flux-web \
+        --from-file=config.yaml=${config.sops.templates."flux-operator-config.json".path} \
+        --dry-run=client -o yaml | ${pkgs.kubectl}/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml apply -f -
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
   };
 
   systemd.services = {
