@@ -1,14 +1,8 @@
 {
   imports = [
-    ../../modules/nixos/profiles/ai.nix
-    ../../modules/nixos/profiles/forgejo.nix
-    ../../modules/nixos/profiles/distributed.nix
     ../../modules/nixos/profiles/leader.nix
     ../../modules/nixos/profiles/nishir.nix
-    ../../modules/nixos/profiles/server.nix
     ../../modules/nixos/hardware/beelink-eq.nix
-    ../../modules/nixos/users/builder.nix
-    ../../modules/nixos/users/nishir.nix
   ];
 
   disko.devices.disk.flandre = {

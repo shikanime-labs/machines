@@ -372,44 +372,6 @@ in
     "systemd-journal"
   ];
 
-  systemd.services.tailscale-serve-a2a = {
-    description = "Expose Hermes A2A agent via Tailscale serve";
-    after = [
-      "tailscaled.service"
-      "tailscale-serve.service"
-    ];
-    wants = [ "tailscaled.service" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      Restart = "on-failure";
-      RestartSec = "5s";
-    };
-    script = ''
-      ${getExe pkgs.tailscale} serve --yes --bg --https=9900 http://127.0.0.1:9900
-    '';
-  };
-
-  systemd.services.tailscale-serve-api = {
-    description = "Expose Hermes api_server via Tailscale serve";
-    after = [
-      "tailscaled.service"
-      "tailscale-serve.service"
-    ];
-    wants = [ "tailscaled.service" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      Restart = "on-failure";
-      RestartSec = "5s";
-    };
-    script = ''
-      ${getExe pkgs.tailscale} serve --yes --bg --https=8642 http://127.0.0.1:8642
-    '';
-  };
-
   sops = {
     secrets = {
       hermes-agent-a2a-token-catbox = {

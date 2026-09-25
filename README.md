@@ -63,8 +63,9 @@ Shared module layers.
   - `workstation.nix` - workstation-oriented tooling and desktop defaults
   - `follower.nix` - server defaults shared by cluster nodes
   - `distributed.nix` - remote build machines and distributed build settings
-  - `nishir.nix` - cluster node defaults: tailscale, SSH, Avahi, firewall tweaks
-  - `nishir.nix` and `talashi.nix` - cluster-specific server profiles
+  - `nishir.nix` - cluster node profile: tailscale, SSH, Avahi, firewall tweaks,
+    and the imports every node shares (ai, distributed, forgejo, server, and the
+    builder/nishir users)
   - `ai.nix` - hermes-agent service, computer-use wiring; the `cua-driver`
     binary (AT-SPI/D-Bus) is installed fleet-wide via `flake/nixos.nix` so
     hermes-agent's `computer-use` extra can drive computer automation
