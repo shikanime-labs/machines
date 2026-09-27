@@ -28,6 +28,7 @@
     device = "sops-key";
     fsType = "virtiofs";
     options = [ "ro" ];
+    neededForBoot = true;
   };
 
   programs.nix-ld = {
@@ -107,7 +108,6 @@
   };
 
   sops = {
-    useSystemdActivation = true;
     age = {
       generateKey = true;
       keyFile = "/var/lib/sops-nix/key.txt";

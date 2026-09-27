@@ -367,11 +367,6 @@ in
     };
   };
 
-  systemd.services = {
-    hermes-agent.serviceConfig.EnvironmentFile = config.services.hermes-agent.environmentFiles;
-    hermes-backend.serviceConfig.EnvironmentFile = config.services.hermes-agent.environmentFiles;
-  };
-
   sops = {
     secrets = {
       hermes-agent-a2a-token-catbox = {

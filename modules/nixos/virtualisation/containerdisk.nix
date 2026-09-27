@@ -36,11 +36,13 @@ in
       # sends output to invisible VGA and panic=1 reboots silently.
       kernelParams = [ "console=ttyS0" ];
 
-      # KubeVirt exposes containerDisks as virtio (/dev/vda); without these the
-      # initrd cannot see the root disk and boot times out into a panic=1 loop.
+      # KubeVirt exposes containerDisks as virtio (/dev/vda) and host shares as
+      # virtiofs; without these the initrd cannot see the root disk or mount a
+      # shared secret volume, and boot times out into a panic=1 loop.
       initrd.availableKernelModules = [
         "virtio_pci"
         "virtio_blk"
+        "virtiofs"
       ];
 
       # Load the virtio and KVM module families at runtime; kvm_intel/kvm_amd and
