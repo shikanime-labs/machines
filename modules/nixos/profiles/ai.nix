@@ -367,10 +367,10 @@ in
     };
   };
 
-  systemd.services.hermes-agent.serviceConfig.SupplementaryGroups = [
-    "adm"
-    "systemd-journal"
-  ];
+  systemd.services = {
+    hermes-agent.serviceConfig.EnvironmentFile = config.services.hermes-agent.environmentFiles;
+    hermes-backend.serviceConfig.EnvironmentFile = config.services.hermes-agent.environmentFiles;
+  };
 
   sops = {
     secrets = {
