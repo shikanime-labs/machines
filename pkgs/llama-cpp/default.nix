@@ -19,8 +19,8 @@ llama-cpp-gpu.overrideAttrs (_old: {
   src = pkgs.fetchFromGitHub {
     owner = "ggml-org";
     repo = "llama.cpp";
-    rev = "96ffdc41ceb055e1c2d3d96667ae6d9f0ccb710b";
-    hash = "sha256-uFsYilaXd0Aay7ywDvFgVPw25xpPtcE4maXy4cBzpk8=";
+    rev = "4364bf7232e65c34eca8d9500c5464389662de6b";
+    hash = "sha256-0h33h04p92wfb01p4yrgw9vvzim8rbfz3w6v9dhg8w5wvm4af3kx=";
   };
   patches = [
     # rpc: single-threaded accept loop starves every connection after the
