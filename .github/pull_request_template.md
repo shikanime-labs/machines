@@ -1,6 +1,4 @@
-# Pull Request
-
-## Why
+# Why
 
 <!-- Why now: the drift, risk, or pain this closes. -->
 
