@@ -356,6 +356,58 @@ in
           "platforms/matrix"
           "security-guidance"
         ];
+        moa = {
+          default_preset = "deep";
+          presets = {
+            broad = {
+              reference_models = [
+                {
+                  provider = "shikanime-openai";
+                  model = "deepseek/deepseek-v4-flash";
+                }
+                {
+                  provider = "shikanime-anthropic";
+                  model = "z-ai/glm-5.3";
+                }
+                {
+                  provider = "shikanime-openai";
+                  model = "openai/gpt-5.5";
+                }
+                {
+                  provider = "shikanime-openai";
+                  model = "openai/gpt-5.5-mini";
+                }
+              ];
+              aggregator = {
+                provider = "shikanime-anthropic";
+                model = "z-ai/glm-5.3-flash";
+              };
+              enabled = true;
+            };
+            default = {
+              reference_models = [
+                {
+                  provider = "shikanime-anthropic";
+                  model = "z-ai/glm-5.3";
+                }
+                {
+                  provider = "shikanime-openai";
+                  model = "deepseek/deepseek-v4-flash";
+                }
+                {
+                  provider = "shikanime-openai";
+                  model = "openai/gpt-5.5";
+                }
+              ];
+              aggregator = {
+                provider = "shikanime-openai";
+                model = "openai/gpt-5.5";
+              };
+              enabled = true;
+              fanout = "user_turn";
+            };
+          };
+        };
       };
       extraDependencyGroups = [
         "anthropic"
