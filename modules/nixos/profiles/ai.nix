@@ -263,7 +263,7 @@ in
             base_url = "https://inference.i.shikanime.studio/anthropic";
             key_env = "SKS_API_KEY";
             session_affinity_header = "x-sks-session-id";
-            model = "z-ai/glm-5.3-flash";
+            model = "qwen/qwen3.8-flash";
             models = [
               "z-ai/glm-5.3-flash"
               "z-ai/glm-5.3"
@@ -310,6 +310,11 @@ in
             model = "qwen/qwen3.8-flash";
             provider = "custom:shikanime-anthropic";
           }
+          {
+            api_mode = "anthropic_messages";
+            model = "deepseek/deepseek-v4.1";
+            provider = "custom:shikanime-anthropic";
+          }
         ];
         matrix = {
           allowed_rooms = [ "#automata:matrix.taila659a.ts.net" ];
@@ -321,7 +326,7 @@ in
         memory.provider = "honcho";
         sessions.auto_prune = true;
         model = {
-          default = "z-ai/glm-5.3-flash";
+          default = "qwen/qwen3.8-flash";
           provider = "custom:shikanime-anthropic";
           base_url = "https://inference.i.shikanime.studio/anthropic";
         };
