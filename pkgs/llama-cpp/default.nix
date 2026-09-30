@@ -5,7 +5,13 @@
 }:
 
 let
-  llama-cpp-base = pkgs.llama-cpp.override { rpcSupport = true; };
+  llama-cpp-base = pkgs.llama-cpp.override {
+    rpcSupport = true;
+    # nodejs 26.10.0 does not compile on aarch64 (V8 drops the CHAR_BIT
+    # include under glibc 2.42); build the web UI with the 24 LTS until
+    # nixpkgs ships a fixed 26.
+    nodejs_latest = pkgs.nodejs_24;
+  };
   # ROCm (x86_64-only in nixpkgs) executes qwen4exp/deepseek-v4 graphs RADV
   # loses on first queue submit; aarch64 stays on the Vulkan build.
   llama-cpp-gpu =
