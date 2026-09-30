@@ -255,7 +255,6 @@ in
       ];
       settings = {
         context.engine = "lcm";
-        dashboard.public_url = "https://${config.networking.hostName}.taila659a.ts.net";
         custom_providers = [
           {
             name = "shikanime-anthropic";
