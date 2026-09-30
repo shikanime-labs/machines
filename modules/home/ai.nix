@@ -124,6 +124,11 @@ in
           model = "qwen/qwen3.8-flash";
           provider = "custom:shikanime-anthropic";
         }
+        {
+          api_mode = "anthropic_messages";
+          model = "deepseek/deepseek-v4.1";
+          provider = "custom:shikanime-anthropic";
+        }
       ];
 
       model = {
