@@ -26,7 +26,15 @@ let
     inputs.hermes-agent.nixosModules.default
     inputs.noctalia.nixosModules.default
     inputs.noctalia-greeter.nixosModules.default
-    { services.cua-driver.package = inputs.cua.packages.${system}.default; }
+    (
+      { pkgs, lib, ... }:
+      {
+        services.cua-driver.package = inputs.cua.packages.${system}.default;
+        services.hermes-agent.package = import ./mk-hermes-agent.nix {
+          inherit inputs pkgs lib;
+        };
+      }
+    )
   ];
 
   mkBeelinkClusterModules =

@@ -67,6 +67,14 @@ in
       enable = true;
       enableGitIntegration = true;
       enableJujutsuIntegration = true;
+      # nixpkgs added -fno-strict-aliasing for mergiraf's bundled tree-sitter
+      # grammars (c937335, 2026-09-30) after our pinned nixpkgs — carry the
+      # flag until the pin moves past it.
+      package = pkgs.mergiraf.overrideAttrs (old: {
+        env = (old.env or { }) // {
+          NIX_CFLAGS_COMPILE = "-fno-strict-aliasing";
+        };
+      });
     };
 
     mise.enable = true;
