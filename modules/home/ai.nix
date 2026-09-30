@@ -168,7 +168,7 @@ in
 
       sessions.auto_prune = true;
       moa = {
-        default_preset = "deep";
+        default_preset = "default";
         presets = {
           broad = {
             reference_models = [

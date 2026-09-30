@@ -361,7 +361,7 @@ in
           "security-guidance"
         ];
         moa = {
-          default_preset = "deep";
+          default_preset = "default";
           presets = {
             broad = {
               reference_models = [
