@@ -262,6 +262,7 @@ in
             api_mode = "anthropic_messages";
             base_url = "https://inference.i.shikanime.studio/anthropic";
             key_env = "SKS_API_KEY";
+            session_affinity_header = "x-halogen-affinity";
             model = "z-ai/glm-5.3-flash";
             models = [
               "z-ai/glm-5.3-flash"
@@ -276,6 +277,7 @@ in
             api_mode = "chat_completions";
             base_url = "https://inference.i.shikanime.studio/v1";
             key_env = "SKS_API_KEY";
+            session_affinity_header = "x-halogen-affinity";
             model = "poolside/laguna-s-2.1:free";
             models = [
               "poolside/laguna-s-2.1:free"
