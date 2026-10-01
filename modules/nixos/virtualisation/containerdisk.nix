@@ -32,6 +32,12 @@ in
   # Reference: https://github.com/kubevirt/kubevirt/blob/main/docs/container-register-disks.md
   config = {
     boot = {
+      # Same-arch binfmt emulation is rejected by binfmt.nix; only x86_64 hosts
+      # get aarch64 emulation so guests can run foreign-arch containers.
+      binfmt.emulatedSystems = mkIf pkgs.stdenv.hostPlatform.isx86_64 [
+        "aarch64-linux"
+      ];
+
       # KubeVirt q35 exposes the guest console on ttyS0; without it the kernel
       # sends output to invisible VGA and panic=1 reboots silently.
       kernelParams = [ "console=ttyS0" ];
