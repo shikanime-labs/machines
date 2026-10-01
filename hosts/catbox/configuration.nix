@@ -116,11 +116,14 @@
     defaultSopsFormat = "yaml";
   };
 
-  virtualisation.docker = {
-    autoPrune.enable = true;
-    rootless = {
-      enable = true;
-      setSocketVariable = true;
+  virtualisation = {
+    diskSize = 32768;
+    docker = {
+      autoPrune.enable = true;
+      rootless = {
+        enable = true;
+        setSocketVariable = true;
+      };
     };
   };
 }
