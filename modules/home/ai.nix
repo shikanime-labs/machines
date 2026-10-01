@@ -93,10 +93,10 @@ in
           api_mode = "anthropic_messages";
           key_env = "SKS_API_KEY";
           session_affinity_header = "x-sks-session-id";
-          model = "z-ai/glm-5.3-flash";
+          model = "z-ai/glm-5.3";
           models = [
-            "z-ai/glm-5.3-flash"
             "z-ai/glm-5.3"
+            "z-ai/glm-5.3-flash"
             "qwen/qwen3.8-27b"
             "qwen/qwen3.8-flash"
             "deepseek/deepseek-v4-flash"
@@ -132,7 +132,7 @@ in
       ];
 
       model = {
-        default = "z-ai/glm-5.3-flash";
+        default = "z-ai/glm-5.3";
         provider = "custom:shikanime-anthropic";
         base_url = "https://inference.i.shikanime.studio/anthropic";
       };
