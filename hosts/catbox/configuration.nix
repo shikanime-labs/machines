@@ -14,6 +14,7 @@
   ];
 
   boot.loader.efi.canTouchEfiVariables = true;
+  virtualisation.diskSize = 32768;
 
   containerdisk = {
     name = "ghcr.io/shikanime-labs/machines/catbox";

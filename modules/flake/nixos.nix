@@ -238,6 +238,7 @@ in
   flake = {
     nixosConfigurations = {
       ashira = mkAshiraNixosConfiguration "x86_64-linux";
+      catbox = mkCatboxNixosConfiguration "x86_64-linux";
       fushi = mkFushiNixosConfiguration "aarch64-linux";
       nixtar = mkNixtarNixosConfiguration "x86_64-linux";
       manash = mkManashNixosConfiguration "x86_64-linux";
