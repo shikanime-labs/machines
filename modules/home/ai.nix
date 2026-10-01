@@ -81,6 +81,7 @@ in
       "anthropic"
       "computer-use"
       "honcho"
+      "matrix"
     ];
 
     settings = {
