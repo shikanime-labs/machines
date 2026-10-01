@@ -93,6 +93,14 @@
         - Allowed topics: status, patches, deployments, incidents.
         - Forbidden: credentials, plaintext-secrets.
       '';
+
+      settings.dashboard = {
+        oauth.self_hosted = {
+          client_id = "hermes-agent";
+          issuer = "https://accounts.i.shikanime.studio";
+        };
+        public_url = "https://automata.i.shikanime.studio";
+      };
     };
 
     openssh = {
