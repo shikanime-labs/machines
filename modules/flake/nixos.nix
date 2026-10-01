@@ -240,13 +240,13 @@ in
       ashira = mkAshiraNixosConfiguration "x86_64-linux";
       catbox = mkCatboxNixosConfiguration "x86_64-linux";
       fushi = mkFushiNixosConfiguration "aarch64-linux";
-      nixtar = mkNixtarNixosConfiguration "x86_64-linux";
+      kushira = mkKushiraNixosConfiguration "x86_64-linux";
       manash = mkManashNixosConfiguration "x86_64-linux";
       minish = mkMinishNixosConfiguration "aarch64-linux";
       nalsha = mkNalshaNixosConfiguration "x86_64-linux";
       nemishi = mkNemishiNixosConfiguration "aarch64-linux";
+      nixtar = mkNixtarNixosConfiguration "x86_64-linux";
       sashina = mkSashinaNixosConfiguration "x86_64-linux";
-      kushira = mkKushiraNixosConfiguration "x86_64-linux";
     };
 
   };
