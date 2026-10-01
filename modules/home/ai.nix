@@ -99,7 +99,6 @@ in
             "z-ai/glm-5.3-flash"
             "qwen/qwen3.8-27b"
             "qwen/qwen3.8-flash"
-            "deepseek/deepseek-v4-flash"
           ];
         }
         {
@@ -113,7 +112,6 @@ in
             "poolside/laguna-s-2.1:free"
             "qwen/qwen3.8-flash"
             "qwen/qwen3.8-27b"
-            "deepseek/deepseek-v4-flash"
           ];
         }
       ];
