@@ -14,6 +14,7 @@ in
 {
   imports = [
     "${modulesPath}/virtualisation/disk-image.nix"
+    "${modulesPath}/profiles/qemu-guest.nix"
   ];
 
   options.containerdisk = {
@@ -32,22 +33,16 @@ in
   # Reference: https://github.com/kubevirt/kubevirt/blob/main/docs/container-register-disks.md
   config = {
     boot = {
-      # KubeVirt q35 exposes the guest console on ttyS0; without it the kernel
-      # sends output to invisible VGA and panic=1 reboots silently.
-      kernelParams = [ "console=ttyS0" ];
-
-      # KubeVirt exposes containerDisks as virtio (/dev/vda) and host shares as
-      # virtiofs; without these the initrd cannot see the root disk or mount a
-      # shared secret volume, and boot times out into a panic=1 loop.
-      initrd.availableKernelModules = [
-        "virtio_pci"
-        "virtio_blk"
-        "virtiofs"
+      # q35 exposes the console on ttyS0 only; keep panic=1 so runStrategy
+      # Always restarts a crashed guest instead of hanging.
+      kernelParams = [
+        "boot.panic_on_fail"
+        "console=ttyS0"
+        "panic=1"
       ];
 
-      # Load the virtio and KVM module families at runtime; kvm_intel/kvm_amd and
-      # the NVIDIA stack are arch/device-specific and handled by
-      # kernel-module-loader so a missing module never fails boot.
+      # kvm_intel/kvm_amd and the NVIDIA stack are arch/device-specific and
+      # handled by kernel-module-loader so a missing module never fails boot.
       kernelModules = [
         "virtio_pci"
         "virtio_net"
@@ -69,7 +64,10 @@ in
     services = {
       cloud-init.enable = true;
       qemuGuest.enable = true;
+      getty.autologinUser = mkDefault "root";
     };
+
+    systemd.services."serial-getty@ttyS0".enable = true;
 
     systemd.services = {
       kernel-module-loader = {
@@ -77,17 +75,14 @@ in
         enable = true;
         wantedBy = [ "multi-user.target" ];
         script = ''
-          # Load KVM modules matching the CPU vendor.
           if grep -qE '(^| )vmx( |$)' /proc/cpuinfo; then
             modprobe kvm_intel
           fi
 
-          # Load KVM modules with AMD-V acceleration if available.
           if grep -qE '(^| )svm( |$)' /proc/cpuinfo; then
             modprobe kvm_amd
           fi
 
-          # Load NVIDIA kernel modules if available.
           if modinfo nvidia 2>/dev/null >/dev/null; then
             modprobe nvidia_uvm
             modprobe nvidia_drm
