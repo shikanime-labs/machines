@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   ...
 }:
@@ -116,6 +117,39 @@
     };
     defaultSopsFile = ../../secrets/catbox.enc.yaml;
     defaultSopsFormat = "yaml";
+    secrets = {
+      hermes-agent-discord-bot-token = {
+        group = "hermes";
+        owner = "hermes";
+        restartUnits = [ "hermes-agent.service" ];
+      };
+      hermes-agent-discord-allowed-users = {
+        group = "hermes";
+        owner = "hermes";
+        restartUnits = [ "hermes-agent.service" ];
+      };
+      hermes-agent-discord-home-channel = {
+        group = "hermes";
+        owner = "hermes";
+        restartUnits = [ "hermes-agent.service" ];
+      };
+      hermes-agent-webhook-secret = {
+        group = "hermes";
+        owner = "hermes";
+        restartUnits = [ "hermes-agent.service" ];
+      };
+    };
+    templates.hermes-agent-events-env = {
+      content = ''
+        DISCORD_BOT_TOKEN=${config.sops.placeholder.hermes-agent-discord-bot-token}
+        DISCORD_ALLOWED_USERS=${config.sops.placeholder.hermes-agent-discord-allowed-users}
+        DISCORD_HOME_CHANNEL=${config.sops.placeholder.hermes-agent-discord-home-channel}
+        WEBHOOK_ENABLED=true
+        WEBHOOK_PORT=8644
+        WEBHOOK_SECRET=${config.sops.placeholder.hermes-agent-webhook-secret}
+      '';
+      restartUnits = [ "hermes-agent.service" ];
+    };
   };
 
   virtualisation = {
