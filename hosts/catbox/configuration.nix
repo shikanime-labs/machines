@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   ...
 }:
@@ -41,6 +42,8 @@
 
   networking.hostName = "catbox";
 
+  networking.firewall.allowedTCPPorts = [ 8644 ];
+
   services = {
     hermes-agent = {
       backend.host = "0.0.0.0";
@@ -48,6 +51,7 @@
         A2A_HOST = "0.0.0.0";
         API_SERVER_HOST = "0.0.0.0";
       };
+      environmentFiles = [ config.sops.templates.hermes-agent-events-env.path ];
       documents."SOUL.md" = ''
         # Operator 23O
 
@@ -94,6 +98,100 @@
         - Forbidden: credentials, plaintext-secrets.
       '';
 
+      settings.plugins.enabled = [
+        "disk-cleanup"
+        "hermes-lcm"
+        "platforms/a2a-platform"
+        "platforms/discord"
+        "platforms/matrix"
+        "security-guidance"
+      ];
+
+      settings.platform_toolsets.discord = [
+        "hermes-discord"
+        "a2a"
+      ];
+
+      settings.platforms.webhook = {
+        enabled = true;
+        extra = {
+          port = 8644;
+          routes = {
+            github-issue = {
+              deliver = "matrix";
+              deliver_extra = {
+                chat_id = "!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net";
+              };
+              events = [
+                "issues"
+                "issue_comment"
+              ];
+              filters = [
+                {
+                  field = "issue.pull_request";
+                  missing = true;
+                }
+              ];
+              prompt = ''
+                ## What
+
+                - Repository: {repository.full_name}
+                - Issue #{issue.number}: {issue.title}
+                - Author: {issue.user.login}
+                - URL: {issue.html_url}
+                - Action: {action}
+
+                ### Body
+
+                {issue.body}
+
+                ### Comment (if present)
+
+                {comment.body}
+
+                ## How
+
+                Triage this GitHub issue; the response is delivered to the automata Matrix room.
+              '';
+              skills = [ "github" ];
+            };
+            github-pr = {
+              deliver = "github_comment";
+              deliver_extra = {
+                pr_number = "{number}";
+                repo = "{repository.full_name}";
+              };
+              events = [ "pull_request" ];
+              filters = [
+                {
+                  field = "action";
+                  "in" = [
+                    "opened"
+                    "reopened"
+                    "synchronize"
+                  ];
+                }
+              ];
+              prompt = ''
+                ## What
+
+                - Repository: {repository.full_name}
+                - PR #{number}: {pull_request.title}
+                - Author: {pull_request.user.login}
+                - URL: {pull_request.html_url}
+                - Diff URL: {pull_request.diff_url}
+                - Action: {action}
+
+                ## How
+
+                Review this pull request.
+              '';
+              skills = [ "github" ];
+            };
+          };
+        };
+      };
+
       settings.dashboard = {
         oauth.self_hosted = {
           client_id = "hermes-agent";
@@ -116,6 +214,39 @@
     };
     defaultSopsFile = ../../secrets/catbox.enc.yaml;
     defaultSopsFormat = "yaml";
+    secrets = {
+      hermes-agent-discord-bot-token = {
+        group = "hermes";
+        owner = "hermes";
+        restartUnits = [ "hermes-agent.service" ];
+      };
+      hermes-agent-discord-allowed-users = {
+        group = "hermes";
+        owner = "hermes";
+        restartUnits = [ "hermes-agent.service" ];
+      };
+      hermes-agent-discord-home-channel = {
+        group = "hermes";
+        owner = "hermes";
+        restartUnits = [ "hermes-agent.service" ];
+      };
+      hermes-agent-webhook-secret = {
+        group = "hermes";
+        owner = "hermes";
+        restartUnits = [ "hermes-agent.service" ];
+      };
+    };
+    templates.hermes-agent-events-env = {
+      content = ''
+        DISCORD_BOT_TOKEN=${config.sops.placeholder.hermes-agent-discord-bot-token}
+        DISCORD_ALLOWED_USERS=${config.sops.placeholder.hermes-agent-discord-allowed-users}
+        DISCORD_HOME_CHANNEL=${config.sops.placeholder.hermes-agent-discord-home-channel}
+        WEBHOOK_ENABLED=true
+        WEBHOOK_PORT=8644
+        WEBHOOK_SECRET=${config.sops.placeholder.hermes-agent-webhook-secret}
+      '';
+      restartUnits = [ "hermes-agent.service" ];
+    };
   };
 
   virtualisation = {
