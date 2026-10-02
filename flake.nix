@@ -86,14 +86,6 @@
       };
     };
 
-    llm-agents = {
-      url = "github:numtide/llm-agents.nix";
-      inputs = {
-        flake-parts.follows = "flake-parts";
-        treefmt-nix.follows = "treefmt-nix";
-      };
-    };
-
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
