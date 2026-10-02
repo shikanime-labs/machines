@@ -61,15 +61,17 @@ with lib;
 
   services = {
     knix = {
-      addons.flux.instance.extraConfig.instance.sync = {
-        interval = "1m";
-        kind = "GitRepository";
-        path = "clusters/nishir/overlays/tailnet";
-        ref = "refs/heads/main";
-        url = "https://github.com/shikanime-labs/manifests.git";
-      };
+      addons.flux = {
+        instance.extraConfig.instance.sync = {
+          interval = "1m";
+          kind = "GitRepository";
+          path = "clusters/nishir/overlays/tailnet";
+          ref = "refs/heads/main";
+          url = "https://github.com/shikanime-labs/manifests.git";
+        };
 
-      addons.flux.operator.extraConfig.web.configSecretName = "flux-web";
+        operator.extraConfig.web.configSecretName = "flux-operator-web";
+      };
 
       # Bridge interface — flannel, firewall, and sysctl rules all target br0.
       # Bonded on Beelink (bond0 -> br0), single-NIC on RPi (end0 -> br0).
@@ -82,7 +84,7 @@ with lib;
   };
 
   sops = {
-    secrets.flux-web-client-secret = mkIf (config.services.knix.role == "server") {
+    secrets.flux-operator-web-client-secret = mkIf (config.services.knix.role == "server") {
       sopsFile = ../../../secrets/machine.enc.yaml;
       restartUnits = [ "systemd-tmpfiles-setup.service" ];
     };
@@ -92,7 +94,7 @@ with lib;
         apiVersion = "v1";
         kind = "Secret";
         metadata = {
-          name = "flux-web";
+          name = "flux-operator-web";
           namespace = "flux-system";
         };
         type = "Opaque";
@@ -107,7 +109,7 @@ with lib;
               oauth2 = {
                 provider = "OIDC";
                 clientID = "flux";
-                clientSecret = config.sops.placeholder."flux-web-client-secret";
+                clientSecret = config.sops.placeholder."flux-operator-web-client-secret";
                 issuerURL = "https://accounts.i.shikanime.studio";
               };
             };
