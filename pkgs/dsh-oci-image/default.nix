@@ -1,38 +1,40 @@
 {
   pkgs,
   lib,
+  dsh,
   ...
 }:
 
 pkgs.dockerTools.buildLayeredImage {
-  name = "huggingface";
+  name = "dsh";
   tag = "latest";
 
   contents = [
     pkgs.dockerTools.caCertificates
     pkgs.dockerTools.usrBinEnv
-    pkgs.busybox
-    pkgs.python3Packages.huggingface-hub
+    dsh
   ];
 
   fakeRootCommands = ''
     ${pkgs.dockerTools.shadowSetup}
-    groupadd -g 65532 huggingface
-    useradd -u 65532 -g 65532 -d /home/huggingface -M huggingface
-    mkdir -p /home/huggingface
-    chown huggingface:huggingface /home/huggingface
+    groupadd -g 65532 dsh
+    useradd -u 65532 -g 65532 -d /home/dsh -M dsh
+    mkdir -p /home/dsh
+    chown dsh:dsh /home/dsh
   '';
   enableFakechroot = true;
 
   config = {
-    Entrypoint = [ "/bin/sh" ];
-    Env = [ "HOME=/home/huggingface" ];
+    Entrypoint = [
+      "${lib.getExe dsh}"
+    ];
+    Env = [ "HOME=/home/dsh" ];
     User = "65532:65532";
     WorkingDir = "/";
   };
 
   meta = with lib; {
-    description = "Hugging Face CLI downloader container";
+    description = "DeepSeek agent harness (dsh) container";
     platforms = [
       "x86_64-linux"
       "aarch64-linux"

@@ -139,11 +139,13 @@
     ];
   };
 
-  systemd = {
-    # Required for node-exporter textfile collector.
-    tmpfiles.rules = [
-      "d /var/lib/node_exporter/textfile_collector 0755 root root -"
-    ];
+  # Required for node-exporter textfile collector.
+  systemd.tmpfiles.settings."node-exporter-textfile" = {
+    "/var/lib/node_exporter/textfile_collector"."d" = {
+      group = "root";
+      mode = "0755";
+      user = "root";
+    };
   };
 
   # This value determines the NixOS release from which the default

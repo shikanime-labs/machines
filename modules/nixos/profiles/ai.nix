@@ -255,20 +255,19 @@ in
       ];
       settings = {
         context.engine = "lcm";
-        dashboard.public_url = "https://${config.networking.hostName}.taila659a.ts.net";
         custom_providers = [
           {
             name = "shikanime-anthropic";
             api_mode = "anthropic_messages";
             base_url = "https://inference.i.shikanime.studio/anthropic";
             key_env = "SKS_API_KEY";
-            model = "z-ai/glm-5.3-flash";
+            session_affinity_header = "x-sks-session-id";
+            model = "qwen/qwen3.8-flash";
             models = [
               "z-ai/glm-5.3-flash"
               "z-ai/glm-5.3"
               "qwen/qwen3.8-27b"
               "qwen/qwen3.8-flash"
-              "deepseek/deepseek-v4-flash"
             ];
           }
           {
@@ -276,12 +275,12 @@ in
             api_mode = "chat_completions";
             base_url = "https://inference.i.shikanime.studio/v1";
             key_env = "SKS_API_KEY";
+            session_affinity_header = "x-sks-session-id";
             model = "poolside/laguna-s-2.1:free";
             models = [
               "poolside/laguna-s-2.1:free"
               "qwen/qwen3.8-flash"
               "qwen/qwen3.8-27b"
-              "deepseek/deepseek-v4-flash"
             ];
           }
         ];
@@ -308,6 +307,11 @@ in
             model = "qwen/qwen3.8-flash";
             provider = "custom:shikanime-anthropic";
           }
+          {
+            api_mode = "anthropic_messages";
+            model = "deepseek/deepseek-v4.1";
+            provider = "custom:shikanime-anthropic";
+          }
         ];
         matrix = {
           allowed_rooms = [ "#automata:matrix.taila659a.ts.net" ];
@@ -319,7 +323,7 @@ in
         memory.provider = "honcho";
         sessions.auto_prune = true;
         model = {
-          default = "z-ai/glm-5.3-flash";
+          default = "qwen/qwen3.8-flash";
           provider = "custom:shikanime-anthropic";
           base_url = "https://inference.i.shikanime.studio/anthropic";
         };

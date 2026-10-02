@@ -26,7 +26,15 @@ let
     inputs.hermes-agent.nixosModules.default
     inputs.noctalia.nixosModules.default
     inputs.noctalia-greeter.nixosModules.default
-    { services.cua-driver.package = inputs.cua.packages.${system}.default; }
+    (
+      { pkgs, lib, ... }:
+      {
+        services.cua-driver.package = inputs.cua.packages.${system}.default;
+        services.hermes-agent.package = import ./mk-hermes-agent.nix {
+          inherit inputs pkgs lib;
+        };
+      }
+    )
   ];
 
   mkBeelinkClusterModules =
@@ -238,14 +246,15 @@ in
   flake = {
     nixosConfigurations = {
       ashira = mkAshiraNixosConfiguration "x86_64-linux";
+      catbox = mkCatboxNixosConfiguration "x86_64-linux";
       fushi = mkFushiNixosConfiguration "aarch64-linux";
-      nixtar = mkNixtarNixosConfiguration "x86_64-linux";
+      kushira = mkKushiraNixosConfiguration "x86_64-linux";
       manash = mkManashNixosConfiguration "x86_64-linux";
       minish = mkMinishNixosConfiguration "aarch64-linux";
       nalsha = mkNalshaNixosConfiguration "x86_64-linux";
       nemishi = mkNemishiNixosConfiguration "aarch64-linux";
+      nixtar = mkNixtarNixosConfiguration "x86_64-linux";
       sashina = mkSashinaNixosConfiguration "x86_64-linux";
-      kushira = mkKushiraNixosConfiguration "x86_64-linux";
     };
 
   };
