@@ -125,6 +125,8 @@ let
   otherClusterPeers = mkSelfExcludedPeers clusterPeers;
   otherWorkstationPeers = mkSelfExcludedPeers workstationPeers;
 
+  isCatbox = config.networking.hostName == "catbox";
+
   fleetPeers =
     let
       isHub = builtins.any (p: p.name == config.networking.hostName) hubPeers;
@@ -225,7 +227,8 @@ in
     9119
     9900
     8642
-  ];
+  ]
+  ++ lib.optionals isCatbox [ 8644 ];
 
   services = {
     cua-driver.enable = true;
@@ -240,7 +243,8 @@ in
         config.sops.templates.hermes-agent-a2a-env.path
         config.sops.templates.hermes-agent-peer-keys-env.path
         config.sops.templates.hermes-agent-providers-env.path
-      ];
+      ]
+      ++ lib.optionals isCatbox [ config.sops.templates.hermes-agent-events-env.path ];
       extraPackages = with pkgs; [
         agent-browser
         curl
@@ -337,6 +341,56 @@ in
           streaming = true;
         };
         platforms.a2a.enabled = true;
+        platforms.webhook = lib.optionalAttrs isCatbox {
+          enabled = true;
+          extra = {
+            port = 8644;
+            routes = {
+              github-issue = {
+                deliver = "github_comment";
+                deliver_extra = {
+                  issue_number = "{issue.number}";
+                  repo = "{repository.full_name}";
+                };
+                events = [
+                  "issues"
+                  "issue_comment"
+                ];
+                prompt = ''
+                  Triage and respond to this GitHub issue:
+                  Repository: {repository.full_name}
+                  Issue #{issue.number}: {issue.title}
+                  Author: {issue.user.login}
+                  URL: {issue.html_url}
+                  Action: {action}
+                  Body:
+                  {issue.body}
+                  Comment (if present):
+                  {comment.body}
+                '';
+                skills = [ "github-issue" ];
+              };
+              github-pr = {
+                deliver = "github_comment";
+                deliver_extra = {
+                  pr_number = "{number}";
+                  repo = "{repository.full_name}";
+                };
+                events = [ "pull_request" ];
+                prompt = ''
+                  Review this pull request:
+                  Repository: {repository.full_name}
+                  PR #{number}: {pull_request.title}
+                  Author: {pull_request.user.login}
+                  URL: {pull_request.html_url}
+                  Diff URL: {pull_request.diff_url}
+                  Action: {action}
+                '';
+                skills = [ "github-code-review" ];
+              };
+            };
+          };
+        };
         a2a_agents = mkA2aAgents fleetPeers;
         bot_peers = mkBotPeers otherPeers;
         platform_toolsets = {
@@ -352,6 +406,12 @@ in
             "hermes-api-server"
             "a2a"
           ];
+        }
+        // lib.optionalAttrs isCatbox {
+          discord = [
+            "hermes-discord"
+            "a2a"
+          ];
         };
         plugins.enabled = [
           "disk-cleanup"
@@ -359,7 +419,8 @@ in
           "platforms/a2a-platform"
           "platforms/matrix"
           "security-guidance"
-        ];
+        ]
+        ++ lib.optionals isCatbox [ "platforms/discord" ];
         moa = {
           default_preset = "default";
           presets = {
