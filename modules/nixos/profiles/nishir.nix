@@ -81,47 +81,44 @@ with lib;
 
   };
 
-  # The flux-web Secret seeds from sops on server nodes only — agents would
-  # race eight idempotent appliers for one Secret.
-  sops.secrets.flux-web-client-secret = mkIf (config.services.knix.role == "server") {
-    sopsFile = ../../../secrets/machine.enc.yaml;
-    restartUnits = [ "flux-web-secret.service" ];
-  };
-  sops.templates."flux-operator-config.json" = mkIf (config.services.knix.role == "server") {
-    content = ''
-      apiVersion: web.fluxcd.controlplane.io/v1
-      kind: Config
-      spec:
-        baseURL: https://flux.i.shikanime.studio
-        authentication:
-          type: OAuth2
-          oauth2:
-            provider: OIDC
-            clientID: flux
-            clientSecret: ${config.sops.placeholder."flux-web-client-secret"}
-            issuerURL: https://accounts.i.shikanime.studio
-    '';
-  };
+  sops = {
+    secrets.flux-web-client-secret = mkIf (config.services.knix.role == "server") {
+      sopsFile = ../../../secrets/machine.enc.yaml;
+      restartUnits = [ "systemd-tmpfiles-setup.service" ];
+    };
 
-  systemd.services.flux-web-secret = mkIf (config.services.knix.role == "server") {
-    description = "Seed the flux-web Secret from the sops template";
-    after = [ "rke2-server.service" ];
-    wants = [ "rke2-server.service" ];
-    wantedBy = [ "multi-user.target" ];
-    path = [ pkgs.kubectl ];
-    script = ''
-      until ${pkgs.kubectl}/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml get namespace flux-system >/dev/null 2>&1; do
-        sleep 5
-      done
-      ${pkgs.kubectl}/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml -n flux-system create secret generic flux-web \
-        --from-file=config.yaml=${config.sops.templates."flux-operator-config.json".path} \
-        --dry-run=client -o yaml | ${pkgs.kubectl}/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml apply -f -
-    '';
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
+    templates = mkIf (config.services.knix.role == "server") {
+      "flux-operator-config.json".file = (pkgs.formats.json { }).generate "flux-operator-config.json" {
+        apiVersion = "v1";
+        kind = "Secret";
+        metadata = {
+          name = "flux-web";
+          namespace = "flux-system";
+        };
+        type = "Opaque";
+        stringData."config.yaml" = builtins.toJSON {
+          apiVersion = "web.fluxcd.controlplane.io/v1";
+          kind = "Config";
+          metadata.name = "flux";
+          spec = {
+            baseURL = "https://flux.i.shikanime.studio";
+            authentication = {
+              type = "OAuth2";
+              oauth2 = {
+                provider = "OIDC";
+                clientID = "flux";
+                clientSecret = config.sops.placeholder."flux-web-client-secret";
+                issuerURL = "https://accounts.i.shikanime.studio";
+              };
+            };
+          };
+        };
+      };
     };
   };
+
+  systemd.tmpfiles.settings."flux-operator-config"."/var/lib/rancher/rke2/server/manifests/flux-operator-config.json"."L+".argument =
+    mkIf (config.services.knix.role == "server") config.sops.templates."flux-operator-config.json".path;
 
   systemd.services = {
     cluster-policy-route = {
