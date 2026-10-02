@@ -157,16 +157,12 @@
     };
   };
 
-  xdg.configFile."containers/policy.json".source =
-    let
-      format = pkgs.formats.json { };
-    in
-    format.generate "policy.json" {
-      default = [
-        { type = "insecureAcceptAnything"; }
-      ];
-      transports.docker-daemon = {
-        "" = [ { type = "insecureAcceptAnything"; } ];
-      };
+  xdg.configFile."containers/policy.json".source = (pkgs.formats.json { }).generate "policy.json" {
+    default = [
+      { type = "insecureAcceptAnything"; }
+    ];
+    transports.docker-daemon = {
+      "" = [ { type = "insecureAcceptAnything"; } ];
     };
+  };
 }
