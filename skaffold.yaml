@@ -5,19 +5,13 @@ metadata:
 build:
   artifacts:
     - custom:
-        buildCommand:
-          wharf skaffold build --flake .#catbox-oci-image --option
-          accept-flake-config=true
+        buildCommand: wharf skaffold build --flake .#catbox-oci-image --option accept-flake-config=true
       image: ghcr.io/shikanime-labs/machines/catbox
     - custom:
-        buildCommand:
-          wharf skaffold build --flake .#huggingface-oci-image --option
-          accept-flake-config=true
+        buildCommand: wharf skaffold build --flake .#huggingface-oci-image --option accept-flake-config=true
       image: ghcr.io/shikanime-labs/machines/huggingface
     - custom:
-        buildCommand:
-          wharf skaffold build --flake .#llama-cpp-oci-image --option
-          accept-flake-config=true
+        buildCommand: wharf skaffold build --flake .#llama-cpp-oci-image --option accept-flake-config=true
       image: ghcr.io/shikanime-labs/machines/llama-cpp
   tagPolicy:
     customTemplate:

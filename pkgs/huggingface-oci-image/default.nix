@@ -5,7 +5,7 @@
 }:
 
 pkgs.dockerTools.buildLayeredImage {
-  name = "huggingface-oci-image";
+  name = "huggingface";
   tag = "latest";
 
   contents = [

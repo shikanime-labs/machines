@@ -8,7 +8,7 @@ let
   llama-cpp = pkgs.callPackage ../llama-cpp/default.nix { };
 in
 pkgs.dockerTools.buildLayeredImage {
-  name = "llama-cpp-oci-image";
+  name = "llama-cpp";
   tag = "latest";
 
   contents = [
