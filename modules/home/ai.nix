@@ -80,7 +80,6 @@ in
     extraDependencyGroups = [
       "anthropic"
       "computer-use"
-      "honcho"
       "matrix"
     ];
 
