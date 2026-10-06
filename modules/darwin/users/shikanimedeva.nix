@@ -296,18 +296,34 @@ in
 
   nix.extraOptions = "!include ${config.sops.templates.nix-user-config.path}";
 
+  # A2A gateway — hub-only trust: the A2A platform served on 0.0.0.0:9900,
+  # outbound peer nishir, own and peer tokens from the shared machine
+  # secrets, nishir the only trusted peer.
+  services.hermes-agent.gateway.enable = true;
+
   sops = {
     age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
     defaultSopsFile = ../../../secrets/shikanime.enc.yaml;
     defaultSopsFormat = "yaml";
     secrets.cachix-token = { };
     secrets.github-token = { };
+    secrets."hermes-agent-a2a-token-telsha".sopsFile = ../../../secrets/machine.enc.yaml;
+    secrets."hermes-agent-a2a-token-nishir".sopsFile = ../../../secrets/machine.enc.yaml;
     templates.cachix-config.content = toDhall {
       authToken = config.sops.placeholder.cachix-token;
       hostname = "https://cachix.org";
     };
     templates.nix-user-config.content = ''
       extra-access-tokens = github.com=${config.sops.placeholder.github-token}
+    '';
+    templates.hermes-a2a-env.content = ''
+      A2A_PORT=9900
+      A2A_AGENT_NAME=telsha
+      A2A_PUBLIC_URL=https://telsha.taila659a.ts.net:9900
+      A2A_HOST=0.0.0.0
+      A2A_OWN_TOKEN=${config.sops.placeholder."hermes-agent-a2a-token-telsha"}
+      A2A_PEER_TOKENS=nishir:${config.sops.placeholder."hermes-agent-a2a-token-nishir"}
+      A2A_TRUSTED_PEERS=nishir
     '';
   };
 
