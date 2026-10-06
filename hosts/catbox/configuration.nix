@@ -43,7 +43,6 @@
 
   services = {
     hermes-agent = {
-      backend.host = "0.0.0.0";
       environment = {
         A2A_HOST = "0.0.0.0";
         API_SERVER_HOST = "0.0.0.0";

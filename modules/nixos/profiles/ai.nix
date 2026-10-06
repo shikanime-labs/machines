@@ -227,6 +227,8 @@ in
     8642
   ];
 
+  networking.firewall.interfaces."tailscale0".allowedTCPPorts = [ 9119 ];
+
   services = {
     cua-driver.enable = true;
 
@@ -418,7 +420,12 @@ in
         "computer-use"
         "matrix"
       ];
-      backend.mode = "dashboard";
+      backend = {
+        host = "${config.networking.hostName}.taila659a.ts.net";
+        mode = "dashboard";
+        sessionTokenFile = config.sops.secrets.hermes-agent-desktop-token.path;
+        waitFor = "hostname";
+      };
     };
   };
 
@@ -435,6 +442,12 @@ in
         group = "hermes";
         owner = "hermes";
         restartUnits = [ "hermes-agent.service" ];
+      };
+      hermes-agent-desktop-token = {
+        sopsFile = ../../../secrets/machine.enc.yaml;
+        group = "hermes";
+        owner = "hermes";
+        restartUnits = [ "hermes-backend.service" ];
       };
       hermes-agent-matrix-access-token = {
         group = "hermes";
