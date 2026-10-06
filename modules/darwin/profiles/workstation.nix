@@ -63,6 +63,17 @@
   # Expose LM Studio over Tailscale HTTPS (ts.net endpoint on :1234).
   # Tailscale is the GUI app on this host, so re-apply the serve config at
   # boot via the GUI CLI; it persists in tailscaled state after first apply.
+  launchd.daemons.tailscale-serve-a2a = {
+    command = "/Applications/Tailscale.app/Contents/MacOS/Tailscale serve --yes --bg --https=9900 http://127.0.0.1:9900";
+    serviceConfig = {
+      Label = "org.nixos.tailscale-serve-a2a";
+      RunAtLoad = true;
+      KeepAlive = false;
+      StandardOutPath = "/var/log/tailscale-serve-a2a.log";
+      StandardErrorPath = "/var/log/tailscale-serve-a2a.log";
+    };
+  };
+
   launchd.daemons.tailscale-serve-lmstudio = {
     command = "/Applications/Tailscale.app/Contents/MacOS/Tailscale serve --yes --bg --https=1234 http://127.0.0.1:1234";
     serviceConfig = {

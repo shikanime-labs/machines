@@ -5,6 +5,8 @@ let
   memoryWikiPlugin = import ../../pkgs/hermes-plugin-memory-wiki { inherit pkgs; };
   ponytailPlugin = import ../../pkgs/hermes-plugin-ponytail { inherit pkgs; };
 
+  isLinux = pkgs.stdenv.hostPlatform.isLinux;
+
   lspBackends = with pkgs; [
     astro-language-server
     bash-language-server
@@ -18,7 +20,6 @@ let
     haskell-language-server
     intelephense
     jdt-language-server
-    julia
     kotlin-language-server
     lua-language-server
     nixd
@@ -44,7 +45,7 @@ in
   programs = {
     antigravity-cli.enable = true;
 
-    codex.enable = true;
+    codex.enable = isLinux;
 
     claude-code.enable = true;
 
@@ -52,8 +53,7 @@ in
   };
 
   # Hermes Agent — declarative config ported from modules/nixos/profiles/ai.nix,
-  # minus the fleet/gateway/automation surface (matrix, a2a, bot_peers,
-  # platforms, platform_toolsets, sops environmentFiles).
+  # minus the fleet surface (matrix, bot_peers, sops environmentFiles).
   # backend.mode defaults to "none" and gateway.enable defaults to false, so
   # enabling the service writes config.yaml without launching any daemon.
   services.hermes-agent = {
@@ -166,6 +166,26 @@ in
       memory.provider = "honcho";
 
       sessions.auto_prune = true;
+
+      platforms.a2a.enabled = true;
+
+      a2a_agents.nishir = {
+        capabilities = [
+          "command"
+          "workstation"
+        ];
+        url = "https://nishir.taila659a.ts.net:9900";
+        auth = {
+          type = "bearer";
+          token = "\${env:A2A_OWN_TOKEN}";
+        };
+      };
+
+      platform_toolsets.cli = [
+        "hermes-cli"
+        "a2a"
+      ];
+
       moa = {
         default_preset = "default";
         presets = {
