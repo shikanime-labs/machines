@@ -242,6 +242,7 @@ in
         config.sops.templates.hermes-agent-a2a-env.path
         config.sops.templates.hermes-agent-peer-keys-env.path
         config.sops.templates.hermes-agent-providers-env.path
+        config.sops.templates.hermes-agent-desktop-auth-env.path
       ];
       extraPackages = with pkgs; [
         agent-browser
@@ -466,6 +467,16 @@ in
         owner = "hermes";
         restartUnits = [ "hermes-agent.service" ];
       };
+      hermes-agent-desktop-auth-password = {
+        sopsFile = ../../../secrets/machine.enc.yaml;
+        group = "hermes";
+        owner = "hermes";
+      };
+      hermes-agent-desktop-auth-secret = {
+        sopsFile = ../../../secrets/machine.enc.yaml;
+        group = "hermes";
+        owner = "hermes";
+      };
       hermes-agent-github-token = {
         sopsFile = ../../../secrets/machine.enc.yaml;
         group = "hermes";
@@ -502,6 +513,14 @@ in
           GITHUB_TOKEN=${config.sops.placeholder.hermes-agent-github-token}
         '';
         restartUnits = [ "hermes-agent.service" ];
+      };
+      hermes-agent-desktop-auth-env = {
+        content = ''
+          HERMES_DASHBOARD_BASIC_AUTH_USERNAME=automata
+          HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=${config.sops.placeholder.hermes-agent-desktop-auth-password}
+          HERMES_DASHBOARD_BASIC_AUTH_SECRET=${config.sops.placeholder.hermes-agent-desktop-auth-secret}
+        '';
+        restartUnits = [ "hermes-backend.service" ];
       };
       hermes-agent-a2a-env = {
         content = ''
