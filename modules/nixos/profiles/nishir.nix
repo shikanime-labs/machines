@@ -1,4 +1,9 @@
-{ lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -56,12 +61,16 @@ with lib;
 
   services = {
     knix = {
-      addons.flux.instance.extraConfig.instance.sync = {
-        interval = "1m";
-        kind = "GitRepository";
-        path = "clusters/nishir/overlays/tailnet";
-        ref = "refs/heads/main";
-        url = "https://github.com/shikanime-labs/manifests.git";
+      addons.flux = {
+        instance.extraConfig.instance.sync = {
+          interval = "1m";
+          kind = "GitRepository";
+          path = "clusters/nishir/overlays/tailnet";
+          ref = "refs/heads/main";
+          url = "https://github.com/shikanime-labs/manifests.git";
+        };
+
+        operator.extraConfig.web.configSecretName = "flux-operator-web";
       };
 
       # Bridge interface — flannel, firewall, and sysctl rules all target br0.
@@ -73,6 +82,45 @@ with lib;
     };
 
   };
+
+  sops = {
+    secrets.flux-operator-web-client-secret = mkIf (config.services.knix.role == "server") {
+      sopsFile = ../../../secrets/machine.enc.yaml;
+      restartUnits = [ "systemd-tmpfiles-setup.service" ];
+    };
+
+    templates = mkIf (config.services.knix.role == "server") {
+      "flux-operator-config.json".file = (pkgs.formats.json { }).generate "flux-operator-config.json" {
+        apiVersion = "v1";
+        kind = "Secret";
+        metadata = {
+          name = "flux-operator-web";
+          namespace = "flux-system";
+        };
+        type = "Opaque";
+        stringData."config.yaml" = builtins.toJSON {
+          apiVersion = "web.fluxcd.controlplane.io/v1";
+          kind = "Config";
+          metadata.name = "flux";
+          spec = {
+            baseURL = "https://flux.i.shikanime.studio";
+            authentication = {
+              type = "OAuth2";
+              oauth2 = {
+                provider = "OIDC";
+                clientID = "flux";
+                clientSecret = config.sops.placeholder."flux-operator-web-client-secret";
+                issuerURL = "https://accounts.i.shikanime.studio";
+              };
+            };
+          };
+        };
+      };
+    };
+  };
+
+  systemd.tmpfiles.settings."flux-operator-config"."/var/lib/rancher/rke2/server/manifests/flux-operator-config.json"."L+".argument =
+    mkIf (config.services.knix.role == "server") config.sops.templates."flux-operator-config.json".path;
 
   systemd.services = {
     cluster-policy-route = {
