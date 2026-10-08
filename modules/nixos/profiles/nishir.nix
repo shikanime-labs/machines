@@ -101,7 +101,6 @@ with lib;
         stringData."config.yaml" = builtins.toJSON {
           apiVersion = "web.fluxcd.controlplane.io/v1";
           kind = "Config";
-          metadata.name = "flux";
           spec = {
             baseURL = "https://flux.i.shikanime.studio";
             authentication = {
@@ -111,6 +110,13 @@ with lib;
                 clientID = "flux";
                 clientSecret = config.sops.placeholder."flux-operator-web-client-secret";
                 issuerURL = "https://accounts.i.shikanime.studio";
+                scopes = [
+                  "openid"
+                  "profile"
+                  "email"
+                  "groups"
+                  "offline_access"
+                ];
               };
             };
           };
