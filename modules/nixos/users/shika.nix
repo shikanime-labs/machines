@@ -8,7 +8,6 @@ in
 {
   home-manager.users.shika = { config, ... }: {
     imports = [
-      ../../../modules/home/ai.nix
       ../../../modules/home/base.nix
       ../../../modules/home/cloud.nix
       ../../../modules/home/fontconfig.nix
@@ -50,6 +49,8 @@ in
     };
 
     programs.bash.enable = true;
+
+    programs.hermes-agent.enable = true;
 
     nix.extraOptions = "!include ${config.sops.templates.nix-user-config.path}";
 
