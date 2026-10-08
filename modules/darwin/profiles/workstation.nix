@@ -14,10 +14,6 @@
       "pinentry-mac"
       "pinentry"
       "pkg-config"
-      {
-        name = "victorialogs";
-        start_service = true;
-      }
     ];
     casks = [
       "appcleaner"
