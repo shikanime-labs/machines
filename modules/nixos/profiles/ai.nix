@@ -422,10 +422,9 @@ in
         "matrix"
       ];
       backend = {
-        host = "${config.networking.hostName}.taila659a.ts.net";
+        host = "0.0.0.0";
         mode = "dashboard";
         sessionTokenFile = config.sops.secrets.hermes-agent-desktop-token.path;
-        waitFor = "hostname";
       };
     };
   };
