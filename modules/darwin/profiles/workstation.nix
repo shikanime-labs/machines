@@ -22,6 +22,7 @@
     casks = [
       "appcleaner"
       "dbeaver-community"
+      "deepseek-harness"
       "discord"
       "element"
       "firefox"
