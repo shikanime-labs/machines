@@ -1,4 +1,3 @@
-
 {
   perSystem =
     {
@@ -7,12 +6,7 @@
       system,
       ...
     }:
-    {
-      packages = {
-        hermes-plugin-lcm = import ../../pkgs/hermes-plugin-lcm { inherit pkgs; };
-      };
-    }
-    // lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
+    lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
       packages = {
         huggingface-oci-image = pkgs.callPackage ../../pkgs/huggingface-oci-image/default.nix {
           inherit system;
