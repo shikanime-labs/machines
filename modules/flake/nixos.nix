@@ -49,6 +49,8 @@ let
     (mkCuaDriverModule system)
     (mkHermesAgentModule system
     )
+||||||| parent of 88d5293 (Add a headless browser CDP service for Hermes agents)
+    ./../nixos/services/browser-cdp.nix
   ];
 
   mkBeelinkClusterModules =

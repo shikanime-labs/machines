@@ -975,25 +975,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-<<<<<<< HEAD
         "lastModified": 1791734076,
         "narHash": "sha256-i5qk1kLiit98rRbh1AXmWBNT9QXC/y4l5Wk/u5EdpDQ=",
-||||||| parent of a8cab7b (Bump nixpkgs to unlock the nodejs 26 aarch64 gcc16 build)
-        "lastModified": 1790822859,
-        "narHash": "sha256-69xHQhAeMAD2wDXO7T2pcOZIF9Sga2W+JkmY2a11Ops=",
-=======
-        "lastModified": 1791456040,
-        "narHash": "sha256-H83yz/do+hjOO0uujHyH8RgtIQP2v7Mw+cLwcZK/xKc=",
->>>>>>> a8cab7b (Bump nixpkgs to unlock the nodejs 26 aarch64 gcc16 build)
         "owner": "nixos",
         "repo": "nixpkgs",
-<<<<<<< HEAD
         "rev": "7fd4004d0511991fff3a0524856a9be09e28c5f0",
-||||||| parent of a8cab7b (Bump nixpkgs to unlock the nodejs 26 aarch64 gcc16 build)
-        "rev": "c59305bab2065cfecc4944690d9eedbb56f3a9fa",
-=======
-        "rev": "e7439b6b14ad3cc35d05608ebca9bce01a25f5f8",
->>>>>>> a8cab7b (Bump nixpkgs to unlock the nodejs 26 aarch64 gcc16 build)
         "type": "github"
       },
       "original": {

@@ -239,6 +239,12 @@ in
   services = {
     cua-driver.enable = true;
 
+    browser-cdp = {
+      enable = true;
+      package = pkgs.chromium;
+      port = 9222;
+    };
+
     hermes-agent = {
       enable = true;
       workingDirectory = "/var/lib/hermes";
@@ -334,6 +340,7 @@ in
             "@shikanime:matrix.taila659a.ts.net"
           ];
         };
+        browser.cdp_url = "http://127.0.0.1:9222";
         memory.provider = "honcho";
         sessions.auto_prune = true;
         model = {
@@ -440,6 +447,7 @@ in
         "piper"
         "voice"
       ];
+      environment.HERMES_OPUS_LIBRARY = "${pkgs.libopus}/lib/libopus.so.0";
       backend = {
         mode = "dashboard";
         sessionTokenFile = config.sops.secrets.hermes-agent-desktop-token.path;
