@@ -31,6 +31,7 @@ let
     services.hermes-agent.package = inputs.hermes-agent.packages.${system}.default.overrideAttrs (
       _finalAttrs: previousAttrs: {
         postInstall = (previousAttrs.postInstall or "") + ''
+          chmod -R u+w $out/share/hermes-agent/plugins
           sed -i 's|opus_path = ctypes.util.find_library("opus")|opus_path = "${pkgs.libopus}/lib/libopus.so.0"|' \
             $out/share/hermes-agent/plugins/platforms/discord/adapter.py
           grep -q libopus.so.0 $out/share/hermes-agent/plugins/platforms/discord/adapter.py
