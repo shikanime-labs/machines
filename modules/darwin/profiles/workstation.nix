@@ -1,3 +1,15 @@
+let
+  mkTailscaleServe = name: port: {
+    command = "/Applications/Tailscale.app/Contents/MacOS/Tailscale serve --yes --bg --https=${toString port} http://127.0.0.1:${toString port}";
+    serviceConfig = {
+      KeepAlive.SuccessfulExit = false;
+      Label = "org.nixos.tailscale-serve-${name}";
+      RunAtLoad = true;
+      StandardErrorPath = "/var/log/tailscale-serve-${name}.log";
+      StandardOutPath = "/var/log/tailscale-serve-${name}.log";
+    };
+  };
+in
 {
   imports = [
     ./base.nix
@@ -50,24 +62,17 @@
     };
   };
 
-  programs.zsh.enable = true;
+  programs = {
+    zsh.enable = true;
 
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
   };
 
-  # Expose LM Studio over Tailscale HTTPS (ts.net endpoint on :1234).
-  # Tailscale is the GUI app on this host, so re-apply the serve config at
-  # boot via the GUI CLI; it persists in tailscaled state after first apply.
-  launchd.daemons.tailscale-serve-lmstudio = {
-    command = "/Applications/Tailscale.app/Contents/MacOS/Tailscale serve --yes --bg --https=1234 http://127.0.0.1:1234";
-    serviceConfig = {
-      Label = "org.nixos.tailscale-serve-lmstudio";
-      RunAtLoad = true;
-      KeepAlive = false;
-      StandardOutPath = "/var/log/tailscale-serve-lmstudio.log";
-      StandardErrorPath = "/var/log/tailscale-serve-lmstudio.log";
-    };
+  launchd.daemons = {
+    tailscale-serve-a2a = mkTailscaleServe "a2a" 9900;
+    tailscale-serve-lmstudio = mkTailscaleServe "lmstudio" 1234;
   };
 }
