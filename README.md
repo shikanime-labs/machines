@@ -50,7 +50,7 @@ Current hosts:
 - `sashina` - NixOS inference node (Minisforum MS-S1 Max, Strix Halo)
 - `nixtar` - NixOS GUI workstation (Razer Blade 17 (2019), Hyprland on Wayland +
   NVIDIA)
-- `catbox` - KubeVirt containerdisk (NixOS qcow2 wrapped as an OCI image)
+- `automata` - KubeVirt containerdisk (NixOS qcow2 wrapped as an OCI image)
 - `telsha` - nix-darwin host
 
 ### `modules/`
@@ -125,7 +125,7 @@ The flake exposes these primary outputs:
 - `nixosConfigurations.kushira`
 - `nixosConfigurations.nixtar`
 - `darwinConfigurations.telsha`
-- `packages.<system>.*` for the corresponding system builds, including `catbox`
+- `packages.<system>.*` for the corresponding system builds, including `automata`
 
 The `packages` outputs are mostly convenience build artifacts for CI and local
 verification.
@@ -144,7 +144,7 @@ For the published package outputs:
 ```sh
 nix build .#packages.x86_64-linux.manash
 nix build .#packages.aarch64-darwin.telsha
-nix build .#packages.x86_64-linux.catbox
+nix build .#packages.x86_64-linux.automata
 ```
 
 ### Switch A NixOS Host

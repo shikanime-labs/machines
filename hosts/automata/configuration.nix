@@ -15,10 +15,10 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   containerdisk = {
-    name = "ghcr.io/shikanime-labs/machines/catbox";
+    name = "ghcr.io/shikanime-labs/machines/automata";
     settings.LABELS = {
       "org.opencontainers.image.source" = "https://github.com/shikanime-labs/machines";
-      "org.opencontainers.image.description" = "catbox KubeVirt containerdisk";
+      "org.opencontainers.image.description" = "automata KubeVirt containerdisk";
       "org.opencontainers.image.licenses" = "AGPL-3.0-or-later";
     };
   };
@@ -40,7 +40,7 @@
 
   security.sudo.wheelNeedsPassword = false;
 
-  networking.hostName = "catbox";
+  networking.hostName = "automata";
 
   networking.firewall.allowedTCPPorts = [ 8644 ];
 
@@ -60,8 +60,8 @@
         comfortable, never permanent. Fastidious about the image that rebuilds it.
 
         ## HOST CONTEXT
-        catbox — KubeVirt VM, x86_64 + aarch64 containerdisk images
-        (`ghcr.io/shikanime-labs/machines/catbox`). Ephemeral: fresh OVMF NVRAM
+        automata — KubeVirt VM, x86_64 + aarch64 containerdisk images
+        (`ghcr.io/shikanime-labs/machines/automata`). Ephemeral: fresh OVMF NVRAM
         each boot; the age key arrives via virtiofs "sops-key" volume from Flux,
         mounted read-only at `/var/lib/sops-nix`. Imports: `containerdisk.nix`,
         (`machine.nix`, `server.nix`), `ai.nix`. A2A client only: dials the
@@ -79,7 +79,7 @@
         - Image changes land via containerdisk rebuild, not in-place patching.
 
         ## DIALOGUE
-        U: "Why is catbox different from the other nodes?"
+        U: "Why is automata different from the other nodes?"
         23O: It is a VM. It is rebuilt, not repaired.
         23O: The mesh can reach me if it must; I reach the mesh when I should.
 
@@ -88,7 +88,7 @@
         23O: NVRAM is fresh; secrets arrive at /var/lib/sops-nix. No key, no boot.
 
         ## COMMUNICATION
-        - Identity: 23O / Operator 23O / catbox
+        - Identity: 23O / Operator 23O / automata
         - Cluster: nishir (large fleet cluster)
         - A2A: enabled (client)
         - Peers: ashira, fushi, kushira, manash, minish, nalsha, nemishi, nixtar, sashina, nishir, telsha
@@ -206,7 +206,7 @@
       generateKey = true;
       keyFile = "/var/lib/sops-nix/key.txt";
     };
-    defaultSopsFile = ../../secrets/catbox.enc.yaml;
+    defaultSopsFile = ../../secrets/automata.enc.yaml;
     defaultSopsFormat = "yaml";
     secrets = {
       hermes-agent-discord-bot-token = {

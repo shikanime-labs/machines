@@ -96,7 +96,7 @@ in
       enable = true;
       settings = {
         "ashira.taila659a.ts.net" = mkSshHeadlessHost "nishir";
-        "catbox.taila659a.ts.net" = mkSshHeadlessHost "shika";
+        "automata.taila659a.ts.net" = mkSshHeadlessHost "shika";
         "fushi.taila659a.ts.net" = mkSshHeadlessHost "nishir";
         "kushira.taila659a.ts.net" = mkSshHeadlessHost "nishir";
         "manash.taila659a.ts.net" = mkSshHeadlessHost "nishir";

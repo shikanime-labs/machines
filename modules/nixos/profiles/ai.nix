@@ -82,7 +82,7 @@ let
 
   workstationPeers = [
     {
-      name = "catbox";
+      name = "automata";
       capabilities = [
         "command"
         "workstation"
@@ -435,13 +435,13 @@ in
 
   sops = {
     secrets = {
-      hermes-agent-a2a-token-catbox = {
+      hermes-agent-a2a-token-automata = {
         sopsFile = ../../../secrets/machine.enc.yaml;
         group = "hermes";
         owner = "hermes";
         restartUnits = [ "hermes-agent.service" ];
       };
-      hermes-agent-api-server-key-catbox = {
+      hermes-agent-api-server-key-automata = {
         sopsFile = ../../../secrets/machine.enc.yaml;
         group = "hermes";
         owner = "hermes";

@@ -127,7 +127,7 @@
                 "age1c6g7vw6zn6mnjxxwyhpjl5usv5crwlj54fhe9djqgu2yzh5u2amsa6tu3v"
               ];
 
-              catbox = [
+              automata = [
                 "age1etnd6hnt6776vqsnadny72t55whnlav8xp8e7rx3fd4lz7ms8dfsjsrnul"
               ];
 
@@ -154,7 +154,7 @@
               }
               {
                 path_regex = "secrets/machine.enc.yaml";
-                age = catbox ++ identities ++ nishir ++ workstations;
+                age = automata ++ identities ++ nishir ++ workstations;
               }
               {
                 path_regex = "secrets/manash.enc.yaml";
@@ -173,8 +173,8 @@
                 age = identities ++ nemishi;
               }
               {
-                path_regex = "secrets/catbox.enc.yaml";
-                age = catbox ++ identities;
+                path_regex = "secrets/automata.enc.yaml";
+                age = automata ++ identities;
               }
               {
                 path_regex = "secrets/nixtar.enc.yaml";
