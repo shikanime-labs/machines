@@ -116,6 +116,7 @@
         enabled = true;
         extra = {
           port = 8644;
+          rate_limit = 120;
           routes = {
             github-issue = {
               deliver = "matrix";
@@ -130,6 +131,13 @@
                 {
                   field = "issue.pull_request";
                   missing = true;
+                }
+                {
+                  field = "sender.login";
+                  "in" = [
+                    "shikanime"
+                    "yorha-operator"
+                  ];
                 }
               ];
               prompt = ''
@@ -169,6 +177,13 @@
                     "opened"
                     "reopened"
                     "synchronize"
+                  ];
+                }
+                {
+                  field = "sender.login";
+                  "in" = [
+                    "shikanime"
+                    "yorha-operator"
                   ];
                 }
               ];
