@@ -240,7 +240,6 @@ in
 
     environmentFiles = [
       config.sops.templates.hermes-agent-env.path
-      config.sops.templates.hermes-agent-matrix-env.path
       config.sops.templates.hermes-agent-a2a-env.path
       config.sops.templates.hermes-agent-peer-keys-env.path
       config.sops.templates.hermes-agent-providers-env.path
@@ -272,12 +271,10 @@ in
     extraDependencyGroups = [
       "anthropic"
       "computer-use"
-      "matrix"
       "messaging"
     ];
 
     backend = {
-      host = "0.0.0.0";
       mode = "dashboard";
       sessionTokenFile = config.sops.secrets.hermes-agent-desktop-token.path;
     };
@@ -330,14 +327,6 @@ in
         }
       ];
 
-      matrix = {
-        allowed_rooms = [ "#automata:matrix.taila659a.ts.net" ];
-        allowed_users = [
-          "@admin:matrix.taila659a.ts.net"
-          "@shikanime:matrix.taila659a.ts.net"
-        ];
-      };
-
       memory.provider = "honcho";
 
       sessions.auto_prune = true;
@@ -369,10 +358,6 @@ in
           "hermes-cli"
           "a2a"
         ];
-        matrix = [
-          "hermes-matrix"
-          "a2a"
-        ];
         api_server = [
           "hermes-api-server"
           "a2a"
@@ -386,7 +371,6 @@ in
           "honcho"
           "memory-wiki"
           "platforms/a2a-platform"
-          "platforms/matrix"
           "ponytail"
           "security-guidance"
         ];
@@ -454,7 +438,7 @@ in
   sops = {
     secrets = {
       hermes-agent-desktop-token.sopsFile = ../../secrets/machine.enc.yaml;
-      hermes-agent-matrix-access-token = { };
+      hermes-agent-sks-api-key.sopsFile = ../../secrets/machine.enc.yaml;
       hermes-agent-github-token.sopsFile = ../../secrets/machine.enc.yaml;
     }
     // (mkA2aTokenSecrets peers)
@@ -465,15 +449,8 @@ in
         API_SERVER_ENABLED=true
         API_SERVER_KEY=${config.sops.placeholder."${mkPeerApiServerKeyName osConfig.networking.hostName}"}
       '';
-      hermes-agent-matrix-env.content = ''
-        MATRIX_HOMESERVER=https://matrix.taila659a.ts.net/
-        MATRIX_ACCESS_TOKEN=${config.sops.placeholder.hermes-agent-matrix-access-token}
-        MATRIX_E2EE_MODE=required
-        MATRIX_HOME_ROOM=#automata:matrix.taila659a.ts.net
-        MATRIX_RECOVERY_KEY_FILE=${config.sops.secrets.hermes-agent-matrix-recovery-key.path}
-      '';
       hermes-agent-providers-env.content = ''
-        SKS_API_KEY=${config.sops.placeholder.sks-api-key}
+        SKS_API_KEY=${config.sops.placeholder.hermes-agent-sks-api-key}
         GITHUB_TOKEN=${config.sops.placeholder.hermes-agent-github-token}
       '';
       hermes-agent-a2a-env.content = ''

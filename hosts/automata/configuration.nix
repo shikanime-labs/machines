@@ -192,6 +192,8 @@
         };
       };
 
+      backend.host = "0.0.0.0";
+
       settings.dashboard.public_url = "https://automata.i.shikanime.studio";
     };
 

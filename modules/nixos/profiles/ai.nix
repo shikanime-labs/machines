@@ -426,7 +426,6 @@ in
         "messaging"
       ];
       backend = {
-        host = "0.0.0.0";
         mode = "dashboard";
         sessionTokenFile = config.sops.secrets.hermes-agent-desktop-token.path;
       };
@@ -464,7 +463,7 @@ in
         restartUnits = [ "hermes-agent.service" ];
         mode = "0600";
       };
-      sks-api-key = {
+      hermes-agent-sks-api-key = {
         sopsFile = ../../../secrets/machine.enc.yaml;
         group = "hermes";
         owner = "hermes";
@@ -502,7 +501,7 @@ in
       };
       hermes-agent-providers-env = {
         content = ''
-          SKS_API_KEY=${config.sops.placeholder.sks-api-key}
+          SKS_API_KEY=${config.sops.placeholder.hermes-agent-sks-api-key}
           GITHUB_TOKEN=${config.sops.placeholder.hermes-agent-github-token}
         '';
         restartUnits = [ "hermes-agent.service" ];
