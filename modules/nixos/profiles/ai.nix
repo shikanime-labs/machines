@@ -426,6 +426,7 @@ in
       extraDependencyGroups = [
         "anthropic"
         "computer-use"
+        "fal"
         "matrix"
         "messaging"
       ];
