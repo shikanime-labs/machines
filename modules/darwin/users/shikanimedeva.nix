@@ -44,6 +44,60 @@ let
   ];
 
   powershellEditorServices = pkgs.powershell-editor-services;
+
+  a2aPeers = [
+    {
+      name = "nishir";
+      capabilities = [
+        "command"
+        "workstation"
+      ];
+    }
+    {
+      name = "telsha";
+      capabilities = [
+        "command"
+        "workstation"
+        "darwin"
+      ];
+    }
+  ];
+
+  self = findFirst (peer: peer.name == "telsha") null a2aPeers;
+  otherPeers = filter (peer: peer.name != self.name) a2aPeers;
+
+  mkA2aAgent =
+    { name, capabilities }:
+    {
+      inherit capabilities;
+      url = "https://${name}.taila659a.ts.net:9900";
+      auth = {
+        type = "bearer";
+        token = "\${env:A2A_OWN_TOKEN}";
+      };
+    };
+
+  mkA2aAgents = peers: listToAttrs (map (peer: nameValuePair peer.name (mkA2aAgent peer)) peers);
+
+  mkA2aTokenSecretName = peer: "hermes-agent-a2a-token-${peer}";
+
+  mkA2aPeerToken =
+    peer: "${peer.name}:${config.sops.placeholder."${mkA2aTokenSecretName peer.name}"}";
+
+  mkA2aPeerTokens = peers: concatStringsSep "," (map mkA2aPeerToken peers);
+
+  mkA2aTrustedPeers = peers: concatStringsSep "," (map (peer: peer.name) peers);
+
+  mkA2aTokenSecrets =
+    peers:
+    listToAttrs (
+      map (
+        peer:
+        nameValuePair (mkA2aTokenSecretName peer.name) {
+          sopsFile = ../../../secrets/machine.enc.yaml;
+        }
+      ) peers
+    );
 in
 {
   imports = [
@@ -112,6 +166,10 @@ in
 
   services.hermes-agent = {
     enable = true;
+
+    environmentFiles = [ config.sops.templates.hermes-a2a-env.path ];
+
+    gateway.enable = true;
 
     extraPlugins = [
       hermesLcmPlugin
@@ -222,17 +280,7 @@ in
 
       platforms.a2a.enabled = true;
 
-      a2a_agents.nishir = {
-        capabilities = [
-          "command"
-          "workstation"
-        ];
-        url = "https://nishir.taila659a.ts.net:9900";
-        auth = {
-          type = "bearer";
-          token = "\${env:A2A_OWN_TOKEN}";
-        };
-      };
+      a2a_agents = mkA2aAgents otherPeers;
 
       platform_toolsets.cli = [
         "hermes-cli"
@@ -296,35 +344,33 @@ in
 
   nix.extraOptions = "!include ${config.sops.templates.nix-user-config.path}";
 
-  # A2A gateway — hub-only trust: the A2A platform served on 0.0.0.0:9900,
-  # outbound peer nishir, own and peer tokens from the shared machine
-  # secrets, nishir the only trusted peer.
-  services.hermes-agent.gateway.enable = true;
-
   sops = {
     age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
     defaultSopsFile = ../../../secrets/shikanime.enc.yaml;
     defaultSopsFormat = "yaml";
-    secrets.cachix-token = { };
-    secrets.github-token = { };
-    secrets."hermes-agent-a2a-token-telsha".sopsFile = ../../../secrets/machine.enc.yaml;
-    secrets."hermes-agent-a2a-token-nishir".sopsFile = ../../../secrets/machine.enc.yaml;
-    templates.cachix-config.content = toDhall {
-      authToken = config.sops.placeholder.cachix-token;
-      hostname = "https://cachix.org";
+    secrets = {
+      cachix-token = { };
+      github-token = { };
+    }
+    // mkA2aTokenSecrets a2aPeers;
+    templates = {
+      cachix-config.content = toDhall {
+        authToken = config.sops.placeholder.cachix-token;
+        hostname = "https://cachix.org";
+      };
+      nix-user-config.content = ''
+        extra-access-tokens = github.com=${config.sops.placeholder.github-token}
+      '';
+      hermes-a2a-env.content = ''
+        A2A_PORT=9900
+        A2A_AGENT_NAME=${self.name}
+        A2A_PUBLIC_URL=https://${self.name}.taila659a.ts.net:9900
+        A2A_HOST=0.0.0.0
+        A2A_OWN_TOKEN=${config.sops.placeholder."${mkA2aTokenSecretName self.name}"}
+        A2A_PEER_TOKENS=${mkA2aPeerTokens otherPeers}
+        A2A_TRUSTED_PEERS=${mkA2aTrustedPeers otherPeers}
+      '';
     };
-    templates.nix-user-config.content = ''
-      extra-access-tokens = github.com=${config.sops.placeholder.github-token}
-    '';
-    templates.hermes-a2a-env.content = ''
-      A2A_PORT=9900
-      A2A_AGENT_NAME=telsha
-      A2A_PUBLIC_URL=https://telsha.taila659a.ts.net:9900
-      A2A_HOST=0.0.0.0
-      A2A_OWN_TOKEN=${config.sops.placeholder."hermes-agent-a2a-token-telsha"}
-      A2A_PEER_TOKENS=nishir:${config.sops.placeholder."hermes-agent-a2a-token-nishir"}
-      A2A_TRUSTED_PEERS=nishir
-    '';
   };
 
   xdg.configFile."cachix/cachix.dhall".source =
