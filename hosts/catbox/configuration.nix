@@ -48,6 +48,7 @@
     hermes-agent = {
       environment = {
         A2A_HOST = "0.0.0.0";
+        A2A_PUBLIC_URL = "https://a2a.automata.i.shikanime.studio";
         API_SERVER_HOST = "0.0.0.0";
       };
       environmentFiles = [ config.sops.templates.hermes-agent-events-env.path ];
@@ -191,13 +192,7 @@
         };
       };
 
-      settings.dashboard = {
-        oauth.self_hosted = {
-          client_id = "hermes-agent";
-          issuer = "https://accounts.i.shikanime.studio";
-        };
-        public_url = "https://automata.i.shikanime.studio";
-      };
+      settings.dashboard.public_url = "https://automata.i.shikanime.studio";
     };
 
     openssh = {

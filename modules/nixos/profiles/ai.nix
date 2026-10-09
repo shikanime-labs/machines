@@ -117,28 +117,15 @@ let
     }
   ];
 
-  peers = clusterPeers ++ workstationPeers;
+  fleetPeers = mkSelfExcludedPeers hubPeers;
 
-  mkSelfExcludedPeers = peers: builtins.filter (p: p.name != config.networking.hostName) peers;
+  hermesHonchoPlugin =
+    config.services.hermes-agent.package.python.pkgs.callPackage ../../../pkgs/hermes-plugin-honcho
+      { };
 
-  otherPeers = mkSelfExcludedPeers peers;
-  otherClusterPeers = mkSelfExcludedPeers clusterPeers;
-  otherWorkstationPeers = mkSelfExcludedPeers workstationPeers;
-
-  fleetPeers =
-    let
-      isHub = builtins.any (p: p.name == config.networking.hostName) hubPeers;
-      isWorkstation = builtins.any (p: p.name == config.networking.hostName) workstationPeers;
-    in
-    if isHub then
-      otherClusterPeers ++ otherWorkstationPeers
-    else if isWorkstation then
-      mkSelfExcludedPeers hubPeers
-    else
-      otherClusterPeers;
-
-  mkA2aTrustedPeers = peers: lib.concatStringsSep "," (map (p: p.name) peers);
-
+  hermesLcmPlugin = pkgs.callPackage ../../../pkgs/hermes-plugin-lcm { };
+  honchoAi = config.services.hermes-agent.package.python.pkgs.callPackage ../../../pkgs/honcho-ai { };
+  memoryWikiPlugin = pkgs.callPackage ../../../pkgs/hermes-plugin-memory-wiki { };
   mkA2aAgent =
     { name, capabilities }:
     {
@@ -160,7 +147,20 @@ let
 
   mkA2aTokenSecretName = peer: "hermes-agent-a2a-token-${peer}";
 
-  mkPeerApiServerKeyName = peer: "hermes-agent-api-server-key-${peer}";
+  mkA2aTokenSecrets =
+    peers:
+    builtins.listToAttrs (
+      map (
+        peer:
+        lib.nameValuePair (mkA2aTokenSecretName peer.name) {
+          sopsFile = ../../../secrets/machine.enc.yaml;
+          group = "hermes";
+          owner = "hermes";
+          restartUnits = [ "hermes-agent.service" ];
+        }
+      ) peers
+    );
+  mkA2aTrustedPeers = peers: lib.concatStringsSep "," (map (p: p.name) peers);
 
   mkBotPeers =
     peers:
@@ -169,6 +169,22 @@ let
         peer:
         lib.nameValuePair peer.name {
           url = "https://${peer.name}.taila659a.ts.net:8642";
+        }
+      ) peers
+    );
+
+  mkPeerApiServerKeyName = peer: "hermes-agent-api-server-key-${peer}";
+
+  mkPeerApiServerKeySecrets =
+    peers:
+    builtins.listToAttrs (
+      map (
+        peer:
+        lib.nameValuePair (mkPeerApiServerKeyName peer.name) {
+          sopsFile = ../../../secrets/machine.enc.yaml;
+          group = "hermes";
+          owner = "hermes";
+          restartUnits = [ "hermes-agent.service" ];
         }
       ) peers
     );
@@ -185,39 +201,14 @@ let
       ) peers
     );
 
-  mkPeerApiServerKeySecrets =
-    peers:
-    builtins.listToAttrs (
-      map (
-        peer:
-        lib.nameValuePair (mkPeerApiServerKeyName peer.name) {
-          sopsFile = ../../../secrets/machine.enc.yaml;
-          group = "hermes";
-          owner = "hermes";
-          restartUnits = [ "hermes-agent.service" ];
-        }
-      ) peers
-    );
+  mkSelfExcludedPeers = peers: builtins.filter (p: p.name != config.networking.hostName) peers;
 
-  hermesLcmPlugin = pkgs.callPackage ../../../pkgs/hermes-plugin-lcm { };
-  honchoAi = config.services.hermes-agent.package.python.pkgs.callPackage ../../../pkgs/honcho-ai { };
-  hermesHonchoPlugin =
-    config.services.hermes-agent.package.python.pkgs.callPackage ../../../pkgs/hermes-plugin-honcho
-      { };
+  otherPeers = mkSelfExcludedPeers peers;
 
-  mkA2aTokenSecrets =
-    peers:
-    builtins.listToAttrs (
-      map (
-        peer:
-        lib.nameValuePair (mkA2aTokenSecretName peer.name) {
-          sopsFile = ../../../secrets/machine.enc.yaml;
-          group = "hermes";
-          owner = "hermes";
-          restartUnits = [ "hermes-agent.service" ];
-        }
-      ) peers
-    );
+  peers = clusterPeers ++ workstationPeers;
+
+  ponytailPlugin = pkgs.callPackage ../../../pkgs/hermes-plugin-ponytail { };
+
 in
 {
   users.users.hermes.extraGroups = [
@@ -246,7 +237,6 @@ in
         config.sops.templates.hermes-agent-a2a-env.path
         config.sops.templates.hermes-agent-peer-keys-env.path
         config.sops.templates.hermes-agent-providers-env.path
-        config.sops.templates.hermes-agent-desktop-auth-env.path
       ];
       extraPackages = with pkgs; [
         agent-browser
@@ -258,6 +248,8 @@ in
       ];
       extraPlugins = [
         hermesLcmPlugin
+        memoryWikiPlugin
+        ponytailPlugin
       ];
       extraPythonPackages = [
         honchoAi
@@ -265,7 +257,10 @@ in
       ];
       settings = {
         context.engine = "lcm";
-        custom_providers = [ ];
+        dashboard.oauth.self_hosted = {
+          client_id = "hermes-agent";
+          issuer = "https://accounts.i.shikanime.studio";
+        };
         providers = {
           shikanime-anthropic = {
             api = "https://inference.i.shikanime.studio/anthropic";
@@ -285,9 +280,8 @@ in
             transport = "chat_completions";
             key_env = "SKS_API_KEY";
             session_affinity_header = "x-sks-session-id";
-            default_model = "poolside/laguna-s-2.1:free";
+            default_model = "qwen/qwen3.8-flash";
             models = [
-              "poolside/laguna-s-2.1:free"
               "qwen/qwen3.8-flash"
               "qwen/qwen3.8-27b"
             ];
@@ -366,7 +360,9 @@ in
           "disk-cleanup"
           "hermes-lcm"
           "honcho"
+          "memory-wiki"
           "platforms/a2a-platform"
+          "ponytail"
           "platforms/matrix"
           "security-guidance"
         ];
@@ -377,7 +373,7 @@ in
               reference_models = [
                 {
                   provider = "shikanime-openai";
-                  model = "deepseek/deepseek-v4-flash";
+                  model = "deepseek/deepseek-v4.1-flash";
                 }
                 {
                   provider = "shikanime-anthropic";
@@ -385,7 +381,7 @@ in
                 }
                 {
                   provider = "shikanime-openai";
-                  model = "openai/gpt-5.5";
+                  model = "openai/gpt-6-luna";
                 }
                 {
                   provider = "shikanime-openai";
@@ -406,16 +402,16 @@ in
                 }
                 {
                   provider = "shikanime-openai";
-                  model = "deepseek/deepseek-v4-flash";
+                  model = "deepseek/deepseek-v4.1-flash";
                 }
                 {
                   provider = "shikanime-openai";
-                  model = "openai/gpt-5.5";
+                  model = "openai/gpt-6-luna";
                 }
               ];
               aggregator = {
                 provider = "shikanime-openai";
-                model = "openai/gpt-5.5";
+                model = "openai/gpt-6-luna";
               };
               enabled = true;
               fanout = "user_turn";
@@ -474,16 +470,6 @@ in
         owner = "hermes";
         restartUnits = [ "hermes-agent.service" ];
       };
-      hermes-agent-desktop-auth-password = {
-        sopsFile = ../../../secrets/machine.enc.yaml;
-        group = "hermes";
-        owner = "hermes";
-      };
-      hermes-agent-desktop-auth-secret = {
-        sopsFile = ../../../secrets/machine.enc.yaml;
-        group = "hermes";
-        owner = "hermes";
-      };
       hermes-agent-github-token = {
         sopsFile = ../../../secrets/machine.enc.yaml;
         group = "hermes";
@@ -521,19 +507,10 @@ in
         '';
         restartUnits = [ "hermes-agent.service" ];
       };
-      hermes-agent-desktop-auth-env = {
-        content = ''
-          HERMES_DASHBOARD_BASIC_AUTH_USERNAME=automata
-          HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=${config.sops.placeholder.hermes-agent-desktop-auth-password}
-          HERMES_DASHBOARD_BASIC_AUTH_SECRET=${config.sops.placeholder.hermes-agent-desktop-auth-secret}
-        '';
-        restartUnits = [ "hermes-backend.service" ];
-      };
       hermes-agent-a2a-env = {
         content = ''
           A2A_PORT=9900
           A2A_AGENT_NAME=${config.networking.hostName}
-          A2A_PUBLIC_URL=https://${config.networking.hostName}.taila659a.ts.net:9900
           A2A_OWN_TOKEN=${config.sops.placeholder."${mkA2aTokenSecretName config.networking.hostName}"}
           A2A_PEER_TOKENS=${mkA2aPeerTokens otherPeers}
           A2A_TRUSTED_PEERS=${mkA2aTrustedPeers fleetPeers}
