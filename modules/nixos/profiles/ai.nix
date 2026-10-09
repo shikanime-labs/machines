@@ -251,6 +251,7 @@ in
       extraPackages = with pkgs; [
         agent-browser
         curl
+        ffmpeg
         gh
         git
         nodejs
