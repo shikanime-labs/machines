@@ -47,7 +47,8 @@ let
     inputs.noctalia-greeter.nixosModules.default
     inputs.skills.nixosModules.skills
     (mkCuaDriverModule system)
-    (mkHermesAgentModule system)
+    (mkHermesAgentModule system
+    )
   ];
 
   mkBeelinkClusterModules =
