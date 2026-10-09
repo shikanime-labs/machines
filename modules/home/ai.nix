@@ -83,7 +83,7 @@ let
 
   workstationPeers = [
     {
-      name = "catbox";
+      name = "automata";
       capabilities = [
         "command"
         "workstation"

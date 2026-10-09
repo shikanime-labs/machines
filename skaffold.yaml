@@ -5,8 +5,8 @@ metadata:
 build:
   artifacts:
     - custom:
-        buildCommand: wharf skaffold build --flake .#catbox-oci-image --option accept-flake-config=true
-      image: ghcr.io/shikanime-labs/machines/catbox
+        buildCommand: wharf skaffold build --flake .#automata-oci-image --option accept-flake-config=true
+      image: ghcr.io/shikanime-labs/machines/automata
     - custom:
         buildCommand: wharf skaffold build --flake .#huggingface-oci-image --option accept-flake-config=true
       image: ghcr.io/shikanime-labs/machines/huggingface

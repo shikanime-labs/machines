@@ -93,9 +93,9 @@ let
   mkCatboxPackage =
     system:
     let
-      catbox = mkCatboxNixosConfiguration system;
+      automata = mkCatboxNixosConfiguration system;
     in
-    catbox.config.system.build.containerdiskImage;
+    automata.config.system.build.containerdiskImage;
 
   mkAshiraNixosConfiguration =
     system:
@@ -118,7 +118,7 @@ let
         config.allowUnfree = true;
       };
       modules = [
-        ../../hosts/catbox/configuration.nix
+        ../../hosts/automata/configuration.nix
       ]
       ++ (mkWorkstationsModules system);
     };
@@ -246,7 +246,7 @@ in
   flake = {
     nixosConfigurations = {
       ashira = mkAshiraNixosConfiguration "x86_64-linux";
-      catbox = mkCatboxNixosConfiguration "x86_64-linux";
+      automata = mkCatboxNixosConfiguration "x86_64-linux";
       fushi = mkFushiNixosConfiguration "aarch64-linux";
       kushira = mkKushiraNixosConfiguration "x86_64-linux";
       manash = mkManashNixosConfiguration "x86_64-linux";
@@ -267,7 +267,7 @@ in
     }:
     {
       packages = lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
-        catbox-oci-image = mkCatboxPackage system;
+        automata-oci-image = mkCatboxPackage system;
       };
     };
 }
