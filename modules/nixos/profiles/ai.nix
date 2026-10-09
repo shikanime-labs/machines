@@ -420,6 +420,7 @@ in
         "anthropic"
         "computer-use"
         "matrix"
+        "messaging"
       ];
       backend = {
         host = "0.0.0.0";
