@@ -375,7 +375,7 @@ in
         A2A_PORT=9900
         A2A_AGENT_NAME=${self.name}
         A2A_PUBLIC_URL=https://${self.name}.taila659a.ts.net:9900
-        A2A_HOST=0.0.0.0
+        A2A_HOST=127.0.0.1
         A2A_OWN_TOKEN=${config.sops.placeholder."${mkA2aTokenSecretName self.name}"}
         A2A_PEER_TOKENS=${mkA2aPeerTokens otherPeers}
         A2A_TRUSTED_PEERS=${mkA2aTrustedPeers otherPeers}
