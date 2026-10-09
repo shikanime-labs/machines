@@ -33,6 +33,7 @@ let
     inputs.noctalia.nixosModules.default
     inputs.noctalia-greeter.nixosModules.default
     (mkCuaDriverModule system)
+    ./../nixos/services/browser-cdp.nix
   ];
 
   mkBeelinkClusterModules =
