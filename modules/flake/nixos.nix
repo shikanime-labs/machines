@@ -1,19 +1,21 @@
 { inputs, ... }:
 
 let
+  baseHomeModule = {
+    home-manager.sharedModules = [
+      inputs.catppuccin.homeModules.default
+      inputs.colemak.homeModules.default
+      inputs.hermes-agent.homeManagerModules.default
+      inputs.sops-nix.homeModules.default
+    ];
+  };
+
   baseModules = [
     inputs.comin.nixosModules.comin
     inputs.sops-nix.nixosModules.default
     inputs.home-manager.nixosModules.default
     inputs.colemak.nixosModules.default
-    {
-      home-manager.sharedModules = [
-        inputs.catppuccin.homeModules.default
-        inputs.colemak.homeModules.default
-        inputs.hermes-agent.homeManagerModules.default
-        inputs.sops-nix.homeModules.default
-      ];
-    }
+    baseHomeModule
   ];
 
   clusterModules = [
@@ -21,20 +23,17 @@ let
     inputs.knix.nixosModules.default
   ];
 
+  mkCuaDriverModule = system: {
+    services.cua-driver.package = inputs.cua.packages.${system}.default;
+  };
+
   mkAiModules = system: [
     inputs.cua.nixosModules.cua-driver
     inputs.hermes-agent.nixosModules.default
     inputs.noctalia.nixosModules.default
     inputs.noctalia-greeter.nixosModules.default
-    (
-      { pkgs, lib, ... }:
-      {
-        services.cua-driver.package = inputs.cua.packages.${system}.default;
-        services.hermes-agent.package = import ./mk-hermes-agent.nix {
-          inherit inputs pkgs lib;
-        };
-      }
-    )
+    (mkCuaDriverModule system)
+    ./../nixos/services/browser-cdp.nix
   ];
 
   mkBeelinkClusterModules =
