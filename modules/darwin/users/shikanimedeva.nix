@@ -142,6 +142,7 @@ in
       "anthropic"
       "computer-use"
       "matrix"
+      "messaging"
     ];
 
     settings = {
