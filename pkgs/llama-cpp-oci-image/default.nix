@@ -5,7 +5,11 @@
 }:
 
 let
-  llama-cpp = pkgs.callPackage ../llama-cpp/default.nix { };
+  # ROCm is x86_64-only in nixpkgs; aarch64 stays on the Vulkan build.
+  llama-cpp-rpc-base = pkgs.llama-cpp.override { rpcSupport = true; };
+  llama-cpp-base =
+    if pkgs.stdenv.hostPlatform.isx86_64 then pkgs.llama-cpp-rocm else pkgs.llama-cpp-vulkan;
+  llama-cpp = llama-cpp-base.override { llama-cpp = llama-cpp-rpc-base; };
 in
 pkgs.dockerTools.buildLayeredImage {
   name = "llama-cpp";
