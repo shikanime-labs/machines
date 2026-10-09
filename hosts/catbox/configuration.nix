@@ -46,7 +46,6 @@
 
   services = {
     hermes-agent = {
-      extraDependencyGroups = [ "messaging" ];
       environment = {
         A2A_HOST = "0.0.0.0";
         API_SERVER_HOST = "0.0.0.0";
