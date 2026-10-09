@@ -33,9 +33,8 @@ let
         postInstall = (previousAttrs.postInstall or "") + ''
           rm $out/share/hermes-agent/plugins
           cp --no-preserve=mode -r ${inputs.hermes-agent}/plugins $out/share/hermes-agent/plugins
-          sed -i 's|opus_path = ctypes.util.find_library("opus")|opus_path = "${pkgs.libopus}/lib/libopus.so.0"|' \
-            $out/share/hermes-agent/plugins/platforms/discord/adapter.py
-          grep -q libopus.so.0 $out/share/hermes-agent/plugins/platforms/discord/adapter.py
+          substituteInPlace $out/share/hermes-agent/plugins/platforms/discord/adapter.py \
+            --replace-fail 'opus_path = ctypes.util.find_library("opus")' 'opus_path = "${pkgs.lib.getLib pkgs.libopus}/lib/libopus.so.0"'
         '';
       }
     );
