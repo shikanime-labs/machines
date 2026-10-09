@@ -9,9 +9,13 @@ with lib;
 
 let
   toDhall = generators.toDhall { };
-  hermesLcmPlugin = import ../../../pkgs/hermes-plugin-lcm { inherit pkgs; };
-  memoryWikiPlugin = import ../../../pkgs/hermes-plugin-memory-wiki { inherit pkgs; };
-  ponytailPlugin = import ../../../pkgs/hermes-plugin-ponytail { inherit pkgs; };
+  hermesLcmPlugin = pkgs.callPackage ../../../pkgs/hermes-plugin-lcm { };
+  memoryWikiPlugin = pkgs.callPackage ../../../pkgs/hermes-plugin-memory-wiki { };
+  ponytailPlugin = pkgs.callPackage ../../../pkgs/hermes-plugin-ponytail { };
+  honchoAi = config.services.hermes-agent.package.python.pkgs.callPackage ../../../pkgs/honcho-ai { };
+  hermesHonchoPlugin =
+    config.services.hermes-agent.package.python.pkgs.callPackage ../../../pkgs/hermes-plugin-honcho
+      { };
 
   lspBackends = with pkgs; [
     astro-language-server
@@ -118,6 +122,10 @@ in
       memoryWikiPlugin
       ponytailPlugin
     ];
+    extraPythonPackages = [
+      honchoAi
+      hermesHonchoPlugin
+    ];
     extraPackages =
       with pkgs;
       [
@@ -202,6 +210,7 @@ in
         enabled = [
           "disk-cleanup"
           "hermes-lcm"
+          "honcho"
           "memory-wiki"
           "ponytail"
           "security-guidance"

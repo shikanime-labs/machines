@@ -199,7 +199,11 @@ let
       ) peers
     );
 
-  hermesLcmPlugin = import ../../../pkgs/hermes-plugin-lcm { inherit pkgs; };
+  hermesLcmPlugin = pkgs.callPackage ../../../pkgs/hermes-plugin-lcm { };
+  honchoAi = config.services.hermes-agent.package.python.pkgs.callPackage ../../../pkgs/honcho-ai { };
+  hermesHonchoPlugin =
+    config.services.hermes-agent.package.python.pkgs.callPackage ../../../pkgs/hermes-plugin-honcho
+      { };
 
   mkA2aTokenSecrets =
     peers:
@@ -249,12 +253,15 @@ in
         curl
         gh
         git
-        honcho
         nodejs
         yarn
       ];
       extraPlugins = [
         hermesLcmPlugin
+      ];
+      extraPythonPackages = [
+        honchoAi
+        hermesHonchoPlugin
       ];
       settings = {
         context.engine = "lcm";
@@ -359,6 +366,7 @@ in
         plugins.enabled = [
           "disk-cleanup"
           "hermes-lcm"
+          "honcho"
           "platforms/a2a-platform"
           "platforms/matrix"
           "security-guidance"
