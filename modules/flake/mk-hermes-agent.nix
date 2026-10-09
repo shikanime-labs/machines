@@ -17,7 +17,8 @@ let
       pyproject-nix
       pyproject-build-systems
       ;
-    npm-lockfile-fix = inputs.hermes-agent.inputs.npm-lockfile-fix.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    npm-lockfile-fix =
+      inputs.hermes-agent.inputs.npm-lockfile-fix.packages.${pkgs.stdenv.hostPlatform.system}.default;
     inherit (inputs.hermes-agent) rev lastModified;
   };
 in

@@ -41,22 +41,15 @@ jobs:
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
           cachix-name: ${{ inputs['cachix-name'] }}
-          extra-platforms:
-            ${{ matrix.system == 'x86_64-linux' && 'arm64' || '' }}
-          github-token:
-            ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN
-            }}
+          extra-platforms: ${{ matrix.system == 'x86_64-linux' && 'arm64' || '' }}
+          github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - uses: shikanime-labs/actions/checkout@5993d4d95befc190a14c0d143583683d203ad8d1
         with:
-          github-token:
-            ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN
-            }}
+          github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - id: direnv
         uses: shikanime-labs/actions/direnv@5993d4d95befc190a14c0d143583683d203ad8d1
       - name: Run flake check
-        run:
-          nix flake check --accept-flake-config --no-pure-eval --system "${{
-          matrix.system }}"
+        run: nix flake check --accept-flake-config --no-pure-eval --system "${{ matrix.system }}"
         shell: bash
   packages:
     name: Packages
@@ -83,16 +76,11 @@ jobs:
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
           cachix-name: ${{ inputs['cachix-name'] }}
-          extra-platforms:
-            ${{ matrix.system == 'x86_64-linux' && 'arm64' || '' }}
-          github-token:
-            ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN
-            }}
+          extra-platforms: ${{ matrix.system == 'x86_64-linux' && 'arm64' || '' }}
+          github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - uses: shikanime-labs/actions/checkout@5993d4d95befc190a14c0d143583683d203ad8d1
         with:
-          github-token:
-            ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN
-            }}
+          github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - id: direnv
         uses: shikanime-labs/actions/direnv@5993d4d95befc190a14c0d143583683d203ad8d1
       - uses: shikanime-labs/actions/nix/integration@5993d4d95befc190a14c0d143583683d203ad8d1
@@ -115,14 +103,10 @@ jobs:
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
       - uses: shikanime-labs/actions/nix/setup@5993d4d95befc190a14c0d143583683d203ad8d1
         with:
-          github-token:
-            ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN
-            }}
+          github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - uses: shikanime-labs/actions/checkout@5993d4d95befc190a14c0d143583683d203ad8d1
         with:
-          github-token:
-            ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN
-            }}
+          github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - id: setup-checks-jobs
         uses: shikanime-labs/actions/nix/setup-checks-jobs@5993d4d95befc190a14c0d143583683d203ad8d1
   setup-packages-jobs:
@@ -143,13 +127,9 @@ jobs:
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
       - uses: shikanime-labs/actions/nix/setup@5993d4d95befc190a14c0d143583683d203ad8d1
         with:
-          github-token:
-            ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN
-            }}
+          github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - uses: shikanime-labs/actions/checkout@5993d4d95befc190a14c0d143583683d203ad8d1
         with:
-          github-token:
-            ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN
-            }}
+          github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - id: setup-packages-jobs
         uses: shikanime-labs/actions/nix/setup-packages-jobs@5993d4d95befc190a14c0d143583683d203ad8d1
