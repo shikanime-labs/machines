@@ -139,35 +139,35 @@ in
     settings = {
       context.engine = "lcm";
 
-      custom_providers = [
-        {
-          name = "shikanime-anthropic";
-          base_url = "https://inference.i.shikanime.studio/anthropic";
-          api_mode = "anthropic_messages";
+      custom_providers = [ ];
+
+      providers = {
+        shikanime-anthropic = {
+          api = "https://inference.i.shikanime.studio/anthropic";
+          transport = "anthropic_messages";
           key_env = "SKS_API_KEY";
           session_affinity_header = "x-sks-session-id";
-          model = "z-ai/glm-5.3";
+          default_model = "z-ai/glm-5.3";
           models = [
             "z-ai/glm-5.3"
             "z-ai/glm-5.3-flash"
             "qwen/qwen3.8-27b"
             "qwen/qwen3.8-flash"
           ];
-        }
-        {
-          name = "shikanime-openai";
-          base_url = "https://inference.i.shikanime.studio/v1";
-          api_mode = "chat_completions";
+        };
+        shikanime-openai = {
+          api = "https://inference.i.shikanime.studio/v1";
+          transport = "chat_completions";
           key_env = "SKS_API_KEY";
           session_affinity_header = "x-sks-session-id";
-          model = "poolside/laguna-s-2.1:free";
+          default_model = "poolside/laguna-s-2.1:free";
           models = [
             "poolside/laguna-s-2.1:free"
             "qwen/qwen3.8-flash"
             "qwen/qwen3.8-27b"
           ];
-        }
-      ];
+        };
+      };
 
       fallback_providers = [
         {

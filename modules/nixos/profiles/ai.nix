@@ -258,35 +258,34 @@ in
       ];
       settings = {
         context.engine = "lcm";
-        custom_providers = [
-          {
-            name = "shikanime-anthropic";
-            api_mode = "anthropic_messages";
-            base_url = "https://inference.i.shikanime.studio/anthropic";
+        custom_providers = [ ];
+        providers = {
+          shikanime-anthropic = {
+            api = "https://inference.i.shikanime.studio/anthropic";
+            transport = "anthropic_messages";
             key_env = "SKS_API_KEY";
             session_affinity_header = "x-sks-session-id";
-            model = "qwen/qwen3.8-flash";
+            default_model = "qwen/qwen3.8-flash";
             models = [
               "z-ai/glm-5.3-flash"
               "z-ai/glm-5.3"
               "qwen/qwen3.8-27b"
               "qwen/qwen3.8-flash"
             ];
-          }
-          {
-            name = "shikanime-openai";
-            api_mode = "chat_completions";
-            base_url = "https://inference.i.shikanime.studio/v1";
+          };
+          shikanime-openai = {
+            api = "https://inference.i.shikanime.studio/v1";
+            transport = "chat_completions";
             key_env = "SKS_API_KEY";
             session_affinity_header = "x-sks-session-id";
-            model = "poolside/laguna-s-2.1:free";
+            default_model = "poolside/laguna-s-2.1:free";
             models = [
               "poolside/laguna-s-2.1:free"
               "qwen/qwen3.8-flash"
               "qwen/qwen3.8-27b"
             ];
-          }
-        ];
+          };
+        };
         documents."honcho.json" = builtins.toJSON {
           baseUrl = "https://honcho.i.shikanime.studio";
           hosts.hermes = {
