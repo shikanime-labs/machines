@@ -59,13 +59,13 @@ in
       defaultSopsFile = ../../../secrets/shikanime.enc.yaml;
       defaultSopsFormat = "yaml";
       secrets.cachix-token = { };
-      secrets.github-token = { };
+      secrets.nix-github-token = { };
       templates.cachix-config.content = toDhall {
         authToken = config.sops.placeholder.cachix-token;
         hostname = "https://cachix.org";
       };
       templates.nix-user-config.content = ''
-        extra-access-tokens = github.com=${config.sops.placeholder.github-token}
+        extra-access-tokens = github.com=${config.sops.placeholder.nix-github-token}
       '';
     };
 
