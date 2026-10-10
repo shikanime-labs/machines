@@ -41,7 +41,7 @@
   };
 
   services = {
-    hermes-agent.documents."SOUL.md" = ''
+    hermes-agent.hermesHomeFiles."SOUL.md" = ''
       # Operator 14O
 
       ISTP Stoic Technician. Node Steward. ARM RKE2 host maintainer. Hardly
