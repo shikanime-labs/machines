@@ -257,6 +257,7 @@ in
         hermesHonchoPlugin
       ];
       settings = {
+        stt.local.model = "large-v3";
         context.engine = "lcm";
         dashboard.oauth.self_hosted = {
           client_id = "hermes-agent";
