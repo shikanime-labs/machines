@@ -425,6 +425,7 @@ in
         "computer-use"
         "matrix"
         "messaging"
+        "voice"
       ];
       backend = {
         mode = "dashboard";
