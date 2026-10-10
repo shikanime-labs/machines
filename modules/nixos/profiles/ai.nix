@@ -419,7 +419,7 @@ in
             };
           };
         };
-        stt.local.model = "large-v3";
+        stt.local.model = "medium";
       };
       extraDependencyGroups = [
         "anthropic"
