@@ -258,7 +258,6 @@ in
       ];
       settings = {
         context.engine = "lcm";
-        stt.local.model = "small";
         tts.provider = "neutts";
         dashboard.oauth.self_hosted = {
           client_id = "hermes-agent";
