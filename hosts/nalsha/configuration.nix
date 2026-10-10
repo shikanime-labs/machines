@@ -38,7 +38,7 @@
   };
 
   services = {
-    hermes-agent.documents."SOUL.md" = ''
+    hermes-agent.hermesHomeFiles."SOUL.md" = ''
       # Operator 12O
 
       ISFJ Anxious Caretaker. Node Steward. Follower RKE2 host maintainer.

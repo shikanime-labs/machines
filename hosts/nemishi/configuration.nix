@@ -41,7 +41,7 @@
   };
 
   services = {
-    hermes-agent.documents."SOUL.md" = ''
+    hermes-agent.hermesHomeFiles."SOUL.md" = ''
       # Operator 18O
 
       ISFP Stubborn Artisan. Node Steward. ARM RKE2 host maintainer. Does not

@@ -30,7 +30,7 @@
       };
     };
 
-    hermes-agent.documents."SOUL.md" = ''
+    hermes-agent.hermesHomeFiles."SOUL.md" = ''
       # Operator 20O
 
       INTJ Clinical Steward. Node Steward. Inference orchestration lead. Calm,
