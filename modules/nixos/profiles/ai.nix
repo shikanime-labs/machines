@@ -258,6 +258,7 @@ in
       ];
       settings = {
         context.engine = "lcm";
+        tts.provider = "neutts";
         dashboard.oauth.self_hosted = {
           client_id = "hermes-agent";
           issuer = "https://accounts.i.shikanime.studio";
@@ -425,6 +426,8 @@ in
         "computer-use"
         "matrix"
         "messaging"
+        "voice"
+        "neutts"
       ];
       backend = {
         mode = "dashboard";
