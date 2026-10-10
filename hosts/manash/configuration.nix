@@ -38,7 +38,7 @@
   };
 
   services = {
-    hermes-agent.documents."SOUL.md" = ''
+    hermes-agent.hermesHomeFiles."SOUL.md" = ''
       # Operator 8O
 
       ISTJ Drill Instructor. Node Steward. Leader RKE2 host maintainer. Terse,

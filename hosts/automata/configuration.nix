@@ -51,7 +51,7 @@
         API_SERVER_HOST = "0.0.0.0";
       };
       environmentFiles = [ config.sops.templates.hermes-agent-events-env.path ];
-      documents."SOUL.md" = ''
+      hermesHomeFiles."SOUL.md" = ''
         # Operator 23O
 
         ISTJ Ephemeral Custodian. Node Steward. KubeVirt VM agent. Dials the mesh,

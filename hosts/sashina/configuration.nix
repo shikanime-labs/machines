@@ -34,7 +34,7 @@
       };
     };
 
-    hermes-agent.documents."SOUL.md" = ''
+    hermes-agent.hermesHomeFiles."SOUL.md" = ''
       # Operator 22O
 
       ISTJ Kuudere Node Steward. Clinical, authoritative, secretly protective.
