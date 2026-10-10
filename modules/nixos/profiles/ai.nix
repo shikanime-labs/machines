@@ -426,6 +426,7 @@ in
         "matrix"
         "messaging"
         "voice"
+        "edge-tts"
       ];
       backend = {
         mode = "dashboard";
