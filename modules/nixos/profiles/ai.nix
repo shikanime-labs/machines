@@ -256,6 +256,23 @@ in
         honchoAi
         hermesHonchoPlugin
       ];
+      hermesHomeFiles."honcho.json" = builtins.toJSON {
+        baseUrl = "https://honcho.i.shikanime.studio";
+        hosts.hermes = {
+          peerName = config.networking.hostName;
+          aiPeer = "hermes";
+          workspace = "hermes";
+          observationMode = "directional";
+          writeFrequency = "async";
+          recallMode = "hybrid";
+          dialecticCadence = 3;
+          sessionStrategy = "per-session";
+          enabled = true;
+          saveMessages = true;
+          dialecticReasoningLevel = "low";
+          pinPeerName = false;
+        };
+      };
       settings = {
         context.engine = "lcm";
         dashboard.oauth.self_hosted = {
@@ -288,23 +305,6 @@ in
             ];
           };
         };
-      hermesHomeFiles."honcho.json" = builtins.toJSON {
-        baseUrl = "https://honcho.i.shikanime.studio";
-        hosts.hermes = {
-          peerName = config.networking.hostName;
-          aiPeer = "hermes";
-          workspace = "hermes";
-          observationMode = "directional";
-          writeFrequency = "async";
-          recallMode = "hybrid";
-          dialecticCadence = 3;
-          sessionStrategy = "per-session";
-          enabled = true;
-          saveMessages = true;
-          dialecticReasoningLevel = "low";
-          pinPeerName = false;
-        };
-      };
         fallback_providers = [
           {
             api_mode = "anthropic_messages";
