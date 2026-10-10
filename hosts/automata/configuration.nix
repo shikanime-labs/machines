@@ -102,6 +102,7 @@
         "hermes-lcm"
         "platforms/a2a-platform"
         "platforms/discord"
+        "platforms/email"
         "platforms/matrix"
         "security-guidance"
       ];
@@ -225,6 +226,16 @@
         owner = "hermes";
         restartUnits = [ "hermes-agent.service" ];
       };
+      hermes-agent-email-password = {
+        group = "hermes";
+        owner = "hermes";
+        restartUnits = [ "hermes-agent.service" ];
+      };
+      hermes-agent-email-allowed-users = {
+        group = "hermes";
+        owner = "hermes";
+        restartUnits = [ "hermes-agent.service" ];
+      };
       hermes-agent-webhook-secret = {
         group = "hermes";
         owner = "hermes";
@@ -239,6 +250,13 @@
         WEBHOOK_ENABLED=true
         WEBHOOK_PORT=8644
         WEBHOOK_SECRET=${config.sops.placeholder.hermes-agent-webhook-secret}
+        EMAIL_ADDRESS=operator6o.automata@gmail.com
+        EMAIL_PASSWORD=${config.sops.placeholder.hermes-agent-email-password}
+        EMAIL_IMAP_HOST=imap.gmail.com
+        EMAIL_SMTP_HOST=smtp.gmail.com
+        EMAIL_ALLOWED_USERS=${config.sops.placeholder.hermes-agent-email-allowed-users}
+        EMAIL_AUTHSERV_ID=mx.google.com
+        EMAIL_HOME_ADDRESS=${config.sops.placeholder.hermes-agent-email-allowed-users}
       '';
       restartUnits = [ "hermes-agent.service" ];
     };
