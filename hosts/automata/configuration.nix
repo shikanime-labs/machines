@@ -22,19 +22,11 @@
     };
   };
 
-  fileSystems = {
-    "/var/lib/hermes" = {
-      device = "/dev/disk/by-label/hermes-data";
-      fsType = "ext4";
-      neededForBoot = true;
-    };
-
-    "/var/lib/sops-nix" = {
-      device = "sops-key";
-      fsType = "virtiofs";
-      options = [ "ro" ];
-      neededForBoot = true;
-    };
+  fileSystems."/var/lib/sops-nix" = {
+    device = "sops-key";
+    fsType = "virtiofs";
+    options = [ "ro" ];
+    neededForBoot = true;
   };
 
   programs.nix-ld = {
