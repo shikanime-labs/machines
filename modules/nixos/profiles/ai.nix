@@ -499,6 +499,7 @@ in
           MATRIX_HOMESERVER=https://matrix.taila659a.ts.net/
           MATRIX_ACCESS_TOKEN=${config.sops.placeholder.hermes-agent-matrix-access-token}
           MATRIX_DEVICE_ID=AUTOMATA6O
+          HERMES_GATEWAY_PLATFORM_CONNECT_TIMEOUT=300
           MATRIX_E2EE_MODE=required
           MATRIX_HOME_ROOM=#automata:matrix.taila659a.ts.net
           MATRIX_RECOVERY_KEY_FILE=${config.sops.secrets.hermes-agent-matrix-recovery-key.path}
