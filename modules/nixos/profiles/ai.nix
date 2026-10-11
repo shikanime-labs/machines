@@ -425,7 +425,6 @@ in
       extraDependencyGroups = [
         "anthropic"
         "computer-use"
-        "edge-tts"
         "matrix"
         "messaging"
         "piper"
