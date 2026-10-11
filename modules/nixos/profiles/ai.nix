@@ -420,6 +420,7 @@ in
           };
         };
         stt.local.model = "medium";
+        tts.provider = "piper";
       };
       extraDependencyGroups = [
         "anthropic"
@@ -427,6 +428,7 @@ in
         "edge-tts"
         "matrix"
         "messaging"
+        "piper"
         "voice"
       ];
       backend = {
