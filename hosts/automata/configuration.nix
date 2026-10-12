@@ -59,6 +59,8 @@
         A2A_HOST = "0.0.0.0";
         A2A_PUBLIC_URL = "https://a2a.automata.i.shikanime.studio";
         API_SERVER_HOST = "0.0.0.0";
+        AGENT_BROWSER_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
+        AGENT_BROWSER_ARGS = "--no-sandbox,--disable-gpu";
       };
       environmentFiles = [ config.sops.templates.hermes-agent-events-env.path ];
       hermesHomeFiles."SOUL.md" = ''
