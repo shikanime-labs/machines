@@ -313,7 +313,7 @@ in
           }
           {
             api_mode = "anthropic_messages";
-            model = "deepseek/deepseek-v4.1";
+            model = "deepseek/deepseek-v4.1-flash";
             provider = "custom:shikanime-anthropic";
           }
         ];
