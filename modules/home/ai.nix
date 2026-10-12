@@ -297,7 +297,6 @@ in
           models = [
             "z-ai/glm-5.3"
             "z-ai/glm-5.3-flash"
-            "qwen/qwen3.8-27b"
             "qwen/qwen3.8-flash"
           ];
         };
@@ -309,7 +308,6 @@ in
           default_model = "qwen/qwen3.8-flash";
           models = [
             "qwen/qwen3.8-flash"
-            "qwen/qwen3.8-27b"
           ];
         };
       };
