@@ -77,12 +77,7 @@ in
       });
     };
 
-    mise = {
-      enable = true;
-      # nushell integration bakes a build-time PATH (HOME=/homeless-shelter,
-      # drops /etc/profiles + /usr/bin); nu keeps per-project mise via direnv.
-      enableNushellIntegration = false;
-    };
+    mise.enable = true;
 
     nushell = {
       enable = true;
