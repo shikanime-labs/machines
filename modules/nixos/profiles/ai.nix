@@ -115,6 +115,14 @@ let
         "workstation"
       ];
     }
+    {
+      name = "telsha";
+      capabilities = [
+        "command"
+        "workstation"
+        "darwin"
+      ];
+    }
   ];
 
   fleetPeers = mkSelfExcludedPeers hubPeers;
