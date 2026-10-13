@@ -110,11 +110,12 @@ let
 
   hubPeers = [
     {
-      name = "nishir";
+      name = "automata";
       capabilities = [
         "command"
         "workstation"
       ];
+      url = "https://a2a.automata.i.shikanime.studio";
     }
   ];
 
@@ -157,10 +158,13 @@ let
 
   memoryWikiPlugin = pkgs.callPackage ../../pkgs/hermes-plugin-memory-wiki { };
   mkA2aAgent =
-    { name, capabilities }:
     {
-      inherit capabilities;
-      url = "https://${name}.taila659a.ts.net:9900";
+      name,
+      capabilities,
+      url ? "http://${name}.taila659a.ts.net:9900",
+    }:
+    {
+      inherit capabilities url;
       auth = {
         type = "bearer";
         token = "\${env:A2A_OWN_TOKEN}";
@@ -196,7 +200,7 @@ let
       map (
         peer:
         lib.nameValuePair peer.name {
-          url = "https://${peer.name}.taila659a.ts.net:8642";
+          url = "http://${peer.name}.taila659a.ts.net:8642";
         }
       ) peers
     );

@@ -109,19 +109,12 @@ let
 
   hubPeers = [
     {
-      name = "nishir";
+      name = "automata";
       capabilities = [
         "command"
         "workstation"
       ];
-    }
-    {
-      name = "telsha";
-      capabilities = [
-        "command"
-        "workstation"
-        "darwin"
-      ];
+      url = "http://automata.taila659a.ts.net:9900";
     }
   ];
 
@@ -129,7 +122,11 @@ let
   isClusterPeer = builtins.any (p: p.name == config.networking.hostName) clusterPeers;
   isHub = builtins.any (p: p.name == config.networking.hostName) hubPeers;
   hubUplink = if isHub then mkSelfExcludedPeers hubPeers else hubPeers;
-  a2aTargets = if isClusterPeer then clusterMesh ++ hubUplink else mkSelfExcludedPeers hubPeers;
+  a2aTargets =
+    if isClusterPeer then clusterMesh ++ hubUplink
+    else if isHub then clusterPeers ++ hubUplink
+    else mkSelfExcludedPeers hubPeers;
+  hubTrust = lib.optionals isHub (mkSelfExcludedPeers workstationPeers);
 
   hermesHonchoPlugin =
     config.services.hermes-agent.package.python.pkgs.callPackage ../../../pkgs/hermes-plugin-honcho
@@ -139,10 +136,13 @@ let
   honchoAi = config.services.hermes-agent.package.python.pkgs.callPackage ../../../pkgs/honcho-ai { };
   memoryWikiPlugin = pkgs.callPackage ../../../pkgs/hermes-plugin-memory-wiki { };
   mkA2aAgent =
-    { name, capabilities }:
     {
-      inherit capabilities;
-      url = "https://${name}.taila659a.ts.net:9900";
+      name,
+      capabilities,
+      url ? "http://${name}.taila659a.ts.net:9900",
+    }:
+    {
+      inherit capabilities url;
       auth = {
         type = "bearer";
         token = "\${env:A2A_OWN_TOKEN}";
@@ -180,7 +180,7 @@ let
       map (
         peer:
         lib.nameValuePair peer.name {
-          url = "https://${peer.name}.taila659a.ts.net:8642";
+          url = "http://${peer.name}.taila659a.ts.net:8642";
         }
       ) peers
     );
@@ -528,7 +528,7 @@ in
           A2A_AGENT_NAME=${config.networking.hostName}
           A2A_OWN_TOKEN=${config.sops.placeholder."${mkA2aTokenSecretName config.networking.hostName}"}
           A2A_PEER_TOKENS=${mkA2aPeerTokens otherPeers}
-          A2A_TRUSTED_PEERS=${mkA2aTrustedPeers a2aTargets}
+          A2A_TRUSTED_PEERS=${mkA2aTrustedPeers (a2aTargets ++ hubTrust)}
         '';
         restartUnits = [ "hermes-agent.service" ];
       };
