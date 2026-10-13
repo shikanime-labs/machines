@@ -161,7 +161,7 @@ let
     {
       name,
       capabilities,
-      url ? "https://${name}.taila659a.ts.net:9900",
+      url ? "http://${name}.taila659a.ts.net:9900",
     }:
     {
       inherit capabilities url;
@@ -200,7 +200,7 @@ let
       map (
         peer:
         lib.nameValuePair peer.name {
-          url = "https://${peer.name}.taila659a.ts.net:8642";
+          url = "http://${peer.name}.taila659a.ts.net:8642";
         }
       ) peers
     );
