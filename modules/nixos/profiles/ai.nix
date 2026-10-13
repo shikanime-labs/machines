@@ -109,13 +109,6 @@ let
 
   hubPeers = [
     {
-      name = "nishir";
-      capabilities = [
-        "command"
-        "workstation"
-      ];
-    }
-    {
       name = "telsha";
       capabilities = [
         "command"
