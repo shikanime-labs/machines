@@ -125,7 +125,11 @@ let
     }
   ];
 
-  fleetPeers = mkSelfExcludedPeers hubPeers;
+  clusterMesh = mkSelfExcludedPeers clusterPeers;
+  isClusterPeer = builtins.any (p: p.name == config.networking.hostName) clusterPeers;
+  isHub = builtins.any (p: p.name == config.networking.hostName) hubPeers;
+  hubUplink = if isHub then mkSelfExcludedPeers hubPeers else hubPeers;
+  a2aTargets = if isClusterPeer then clusterMesh ++ hubUplink else mkSelfExcludedPeers hubPeers;
 
   hermesHonchoPlugin =
     config.services.hermes-agent.package.python.pkgs.callPackage ../../../pkgs/hermes-plugin-honcho
@@ -347,7 +351,7 @@ in
           streaming = true;
         };
         platforms.a2a.enabled = true;
-        a2a_agents = mkA2aAgents fleetPeers;
+        a2a_agents = mkA2aAgents a2aTargets;
         bot_peers = mkBotPeers otherPeers;
         platform_toolsets = {
           cli = [
@@ -524,7 +528,7 @@ in
           A2A_AGENT_NAME=${config.networking.hostName}
           A2A_OWN_TOKEN=${config.sops.placeholder."${mkA2aTokenSecretName config.networking.hostName}"}
           A2A_PEER_TOKENS=${mkA2aPeerTokens otherPeers}
-          A2A_TRUSTED_PEERS=${mkA2aTrustedPeers fleetPeers}
+          A2A_TRUSTED_PEERS=${mkA2aTrustedPeers a2aTargets}
         '';
         restartUnits = [ "hermes-agent.service" ];
       };
