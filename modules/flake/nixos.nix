@@ -45,6 +45,7 @@ let
     inputs.hermes-agent.nixosModules.default
     inputs.noctalia.nixosModules.default
     inputs.noctalia-greeter.nixosModules.default
+    inputs.skills.nixosModules.skills
     (mkCuaDriverModule system)
     (mkHermesAgentModule system)
   ];
