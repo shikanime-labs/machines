@@ -125,8 +125,11 @@ with lib;
     };
   };
 
-  systemd.tmpfiles.settings."flux-operator-config"."/var/lib/rancher/rke2/server/manifests/flux-operator-config.json"."L+".argument =
-    mkIf (config.services.knix.role == "server") config.sops.templates."flux-operator-config.json".path;
+  systemd.tmpfiles.rules = mkIf (config.services.knix.role == "server") [
+    "L+ /var/lib/rancher/rke2/server/manifests/flux-operator-config.json - - - - ${
+      config.sops.templates."flux-operator-config.json".path
+    }"
+  ];
 
   systemd.services = {
     cluster-policy-route = {
