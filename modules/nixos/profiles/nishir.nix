@@ -14,7 +14,6 @@ with lib;
     ./forgejo.nix
     ./machine.nix
     ./server.nix
-    ./syncthing.nix
     ./wifi.nix
     ../users/builder.nix
     ../users/nishir.nix

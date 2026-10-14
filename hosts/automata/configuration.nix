@@ -9,7 +9,6 @@
     ../../modules/nixos/virtualisation/containerdisk.nix
     ../../modules/nixos/profiles/server.nix
     ../../modules/nixos/profiles/ai.nix
-    ../../modules/nixos/profiles/syncthing.nix
   ];
 
   boot.loader.efi.canTouchEfiVariables = true;
