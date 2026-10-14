@@ -173,7 +173,7 @@
 
                 Triage this GitHub issue; the response is delivered to the automata Matrix room.
               '';
-              skills = [ "github" ];
+              skills = [ "sks-issue-triage" ];
             };
             github-pr = {
               deliver = "github_comment";
@@ -213,7 +213,7 @@
 
                 Review this pull request.
               '';
-              skills = [ "github" ];
+              skills = [ "sks-pr-review" ];
             };
           };
         };

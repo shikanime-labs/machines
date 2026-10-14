@@ -1120,6 +1120,7 @@
         "nixpkgs": "nixpkgs_2",
         "noctalia": "noctalia",
         "noctalia-greeter": "noctalia-greeter",
+        "skills": "skills",
         "sops-nix": "sops-nix",
         "treefmt-nix": "treefmt-nix_3",
         "wharf": "wharf"
@@ -1143,6 +1144,41 @@
       "original": {
         "owner": "oxalica",
         "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "skills": {
+      "inputs": {
+        "devenv": [
+          "devenv"
+        ],
+        "devlib": [
+          "devlib"
+        ],
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "git-hooks": [
+          "git-hooks"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791969372,
+        "narHash": "sha256-DYWIG+h1S26hmAlOXHAMDv6uWAK3zbKg01+SeAYHtiA=",
+        "owner": "shikanime-labs",
+        "repo": "skills",
+        "rev": "dfc0c6d743ddf2364e98cf97f1ac34c78337b53c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "shikanime-labs",
+        "repo": "skills",
         "type": "github"
       }
     },

@@ -128,6 +128,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    skills = {
+      url = "github:shikanime-labs/skills";
+      inputs = {
+        devenv.follows = "devenv";
+        devlib.follows = "devlib";
+        flake-parts.follows = "flake-parts";
+        git-hooks.follows = "git-hooks";
+        nixpkgs.follows = "nixpkgs";
+        treefmt-nix.follows = "treefmt-nix";
+      };
+    };
+
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
