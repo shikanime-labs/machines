@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }:
@@ -50,6 +51,8 @@
   security.sudo.wheelNeedsPassword = false;
 
   networking.hostName = "automata";
+
+  services.comin.enable = lib.mkForce false;
 
   networking.firewall.allowedTCPPorts = [ 8644 ];
 
