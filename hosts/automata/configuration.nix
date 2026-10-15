@@ -37,6 +37,15 @@
       options = [ "ro" ];
       neededForBoot = true;
     };
+
+    "/var/run/secrets/kubernetes.io/serviceaccount" = {
+      device = "serviceaccount";
+      fsType = "virtiofs";
+      options = [
+        "ro"
+        "nofail"
+      ];
+    };
   };
 
   programs.nix-ld = {
@@ -61,11 +70,30 @@
         API_SERVER_HOST = "0.0.0.0";
         AGENT_BROWSER_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
         AGENT_BROWSER_ARGS = "--no-sandbox,--disable-gpu";
+        KUBECONFIG = "/var/lib/hermes/kubeconfig";
       };
-      environmentFiles = [
-        config.sops.templates.hermes-agent-events-env.path
-        config.sops.templates.hermes-agent-k8s-env.path
-      ];
+      environmentFiles = [ config.sops.templates.hermes-agent-events-env.path ];
+      hermesHomeFiles."kubeconfig" = ''
+        apiVersion: v1
+        kind: Config
+        clusters:
+          - name: automata
+            cluster:
+              server: https://10.96.0.1:6443
+              certificate-authority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        users:
+          - name: automata
+            user:
+              tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+        contexts:
+          - name: automata
+            context:
+              cluster: automata
+              user: automata
+              namespace: shikanime
+        current-context: automata
+      '';
+
       hermesHomeFiles."SOUL.md" = ''
         # Operator 6O
 
@@ -178,9 +206,9 @@
             prompt = ''
               Daily Flux health triage for the nishir fleet.
 
-              1. Read cluster state over the Kubernetes API with curl: bearer token from K8S_API_TOKEN,
-                 server K8S_API_SERVER, flag -k. GET /apis/kustomize.toolkit.fluxcd.io/v1/kustomizations
-                 and /apis/helm.toolkit.fluxcd.io/v2/helmreleases; parse with python3. List every object
+              1. Read cluster state with kubectl (context automata, credentials from the projected
+                 service-account volume at /var/run/secrets/kubernetes.io/serviceaccount): kubectl get kustomizations -A -o wide and
+                 kubectl get helmreleases -A -o wide, plus -o json for conditions. List every object
                  whose Ready condition is False, with message and source revision. Report deliberately
                  suspended objects separately; never touch them.
               2. Dedup: gh issue list -R shikanime-labs/manifests --state open; tracked failures are
@@ -433,18 +461,6 @@
         owner = "hermes";
         restartUnits = [ "hermes-agent.service" ];
       };
-      rke2-token = {
-        group = "hermes";
-        owner = "hermes";
-        restartUnits = [ "hermes-agent.service" ];
-      };
-    };
-    templates.hermes-agent-k8s-env = {
-      content = ''
-        K8S_API_SERVER=https://10.96.0.1:6443
-        K8S_API_TOKEN=${config.sops.placeholder.rke2-token}
-      '';
-      restartUnits = [ "hermes-agent.service" ];
     };
     templates.hermes-agent-events-env = {
       content = ''

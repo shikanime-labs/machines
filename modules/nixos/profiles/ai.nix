@@ -259,6 +259,7 @@ in
         ffmpeg
         gh
         git
+        kubectl
         nodejs
         yarn
       ];
