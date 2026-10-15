@@ -123,9 +123,12 @@ let
   isHub = builtins.any (p: p.name == config.networking.hostName) hubPeers;
   hubUplink = if isHub then mkSelfExcludedPeers hubPeers else hubPeers;
   a2aTargets =
-    if isClusterPeer then clusterMesh ++ hubUplink
-    else if isHub then clusterPeers ++ hubUplink
-    else mkSelfExcludedPeers hubPeers;
+    if isClusterPeer then
+      clusterMesh ++ hubUplink
+    else if isHub then
+      clusterPeers ++ hubUplink
+    else
+      mkSelfExcludedPeers hubPeers;
   hubTrust = lib.optionals isHub (mkSelfExcludedPeers workstationPeers);
 
   hermesHonchoPlugin =
@@ -511,7 +514,7 @@ in
           MATRIX_DEVICE_ID=AUTOMATA6O
           MATRIX_E2EE_MODE=required
           MATRIX_HOME_ROOM=#automata:matrix.taila659a.ts.net
-          MATRIX_RECOVERY_KEY_FILE=${config.sops.secrets.hermes-agent-matrix-recovery-key.path}
+          MATRIX_RECOVERY_KEY=${config.sops.placeholder.hermes-agent-matrix-recovery-key}
         '';
         restartUnits = [ "hermes-agent.service" ];
       };
