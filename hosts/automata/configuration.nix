@@ -62,7 +62,10 @@
         AGENT_BROWSER_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
         AGENT_BROWSER_ARGS = "--no-sandbox,--disable-gpu";
       };
-      environmentFiles = [ config.sops.templates.hermes-agent-events-env.path ];
+      environmentFiles = [
+        config.sops.templates.hermes-agent-events-env.path
+        config.sops.templates.hermes-agent-k8s-env.path
+      ];
       hermesHomeFiles."SOUL.md" = ''
         # Operator 6O
 
@@ -118,6 +121,146 @@
         - Allowed topics: status, patches, deployments, incidents.
         - Forbidden: credentials, plaintext-secrets.
       '';
+
+      hermesHomeFiles."cron/jobs.json" = builtins.toJSON {
+        jobs = [
+          {
+            id = "164a6977d1ea";
+            name = "daily-grafana-alert-triage";
+            enabled = true;
+            deliver = "discord";
+            schedule = {
+              kind = "cron";
+              expr = "0 8 * * *";
+            };
+            skills = [
+              "sks-issue"
+              "sks-fastlane"
+            ];
+            prompt = ''
+              Daily alert triage for the nishir fleet.
+
+              1. Read firing alerts (no auth, pod network):
+                 curl -s http://vmalertmanager-vmks-victoria-metrics-k8s-stack.monitoring-system.svc:9093/api/v2/alerts
+                 Parse with python3. Record alertname, labels, annotations, startsAt.
+              2. Dedup: gh issue list -R shikanime-labs/manifests --state open; skip alerts already covered.
+              3. New alert: gh issue create -R shikanime-labs/manifests --title "<alertname>: <summary>"
+                 --body "labels, annotations, affected object, startsAt" --assignee yorha-operator if eligible.
+              4. Fastlane path: if the fix is a small manifest patch (values bump, threshold, image pin),
+                 clone https://github.com/shikanime-labs/manifests to /tmp, branch, commit with body +
+                 Signed-off-by: Shikanime Deva <william.phetsinorath@shikanime.studio> + Related: <full
+                 issue URL>, push, open PR with trailer Co-authored-by: Automata
+                 <automata@shikanime.studio> and reviewer yorha-operator. Merge without review only when
+                 ALL hold: trivial framing; <=5 files; <=100 changed lines; nothing matching
+                 lock|secret|.enc.|auth|iam|cert|token; no schema/API change; gh pr checks green on the
+                 exact head (gh pr merge --squash --admin --match-head-commit <head sha>), then comment
+                 the receipt "Fastlane: merged without human review (CI green, eligibility passed).
+                 Revert freely if not trivial." Pending or red checks: leave the PR open for the next
+                 run; never wait. Any eligibility fail: leave the PR open. Max 3 fastlanes per run.
+              5. Note alerts resolved since the last sweep; close nothing automatically.
+
+              Output: table (new / tracked / fixed), issues opened, PRs opened or fastlaned, skips.
+            '';
+          }
+          {
+            id = "58e6ae639a88";
+            name = "daily-flux-triage";
+            enabled = true;
+            deliver = "discord";
+            schedule = {
+              kind = "cron";
+              expr = "15 8 * * *";
+            };
+            skills = [
+              "sks-issue"
+              "sks-fastlane"
+            ];
+            prompt = ''
+              Daily Flux health triage for the nishir fleet.
+
+              1. Read cluster state over the Kubernetes API with curl: bearer token from K8S_API_TOKEN,
+                 server K8S_API_SERVER, flag -k. GET /apis/kustomize.toolkit.fluxcd.io/v1/kustomizations
+                 and /apis/helm.toolkit.fluxcd.io/v2/helmreleases; parse with python3. List every object
+                 whose Ready condition is False, with message and source revision. Report deliberately
+                 suspended objects separately; never touch them.
+              2. Dedup: gh issue list -R shikanime-labs/manifests --state open; tracked failures are
+                 listed, never re-filed.
+              3. New failure: gh issue create -R shikanime-labs/manifests with object, namespace,
+                 Ready=False message, source revision, first-seen; assignee yorha-operator if eligible.
+              4. Fastlane path: small manifest patch only (each overlay has its own Flux KS; rendered
+                 manifests exclude certs), same gate and mechanics as the alert job: trivial framing;
+                 <=5 files; <=100 lines; no lock|secret|.enc.|auth|iam|cert|token; no schema change;
+                 checks green on the exact head; merge --squash --admin --match-head-commit; receipt
+                 comment. Pending or red checks: leave the PR open; never wait. Max 3 per run.
+              5. Cluster-level failures (node down, Longhorn recovery, storage): issue only.
+
+              Output: table (new / tracked / fixed), issues opened, PRs opened or fastlaned.
+            '';
+          }
+          {
+            id = "c2e85641351b";
+            name = "daily-github-actions-failure-sweep";
+            enabled = true;
+            deliver = "discord";
+            schedule = {
+              kind = "cron";
+              expr = "30 8 * * *";
+            };
+            skills = [
+              "sks-issue"
+              "sks-fastlane"
+            ];
+            prompt = ''
+              Daily CI failure sweep for shikanime-labs and shikanime-studio.
+
+              1. gh repo list shikanime-labs --limit 100 --json nameWithOwner (same for
+                 shikanime-studio), then gh run list -R <repo> --status failure --created
+                 ">$(date -d "-24 hours" "+%Y-%m-%d")". Ignore renovate PRs, draft-PR CI skips, and
+                 flakes that passed on rerun.
+              2. Dedup: gh issue list -R <repo> --state open.
+              3. New failure: one issue per repo+workflow in the repo where it failed - run URL,
+                 failing job, first error lines (gh run view --log-failed), head sha. Assignee
+                 yorha-operator if eligible.
+              4. Fastlane path: trivial fixes only (CI yaml fix, action pin, typo) passing the same
+                 gate: trivial framing; <=5 files; <=100 lines; no lock|secret|.enc.|auth|iam|cert|token;
+                 checks green on the exact head; merge --squash --admin --match-head-commit; receipt
+                 comment. Pending or red checks: leave the PR open; never wait. Max 3 per run.
+              5. Console quirk: apps/server-only push branches run no CI - re-arm with
+                 gh workflow run workflow-continuous-integration.yml --ref <branch>.
+
+              Output: failures table (new / tracked / fixed), issues opened, PRs fastlaned.
+            '';
+          }
+          {
+            id = "3453978b1312";
+            name = "weekly-a2a-cluster-efficiency";
+            enabled = true;
+            deliver = "discord";
+            schedule = {
+              kind = "cron";
+              expr = "0 9 * * 1";
+            };
+            prompt = ''
+              Weekly cluster-efficiency brainstorm with the A2A fleet.
+
+              1. Discover peers with a2a_list. Every reachable peer participates; note unreachable
+                 ones and continue.
+              2. One a2a_call per peer: "From your vantage point, what is the single
+                 highest-leverage efficiency improvement in the fleet right now (compute, storage,
+                 cost, redundancy)?" Each answer must state: observation, evidence, proposed change,
+                 expected saving.
+              3. Aggregate: dedup overlapping proposals, rank by leverage / effort. Drop proposals
+                 already filed or rejected (gh issue list -R shikanime-labs/manifests, open and
+                 recently closed).
+              4. File the top proposals (max 3) as issues in shikanime-labs/manifests, one per
+                 proposal, crediting the contributing agents in the body. Proposals only - no PRs
+                 from this job.
+
+              Output: participants, ranked proposals with expected savings, issues opened.
+            '';
+          }
+        ];
+      };
 
       settings.plugins.enabled = [
         "disk-cleanup"
@@ -278,6 +421,18 @@
         owner = "hermes";
         restartUnits = [ "hermes-agent.service" ];
       };
+      rke2-token = {
+        group = "hermes";
+        owner = "hermes";
+        restartUnits = [ "hermes-agent.service" ];
+      };
+    };
+    templates.hermes-agent-k8s-env = {
+      content = ''
+        K8S_API_SERVER=https://10.96.0.1:6443
+        K8S_API_TOKEN=${config.sops.placeholder.rke2-token}
+      '';
+      restartUnits = [ "hermes-agent.service" ];
     };
     templates.hermes-agent-events-env = {
       content = ''
