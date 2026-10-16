@@ -70,7 +70,7 @@
         API_SERVER_HOST = "0.0.0.0";
         AGENT_BROWSER_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
         AGENT_BROWSER_ARGS = "--no-sandbox,--disable-gpu";
-        KUBECONFIG = "/var/lib/hermes/kubeconfig";
+        KUBECONFIG = "/var/lib/hermes/.hermes/kubeconfig";
       };
       environmentFiles = [ config.sops.templates.hermes-agent-events-env.path ];
       hermesHomeFiles."kubeconfig" = ''
