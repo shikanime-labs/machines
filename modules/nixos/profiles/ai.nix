@@ -226,6 +226,17 @@ let
 
 in
 {
+  home-manager.users.hermes = {
+    home.packages = lib.mkForce [ ];
+    home.stateVersion = "26.05";
+    programs.git = {
+      enable = true;
+      extraConfig.commit.gpgsign = false;
+      userEmail = "243783539+yorha-operator@users.noreply.github.com";
+      userName = "YoRHa Operator";
+    };
+  };
+
   users.users.hermes.extraGroups = [
     "adm"
     "systemd-journal"
