@@ -354,7 +354,7 @@
 
                 Triage this GitHub issue; the response is delivered to the automata Matrix room.
               '';
-              skills = [ "sks-issue-triage" ];
+              skills = [ "sks-triage" ];
               toolsets = [
                 "terminal"
                 "file"
