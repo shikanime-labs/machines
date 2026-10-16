@@ -79,7 +79,7 @@
         clusters:
           - name: automata
             cluster:
-              server: https://10.96.0.1:6443
+              server: https://kubernetes.default.svc:6443
               certificate-authority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
         users:
           - name: automata
