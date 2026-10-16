@@ -33,9 +33,7 @@ in
   # Reference: https://github.com/kubevirt/kubevirt/blob/main/docs/container-register-disks.md
   config = {
     boot = {
-      binfmt.emulatedSystems = mkIf pkgs.stdenv.hostPlatform.isx86_64 [
-        "aarch64-linux"
-      ];
+      binfmt.emulatedSystems = mkIf pkgs.stdenv.hostPlatform.isx86_64 [ "aarch64-linux" ];
 
       kernelParams = [
         "boot.panic_on_fail"
@@ -65,6 +63,7 @@ in
 
     services = {
       cloud-init.enable = true;
+      comin.enable = false;
       qemuGuest.enable = true;
       getty.autologinUser = mkDefault "root";
     };

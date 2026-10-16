@@ -5,14 +5,11 @@
   ...
 }:
 
-with lib;
-
 {
   imports = [
     ./ai.nix
     ./distributed.nix
     ./forgejo.nix
-    ./machine.nix
     ./server.nix
     ./wifi.nix
     ../users/builder.nix
@@ -60,6 +57,7 @@ with lib;
   };
 
   services = {
+
     knix = {
       addons.flux = {
         instance.extraConfig.instance.sync = {
@@ -81,15 +79,106 @@ with lib;
       canal.backend = "host-gw";
     };
 
+    comin = {
+      enable = lib.mkDefault true;
+      # Node exporter listens on localhost only — vmagent scrapes from 127.0.0.1.
+      exporter.listen_address = "127.0.0.1";
+      remotes = [
+        {
+          name = "github";
+          url = "https://github.com/shikanime-labs/machines.git";
+          poller.period = 600;
+        }
+        {
+          name = "forgejo";
+          url = "https://forgejo.i.shikanime.studio/shikanime-labs/machines.git";
+        }
+      ];
+    };
+
+    # Local host metrics pipeline: node_exporter -> vmagent -> vminsert.
+    prometheus.exporters = {
+      node = {
+        enable = true;
+        listenAddress = "127.0.0.1";
+        disabledCollectors = [
+          "bcachefs"
+          "fibrechannel"
+          "infiniband"
+          "ipvs"
+          "mdadm"
+          "nfsd"
+          "os"
+          "rapl"
+          "tapestats"
+          "zfs"
+        ];
+        enabledCollectors = [
+          "interrupts"
+          "processes"
+          "systemd"
+          "tcpstat"
+        ];
+      };
+      process.enable = true;
+      smartctl.enable = true;
+      systemd.enable = true;
+    };
+
+    vmagent = {
+      enable = true;
+      extraArgs = [ "-enableTCP6" ];
+      prometheusConfig.scrape_configs = [
+        {
+          job_name = "comin";
+          static_configs = [ { targets = [ "127.0.0.1:4243" ]; } ];
+        }
+        {
+          job_name = "node";
+          static_configs = [ { targets = [ "127.0.0.1:9100" ]; } ];
+          # Every host scrapes 127.0.0.1:9100 and remoteWrites the SAME
+          # instance label, so VM merges all nodes into one series → garbage
+          # rates. Rewrite to a unique per-host identity + real cluster label.
+          relabel_configs = [
+            {
+              target_label = "instance";
+              replacement = config.networking.hostName;
+            }
+            {
+              target_label = "cluster";
+              replacement = "nishir";
+            }
+            # Match the vmks bundled node rules, which select
+            # job="node-exporter".
+            {
+              target_label = "job";
+              replacement = "node-exporter";
+            }
+          ];
+        }
+      ];
+      remoteWrite.url = "https://metrics.i.shikanime.studio/insert/0/prometheus";
+    };
+
+    vlagent = {
+      enable = true;
+      remoteWrite.url = "https://logs.i.shikanime.studio/insert/native";
+      # Collect host logs incl. /var/log/pods/** (k8s container stdout: envoy
+      # dataplane, controllers). Without a glob the file collector ingests nothing.
+      extraArgs = [
+        "-fileCollector.glob=/var/log/**/*.log"
+        "-tmpDataPath=/var/cache/vlagent"
+      ];
+    };
   };
 
   sops = {
-    secrets.flux-operator-web-client-secret = mkIf (config.services.knix.role == "server") {
+    secrets.flux-operator-web-client-secret = lib.mkIf (config.services.knix.role == "server") {
       sopsFile = ../../../secrets/machine.enc.yaml;
       restartUnits = [ "systemd-tmpfiles-setup.service" ];
     };
 
-    templates = mkIf (config.services.knix.role == "server") {
+    templates = lib.mkIf (config.services.knix.role == "server") {
       "flux-operator-config.json".file = (pkgs.formats.json { }).generate "flux-operator-config.json" {
         apiVersion = "v1";
         kind = "Secret";
@@ -125,11 +214,14 @@ with lib;
     };
   };
 
-  systemd.tmpfiles.rules = mkIf (config.services.knix.role == "server") [
+  systemd.tmpfiles.rules = [
+    "d /var/lib/node_exporter/textfile_collector 0755 root root -"
+  ]
+  ++ (lib.optionals (config.services.knix.role == "server") [
     "L+ /var/lib/rancher/rke2/server/manifests/flux-operator-config.json - - - - ${
       config.sops.templates."flux-operator-config.json".path
     }"
-  ];
+  ]);
 
   systemd.services = {
     cluster-policy-route = {
@@ -170,7 +262,7 @@ with lib;
         RestartSec = "5s";
       };
       script = ''
-        ${getExe pkgs.tailscale} serve --yes --bg --https=9900 http://127.0.0.1:9900
+        ${lib.getExe pkgs.tailscale} serve --yes --bg --https=9900 http://127.0.0.1:9900
       '';
     };
 
@@ -189,7 +281,7 @@ with lib;
         RestartSec = "5s";
       };
       script = ''
-        ${getExe pkgs.tailscale} serve --yes --bg --https=8642 http://127.0.0.1:8642
+        ${lib.getExe pkgs.tailscale} serve --yes --bg --https=8642 http://127.0.0.1:8642
       '';
     };
   };
