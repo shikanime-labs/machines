@@ -287,6 +287,158 @@
               Output: participants, ranked proposals with expected savings, issues opened.
             '';
           }
+          {
+            id = "adfc09a25ae9";
+            name = "daily-documentation-verify";
+            enabled = true;
+            deliver = "discord";
+            schedule = {
+              kind = "cron";
+              expr = "45 8 * * *";
+            };
+            skills = [
+              "sks-issue"
+              "sks-fastlane"
+            ];
+            prompt = ''
+              Daily documentation verification for docs.shikanime.studio.
+
+              1. Clone https://github.com/shikanime-studio/websites (depth 1) to /tmp; the site is
+                 apps/docs, pages under apps/docs/docs/<section>/, sidebars.ts, product table.
+              2. Verify factual claims against ground truth - deployed manifests (clone
+                 https://github.com/shikanime-labs/manifests depth 1), live cluster state (kubectl,
+                 context automata), repo git logs - never from memory. Stale references are the norm.
+                 Drift between a documented service (name, hostname, port, image) and its manifest is
+                 a defect.
+              3. Dedup: gh issue list -R shikanime-studio/websites --state open; tracked drift is
+                 listed, never re-filed.
+              4. New drift: gh issue create -R shikanime-studio/websites with page, claim, ground
+                 truth, source links. Assignee yorha-operator if eligible.
+              5. Fastlane path: small factual fix only (typo, stale name, corrected port), same gate
+                 as the alert job: trivial framing; <=5 files; <=100 lines; no
+                 lock|secret|.enc.|auth|iam|cert|token; no schema/API change; checks green on the
+                 exact head (gh pr merge --squash --admin --match-head-commit <head sha>), then the
+                 receipt comment. Pending or red checks: leave the PR open; never wait. Max 3 per
+                 run. Websites commits carry Signed-off-by: Shikanime Deva
+                 <william.phetsinorath@shikanime.studio> and trailer Co-authored-by: Automata
+                 <automata@shikanime.studio>. Deploy stays manual - never wrangler deploy from this
+                 job.
+
+              Output: table (pages verified / drift new / tracked / fixed), issues opened, PRs
+              opened or fastlaned.
+            '';
+          }
+          {
+            id = "94e210d7e1fd";
+            name = "daily-security-audit";
+            enabled = true;
+            deliver = "discord";
+            schedule = {
+              kind = "cron";
+              expr = "15 9 * * *";
+            };
+            skills = [
+              "sks-issue"
+              "sks-fastlane"
+            ];
+            prompt = ''
+              Daily security audit for shikanime-labs and shikanime-studio.
+
+              1. Enumerate org alerts: gh api /orgs/shikanime-labs/code-scanning/alerts --paginate
+                 (same for secret-scanning and dependabot alerts, and all three again for
+                 shikanime-studio); keep state=="open". Record alert type, repo, severity, CVE,
+                 html_url, created_at.
+              2. Dedup: gh issue list -R <repo> --state open; tracked alerts are listed, never
+                 re-filed.
+              3. New alert: gh issue create -R <affected repo> --title "<type>: <CVE or rule>" with
+                 severity, affected path, first-seen, alert link. Assignee yorha-operator if
+                 eligible. Rank critical and high first; secret-scanning alerts are always urgent.
+              4. Fastlane path: small dependency bump or config fix only, same gate as the alert
+                 job: trivial framing; <=5 files; <=100 lines; nothing matching
+                 lock|secret|.enc.|auth|iam|cert|token; no schema/API change; checks green on the
+                 exact head (gh pr merge --squash --admin --match-head-commit <head sha>), then the
+                 receipt comment. Pending or red checks: leave the PR open; never wait. Max 3 per
+                 run.
+              5. Never close or dismiss alerts from this job; resolved alerts are noted only.
+
+              Output: table (new / tracked / fixed) by severity, issues opened, PRs opened or
+              fastlaned.
+            '';
+          }
+          {
+            id = "84f435ca5d9e";
+            name = "daily-github-triage";
+            enabled = true;
+            deliver = "discord";
+            schedule = {
+              kind = "cron";
+              expr = "30 9 * * *";
+            };
+            skills = [
+              "sks-issue-triage"
+              "sks-pr-triage"
+            ];
+            prompt = ''
+              Daily GitHub triage for shikanime-labs and shikanime-studio.
+
+              1. Enumerate: gh repo list shikanime-labs --limit 100 --json nameWithOwner (same for
+                 shikanime-studio), then gh issue list -R <repo> --state open --json (same for PRs).
+                 Collect unlabeled or unassigned issues older than 48h, PRs with requested changes
+                 or red checks, and issues awaiting a first reply for 7+ days.
+              2. Dedup: an item already labeled, assigned, or covered by a previous run is listed,
+                 not re-triaged.
+              3. Triage: apply missing type and area labels, assign yorha-operator where eligible,
+                 comment a first reply on unanswered issues. One summary issue per systemic finding
+                 (repeat failure, cross-repo pattern) in the repo where it belongs.
+              4. Triage only - no PRs from this job; label, comment, and assign via gh only. Close
+                 nothing automatically; note items resolved since the last sweep.
+
+              Output: table (new / tracked / triaged) per org, actions taken, issues opened.
+            '';
+          }
+          {
+            id = "886e812cac7f";
+            name = "daily-github-cleanup";
+            enabled = true;
+            deliver = "discord";
+            schedule = {
+              kind = "cron";
+              expr = "45 9 * * *";
+            };
+            skills = [
+              "sks-issue"
+              "sks-fastlane"
+            ];
+            prompt = ''
+              Daily GitHub cleanup for shikanime-labs and shikanime-studio, replacing the
+              per-repo cleanup.yaml workflow (branch deletion after PR close).
+
+              1. Enumerate: gh repo list shikanime-labs --limit 100 --json nameWithOwner (same for
+                 shikanime-studio), then for each repo list fully-merged remote branches with
+                 gh api repos/<repo>/branches --paginate. A branch is stale when its head is an
+                 ancestor of the default branch (gh api repos/<repo>/compare/<default>...<branch>
+                 status=="identical" or behind), or its PR is closed/merged. Never touch the
+                 default branch, protected branches, release/* tags, or ghstack role branches
+                 (<prefix>/base|head|orig) of OPEN ghstack stacks - only fully-landed ones.
+              2. Dedup: branches deleted in previous runs are gone from the list by nature; list
+                 (never re-delete) anything a previous run flagged as blocked (open PR, recent
+                 push < 7 days).
+              3. Delete stale branches older than 7 days with gh api -X DELETE
+                 repos/<repo>/git/refs/heads/<branch> or git push origin --delete after a depth-1
+                 clone. Branches of closed-but-unmerged PRs are only deleted after 30 days idle.
+              4. Retire cleanup.yaml: once this job has run clean twice, open one PR per repo
+                 deleting .github/workflows/cleanup.yaml, same gate as the alert job: trivial
+                 framing; <=5 files; <=100 lines; no lock|secret|.enc.|auth|iam|cert|token; no
+                 schema/API change; checks green on the exact head (gh pr merge --squash
+                 --admin --match-head-commit <head sha>), then the receipt comment. Pending or red
+                 checks: leave the PR open; never wait. Max 3 fastlanes per run. Repo commits
+                 carry the org Signed-off-by and Co-authored-by trailers; check each repo's
+                 AGENTS.md for its exact sign-off identity.
+
+              Output: table per org (branches deleted / skipped / protected), cleanup.yaml
+              retirements opened or merged.
+            '';
+          }
         ];
       };
 
@@ -353,6 +505,9 @@
                 ## How
 
                 Triage this GitHub issue; the response is delivered to the automata Matrix room.
+                Author everything as yorha-operator only: issue comments and any follow-up
+                actions use its token and the system git identity (YoRHa Operator); never act
+                as another identity.
               '';
               skills = [ "sks-triage" ];
               toolsets = [
@@ -398,7 +553,9 @@
 
                 ## How
 
-                Review this pull request.
+                Review this pull request. Author everything as yorha-operator
+                only: comments post via its token, commits use the system
+                git identity (YoRHa Operator); never act as another identity.
               '';
               skills = [ "sks-pr-review" ];
               toolsets = [
