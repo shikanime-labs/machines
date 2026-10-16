@@ -22,8 +22,6 @@
     };
   };
 
-  systemd.tmpfiles.rules = [ "Z /var/lib/hermes - hermes hermes -" ];
-
   fileSystems = {
     "/var/lib/hermes" = {
       device = "/dev/disk/by-label/hermes-data";
@@ -58,9 +56,10 @@
 
   security.sudo.wheelNeedsPassword = false;
 
-  networking.hostName = "automata";
-
-  networking.firewall.allowedTCPPorts = [ 8644 ];
+  networking = {
+    firewall.allowedTCPPorts = [ 8644 ];
+    hostName = "automata";
+  };
 
   services = {
     hermes-agent = {
@@ -648,5 +647,10 @@
         setSocketVariable = true;
       };
     };
+  };
+
+  users = {
+    groups.qemu.gid = 107;
+    users.hermes.extraGroups = [ "qemu" ];
   };
 }
