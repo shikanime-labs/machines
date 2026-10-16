@@ -30,7 +30,8 @@
         brightnessctl # backlight/brightness keys under Niri
         ddcutil # DDC/CI external monitor brightness/control
         element-desktop # Matrix client
-        fuzzel # app launcher; Niri's default config binds Super+R to it
+        fuzzel # secondary fallback launcher; Niri's default config binds Super+D
+        hyprpolkitagent # polkit auth agent for the graphical session
         gparted-full # disk partition GUI (full FS tool set: resize/move any fs)
         nautilus # file manager GUI
         pavucontrol # audio mixer GUI (volume keys only step, no panel)
@@ -87,12 +88,10 @@
     # Niri compositor (ships wayland-sessions/niri.desktop; the greeter lists it).
     niri.enable = true;
 
-    # Noctalia shell/bar as a systemd user service (auto-starts in the Wayland session).
-    noctalia = {
-      enable = true;
-      recommendedServices.enable = true;
-      systemd.enable = true;
-    };
+    # Noctalia shell removed: vicinae (launcher), waybar (bar), mako
+    # (notifications), hyprlock/hypridle (lock/idle), hyprpolkitagent (polkit)
+    # replace it, wired in the home config. Greeter stays as a transitional
+    # island until the swap proves out.
 
     noctalia-greeter = {
       enable = true;
@@ -226,10 +225,8 @@
   xdg.portal.enable = true;
 
   # polkit authority daemon: required for the privilege prompts that
-  # pkexec/gparted raise. Noctalia's built-in in-session agent (enabled via
-  # programs.noctalia.settings.shell.polkit_agent in the home module) registers
-  # against this daemon, so the external polkit-gnome agent is intentionally
-  # omitted to avoid two agents racing for the session-bus registration.
+  # pkexec/gparted raise. The in-session agent is hyprpolkitagent (home
+  # config, graphical-session target), so no external polkit-gnome agent.
   security.polkit.enable = true;
 
   # Expose LM Studio over Tailscale HTTPS (ts.net endpoint on :1234). Runs after
