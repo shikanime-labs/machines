@@ -505,14 +505,12 @@
                     "opened"
                     "reopened"
                     "synchronize"
+                    "review_requested"
                   ];
                 }
                 {
-                  field = "sender.login";
-                  "in" = [
-                    "shikanime"
-                    "yorha-operator"
-                  ];
+                  field = "pull_request.requested_reviewers";
+                  regex = "\\[\\{";
                 }
               ];
               prompt = ''
