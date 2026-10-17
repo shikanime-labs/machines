@@ -465,8 +465,25 @@
               ];
               filters = [
                 {
-                  field = "issue.pull_request";
-                  missing = true;
+                  field = "action";
+                  "in" = [
+                    "opened"
+                    "reopened"
+                    "edited"
+                    "created"
+                  ];
+                }
+                {
+                  any = [
+                    {
+                      field = "issue.pull_request";
+                      missing = true;
+                    }
+                    {
+                      field = "comment.body";
+                      contains = "@yorha-operator";
+                    }
+                  ];
                 }
                 {
                   field = "sender.login";
@@ -497,7 +514,12 @@
                     "opened"
                     "reopened"
                     "synchronize"
+                    "review_requested"
                   ];
+                }
+                {
+                  field = "pull_request.requested_reviewers";
+                  regex = ''"login": "yorha-operator"'';
                 }
                 {
                   field = "sender.login";
