@@ -465,6 +465,15 @@
               ];
               filters = [
                 {
+                  field = "action";
+                  "in" = [
+                    "opened"
+                    "reopened"
+                    "edited"
+                    "created"
+                  ];
+                }
+                {
                   any = [
                     {
                       field = "issue.pull_request";
