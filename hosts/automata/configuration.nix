@@ -155,7 +155,7 @@
             id = "164a6977d1ea";
             name = "daily-grafana-alert-triage";
             enabled = true;
-            deliver = "discord";
+            deliver = "local";
             schedule = {
               kind = "cron";
               expr = "0 8 * * *";
@@ -193,7 +193,7 @@
             id = "58e6ae639a88";
             name = "daily-flux-triage";
             enabled = true;
-            deliver = "discord";
+            deliver = "local";
             schedule = {
               kind = "cron";
               expr = "15 8 * * *";
@@ -228,7 +228,7 @@
             id = "c2e85641351b";
             name = "daily-github-actions-failure-sweep";
             enabled = true;
-            deliver = "discord";
+            deliver = "local";
             schedule = {
               kind = "cron";
               expr = "30 8 * * *";
@@ -262,7 +262,7 @@
             id = "3453978b1312";
             name = "weekly-a2a-cluster-efficiency";
             enabled = true;
-            deliver = "discord";
+            deliver = "local";
             schedule = {
               kind = "cron";
               expr = "0 9 * * 1";
@@ -290,7 +290,7 @@
             id = "adfc09a25ae9";
             name = "daily-documentation-verify";
             enabled = true;
-            deliver = "discord";
+            deliver = "local";
             schedule = {
               kind = "cron";
               expr = "45 8 * * *";
@@ -331,7 +331,7 @@
             id = "94e210d7e1fd";
             name = "daily-security-audit";
             enabled = true;
-            deliver = "discord";
+            deliver = "local";
             schedule = {
               kind = "cron";
               expr = "15 9 * * *";
@@ -368,7 +368,7 @@
             id = "84f435ca5d9e";
             name = "daily-github-triage";
             enabled = true;
-            deliver = "discord";
+            deliver = "local";
             schedule = {
               kind = "cron";
               expr = "30 9 * * *";
@@ -399,7 +399,7 @@
             id = "886e812cac7f";
             name = "daily-github-cleanup";
             enabled = true;
-            deliver = "discord";
+            deliver = "local";
             schedule = {
               kind = "cron";
               expr = "45 9 * * *";
@@ -463,10 +463,7 @@
           rate_limit = 120;
           routes = {
             github-issue = {
-              deliver = "matrix";
-              deliver_extra = {
-                chat_id = "!QUaAaCBlSIBcYyOyLb:matrix.taila659a.ts.net";
-              };
+              deliver = "log";
               events = [
                 "issues"
                 "issue_comment"
@@ -503,7 +500,7 @@
 
                 ## How
 
-                Triage this GitHub issue; the response is delivered to the automata Matrix room.
+                Triage this GitHub issue; the response is logged on the automata host.
                 Author everything as yorha-operator only: issue comments and any follow-up
                 actions use its token and the system git identity (YoRHa Operator); never act
                 as another identity.
@@ -517,11 +514,7 @@
               ];
             };
             github-pr = {
-              deliver = "github_comment";
-              deliver_extra = {
-                pr_number = "{number}";
-                repo = "{repository.full_name}";
-              };
+              deliver = "log";
               events = [ "pull_request" ];
               filters = [
                 {
@@ -552,9 +545,12 @@
 
                 ## How
 
-                Review this pull request. Author everything as yorha-operator
-                only: comments post via its token, commits use the system
-                git identity (YoRHa Operator); never act as another identity.
+                Review this pull request per sks-pr-review. The route only logs its
+                response: post the review findings on the PR yourself with gh
+                (review comments and/or a PR review via the yorha-operator token).
+                Author everything as yorha-operator only: comments post via its
+                token, commits use the system git identity (YoRHa Operator); never
+                act as another identity.
               '';
               skills = [ "sks-pr-review" ];
               toolsets = [
