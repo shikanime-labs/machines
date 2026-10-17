@@ -1,12 +1,7 @@
-{
-  config,
-  ...
-}:
+{ config, ... }:
 
 {
-  imports = [
-    ./minimal.nix
-  ];
+  imports = [ ./minimal.nix ];
 
   # Colemak at the OS level (TTY + localed -> niri reads it).
   colemak.enable = true;
@@ -38,109 +33,6 @@
       extra-access-tokens = github.com=${config.sops.placeholder.nix-github-access-token}
     '';
   };
-
-  services = {
-    comin = {
-      enable = true;
-      # Node exporter listens on localhost only — vmagent scrapes from 127.0.0.1.
-      exporter.listen_address = "127.0.0.1";
-      remotes = [
-        {
-          name = "github";
-          url = "https://github.com/shikanime-labs/machines.git";
-          poller.period = 600;
-        }
-        {
-          name = "forgejo";
-          url = "https://forgejo.i.shikanime.studio/shikanime-labs/machines.git";
-        }
-      ];
-    };
-
-    # Local host metrics pipeline: node_exporter -> vmagent -> vminsert.
-    prometheus.exporters = {
-      node = {
-        enable = true;
-        listenAddress = "127.0.0.1";
-        disabledCollectors = [
-          "bcachefs"
-          "fibrechannel"
-          "infiniband"
-          "ipvs"
-          "mdadm"
-          "nfsd"
-          "os"
-          "rapl"
-          "tapestats"
-          "zfs"
-        ];
-        enabledCollectors = [
-          "interrupts"
-          "processes"
-          "systemd"
-          "tcpstat"
-        ];
-      };
-      process.enable = true;
-      smartctl.enable = true;
-      systemd.enable = true;
-    };
-
-    vmagent = {
-      enable = true;
-      extraArgs = [
-        "-enableTCP6"
-      ];
-      prometheusConfig.scrape_configs = [
-        {
-          job_name = "comin";
-          static_configs = [
-            { targets = [ "127.0.0.1:4243" ]; }
-          ];
-        }
-        {
-          job_name = "node";
-          static_configs = [
-            { targets = [ "127.0.0.1:9100" ]; }
-          ];
-          # Every host scrapes 127.0.0.1:9100 and remoteWrites the SAME
-          # instance label, so VM merges all nodes into one series → garbage
-          # rates. Rewrite to a unique per-host identity + real cluster label.
-          relabel_configs = [
-            {
-              target_label = "instance";
-              replacement = config.networking.hostName;
-            }
-            {
-              target_label = "cluster";
-              replacement = "nishir";
-            }
-            # Match the vmks bundled node rules, which select
-            # job="node-exporter".
-            {
-              target_label = "job";
-              replacement = "node-exporter";
-            }
-          ];
-        }
-      ];
-      remoteWrite.url = "https://metrics.i.shikanime.studio/insert/0/prometheus";
-    };
-  };
-
-  services.vlagent = {
-    enable = true;
-    remoteWrite.url = "https://logs.i.shikanime.studio/insert/native";
-    # Collect host logs incl. /var/log/pods/** (k8s container stdout: envoy
-    # dataplane, controllers). Without a glob the file collector ingests nothing.
-    extraArgs = [
-      "-fileCollector.glob=/var/log/**/*.log"
-      "-tmpDataPath=/var/cache/vlagent"
-    ];
-  };
-
-  # Required for node-exporter textfile collector.
-  systemd.tmpfiles.rules = [ "d /var/lib/node_exporter/textfile_collector 0755 root root -" ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
