@@ -465,8 +465,16 @@
               ];
               filters = [
                 {
-                  field = "issue.pull_request";
-                  missing = true;
+                  any = [
+                    {
+                      field = "issue.pull_request";
+                      missing = true;
+                    }
+                    {
+                      field = "comment.body";
+                      contains = "@yorha-operator";
+                    }
+                  ];
                 }
                 {
                   field = "sender.login";
