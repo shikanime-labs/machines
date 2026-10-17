@@ -2,9 +2,9 @@
 
 {
   imports = [
-    ../../modules/nixos/virtualisation/containerdisk.nix
-    ../../modules/nixos/profiles/server.nix
-    ../../modules/nixos/profiles/ai.nix
+    ../../nixos/virtualisation/containerdisk.nix
+    ./server.nix
+    ./ai.nix
   ];
 
   boot.loader.efi.canTouchEfiVariables = true;
@@ -556,7 +556,7 @@
       generateKey = true;
       keyFile = "/var/lib/sops-nix/key.txt";
     };
-    defaultSopsFile = ../../secrets/automata.enc.yaml;
+    defaultSopsFile = ../../../secrets/automata.enc.yaml;
     defaultSopsFormat = "yaml";
     secrets = {
       hermes-agent-discord-bot-token = {
