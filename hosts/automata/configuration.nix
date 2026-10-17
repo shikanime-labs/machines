@@ -512,6 +512,13 @@
                   field = "pull_request.requested_reviewers";
                   regex = "\\[\\{";
                 }
+                {
+                  field = "sender.login";
+                  "in" = [
+                    "shikanime"
+                    "yorha-operator"
+                  ];
+                }
               ];
               prompt = ''
                 Review pull request #{number} in {repository.full_name}.
