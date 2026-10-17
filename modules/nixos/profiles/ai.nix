@@ -338,7 +338,7 @@ in
           }
           {
             api_mode = "anthropic_messages";
-            model = "deepseek/deepseek-v4.1-flash";
+            model = "deepseek/deepseek-flash-latest";
             provider = "custom:shikanime-anthropic";
           }
         ];
@@ -399,7 +399,7 @@ in
               reference_models = [
                 {
                   provider = "shikanime-openai";
-                  model = "deepseek/deepseek-v4.1-flash";
+                  model = "deepseek/deepseek-flash-latest";
                 }
                 {
                   provider = "shikanime-anthropic";
@@ -428,7 +428,7 @@ in
                 }
                 {
                   provider = "shikanime-openai";
-                  model = "deepseek/deepseek-v4.1-flash";
+                  model = "deepseek/deepseek-flash-latest";
                 }
                 {
                   provider = "shikanime-openai";
