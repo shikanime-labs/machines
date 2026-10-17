@@ -21,7 +21,7 @@
           inputs.devlib.devenvModules.shikanime
           inputs.identities.devenvModules.default
         ];
-        env.SOPS_AGE_KEY = "\${{ secrets.CATBOX_SOPS_KEY }}";
+        env.SOPS_AGE_KEY = "\${{ secrets.SOPS_AGE_KEY }}";
 
         identities = {
           enable = true;
@@ -51,9 +51,7 @@
 
             wakabox = {
               name = "Wakabox";
-              on.schedule = [
-                { cron = "0 0 * * *"; }
-              ];
+              on.schedule = [ { cron = "0 0 * * *"; } ];
               jobs.wakabox = {
                 runs-on = "ubuntu-latest";
                 steps = [
@@ -93,43 +91,19 @@
           enable = true;
           settings.creation_rules =
             let
-              ashira = [
-                "age1mel902ydxqv4yh798t5en336am9zwykapy8rtfvq4yprzr79t5wqzxe8ph"
-              ];
-              nixtar = [
-                "age16tla3k0j70er5q526nrt6kqzzw7ds62dazlsknjxuhp7q4yq3ydqhxv8gy"
-              ];
-              fushi = [
-                "age1fm9p4r5mug9rwk9puz7enpqap5xcrqeku6wp7atsajher559hads5wg03y"
-              ];
-              ishtar = [
-                "age1m2z62rwhkldycej2ljggv9zfgp79xzzhdvkv7z8ajfhkrepxyvxsr3pgea"
-              ];
-              manash = [
-                "age1f4yuh4j3gqafjduusfpxz3na9xtwth9s6gznq043mfex0zglp5jqkkdm64"
-              ];
-              minish = [
-                "age1a4y27yc3tarlju7vg0lugnvs933wmk4hnw0udrn4499mts04qd0qvu7c3u"
-              ];
-              nalsha = [
-                "age1evzl6xw2n96l2xyy7jed3zlv6d4jpmytp47rpp39pjju08tep4mqqa2au5"
-              ];
-              nemishi = [
-                "age14c70j0haarha8e44zssrkd3rut0ygspqwnx42zfy0lv68he2pfms62h8a3"
-              ];
-              telsha = [
-                "age1eak84xcr44yfqsg843rfu2xajxsyvjwh67a630htpnd0scy7yu5szjfh8d"
-              ];
-              sashina = [
-                "age1jlcz9e0gznqzc6a3l3x0cu76l7v9vmwjuf489lxwncvgll7g8v0sjwa50d"
-              ];
-              kushira = [
-                "age1c6g7vw6zn6mnjxxwyhpjl5usv5crwlj54fhe9djqgu2yzh5u2amsa6tu3v"
-              ];
+              ashira = [ "age1mel902ydxqv4yh798t5en336am9zwykapy8rtfvq4yprzr79t5wqzxe8ph" ];
+              nixtar = [ "age16tla3k0j70er5q526nrt6kqzzw7ds62dazlsknjxuhp7q4yq3ydqhxv8gy" ];
+              fushi = [ "age1fm9p4r5mug9rwk9puz7enpqap5xcrqeku6wp7atsajher559hads5wg03y" ];
+              ishtar = [ "age1m2z62rwhkldycej2ljggv9zfgp79xzzhdvkv7z8ajfhkrepxyvxsr3pgea" ];
+              manash = [ "age1f4yuh4j3gqafjduusfpxz3na9xtwth9s6gznq043mfex0zglp5jqkkdm64" ];
+              minish = [ "age1a4y27yc3tarlju7vg0lugnvs933wmk4hnw0udrn4499mts04qd0qvu7c3u" ];
+              nalsha = [ "age1evzl6xw2n96l2xyy7jed3zlv6d4jpmytp47rpp39pjju08tep4mqqa2au5" ];
+              nemishi = [ "age14c70j0haarha8e44zssrkd3rut0ygspqwnx42zfy0lv68he2pfms62h8a3" ];
+              telsha = [ "age1eak84xcr44yfqsg843rfu2xajxsyvjwh67a630htpnd0scy7yu5szjfh8d" ];
+              sashina = [ "age1jlcz9e0gznqzc6a3l3x0cu76l7v9vmwjuf489lxwncvgll7g8v0sjwa50d" ];
+              kushira = [ "age1c6g7vw6zn6mnjxxwyhpjl5usv5crwlj54fhe9djqgu2yzh5u2amsa6tu3v" ];
 
-              automata = [
-                "age1etnd6hnt6776vqsnadny72t55whnlav8xp8e7rx3fd4lz7ms8dfsjsrnul"
-              ];
+              automata = [ "age1etnd6hnt6776vqsnadny72t55whnlav8xp8e7rx3fd4lz7ms8dfsjsrnul" ];
 
               nishir = ashira ++ fushi ++ manash ++ minish ++ nalsha ++ nemishi ++ sashina ++ kushira;
 
@@ -209,9 +183,7 @@
 
         treefmt.config.programs.typos.configFile =
           let
-            configFile = toml.generate "typos.toml" {
-              default.extend-words.facter = "facter";
-            };
+            configFile = toml.generate "typos.toml" { default.extend-words.facter = "facter"; };
           in
           toString configFile;
       };

@@ -1,9 +1,7 @@
 { pkgs, ... }:
 
 {
-  imports = [
-    ./krew.nix
-  ];
+  imports = [ ./krew.nix ];
 
   catppuccin.k9s.enable = false;
 
@@ -162,9 +160,7 @@
       format = pkgs.formats.json { };
     in
     format.generate "policy.json" {
-      default = [
-        { type = "insecureAcceptAnything"; }
-      ];
+      default = [ { type = "insecureAcceptAnything"; } ];
       transports.docker-daemon = {
         "" = [ { type = "insecureAcceptAnything"; } ];
       };

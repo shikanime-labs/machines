@@ -39,9 +39,7 @@ let
     in
     builtins.filter (m: selfHostname != m.hostName) machines;
 
-  mkSshKnownHost = { hostName, publicKey }: {
-    "${mkHostname hostName}".publicKey = publicKey;
-  };
+  mkSshKnownHost = { hostName, publicKey }: { "${mkHostname hostName}".publicKey = publicKey; };
 
   mkSshKnownHosts =
     knownHostsList:

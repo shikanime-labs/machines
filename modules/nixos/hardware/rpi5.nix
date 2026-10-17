@@ -7,9 +7,7 @@
     "eviction-hard=memory.available<300Mi"
   ];
 
-  imports = [
-    ./rpi.nix
-  ];
+  imports = [ ./rpi.nix ];
 
   # Install the firmware specifically for the Raspberry Pi 5
   # because the nixpkgs doesn't provide it by default anymore

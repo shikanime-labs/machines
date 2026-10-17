@@ -186,9 +186,7 @@ let
     builtins.listToAttrs (
       map (
         peer:
-        lib.nameValuePair (mkA2aTokenSecretName peer.name) {
-          sopsFile = ../../secrets/machine.enc.yaml;
-        }
+        lib.nameValuePair (mkA2aTokenSecretName peer.name) { sopsFile = ../../secrets/machine.enc.yaml; }
       ) peers
     );
 
@@ -197,12 +195,7 @@ let
   mkBotPeers =
     peers:
     builtins.listToAttrs (
-      map (
-        peer:
-        lib.nameValuePair peer.name {
-          url = "http://${peer.name}.taila659a.ts.net:8642";
-        }
-      ) peers
+      map (peer: lib.nameValuePair peer.name { url = "http://${peer.name}.taila659a.ts.net:8642"; }) peers
     );
 
   mkPeerApiServerKeyName = peer: "hermes-agent-api-server-key-${peer}";
@@ -212,9 +205,7 @@ let
     builtins.listToAttrs (
       map (
         peer:
-        lib.nameValuePair (mkPeerApiServerKeyName peer.name) {
-          sopsFile = ../../secrets/machine.enc.yaml;
-        }
+        lib.nameValuePair (mkPeerApiServerKeyName peer.name) { sopsFile = ../../secrets/machine.enc.yaml; }
       ) peers
     );
 
@@ -310,9 +301,7 @@ in
           key_env = "SKS_API_KEY";
           session_affinity_header = "x-sks-session-id";
           default_model = "qwen/qwen3.8-flash";
-          models = [
-            "qwen/qwen3.8-flash"
-          ];
+          models = [ "qwen/qwen3.8-flash" ];
         };
       };
 
@@ -382,9 +371,7 @@ in
         };
       };
 
-      lsp.servers.powershell.command = [
-        "${powershellEditorServices}/lib/powershell-editor-services"
-      ];
+      lsp.servers.powershell.command = [ "${powershellEditorServices}/lib/powershell-editor-services" ];
 
       moa = {
         default_preset = "default";

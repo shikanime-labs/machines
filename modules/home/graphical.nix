@@ -1,8 +1,4 @@
-{
-  lib,
-  pkgs,
-  ...
-}:
+{ lib, pkgs, ... }:
 
 {
   # Vicinae replaces the Noctalia launcher, panels, clipboard history,

@@ -1,13 +1,9 @@
 { config, pkgs, ... }:
 
 {
-  imports = [
-    ./gh.nix
-  ];
+  imports = [ ./gh.nix ];
 
-  home.packages = [
-    pkgs.git-credential-manager
-  ];
+  home.packages = [ pkgs.git-credential-manager ];
 
   programs = {
     delta.enable = true;
