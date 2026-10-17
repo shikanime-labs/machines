@@ -2,8 +2,8 @@
 
 {
   imports = [
-    ../../modules/nixos/profiles/agent.nix
-    ../../modules/nixos/profiles/nishir.nix
+    ../../modules/nixos/profiles/nishir/agent.nix
+    ../../modules/nixos/profiles/nishir/cluster.nix
     ../../modules/nixos/hardware/rpi5.nix
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
   ];

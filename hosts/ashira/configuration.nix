@@ -1,7 +1,7 @@
 {
   imports = [
-    ../../modules/nixos/profiles/follower.nix
-    ../../modules/nixos/profiles/nishir.nix
+    ../../modules/nixos/profiles/nishir/server.nix
+    ../../modules/nixos/profiles/nishir/cluster.nix
     ../../modules/nixos/hardware/beelink-eq.nix
   ];
 

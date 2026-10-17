@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   pkgs,
   ...
@@ -9,14 +8,13 @@ with lib;
 
 {
   imports = [
-    ./ai.nix
-    ./distributed.nix
-    ./forgejo.nix
-    ./machine.nix
-    ./server.nix
-    ./wifi.nix
-    ../users/builder.nix
-    ../users/nishir.nix
+    ../ai.nix
+    ../distributed.nix
+    ../forgejo.nix
+    ../server.nix
+    ../wifi.nix
+    ../../users/builder.nix
+    ../../users/nishir.nix
   ];
 
   networking = {
@@ -82,54 +80,6 @@ with lib;
     };
 
   };
-
-  sops = {
-    secrets.flux-operator-web-client-secret = mkIf (config.services.knix.role == "server") {
-      sopsFile = ../../../secrets/machine.enc.yaml;
-      restartUnits = [ "systemd-tmpfiles-setup.service" ];
-    };
-
-    templates = mkIf (config.services.knix.role == "server") {
-      "flux-operator-config.json".file = (pkgs.formats.json { }).generate "flux-operator-config.json" {
-        apiVersion = "v1";
-        kind = "Secret";
-        metadata = {
-          name = "flux-operator-web";
-          namespace = "flux-system";
-        };
-        type = "Opaque";
-        stringData."config.yaml" = builtins.toJSON {
-          apiVersion = "web.fluxcd.controlplane.io/v1";
-          kind = "Config";
-          spec = {
-            baseURL = "https://flux.i.shikanime.studio";
-            authentication = {
-              type = "OAuth2";
-              oauth2 = {
-                provider = "OIDC";
-                clientID = "flux";
-                clientSecret = config.sops.placeholder."flux-operator-web-client-secret";
-                issuerURL = "https://accounts.i.shikanime.studio";
-                scopes = [
-                  "openid"
-                  "profile"
-                  "email"
-                  "groups"
-                  "offline_access"
-                ];
-              };
-            };
-          };
-        };
-      };
-    };
-  };
-
-  systemd.tmpfiles.rules = mkIf (config.services.knix.role == "server") [
-    "L+ /var/lib/rancher/rke2/server/manifests/flux-operator-config.json - - - - ${
-      config.sops.templates."flux-operator-config.json".path
-    }"
-  ];
 
   systemd.services = {
     cluster-policy-route = {

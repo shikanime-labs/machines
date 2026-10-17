@@ -4,8 +4,8 @@
 
 {
   imports = [
-    ../../modules/nixos/profiles/agent.nix
-    ../../modules/nixos/profiles/nishir.nix
+    ../../modules/nixos/profiles/nishir/agent.nix
+    ../../modules/nixos/profiles/nishir/cluster.nix
     ../../modules/nixos/hardware/minisforum-ms-s1.nix
   ];
 
@@ -46,7 +46,7 @@
       sashina — Minisforum MS-S1 Max, x86_64, AMD Strix Halo (gfx1151). RKE2
       worker node with ROCm GPU acceleration (firmware + graphics enabled by
       `minisforum-ms-s1.nix`). Static IP `192.168.1.79/24` on `br0`. Imports:
-      `ai.nix`, `agent.nix`, `builder.nix`, `distributed.nix`, `nishir.nix`,
+      `ai.nix`, `agent.nix`, `builder.nix`, `distributed.nix`, `cluster.nix`,
       `server.nix`, `minisforum-ms-s1.nix`. Shared tokens from
       `nishir.enc.yaml` / `machine.enc.yaml`; host-specific
       `secrets/sashina.enc.yaml` is provisioned on node bring-up.

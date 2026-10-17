@@ -1,7 +1,7 @@
 {
   imports = [
     ../../modules/nixos/profiles/ai.nix
-    ../../modules/nixos/profiles/leader.nix
+    ../../modules/nixos/profiles/nishir/leader.nix
     ../../modules/nixos/profiles/graphical.nix
     ../../modules/nixos/hardware/razer-blade.nix
     ../../modules/nixos/users/meika.nix

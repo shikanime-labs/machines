@@ -1,19 +1,20 @@
-{ config, ... }:
+{
+  config,
+  ...
+}:
 
 {
   imports = [
-    ./machine.nix
+    ./leader.nix
   ];
 
   services.knix = {
-    enable = true;
-    role = "agent";
     serverAddr = "https://192.168.1.28:9345";
     tokenFile = config.sops.secrets.rke2-token.path;
   };
 
   sops.secrets.rke2-token = {
-    sopsFile = ../../../secrets/nishir.enc.yaml;
-    restartUnits = [ "rke2-agent.service" ];
+    sopsFile = ../../../../secrets/nishir.enc.yaml;
+    restartUnits = [ "rke2-server.service" ];
   };
 }
