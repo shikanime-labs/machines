@@ -185,8 +185,6 @@
                  Revert freely if not trivial." Pending or red checks: leave the PR open for the next
                  run; never wait. Any eligibility fail: leave the PR open. Max 3 fastlanes per run.
               5. Note alerts resolved since the last sweep; close nothing automatically.
-
-              Output: table (new / tracked / fixed), issues opened, PRs opened or fastlaned, skips.
             '';
           }
           {
@@ -220,8 +218,6 @@
                  checks green on the exact head; merge --squash --admin --match-head-commit; receipt
                  comment. Pending or red checks: leave the PR open; never wait. Max 3 per run.
               5. Cluster-level failures (node down, Longhorn recovery, storage): issue only.
-
-              Output: table (new / tracked / fixed), issues opened, PRs opened or fastlaned.
             '';
           }
           {
@@ -254,8 +250,6 @@
                  comment. Pending or red checks: leave the PR open; never wait. Max 3 per run.
               5. Console quirk: apps/server-only push branches run no CI - re-arm with
                  gh workflow run workflow-continuous-integration.yml --ref <branch>.
-
-              Output: failures table (new / tracked / fixed), issues opened, PRs fastlaned.
             '';
           }
           {
@@ -282,8 +276,6 @@
               4. File the top proposals (max 3) as issues in shikanime-labs/manifests, one per
                  proposal, crediting the contributing agents in the body. Proposals only - no PRs
                  from this job.
-
-              Output: participants, ranked proposals with expected savings, issues opened.
             '';
           }
           {
@@ -322,9 +314,6 @@
                  <william.phetsinorath@shikanime.studio> and trailer Co-authored-by: Automata
                  <automata@shikanime.studio>. Deploy stays manual - never wrangler deploy from this
                  job.
-
-              Output: table (pages verified / drift new / tracked / fixed), issues opened, PRs
-              opened or fastlaned.
             '';
           }
           {
@@ -359,9 +348,6 @@
                  receipt comment. Pending or red checks: leave the PR open; never wait. Max 3 per
                  run.
               5. Never close or dismiss alerts from this job; resolved alerts are noted only.
-
-              Output: table (new / tracked / fixed) by severity, issues opened, PRs opened or
-              fastlaned.
             '';
           }
           {
@@ -373,10 +359,7 @@
               kind = "cron";
               expr = "30 9 * * *";
             };
-            skills = [
-              "sks-issue-triage"
-              "sks-pr-triage"
-            ];
+            skills = [ "sks-triage" ];
             prompt = ''
               Daily GitHub triage for shikanime-labs and shikanime-studio.
 
@@ -391,8 +374,6 @@
                  (repeat failure, cross-repo pattern) in the repo where it belongs.
               4. Triage only - no PRs from this job; label, comment, and assign via gh only. Close
                  nothing automatically; note items resolved since the last sweep.
-
-              Output: table (new / tracked / triaged) per org, actions taken, issues opened.
             '';
           }
           {
@@ -404,13 +385,9 @@
               kind = "cron";
               expr = "45 9 * * *";
             };
-            skills = [
-              "sks-issue"
-              "sks-fastlane"
-            ];
+            skills = [ ];
             prompt = ''
-              Daily GitHub cleanup for shikanime-labs and shikanime-studio, replacing the
-              per-repo cleanup.yaml workflow (branch deletion after PR close).
+              Daily GitHub cleanup for shikanime-labs and shikanime-studio.
 
               1. Enumerate: gh repo list shikanime-labs --limit 100 --json nameWithOwner (same for
                  shikanime-studio), then for each repo list fully-merged remote branches with
@@ -425,17 +402,35 @@
               3. Delete stale branches older than 7 days with gh api -X DELETE
                  repos/<repo>/git/refs/heads/<branch> or git push origin --delete after a depth-1
                  clone. Branches of closed-but-unmerged PRs are only deleted after 30 days idle.
-              4. Retire cleanup.yaml: once this job has run clean twice, open one PR per repo
-                 deleting .github/workflows/cleanup.yaml, same gate as the alert job: trivial
-                 framing; <=5 files; <=100 lines; no lock|secret|.enc.|auth|iam|cert|token; no
-                 schema/API change; checks green on the exact head (gh pr merge --squash
-                 --admin --match-head-commit <head sha>), then the receipt comment. Pending or red
-                 checks: leave the PR open; never wait. Max 3 fastlanes per run. Repo commits
-                 carry the org Signed-off-by and Co-authored-by trailers; check each repo's
-                 AGENTS.md for its exact sign-off identity.
+            '';
+          }
+          {
+            id = "3c7ce2a4c3e1";
+            name = "daily-github-notification-sweep";
+            enabled = true;
+            deliver = "local";
+            schedule = {
+              kind = "cron";
+              expr = "0 10 * * *";
+            };
+            skills = [ "sks-triage" ];
+            prompt = ''
+              Daily sweep of unread GitHub notifications for shikanime-labs and
+              shikanime-studio.
 
-              Output: table per org (branches deleted / skipped / protected), cleanup.yaml
-              retirements opened or merged.
+              1. List unread threads: gh api /notifications --paginate -H 'Accept: application/vnd.github+json'.
+                 Record reason, subject title and type, repository, updated_at, subject url.
+              2. Open a thread only when the reason demands detail (review_requested, ci_activity,
+                 assign, author): gh api <subject url> for state and latest context. Skip that for
+                 mention/subscription noise.
+              3. Dedup: a thread already summarized by a previous run and unchanged since is skipped
+                 silently. The repo has no continuity — check the thread's updated_at against the
+                 last sweep's coverage in the cron run output dir if needed.
+              4. Act per item: clearly answerable question → reply as a comment via gh as
+                 yorha-operator (never approve or merge anything); needs a human decision → one
+                 bullet in the report; pure noise (renovate, bot echoes, auto-closes) → nothing.
+              5. Mark processed threads read: PATCH /notifications/threads/<id>. Never leave the
+                 same thread in two consecutive reports.
             '';
           }
         ];
@@ -482,28 +477,7 @@
                 }
               ];
               prompt = ''
-                ## What
-
-                - Repository: {repository.full_name}
-                - Issue #{issue.number}: {issue.title}
-                - Author: {issue.user.login}
-                - URL: {issue.html_url}
-                - Action: {action}
-
-                ### Body
-
-                {issue.body}
-
-                ### Comment (if present)
-
-                {comment.body}
-
-                ## How
-
-                Triage this GitHub issue; the response is logged on the automata host.
-                Author everything as yorha-operator only: issue comments and any follow-up
-                actions use its token and the system git identity (YoRHa Operator); never act
-                as another identity.
+                Triage GitHub issue #{issue.number} in {repository.full_name}.
               '';
               skills = [ "sks-triage" ];
               toolsets = [
@@ -534,23 +508,7 @@
                 }
               ];
               prompt = ''
-                ## What
-
-                - Repository: {repository.full_name}
-                - PR #{number}: {pull_request.title}
-                - Author: {pull_request.user.login}
-                - URL: {pull_request.html_url}
-                - Diff URL: {pull_request.diff_url}
-                - Action: {action}
-
-                ## How
-
-                Review this pull request per sks-pr-review. The route only logs its
-                response: post the review findings on the PR yourself with gh
-                (review comments and/or a PR review via the yorha-operator token).
-                Author everything as yorha-operator only: comments post via its
-                token, commits use the system git identity (YoRHa Operator); never
-                act as another identity.
+                Review pull request #{number} in {repository.full_name}.
               '';
               skills = [ "sks-pr-review" ];
               toolsets = [
