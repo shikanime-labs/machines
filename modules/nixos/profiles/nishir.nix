@@ -5,6 +5,8 @@
   ...
 }:
 
+with lib;
+
 {
   imports = [
     ./ai.nix
@@ -57,7 +59,6 @@
   };
 
   services = {
-
     knix = {
       addons.flux = {
         instance.extraConfig.instance.sync = {
@@ -173,12 +174,12 @@
   };
 
   sops = {
-    secrets.flux-operator-web-client-secret = lib.mkIf (config.services.knix.role == "server") {
+    secrets.flux-operator-web-client-secret = mkIf (config.services.knix.role == "server") {
       sopsFile = ../../../secrets/machine.enc.yaml;
       restartUnits = [ "systemd-tmpfiles-setup.service" ];
     };
 
-    templates = lib.mkIf (config.services.knix.role == "server") {
+    templates = mkIf (config.services.knix.role == "server") {
       "flux-operator-config.json".file = (pkgs.formats.json { }).generate "flux-operator-config.json" {
         apiVersion = "v1";
         kind = "Secret";
@@ -217,7 +218,7 @@
   systemd.tmpfiles.rules = [
     "d /var/lib/node_exporter/textfile_collector 0755 root root -"
   ]
-  ++ (lib.optionals (config.services.knix.role == "server") [
+  ++ (optionals (config.services.knix.role == "server") [
     "L+ /var/lib/rancher/rke2/server/manifests/flux-operator-config.json - - - - ${
       config.sops.templates."flux-operator-config.json".path
     }"
@@ -262,7 +263,7 @@
         RestartSec = "5s";
       };
       script = ''
-        ${lib.getExe pkgs.tailscale} serve --yes --bg --https=9900 http://127.0.0.1:9900
+        ${getExe pkgs.tailscale} serve --yes --bg --https=9900 http://127.0.0.1:9900
       '';
     };
 
@@ -281,7 +282,7 @@
         RestartSec = "5s";
       };
       script = ''
-        ${lib.getExe pkgs.tailscale} serve --yes --bg --https=8642 http://127.0.0.1:8642
+        ${getExe pkgs.tailscale} serve --yes --bg --https=8642 http://127.0.0.1:8642
       '';
     };
   };
