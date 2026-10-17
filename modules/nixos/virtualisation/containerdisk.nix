@@ -63,7 +63,6 @@ in
 
     services = {
       cloud-init.enable = true;
-      comin.enable = false;
       qemuGuest.enable = true;
       getty.autologinUser = mkDefault "root";
     };
