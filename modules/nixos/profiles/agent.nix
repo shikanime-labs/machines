@@ -1,9 +1,7 @@
 { config, ... }:
 
 {
-  imports = [
-    ./machine.nix
-  ];
+  imports = [ ./machine.nix ];
 
   services.knix = {
     enable = true;

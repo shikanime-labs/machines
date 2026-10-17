@@ -4,9 +4,7 @@
     ../../modules/darwin/profiles/workstation.nix
   ];
 
-  home-manager.users.shikanimedeva.imports = [
-    ../../modules/darwin/users/shikanimedeva.nix
-  ];
+  home-manager.users.shikanimedeva.imports = [ ../../modules/darwin/users/shikanimedeva.nix ];
 
   networking.hostName = "telsha";
 

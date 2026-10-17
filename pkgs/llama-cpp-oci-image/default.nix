@@ -1,8 +1,4 @@
-{
-  pkgs,
-  lib,
-  ...
-}:
+{ pkgs, lib, ... }:
 
 let
   # ROCm is x86_64-only in nixpkgs; aarch64 stays on the Vulkan build.

@@ -11,9 +11,7 @@ let
   };
 in
 {
-  imports = [
-    ./base.nix
-  ];
+  imports = [ ./base.nix ];
 
   homebrew = {
     enable = true;

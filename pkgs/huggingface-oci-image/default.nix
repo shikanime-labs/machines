@@ -1,8 +1,4 @@
-{
-  pkgs,
-  lib,
-  ...
-}:
+{ pkgs, lib, ... }:
 
 pkgs.dockerTools.buildLayeredImage {
   name = "huggingface";

@@ -22,9 +22,7 @@ let
   '';
 in
 {
-  imports = [
-    ./minimal.nix
-  ];
+  imports = [ ./minimal.nix ];
 
   nix = {
     extraOptions = ''
