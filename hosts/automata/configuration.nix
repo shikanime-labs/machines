@@ -510,7 +510,7 @@
                 }
                 {
                   field = "pull_request.requested_reviewers";
-                  regex = "\\[\\{";
+                  regex = ''"login": "yorha-operator"'';
                 }
                 {
                   field = "sender.login";
