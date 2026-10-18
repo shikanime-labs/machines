@@ -61,6 +61,11 @@ in
 
     environment.systemPackages = [ pkgs.usbutils ];
 
+    users = {
+      groups.qemu.gid = 107;
+      users.hermes.extraGroups = [ "qemu" ];
+    };
+
     services = {
       cloud-init.enable = true;
       qemuGuest.enable = true;
