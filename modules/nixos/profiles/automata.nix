@@ -553,6 +553,51 @@
                  lesson.
             '';
           }
+          {
+            id = "07ace7423c04";
+            name = "daily-kubernetes-events-triage";
+            enabled = true;
+            deliver = "local";
+            schedule = {
+              kind = "cron";
+              expr = "45 10 * * *";
+            };
+            skills = [
+              "sks-issue"
+              "sks-fastlane"
+            ];
+            prompt = ''
+              Daily Kubernetes warning-events triage for the nishir fleet.
+
+              1. Read warning events with kubectl (context automata, credentials from the projected
+                 service-account volume at /var/run/secrets/kubernetes.io/serviceaccount):
+                 kubectl get events -A --field-selector type=Warning -o json. Parse with python3.
+                 Group by involvedObject kind, namespace, name, and reason; record count,
+                 lastTimestamp, and a one-line message.
+              2. Dedup: gh issue list -R shikanime-labs/manifests --state open; skip objects
+                 already covered by an open issue (match namespace/name and reason).
+              3. First pass noise filter: drop node-level kubelet events (FailedSync,
+                 FailedMount with short local durations for well-known paths) only when the
+                 object is otherwise healthy; every crashloop, probe failure, and evicted
+                 pod keeps its item even when counts are high.
+              4. New finding: gh issue create -R shikanime-labs/manifests with object, namespace,
+                 reason, count, first-seen (eventTime), message, and a kubectl describe
+                 excerpt. Assignee yorha-operator if eligible.
+              5. Fastlane path: small manifest patch only (probe timing, resource requests,
+                 image pin), same gate and mechanics as the alert job: trivial framing;
+                 <=5 files; <=100 changed lines; nothing matching
+                 lock|secret|.enc.|auth|iam|cert|token; no schema/API change; checks green
+                 on the exact head (gh pr merge --squash --admin --match-head-commit
+                 <head sha>), then the receipt comment. Pending or red checks: leave the PR
+                 open for the next run; never wait. Any eligibility fail: leave the PR open.
+                 Max 3 fastlanes per run.
+              6. Cluster-level failures (node down, Longhorn recovery, storage): issue only.
+              7. Before reporting: honcho_search "kubernetes events triage" and honcho_context -
+                 reuse recurring context (objects that chronically emit warning events,
+                 fastlane fixes that landed), then honcho_conclude write one line per durable
+                 lesson.
+            '';
+          }
         ];
       };
 
