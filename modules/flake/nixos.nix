@@ -99,12 +99,15 @@ let
       }
     ];
 
-  mkCatboxPackage =
+  mkAutomataContainerdisk =
     system:
-    let
-      automata = mkCatboxNixosConfiguration system;
-    in
-    automata.config.system.build.containerdiskImage;
+    (inputs.nixpkgs.lib.nixosSystem {
+      pkgs = import inputs.nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+      modules = [ ../../modules/nixos/profiles/automata.nix ] ++ (mkWorkstationsModules system);
+    }).config.system.build.containerdiskImage;
 
   mkAshiraNixosConfiguration =
     system:
@@ -114,16 +117,6 @@ let
         config.allowUnfree = true;
       };
       modules = [ ../../hosts/ashira/configuration.nix ] ++ (mkBeelinkClusterModules system);
-    };
-
-  mkCatboxNixosConfiguration =
-    system:
-    inputs.nixpkgs.lib.nixosSystem {
-      pkgs = import inputs.nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
-      modules = [ ../../hosts/automata/configuration.nix ] ++ (mkWorkstationsModules system);
     };
 
   mkFushiNixosConfiguration =
@@ -228,7 +221,6 @@ in
   flake = {
     nixosConfigurations = {
       ashira = mkAshiraNixosConfiguration "x86_64-linux";
-      automata = mkCatboxNixosConfiguration "x86_64-linux";
       fushi = mkFushiNixosConfiguration "aarch64-linux";
       kushira = mkKushiraNixosConfiguration "x86_64-linux";
       manash = mkManashNixosConfiguration "x86_64-linux";
@@ -243,7 +235,7 @@ in
 
   perSystem = { lib, system, ... }: {
     packages = lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
-      automata-oci-image = mkCatboxPackage system;
+      automata-oci-image = mkAutomataContainerdisk system;
     };
   };
 }
