@@ -1,9 +1,5 @@
-{ ... }:
-
 {
-  imports = [
-    ./base.nix
-  ];
+  imports = [ ./base.nix ];
 
   services = {
     avahi = {

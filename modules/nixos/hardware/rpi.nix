@@ -17,9 +17,7 @@
   boot.consoleLogLevel = 3;
 
   nixpkgs.overlays = [
-    (_: super: {
-      makeModulesClosure = x: super.makeModulesClosure (x // { allowMissing = true; });
-    })
+    (_: super: { makeModulesClosure = x: super.makeModulesClosure (x // { allowMissing = true; }); })
   ];
 
   networking = {

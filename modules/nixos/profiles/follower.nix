@@ -1,9 +1,7 @@
 { config, ... }:
 
 {
-  imports = [
-    ./leader.nix
-  ];
+  imports = [ ./leader.nix ];
 
   services.knix = {
     serverAddr = "https://192.168.1.28:9345";

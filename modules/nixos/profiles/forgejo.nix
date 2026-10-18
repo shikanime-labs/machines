@@ -1,9 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  imports = [
-    ./machine.nix
-  ];
+  imports = [ ./machine.nix ];
 
   services.gitea-actions-runner = {
     package = pkgs.forgejo-runner;

@@ -180,12 +180,7 @@ let
   mkBotPeers =
     peers:
     builtins.listToAttrs (
-      map (
-        peer:
-        lib.nameValuePair peer.name {
-          url = "http://${peer.name}.taila659a.ts.net:8642";
-        }
-      ) peers
+      map (peer: lib.nameValuePair peer.name { url = "http://${peer.name}.taila659a.ts.net:8642"; }) peers
     );
 
   mkPeerApiServerKeyName = peer: "hermes-agent-api-server-key-${peer}";
@@ -325,9 +320,7 @@ in
             key_env = "SKS_API_KEY";
             session_affinity_header = "x-sks-session-id";
             default_model = "qwen/qwen3.8-flash";
-            models = [
-              "qwen/qwen3.8-flash"
-            ];
+            models = [ "qwen/qwen3.8-flash" ];
           };
         };
         fallback_providers = [
