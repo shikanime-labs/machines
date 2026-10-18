@@ -467,10 +467,7 @@
           routes = {
             github-issue = {
               deliver = "log";
-              events = [
-                "issues"
-                "issue_comment"
-              ];
+              events = [ "issues" ];
               filters = [
                 {
                   field = "action";
@@ -478,20 +475,11 @@
                     "opened"
                     "reopened"
                     "edited"
-                    "created"
                   ];
                 }
                 {
-                  any = [
-                    {
-                      field = "issue.pull_request";
-                      missing = true;
-                    }
-                    {
-                      field = "comment.body";
-                      contains = "@yorha-operator";
-                    }
-                  ];
+                  field = "issue.pull_request";
+                  missing = true;
                 }
                 {
                   field = "sender.login";
@@ -505,6 +493,114 @@
                 Triage GitHub issue #{issue.number} in {repository.full_name}.
               '';
               skills = [ "sks-triage" ];
+              toolsets = [
+                "terminal"
+                "file"
+                "web"
+                "skills"
+              ];
+            };
+            github-refine = {
+              deliver = "log";
+              events = [ "issues" ];
+              filters = [
+                {
+                  field = "action";
+                  equals = "assigned";
+                }
+                {
+                  field = "issue.pull_request";
+                  missing = true;
+                }
+                {
+                  field = "assignee.login";
+                  equals = "yorha-operator";
+                }
+                {
+                  field = "sender.login";
+                  "in" = [
+                    "shikanime"
+                    "yorha-operator"
+                  ];
+                }
+              ];
+              prompt = ''
+                Refine GitHub issue #{issue.number} in {repository.full_name}:
+                validate how to solve it with all assignees, in the issue,
+                before any development. Development is a deliberate act — do
+                not start implementation without an explicit go-ahead.
+              '';
+              skills = [ "sks-issue-refine" ];
+              toolsets = [
+                "terminal"
+                "file"
+                "web"
+                "skills"
+              ];
+            };
+            github-mention = {
+              deliver = "log";
+              events = [
+                "issue_comment"
+                "pull_request_review_comment"
+              ];
+              filters = [
+                {
+                  field = "action";
+                  "in" = [
+                    "created"
+                    "edited"
+                  ];
+                }
+                {
+                  field = "comment.body";
+                  contains = "@yorha-operator";
+                }
+                {
+                  field = "sender.login";
+                  "in" = [ "shikanime" ];
+                }
+              ];
+              prompt = ''
+                Answer the mention in {comment.html_url}.
+              '';
+              skills = [ "sks-triage" ];
+              toolsets = [
+                "terminal"
+                "file"
+                "web"
+                "skills"
+              ];
+            };
+            github-moderation = {
+              deliver = "log";
+              events = [
+                "issue_comment"
+                "pull_request_review_comment"
+              ];
+              filters = [
+                {
+                  field = "action";
+                  "in" = [
+                    "created"
+                    "edited"
+                  ];
+                }
+                {
+                  field = "sender.login";
+                  not_equals = "yorha-operator";
+                }
+                {
+                  not = {
+                    field = "comment.body";
+                    contains = "@yorha-operator";
+                  };
+                }
+              ];
+              prompt = ''
+                Moderate the comment at {comment.html_url}.
+              '';
+              skills = [ "sks-moderate" ];
               toolsets = [
                 "terminal"
                 "file"
