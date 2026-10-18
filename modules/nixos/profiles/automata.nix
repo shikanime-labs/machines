@@ -193,6 +193,11 @@
                  Revert freely if not trivial." Pending or red checks: leave the PR open for the next
                  run; never wait. Any eligibility fail: leave the PR open. Max 3 fastlanes per run.
               5. Note alerts resolved since the last sweep; close nothing automatically.
+              6. Before reporting: honcho_search "grafana alert triage" and
+                 honcho_reasoning "What alert-handling lessons from previous runs apply
+                 here?" - apply recurring context (known flapping alerts, fastlane
+                 patterns that worked), then honcho_conclude write one line per durable
+                 lesson.
             '';
           }
           {
@@ -226,6 +231,10 @@
                  checks green on the exact head; merge --squash --admin --match-head-commit; receipt
                  comment. Pending or red checks: leave the PR open; never wait. Max 3 per run.
               5. Cluster-level failures (node down, Longhorn recovery, storage): issue only.
+              6. Before reporting: honcho_search "flux triage" and honcho_context - reuse
+                 recurring context (objects that chronically fail, suspended-object
+                 policy, fastlane fixes that landed), then honcho_conclude write one
+                 line per durable lesson.
             '';
           }
           {
@@ -258,6 +267,10 @@
                  comment. Pending or red checks: leave the PR open; never wait. Max 3 per run.
               5. Console quirk: apps/server-only push branches run no CI - re-arm with
                  gh workflow run workflow-continuous-integration.yml --ref <branch>.
+              6. Before reporting: honcho_search "CI failure sweep" and honcho_context -
+                 reuse recurring context (workflows that flap, fastlane fixes that
+                 landed, re-arm quirks), then honcho_conclude write one line per
+                 durable lesson.
             '';
           }
           {
@@ -284,6 +297,10 @@
               4. File the top proposals (max 3) as issues in shikanime-labs/manifests, one per
                  proposal, crediting the contributing agents in the body. Proposals only - no PRs
                  from this job.
+              5. Before reporting: honcho_search "cluster efficiency" and honcho_reasoning
+                 "Which efficiency lessons from previous audits still apply?" - drop proposals
+                 already tried and rejected, then honcho_conclude write one line per durable
+                 lesson.
             '';
           }
           {
@@ -322,6 +339,10 @@
                  <william.phetsinorath@shikanime.studio> and trailer Co-authored-by: Automata
                  <automata@shikanime.studio>. Deploy stays manual - never wrangler deploy from this
                  job.
+              6. Before reporting: honcho_search "documentation drift" and honcho_context -
+                 reuse recurring context (pages that keep drifting, ground-truth
+                 sources that settled past drift), then honcho_conclude write one
+                 line per durable lesson.
             '';
           }
           {
@@ -356,6 +377,86 @@
                  receipt comment. Pending or red checks: leave the PR open; never wait. Max 3 per
                  run.
               5. Never close or dismiss alerts from this job; resolved alerts are noted only.
+              6. Before reporting: honcho_search "security audit" and honcho_context -
+                 reuse recurring context (alert types that recur, remediations already
+                 in flight, duplicates the redteam run already exploited), then
+                 honcho_conclude write one line per durable lesson.
+            '';
+          }
+          {
+            id = "2cf2e9db64d5";
+            name = "daily-security-redteam";
+            enabled = true;
+            deliver = "local";
+            schedule = {
+              kind = "cron";
+              expr = "15 10 * * *";
+            };
+            skills = [
+              "sks-issue"
+              "sks-fastlane"
+            ];
+            prompt = ''
+              Daily offensive security probe for shikanime-labs and shikanime-studio.
+
+              1. Scope: the perimeter reachable from this host - public endpoints of the
+                 fleet (Envoy Gateway routes and TLS hostnames from a depth-1 clone of
+                 https://github.com/shikanime-labs/manifests), open TCP surfaces, exposed
+                 dashboards, container registries, GitHub org attack surface (branch
+                 protection, CI secrets exposure, webhook configs).
+              2. Probe read-only: TLS validity and cipher posture (openssl s_client),
+                 security headers on public routes (curl -sI), authentication bypass checks
+                 on dashboards, anonymous API access, registry tag listability. Record
+                 evidence (command, output excerpt) per finding. Never exploit past proof,
+                 never modify or delete anything, never touch secrets.
+              3. Cross-reference first: honcho_search "security audit" and honcho_search
+                 "redteam probe" - findings already tracked or already proven by a previous
+                 redteam run are listed, never re-filed.
+              4. New finding: gh issue create -R shikanime-labs/manifests --title "redteam:
+                 <finding>" with severity, evidence, affected route, suggested fix. Assignee
+                 yorha-operator if eligible.
+              5. Fastlane path: small hardening patch only (header addition, rate limit,
+                 cipher policy), same gate as the alert job: trivial framing; <=5 files;
+                 <=100 lines; no lock|secret|.enc.|auth|iam|cert|token; no schema/API
+                 change; checks green on the exact head (gh pr merge --squash --admin
+                 --match-head-commit <head sha>), then the receipt comment. Pending or red
+                 checks: leave the PR open; never wait. Max 3 per run.
+              6. Before reporting: honcho_reasoning "Which attack paths from previous probes
+                 remain unpatched?" - re-verify the top open items instead of rediscovering
+                 them, then honcho_conclude write one line per durable lesson.
+            '';
+          }
+          {
+            id = "f077dc14361e";
+            name = "daily-renovate-sweep";
+            enabled = true;
+            deliver = "local";
+            schedule = {
+              kind = "cron";
+              expr = "30 10 * * *";
+            };
+            skills = [ "sks-triage" ];
+            prompt = ''
+              Daily sweep of open renovate PRs across shikanime-labs and shikanime-studio.
+
+              1. Enumerate: gh repo list shikanime-labs --limit 100 --json nameWithOwner (same
+                 for shikanime-studio), then gh pr list -R <repo> --author app/renovate
+                 --state open --json number,title,headRefName,updatedAt,statusCheckRollup.
+              2. Triage per PR: green checks on the exact head -> eligible; red checks ->
+                 read gh pr checks and the failing job's first error lines (gh run view
+                 <run> --log-failed); stalled (no check runs, CI not triggered) ->
+                 note the re-arm path per repo quirk. Drop PRs whose branch is behind
+                 main with a merge conflict - renovate rebases those itself.
+              3. Never merge, close, or approve anything from this job - landing renovate
+                 PRs needs an explicit human go-ahead. Report only: one line per PR with
+                 repo, number, update, check state, and the blocking reason when red.
+              4. A PR red for 3+ consecutive days with the same error: one summary issue
+                 in its repo (dedup: gh issue list --state open) with the error pattern;
+                 assignee yorha-operator if eligible.
+              5. Before reporting: honcho_search "renovate sweep" and honcho_context -
+                 reuse recurring context (PRs reported in previous runs and why they are
+                 stuck, repos with known renovate CI quirks), then honcho_conclude write
+                 one line per durable lesson.
             '';
           }
           {
@@ -382,6 +483,10 @@
                  (repeat failure, cross-repo pattern) in the repo where it belongs.
               4. Triage only - no PRs from this job; label, comment, and assign via gh only. Close
                  nothing automatically; note items resolved since the last sweep.
+              5. Before reporting: honcho_search "GitHub triage" and honcho_context -
+                 reuse recurring context (systemic findings already filed, items a
+                 previous run left pending on purpose), then honcho_conclude write
+                 one line per durable lesson.
             '';
           }
           {
@@ -410,6 +515,9 @@
               3. Delete stale branches older than 7 days with gh api -X DELETE
                  repos/<repo>/git/refs/heads/<branch> or git push origin --delete after a depth-1
                  clone. Branches of closed-but-unmerged PRs are only deleted after 30 days idle.
+              4. Before reporting: honcho_search "stale branch cleanup" and honcho_context -
+                 reuse recurring context (branches a previous run flagged blocked and why),
+                 then honcho_conclude write one line per durable lesson.
             '';
           }
           {
@@ -439,6 +547,10 @@
                  bullet in the report; pure noise (renovate, bot echoes, auto-closes) → nothing.
               5. Mark processed threads read: PATCH /notifications/threads/<id>. Never leave the
                  same thread in two consecutive reports.
+              6. Before reporting: honcho_search "notification sweep" and honcho_context -
+                 reuse recurring context (threads a previous run answered, noise
+                 patterns to skip), then honcho_conclude write one line per durable
+                 lesson.
             '';
           }
         ];
