@@ -7,8 +7,6 @@
     ./ai.nix
   ];
 
-  boot.loader.efi.canTouchEfiVariables = true;
-
   containerdisk = {
     name = "ghcr.io/shikanime-labs/machines/automata";
     settings.LABELS = {
@@ -67,27 +65,41 @@
         AGENT_BROWSER_ARGS = "--no-sandbox,--disable-gpu";
         KUBECONFIG = "/var/lib/hermes/.hermes/kubeconfig";
       };
-      environmentFiles = [ config.sops.templates.hermes-agent-events-env.path ];
-      hermesHomeFiles."kubeconfig" = ''
-        apiVersion: v1
-        kind: Config
-        clusters:
-          - name: automata
-            cluster:
-              server: https://kubernetes.default.svc.cluster.local:6443
-              certificate-authority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-        users:
-          - name: automata
-            user:
-              tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
-        contexts:
-          - name: automata
-            context:
-              cluster: automata
-              user: automata
-              namespace: shikanime
-        current-context: automata
-      '';
+      environmentFiles = [
+        config.sops.templates.hermes-agent-discord-env.path
+        config.sops.templates.hermes-agent-email-env.path
+        config.sops.templates.hermes-agent-webhook-env.path
+      ];
+      hermesHomeFiles."kubeconfig" = builtins.toJSON {
+        apiVersion = "v1";
+        kind = "Config";
+        clusters = [
+          {
+            name = "automata";
+            cluster = {
+              server = "https://kubernetes.default.svc.cluster.local:6443";
+              certificate-authority = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt";
+            };
+          }
+        ];
+        users = [
+          {
+            name = "automata";
+            user.tokenFile = "/var/run/secrets/kubernetes.io/serviceaccount/token";
+          }
+        ];
+        contexts = [
+          {
+            name = "automata";
+            context = {
+              cluster = "automata";
+              user = "automata";
+              namespace = "shikanime";
+            };
+          }
+        ];
+        current-context = "automata";
+      };
 
       hermesHomeFiles."SOUL.md" = ''
         # Operator 6O
@@ -185,7 +197,7 @@
           }
           {
             id = "58e6ae639a88";
-            name = "daily-flux-triage";
+            name = "daily-flux-failure-triage";
             enabled = true;
             deliver = "local";
             schedule = {
@@ -218,7 +230,7 @@
           }
           {
             id = "c2e85641351b";
-            name = "daily-github-actions-failure-sweep";
+            name = "daily-github-actions-failure-triage";
             enabled = true;
             deliver = "local";
             schedule = {
@@ -250,7 +262,7 @@
           }
           {
             id = "3453978b1312";
-            name = "weekly-a2a-cluster-efficiency";
+            name = "weekly-a2a-cluster-efficiency-audit";
             enabled = true;
             deliver = "local";
             schedule = {
@@ -276,7 +288,7 @@
           }
           {
             id = "adfc09a25ae9";
-            name = "daily-documentation-verify";
+            name = "daily-documentation-sync";
             enabled = true;
             deliver = "local";
             schedule = {
@@ -590,23 +602,35 @@
         restartUnits = [ "hermes-agent.service" ];
       };
     };
-    templates.hermes-agent-events-env = {
-      content = ''
-        DISCORD_BOT_TOKEN=${config.sops.placeholder.hermes-agent-discord-bot-token}
-        DISCORD_ALLOWED_USERS=${config.sops.placeholder.hermes-agent-discord-allowed-users}
-        DISCORD_HOME_CHANNEL=${config.sops.placeholder.hermes-agent-discord-home-channel}
-        WEBHOOK_ENABLED=true
-        WEBHOOK_PORT=8644
-        WEBHOOK_SECRET=${config.sops.placeholder.hermes-agent-webhook-secret}
-        EMAIL_ADDRESS=operator6o.automata@gmail.com
-        EMAIL_PASSWORD=${config.sops.placeholder.hermes-agent-email-password}
-        EMAIL_IMAP_HOST=imap.gmail.com
-        EMAIL_SMTP_HOST=smtp.gmail.com
-        EMAIL_ALLOWED_USERS=${config.sops.placeholder.hermes-agent-email-allowed-users}
-        EMAIL_AUTHSERV_ID=mx.google.com
-        EMAIL_HOME_ADDRESS=${config.sops.placeholder.hermes-agent-email-allowed-users}
-      '';
-      restartUnits = [ "hermes-agent.service" ];
+    templates = {
+      hermes-agent-discord-env = {
+        content = ''
+          DISCORD_BOT_TOKEN=${config.sops.placeholder.hermes-agent-discord-bot-token}
+          DISCORD_ALLOWED_USERS=${config.sops.placeholder.hermes-agent-discord-allowed-users}
+          DISCORD_HOME_CHANNEL=${config.sops.placeholder.hermes-agent-discord-home-channel}
+        '';
+        restartUnits = [ "hermes-agent.service" ];
+      };
+      hermes-agent-email-env = {
+        content = ''
+          EMAIL_ADDRESS=operator6o.automata@gmail.com
+          EMAIL_PASSWORD=${config.sops.placeholder.hermes-agent-email-password}
+          EMAIL_IMAP_HOST=imap.gmail.com
+          EMAIL_SMTP_HOST=smtp.gmail.com
+          EMAIL_ALLOWED_USERS=${config.sops.placeholder.hermes-agent-email-allowed-users}
+          EMAIL_AUTHSERV_ID=mx.google.com
+          EMAIL_HOME_ADDRESS=${config.sops.placeholder.hermes-agent-email-allowed-users}
+        '';
+        restartUnits = [ "hermes-agent.service" ];
+      };
+      hermes-agent-webhook-env = {
+        content = ''
+          WEBHOOK_ENABLED=true
+          WEBHOOK_PORT=8644
+          WEBHOOK_SECRET=${config.sops.placeholder.hermes-agent-webhook-secret}
+        '';
+        restartUnits = [ "hermes-agent.service" ];
+      };
     };
   };
 
@@ -621,8 +645,4 @@
     };
   };
 
-  users = {
-    groups.qemu.gid = 107;
-    users.hermes.extraGroups = [ "qemu" ];
-  };
 }
