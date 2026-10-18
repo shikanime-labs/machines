@@ -300,6 +300,7 @@ in
         dashboard.oauth.self_hosted = {
           client_id = "hermes-agent";
           issuer = "https://accounts.i.shikanime.studio";
+          scopes = "openid profile email offline_access";
         };
         providers = {
           shikanime-anthropic = {
