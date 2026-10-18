@@ -170,6 +170,8 @@
             };
             skills = [
               "sks-issue"
+              "sks-commit"
+              "sks-pr"
               "sks-fastlane"
             ];
             prompt = ''
@@ -178,22 +180,14 @@
               1. Read firing alerts (no auth, pod network):
                  curl -s http://vmalertmanager-vmks-victoria-metrics-k8s-stack.monitoring-system.svc:9093/api/v2/alerts
                  Parse with python3. Record alertname, labels, annotations, startsAt.
-              2. Dedup: gh issue list -R shikanime-labs/manifests --state open; skip alerts already covered.
-              3. New alert: gh issue create -R shikanime-labs/manifests --title "<alertname>: <summary>"
-                 --body "labels, annotations, affected object, startsAt" --assignee yorha-operator if eligible.
-              4. Fastlane path: if the fix is a small manifest patch (values bump, threshold, image pin),
-                 clone https://github.com/shikanime-labs/manifests to /tmp, branch, commit with body +
-                 Signed-off-by: Shikanime Deva <william.phetsinorath@shikanime.studio> + Related: <full
-                 issue URL>, push, open PR with trailer Co-authored-by: Automata
-                 <automata@shikanime.studio> and reviewer yorha-operator. Merge without review only when
-                 ALL hold: trivial framing; <=5 files; <=100 changed lines; nothing matching
-                 lock|secret|.enc.|auth|iam|cert|token; no schema/API change; gh pr checks green on the
-                 exact head (gh pr merge --squash --admin --match-head-commit <head sha>), then comment
-                 the receipt "Fastlane: merged without human review (CI green, eligibility passed).
-                 Revert freely if not trivial." Pending or red checks: leave the PR open for the next
-                 run; never wait. Any eligibility fail: leave the PR open. Max 3 fastlanes per run.
-              5. Note alerts resolved since the last sweep; close nothing automatically.
-              6. Before reporting: honcho_search "grafana alert triage" and
+              2. File new alerts in shikanime-labs/manifests:
+                 title "<alertname>: <summary>", body = labels, annotations, affected object,
+                 startsAt, assignee yorha-operator if eligible.
+              3. Small manifest fixes (values bump, threshold, image pin): fastlane.
+                 Ineligible or checks pending: leave the PR open; never wait. Max 3
+                 per run.
+              4. Note alerts resolved since the last sweep; close nothing automatically.
+              5. Before reporting: honcho_search "grafana alert triage" and
                  honcho_reasoning "What alert-handling lessons from previous runs apply
                  here?" - apply recurring context (known flapping alerts, fastlane
                  patterns that worked), then honcho_conclude write one line per durable
@@ -211,6 +205,8 @@
             };
             skills = [
               "sks-issue"
+              "sks-commit"
+              "sks-pr"
               "sks-fastlane"
             ];
             prompt = ''
@@ -221,17 +217,14 @@
                  kubectl get helmreleases -A -o wide, plus -o json for conditions. List every object
                  whose Ready condition is False, with message and source revision. Report deliberately
                  suspended objects separately; never touch them.
-              2. Dedup: gh issue list -R shikanime-labs/manifests --state open; tracked failures are
-                 listed, never re-filed.
-              3. New failure: gh issue create -R shikanime-labs/manifests with object, namespace,
-                 Ready=False message, source revision, first-seen; assignee yorha-operator if eligible.
-              4. Fastlane path: small manifest patch only (each overlay has its own Flux KS; rendered
-                 manifests exclude certs), same gate and mechanics as the alert job: trivial framing;
-                 <=5 files; <=100 lines; no lock|secret|.enc.|auth|iam|cert|token; no schema change;
-                 checks green on the exact head; merge --squash --admin --match-head-commit; receipt
-                 comment. Pending or red checks: leave the PR open; never wait. Max 3 per run.
-              5. Cluster-level failures (node down, Longhorn recovery, storage): issue only.
-              6. Before reporting: honcho_search "flux triage" and honcho_context - reuse
+              2. File new failures in shikanime-labs/manifests:
+                 object, namespace, Ready=False message, source revision, first-seen;
+                 assignee yorha-operator if eligible.
+              3. Small manifest fixes only (each overlay has its own Flux KS; rendered
+                 manifests exclude certs): fastlane. Ineligible or checks pending:
+                 leave the PR open; never wait. Max 3 per run.
+              4. Cluster-level failures (node down, Longhorn recovery, storage): issue only.
+              5. Before reporting: honcho_search "flux triage" and honcho_context - reuse
                  recurring context (objects that chronically fail, suspended-object
                  policy, fastlane fixes that landed), then honcho_conclude write one
                  line per durable lesson.
@@ -248,6 +241,8 @@
             };
             skills = [
               "sks-issue"
+              "sks-commit"
+              "sks-pr"
               "sks-fastlane"
             ];
             prompt = ''
@@ -257,17 +252,14 @@
                  shikanime-studio), then gh run list -R <repo> --status failure --created
                  ">$(date -d "-24 hours" "+%Y-%m-%d")". Ignore renovate PRs, draft-PR CI skips, and
                  flakes that passed on rerun.
-              2. Dedup: gh issue list -R <repo> --state open.
-              3. New failure: one issue per repo+workflow in the repo where it failed - run URL,
-                 failing job, first error lines (gh run view --log-failed), head sha. Assignee
-                 yorha-operator if eligible.
-              4. Fastlane path: trivial fixes only (CI yaml fix, action pin, typo) passing the same
-                 gate: trivial framing; <=5 files; <=100 lines; no lock|secret|.enc.|auth|iam|cert|token;
-                 checks green on the exact head; merge --squash --admin --match-head-commit; receipt
-                 comment. Pending or red checks: leave the PR open; never wait. Max 3 per run.
-              5. Console quirk: apps/server-only push branches run no CI - re-arm with
+              2. File new failures: one issue per repo+workflow
+                 in the repo where it failed - run URL, failing job, first error lines
+                 (gh run view --log-failed), head sha. Assignee yorha-operator if eligible.
+              3. Trivial fixes only (CI yaml fix, action pin, typo): fastlane. Ineligible
+                 or checks pending: leave the PR open; never wait. Max 3 per run.
+              4. Console quirk: apps/server-only push branches run no CI - re-arm with
                  gh workflow run workflow-continuous-integration.yml --ref <branch>.
-              6. Before reporting: honcho_search "CI failure sweep" and honcho_context -
+              5. Before reporting: honcho_search "CI failure sweep" and honcho_context -
                  reuse recurring context (workflows that flap, fastlane fixes that
                  landed, re-arm quirks), then honcho_conclude write one line per
                  durable lesson.
@@ -282,6 +274,7 @@
               kind = "cron";
               expr = "0 9 * * 1";
             };
+            skills = [ "sks-issue" ];
             prompt = ''
               Weekly cluster-efficiency brainstorm with the A2A fleet.
 
@@ -292,11 +285,10 @@
                  cost, redundancy)?" Each answer must state: observation, evidence, proposed change,
                  expected saving.
               3. Aggregate: dedup overlapping proposals, rank by leverage / effort. Drop proposals
-                 already filed or rejected (gh issue list -R shikanime-labs/manifests, open and
-                 recently closed).
-              4. File the top proposals (max 3) as issues in shikanime-labs/manifests, one per
-                 proposal, crediting the contributing agents in the body. Proposals only - no PRs
-                 from this job.
+                 already filed or rejected: gh issue list -R shikanime-labs/manifests, open and
+                 recently closed.
+              4. File the top proposals (max 3) as issues in shikanime-labs/manifests, one per proposal, crediting the contributing agents in the body.
+                 Proposals only - no PRs from this job.
               5. Before reporting: honcho_search "cluster efficiency" and honcho_reasoning
                  "Which efficiency lessons from previous audits still apply?" - drop proposals
                  already tried and rejected, then honcho_conclude write one line per durable
@@ -314,6 +306,8 @@
             };
             skills = [
               "sks-issue"
+              "sks-commit"
+              "sks-pr"
               "sks-fastlane"
             ];
             prompt = ''
@@ -326,20 +320,11 @@
                  context automata), repo git logs - never from memory. Stale references are the norm.
                  Drift between a documented service (name, hostname, port, image) and its manifest is
                  a defect.
-              3. Dedup: gh issue list -R shikanime-studio/websites --state open; tracked drift is
-                 listed, never re-filed.
-              4. New drift: gh issue create -R shikanime-studio/websites with page, claim, ground
-                 truth, source links. Assignee yorha-operator if eligible.
-              5. Fastlane path: small factual fix only (typo, stale name, corrected port), same gate
-                 as the alert job: trivial framing; <=5 files; <=100 lines; no
-                 lock|secret|.enc.|auth|iam|cert|token; no schema/API change; checks green on the
-                 exact head (gh pr merge --squash --admin --match-head-commit <head sha>), then the
-                 receipt comment. Pending or red checks: leave the PR open; never wait. Max 3 per
-                 run. Websites commits carry Signed-off-by: Shikanime Deva
-                 <william.phetsinorath@shikanime.studio> and trailer Co-authored-by: Automata
-                 <automata@shikanime.studio>. Deploy stays manual - never wrangler deploy from this
-                 job.
-              6. Before reporting: honcho_search "documentation drift" and honcho_context -
+              3. File new drift in shikanime-studio/websites:
+                 page, claim, ground truth, source links. Assignee yorha-operator if eligible.
+              4. Small factual fixes only (typo, stale name, corrected port): fastlane.
+                 Deploy stays manual - never wrangler deploy from this job.
+              5. Before reporting: honcho_search "documentation drift" and honcho_context -
                  reuse recurring context (pages that keep drifting, ground-truth
                  sources that settled past drift), then honcho_conclude write one
                  line per durable lesson.
@@ -356,6 +341,8 @@
             };
             skills = [
               "sks-issue"
+              "sks-commit"
+              "sks-pr"
               "sks-fastlane"
             ];
             prompt = ''
@@ -365,19 +352,14 @@
                  (same for secret-scanning and dependabot alerts, and all three again for
                  shikanime-studio); keep state=="open". Record alert type, repo, severity, CVE,
                  html_url, created_at.
-              2. Dedup: gh issue list -R <repo> --state open; tracked alerts are listed, never
-                 re-filed.
-              3. New alert: gh issue create -R <affected repo> --title "<type>: <CVE or rule>" with
-                 severity, affected path, first-seen, alert link. Assignee yorha-operator if
-                 eligible. Rank critical and high first; secret-scanning alerts are always urgent.
-              4. Fastlane path: small dependency bump or config fix only, same gate as the alert
-                 job: trivial framing; <=5 files; <=100 lines; nothing matching
-                 lock|secret|.enc.|auth|iam|cert|token; no schema/API change; checks green on the
-                 exact head (gh pr merge --squash --admin --match-head-commit <head sha>), then the
-                 receipt comment. Pending or red checks: leave the PR open; never wait. Max 3 per
-                 run.
-              5. Never close or dismiss alerts from this job; resolved alerts are noted only.
-              6. Before reporting: honcho_search "security audit" and honcho_context -
+              2. File new alerts in the affected repo:
+                 title "<type>: <CVE or rule>", body = severity, affected path, first-seen,
+                 alert link. Assignee yorha-operator if eligible. Rank critical and high first;
+                 secret-scanning alerts are always urgent.
+              3. Small dependency bump or config fix only: fastlane. Ineligible or checks
+                 pending: leave the PR open; never wait. Max 3 per run.
+              4. Never close or dismiss alerts from this job; resolved alerts are noted only.
+              5. Before reporting: honcho_search "security audit" and honcho_context -
                  reuse recurring context (alert types that recur, remediations already
                  in flight, duplicates the redteam run already exploited), then
                  honcho_conclude write one line per durable lesson.
@@ -394,6 +376,8 @@
             };
             skills = [
               "sks-issue"
+              "sks-commit"
+              "sks-pr"
               "sks-fastlane"
             ];
             prompt = ''
@@ -412,15 +396,12 @@
               3. Cross-reference first: honcho_search "security audit" and honcho_search
                  "redteam probe" - findings already tracked or already proven by a previous
                  redteam run are listed, never re-filed.
-              4. New finding: gh issue create -R shikanime-labs/manifests --title "redteam:
-                 <finding>" with severity, evidence, affected route, suggested fix. Assignee
-                 yorha-operator if eligible.
-              5. Fastlane path: small hardening patch only (header addition, rate limit,
-                 cipher policy), same gate as the alert job: trivial framing; <=5 files;
-                 <=100 lines; no lock|secret|.enc.|auth|iam|cert|token; no schema/API
-                 change; checks green on the exact head (gh pr merge --squash --admin
-                 --match-head-commit <head sha>), then the receipt comment. Pending or red
-                 checks: leave the PR open; never wait. Max 3 per run.
+              4. File new findings in shikanime-labs/manifests:
+                 title "redteam: <finding>", body = severity, evidence, affected route,
+                 suggested fix. Assignee yorha-operator if eligible.
+              5. Small hardening patch only (header addition, rate limit, cipher policy):
+                 fastlane. Ineligible or checks pending: leave the PR open; never
+                 wait. Max 3 per run.
               6. Before reporting: honcho_reasoning "Which attack paths from previous probes
                  remain unpatched?" - re-verify the top open items instead of rediscovering
                  them, then honcho_conclude write one line per durable lesson.
@@ -428,16 +409,20 @@
           }
           {
             id = "f077dc14361e";
-            name = "daily-renovate-sweep";
+            name = "daily-renovate-landing";
             enabled = true;
             deliver = "local";
             schedule = {
               kind = "cron";
               expr = "30 10 * * *";
             };
-            skills = [ "sks-triage" ];
+            skills = [
+              "sks-issue"
+              "sks-land"
+            ];
             prompt = ''
-              Daily sweep of open renovate PRs across shikanime-labs and shikanime-studio.
+              Daily landing pass over open renovate PRs across shikanime-labs and
+              shikanime-studio.
 
               1. Enumerate: gh repo list shikanime-labs --limit 100 --json nameWithOwner (same
                  for shikanime-studio), then gh pr list -R <repo> --author app/renovate
@@ -447,11 +432,11 @@
                  <run> --log-failed); stalled (no check runs, CI not triggered) ->
                  note the re-arm path per repo quirk. Drop PRs whose branch is behind
                  main with a merge conflict - renovate rebases those itself.
-              3. Never merge, close, or approve anything from this job - landing renovate
-                 PRs needs an explicit human go-ahead. Report only: one line per PR with
-                 repo, number, update, check state, and the blocking reason when red.
+              3. Land eligible PRs; never merge past a red required check or a stale head.
+                 Report the rest: one line per PR with repo, number, update, check
+                 state, and the blocking reason when red.
               4. A PR red for 3+ consecutive days with the same error: one summary issue
-                 in its repo (dedup: gh issue list --state open) with the error pattern;
+                 in its repo with the error pattern;
                  assignee yorha-operator if eligible.
               5. Before reporting: honcho_search "renovate sweep" and honcho_context -
                  reuse recurring context (PRs reported in previous runs and why they are
@@ -468,7 +453,10 @@
               kind = "cron";
               expr = "30 9 * * *";
             };
-            skills = [ "sks-triage" ];
+            skills = [
+              "sks-triage"
+              "sks-issue"
+            ];
             prompt = ''
               Daily GitHub triage for shikanime-labs and shikanime-studio.
 
@@ -476,14 +464,12 @@
                  shikanime-studio), then gh issue list -R <repo> --state open --json (same for PRs).
                  Collect unlabeled or unassigned issues older than 48h, PRs with requested changes
                  or red checks, and issues awaiting a first reply for 7+ days.
-              2. Dedup: an item already labeled, assigned, or covered by a previous run is listed,
-                 not re-triaged.
-              3. Triage: apply missing type and area labels, assign yorha-operator where eligible,
+              2. Triage: apply missing type and area labels, assign yorha-operator where eligible,
                  comment a first reply on unanswered issues. One summary issue per systemic finding
                  (repeat failure, cross-repo pattern) in the repo where it belongs.
-              4. Triage only - no PRs from this job; label, comment, and assign via gh only. Close
+              3. Triage only - no PRs from this job; label, comment, and assign via gh only. Close
                  nothing automatically; note items resolved since the last sweep.
-              5. Before reporting: honcho_search "GitHub triage" and honcho_context -
+              4. Before reporting: honcho_search "GitHub triage" and honcho_context -
                  reuse recurring context (systemic findings already filed, items a
                  previous run left pending on purpose), then honcho_conclude write
                  one line per durable lesson.
@@ -509,9 +495,8 @@
                  status=="identical" or behind), or its PR is closed/merged. Never touch the
                  default branch, protected branches, release/* tags, or ghstack role branches
                  (<prefix>/base|head|orig) of OPEN ghstack stacks - only fully-landed ones.
-              2. Dedup: branches deleted in previous runs are gone from the list by nature; list
-                 (never re-delete) anything a previous run flagged as blocked (open PR, recent
-                 push < 7 days).
+              2. Never re-delete anything a previous run flagged as blocked (open PR,
+                 recent push < 7 days).
               3. Delete stale branches older than 7 days with gh api -X DELETE
                  repos/<repo>/git/refs/heads/<branch> or git push origin --delete after a depth-1
                  clone. Branches of closed-but-unmerged PRs are only deleted after 30 days idle.
@@ -539,7 +524,7 @@
               2. Open a thread only when the reason demands detail (review_requested, ci_activity,
                  assign, author): gh api <subject url> for state and latest context. Skip that for
                  mention/subscription noise.
-              3. Dedup: a thread already summarized by a previous run and unchanged since is skipped
+              3. A thread already summarized by a previous run and unchanged since is skipped
                  silently. The repo has no continuity — check the thread's updated_at against the
                  last sweep's coverage in the cron run output dir if needed.
               4. Act per item: clearly answerable question → reply as a comment via gh as
@@ -683,9 +668,8 @@
               ];
               prompt = ''
                 Refine GitHub issue #{issue.number} in {repository.full_name}:
-                validate how to solve it with all assignees, in the issue,
-                before any development. Development is a deliberate act — do
-                not start implementation without an explicit go-ahead.
+                converge the solution with all assignees before any development.
+                Implementation needs an explicit go-ahead.
               '';
               skills = [ "sks-issue-refine" ];
               toolsets = [
