@@ -63,9 +63,7 @@
     vmagent.prometheusConfig.scrape_configs = lib.mkIf config.hardware.nvidia.enabled [
       {
         job_name = "nvidia-gpu";
-        static_configs = [
-          { targets = [ "127.0.0.1:9835" ]; }
-        ];
+        static_configs = [ { targets = [ "127.0.0.1:9835" ]; } ];
         relabel_configs = [
           {
             target_label = "instance";

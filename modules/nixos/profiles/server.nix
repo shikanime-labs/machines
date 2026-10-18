@@ -1,9 +1,7 @@
 { config, ... }:
 
 {
-  imports = [
-    ./machine.nix
-  ];
+  imports = [ ./machine.nix ];
 
   # Headless server auth: bring Tailscale up unattended with a node auth key.
   # Workstations intentionally do NOT import this profile — they fall back to a

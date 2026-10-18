@@ -92,8 +92,6 @@
     };
     defaultSopsFile = ../../secrets/nixtar.enc.yaml;
     defaultSopsFormat = "yaml";
-    secrets = {
-    };
   };
 
   # Re-enable the setuid pkexec wrapper so GUI tools that escalate via

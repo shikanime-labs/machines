@@ -9,9 +9,7 @@
     "eviction-hard=memory.available<150Mi"
   ];
 
-  imports = [
-    ./rpi.nix
-  ];
+  imports = [ ./rpi.nix ];
 
   hardware.raspberry-pi."4".fkms-3d.enable = true;
 

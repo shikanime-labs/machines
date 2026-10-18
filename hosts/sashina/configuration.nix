@@ -1,8 +1,4 @@
 {
-  ...
-}:
-
-{
   imports = [
     ../../modules/nixos/profiles/agent.nix
     ../../modules/nixos/profiles/nishir.nix
