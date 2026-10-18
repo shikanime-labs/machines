@@ -13,6 +13,3 @@ build:
     - custom:
         buildCommand: wharf skaffold build --flake .#llama-cpp-oci-image --option accept-flake-config=true
       image: ghcr.io/shikanime-labs/machines/llama-cpp
-  tagPolicy:
-    customTemplate:
-      template: latest
