@@ -70,6 +70,22 @@
         config.sops.templates.hermes-agent-email-env.path
         config.sops.templates.hermes-agent-webhook-env.path
       ];
+      extraPackages = with pkgs; [
+        tigervnc
+        xfce.xfwm4
+        xfce.xfce4-panel
+        xfce.xfdesktop
+        xfce.xfce4-settings
+        xfce.xfce4-terminal
+        dbus
+        setxkbmap
+        xauth
+        xdpyinfo
+        xprop
+        xset
+        xsetroot
+        dejavu_fonts.minimal
+      ];
       hermesHomeFiles."kubeconfig" = builtins.toJSON {
         apiVersion = "v1";
         kind = "Config";
