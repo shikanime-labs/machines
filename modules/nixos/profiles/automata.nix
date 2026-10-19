@@ -753,6 +753,10 @@
                     contains = "@yorha-operator";
                   };
                 }
+                {
+                  field = "comment.user.type";
+                  not_equals = "Bot";
+                }
               ];
               prompt = ''
                 Moderate the comment at {comment.html_url}.
