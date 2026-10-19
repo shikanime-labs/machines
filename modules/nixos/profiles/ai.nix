@@ -252,6 +252,7 @@ in
       enable = true;
       workingDirectory = "/var/lib/hermes";
       addToSystemPackages = true;
+      environment.XDG_DATA_DIRS = "/etc/profiles/per-user/hermes/share";
       environmentFiles = [
         config.sops.templates.hermes-agent-env.path
         config.sops.templates.hermes-agent-matrix-env.path
@@ -281,6 +282,8 @@ in
         xprop
         xset
         xsetroot
+        gnome-themes-extra
+        papirus-icon-theme
         dejavu_fonts.minimal
       ];
       extraPlugins = [
