@@ -93,7 +93,7 @@
           {
             name = "automata";
             cluster = {
-              server = "https://kubernetes.default.svc.cluster.local:6443";
+              server = "https://nishir-k8s-operator.taila659a.ts.net";
               certificate-authority = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt";
             };
           }
