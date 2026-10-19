@@ -4,22 +4,34 @@ let
   # Defaults (cpu, cpufreq, diskstats, filesystem, loadavg, meminfo,
   # netdev, stat, systemd, processes, thermal_zone) — same set the
   # victoria-metrics-k8s-stack node-exporter DaemonSet uses on servers.
-  vmagentConfig = pkgs.writeText "vmagent.yml" ''
-    scrape_configs:
-      - job_name: "node"
-        static_configs:
-          - targets: ["127.0.0.1:9100"]
-        relabel_configs:
-          - target_label: "instance"
-            replacement: "${config.networking.hostName}"
-          - target_label: "cluster"
-            replacement: "nishir"
-          - target_label: "job"
-            replacement: "node-exporter"
-      - job_name: "comin"
-        static_configs:
-          - targets: ["127.0.0.1:4243"]
-  '';
+  vmagentConfig = pkgs.writeText "vmagent.yml" (
+    builtins.toJSON {
+      scrape_configs = [
+        {
+          job_name = "node";
+          static_configs = [ { targets = [ "127.0.0.1:9100" ]; } ];
+          relabel_configs = [
+            {
+              target_label = "instance";
+              replacement = config.networking.hostName;
+            }
+            {
+              target_label = "cluster";
+              replacement = "nishir";
+            }
+            {
+              target_label = "job";
+              replacement = "node-exporter";
+            }
+          ];
+        }
+        {
+          job_name = "comin";
+          static_configs = [ { targets = [ "127.0.0.1:4243" ]; } ];
+        }
+      ];
+    }
+  );
 in
 {
   imports = [ ./minimal.nix ];
