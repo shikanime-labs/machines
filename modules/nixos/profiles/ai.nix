@@ -268,6 +268,20 @@ in
         kubectl
         nodejs
         yarn
+        tigervnc
+        xfce.xfwm4
+        xfce.xfce4-panel
+        xfce.xfdesktop
+        xfce.xfce4-settings
+        xfce.xfce4-terminal
+        dbus
+        setxkbmap
+        xauth
+        xdpyinfo
+        xprop
+        xset
+        xsetroot
+        dejavu_fonts.minimal
       ];
       extraPlugins = [
         hermesLcmPlugin
@@ -296,6 +310,7 @@ in
         };
       };
       settings = {
+        bot_desktop.auto_start = true;
         context.engine = "lcm";
         dashboard.oauth.self_hosted = {
           client_id = "hermes-agent";
