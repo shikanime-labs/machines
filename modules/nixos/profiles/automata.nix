@@ -169,6 +169,7 @@
               expr = "0 8 * * *";
             };
             skills = [
+              "sks-grafana-audit"
               "sks-issue"
               "sks-commit"
               "sks-pr"
@@ -180,14 +181,8 @@
               1. Read firing alerts (no auth, pod network):
                  curl -s http://vmalertmanager-vmks-victoria-metrics-k8s-stack.monitoring-system.svc:9093/api/v2/alerts
                  Parse with python3. Record alertname, labels, annotations, startsAt.
-              2. File new alerts in shikanime-labs/manifests:
-                 title "<alertname>: <summary>", body = labels, annotations, affected object,
-                 startsAt, assignee yorha-operator if eligible.
-              3. Small manifest fixes (values bump, threshold, image pin): fastlane.
-                 Ineligible or checks pending: leave the PR open; never wait. Max 3
-                 per run.
-              4. Note alerts resolved since the last sweep; close nothing automatically.
-              5. Before reporting: honcho_search "grafana alert triage" and
+              2. Note alerts resolved since the last sweep; close nothing automatically.
+              3. Before reporting: honcho_search "grafana alert triage" and
                  honcho_reasoning "What alert-handling lessons from previous runs apply
                  here?" - apply recurring context (known flapping alerts, fastlane
                  patterns that worked), then honcho_conclude write one line per durable
@@ -204,6 +199,7 @@
               expr = "15 8 * * *";
             };
             skills = [
+              "sks-flux-audit"
               "sks-issue"
               "sks-commit"
               "sks-pr"
@@ -213,18 +209,11 @@
               Daily Flux health triage for the nishir fleet.
 
               1. Read cluster state with kubectl (context automata, credentials from the projected
-                 service-account volume at /var/run/secrets/kubernetes.io/serviceaccount): kubectl get kustomizations -A -o wide and
-                 kubectl get helmreleases -A -o wide, plus -o json for conditions. List every object
-                 whose Ready condition is False, with message and source revision. Report deliberately
-                 suspended objects separately; never touch them.
-              2. File new failures in shikanime-labs/manifests:
-                 object, namespace, Ready=False message, source revision, first-seen;
-                 assignee yorha-operator if eligible.
-              3. Small manifest fixes only (each overlay has its own Flux KS; rendered
-                 manifests exclude certs): fastlane. Ineligible or checks pending:
-                 leave the PR open; never wait. Max 3 per run.
-              4. Cluster-level failures (node down, Longhorn recovery, storage): issue only.
-              5. Before reporting: honcho_search "flux triage" and honcho_context - reuse
+                 service-account volume at /var/run/secrets/kubernetes.io/serviceaccount):
+                 kubectl get kustomizations -A -o wide and kubectl get helmreleases -A -o wide,
+                 plus -o json for conditions. List every object whose Ready condition is False,
+                 with message and source revision.
+              2. Before reporting: honcho_search "flux triage" and honcho_context - reuse
                  recurring context (objects that chronically fail, suspended-object
                  policy, fastlane fixes that landed), then honcho_conclude write one
                  line per durable lesson.
@@ -240,6 +229,7 @@
               expr = "30 8 * * *";
             };
             skills = [
+              "sks-github-actions-audit"
               "sks-issue"
               "sks-commit"
               "sks-pr"
@@ -249,23 +239,12 @@
               Daily CI failure sweep for shikanime-labs, shikanime-studio and
               cloud-pi-native.
 
-              1. gh repo list shikanime-labs --limit 100 --json nameWithOwner (same for
-                 shikanime-studio and cloud-pi-native), then gh run list -R <repo> --status failure --created
-                 ">$(date -d "-24 hours" "+%Y-%m-%d")". Ignore renovate PRs, draft-PR CI skips, and
-                 flakes that passed on rerun.
-              2. File new failures: one issue per repo+workflow
-                 in the repo where it failed - run URL, failing job, first error lines
-                 (gh run view --log-failed), head sha. Assignee yorha-operator if eligible.
-              3. Trivial fixes only (CI yaml fix, action pin, typo): fastlane. Ineligible
-                 or checks pending: leave the PR open; never wait. Max 3 per run.
-              4. Console quirk: apps/server-only push branches run no CI - re-arm with
-                 gh workflow run workflow-continuous-integration.yml --ref <branch>.
-              5. In cloud-pi-native only sweep repos with open PRs or issues authored by
+              1. In cloud-pi-native only sweep repos with open PRs or issues authored by
                  shikanime or yorha-operator (gh search prs/issues --owner
                  cloud-pi-native --author shikanime --state open, then the same with
                  --author yorha-operator; one flag per run, union the results);
                  file issues only in those repos.
-              6. Before reporting: honcho_search "CI failure sweep" and honcho_context -
+              2. Before reporting: honcho_search "CI failure sweep" and honcho_context -
                  reuse recurring context (workflows that flap, fastlane fixes that
                  landed, re-arm quirks), then honcho_conclude write one line per
                  durable lesson.
@@ -346,6 +325,7 @@
               expr = "15 9 * * *";
             };
             skills = [
+              "sks-security-audit"
               "sks-issue"
               "sks-commit"
               "sks-pr"
@@ -355,23 +335,14 @@
               Daily security audit for shikanime-labs, shikanime-studio and
               cloud-pi-native.
 
-              1. Enumerate org alerts: gh api /orgs/shikanime-labs/code-scanning/alerts --paginate
-                 (same for secret-scanning and dependabot alerts, and all three again for
-                 shikanime-studio and cloud-pi-native); keep state=="open". Record alert type, repo, severity, CVE,
-                 html_url, created_at.
-              2. File new alerts in the affected repo:
-                 title "<type>: <CVE or rule>", body = severity, affected path, first-seen,
-                 alert link. Assignee yorha-operator if eligible. Rank critical and high first;
-                 secret-scanning alerts are always urgent.
-              3. Small dependency bump or config fix only: fastlane. Ineligible or checks
-                 pending: leave the PR open; never wait. Max 3 per run.
-              4. Never close or dismiss alerts from this job; resolved alerts are noted only.
-              5. In cloud-pi-native only file issues for repos with open PRs or issues
+              1. In cloud-pi-native only file issues for repos with open PRs or issues
                  authored by shikanime or yorha-operator (gh search prs/issues --owner
                  cloud-pi-native --author shikanime --state open, then the same with
                  --author yorha-operator; one flag per run, union the results);
                  note other alerts without filing.
-              6. Before reporting: honcho_search "security audit" and honcho_context -
+              2. Never close or dismiss alerts from this job; resolved alerts are noted
+                 only.
+              3. Before reporting: honcho_search "security audit" and honcho_context -
                  reuse recurring context (alert types that recur, remediations already
                  in flight, duplicates the redteam run already exploited), then
                  honcho_conclude write one line per durable lesson.
@@ -387,6 +358,7 @@
               expr = "15 10 * * *";
             };
             skills = [
+              "sks-redteam"
               "sks-issue"
               "sks-commit"
               "sks-pr"
@@ -395,26 +367,7 @@
             prompt = ''
               Daily offensive security probe for shikanime-labs and shikanime-studio.
 
-              1. Scope: the perimeter reachable from this host - public endpoints of the
-                 fleet (Envoy Gateway routes and TLS hostnames from a depth-1 clone of
-                 https://github.com/shikanime-labs/manifests), open TCP surfaces, exposed
-                 dashboards, container registries, GitHub org attack surface (branch
-                 protection, CI secrets exposure, webhook configs).
-              2. Probe read-only: TLS validity and cipher posture (openssl s_client),
-                 security headers on public routes (curl -sI), authentication bypass checks
-                 on dashboards, anonymous API access, registry tag listability. Record
-                 evidence (command, output excerpt) per finding. Never exploit past proof,
-                 never modify or delete anything, never touch secrets.
-              3. Cross-reference first: honcho_search "security audit" and honcho_search
-                 "redteam probe" - findings already tracked or already proven by a previous
-                 redteam run are listed, never re-filed.
-              4. File new findings in shikanime-labs/manifests:
-                 title "redteam: <finding>", body = severity, evidence, affected route,
-                 suggested fix. Assignee yorha-operator if eligible.
-              5. Small hardening patch only (header addition, rate limit, cipher policy):
-                 fastlane. Ineligible or checks pending: leave the PR open; never
-                 wait. Max 3 per run.
-              6. Before reporting: honcho_reasoning "Which attack paths from previous probes
+              1. Before reporting: honcho_reasoning "Which attack paths from previous probes
                  remain unpatched?" - re-verify the top open items instead of rediscovering
                  them, then honcho_conclude write one line per durable lesson.
             '';
@@ -429,6 +382,7 @@
               expr = "30 10 * * *";
             };
             skills = [
+              "sks-renovate-sweep"
               "sks-issue"
               "sks-land"
             ];
@@ -436,25 +390,11 @@
               Daily landing pass over open renovate PRs across shikanime-labs,
               shikanime-studio and cloud-pi-native.
 
-              1. Enumerate: gh repo list shikanime-labs --limit 100 --json nameWithOwner (same
-                 for shikanime-studio and cloud-pi-native), then gh pr list -R <repo> --author app/renovate
-                 --state open --json number,title,headRefName,updatedAt,statusCheckRollup.
-              2. In cloud-pi-native only land repos with open PRs authored by shikanime
-                 or yorha-operator (gh search prs --owner cloud-pi-native --author
-                 shikanime --state open, then the same with --author yorha-operator;
-                 one flag per run, union the results); skip the rest.
-              3. Triage per PR: green checks on the exact head -> eligible; red checks ->
-                 read gh pr checks and the failing job's first error lines (gh run view
-                 <run> --log-failed); stalled (no check runs, CI not triggered) ->
-                 note the re-arm path per repo quirk. Drop PRs whose branch is behind
-                 main with a merge conflict - renovate rebases those itself.
-              4. Land eligible PRs; never merge past a red required check or a stale head.
-                 Report the rest: one line per PR with repo, number, update, check
-                 state, and the blocking reason when red.
-              5. A PR red for 3+ consecutive days with the same error: one summary issue
-                 in its repo with the error pattern;
-                 assignee yorha-operator if eligible.
-              6. Before reporting: honcho_search "renovate sweep" and honcho_context -
+              1. In cloud-pi-native only land repos with open PRs authored by
+                 shikanime or yorha-operator (gh search prs --owner cloud-pi-native
+                 --author shikanime --state open, then the same with --author
+                 yorha-operator; one flag per run, union the results); skip the rest.
+              2. Before reporting: honcho_search "renovate sweep" and honcho_context -
                  reuse recurring context (PRs reported in previous runs and why they are
                  stuck, repos with known renovate CI quirks), then honcho_conclude write
                  one line per durable lesson.
@@ -477,21 +417,12 @@
               Daily GitHub triage for shikanime-labs, shikanime-studio and
               cloud-pi-native.
 
-              1. Enumerate: gh repo list shikanime-labs --limit 100 --json nameWithOwner (same for
-                 shikanime-studio and cloud-pi-native), then gh issue list -R <repo> --state open --json (same for PRs).
-                 Collect unlabeled or unassigned issues older than 48h, PRs with requested changes
-                 or red checks, and issues awaiting a first reply for 7+ days.
-              2. Triage: apply missing type and area labels, assign yorha-operator where eligible,
-                 comment a first reply on unanswered issues. One summary issue per systemic finding
-                 (repeat failure, cross-repo pattern) in the repo where it belongs.
-              3. Triage only - no PRs from this job; label, comment, and assign via gh only. Close
-                 nothing automatically; note items resolved since the last sweep.
-              4. In cloud-pi-native only triage repos with open PRs or issues authored by
+              1. In cloud-pi-native only triage repos with open PRs or issues authored by
                  shikanime or yorha-operator (gh search prs/issues --owner
                  cloud-pi-native --author shikanime --state open, then the same with
                  --author yorha-operator; one flag per run, union the results);
                  leave the rest untouched.
-              5. Before reporting: honcho_search "GitHub triage" and honcho_context -
+              2. Before reporting: honcho_search "GitHub triage" and honcho_context -
                  reuse recurring context (systemic findings already filed, items a
                  previous run left pending on purpose), then honcho_conclude write
                  one line per durable lesson.
@@ -506,29 +437,17 @@
               kind = "cron";
               expr = "45 9 * * *";
             };
-            skills = [ ];
+            skills = [ "sks-gc" ];
             prompt = ''
               Daily GitHub cleanup for shikanime-labs, shikanime-studio and
               cloud-pi-native.
 
-              1. Enumerate: gh repo list shikanime-labs --limit 100 --json nameWithOwner (same for
-                 shikanime-studio and cloud-pi-native), then for each repo list fully-merged remote branches with
-                 gh api repos/<repo>/branches --paginate. A branch is stale when its head is an
-                 ancestor of the default branch (gh api repos/<repo>/compare/<default>...<branch>
-                 status=="identical" or behind), or its PR is closed/merged. Never touch the
-                 default branch, protected branches, release/* tags, or ghstack role branches
-                 (<prefix>/base|head|orig) of OPEN ghstack stacks - only fully-landed ones.
-              2. In cloud-pi-native only touch repos with open PRs or issues authored by
+              1. In cloud-pi-native only touch repos with open PRs or issues authored by
                  shikanime or yorha-operator (gh search prs/issues --owner
                  cloud-pi-native --author shikanime --state open, then the same with
                  --author yorha-operator; one flag per run, union the results);
                  never touch any other branch there.
-              3. Never re-delete anything a previous run flagged as blocked (open PR,
-                 recent push < 7 days).
-              4. Delete stale branches older than 7 days with gh api -X DELETE
-                 repos/<repo>/git/refs/heads/<branch> or git push origin --delete after a depth-1
-                 clone. Branches of closed-but-unmerged PRs are only deleted after 30 days idle.
-              5. Before reporting: honcho_search "stale branch cleanup" and honcho_context -
+              2. Before reporting: honcho_search "stale branch cleanup" and honcho_context -
                  reuse recurring context (branches a previous run flagged blocked and why),
                  then honcho_conclude write one line per durable lesson.
             '';
@@ -542,25 +461,15 @@
               kind = "cron";
               expr = "0 10 * * *";
             };
-            skills = [ "sks-triage" ];
+            skills = [
+              "sks-github-notif-sweep"
+              "sks-triage"
+            ];
             prompt = ''
               Daily sweep of unread GitHub notifications for shikanime-labs and
               shikanime-studio.
 
-              1. List unread threads: gh api /notifications --paginate -H 'Accept: application/vnd.github+json'.
-                 Record reason, subject title and type, repository, updated_at, subject url.
-              2. Open a thread only when the reason demands detail (review_requested, ci_activity,
-                 assign, author): gh api <subject url> for state and latest context. Skip that for
-                 mention/subscription noise.
-              3. A thread already summarized by a previous run and unchanged since is skipped
-                 silently. The repo has no continuity — check the thread's updated_at against the
-                 last sweep's coverage in the cron run output dir if needed.
-              4. Act per item: clearly answerable question → reply as a comment via gh as
-                 yorha-operator (never approve or merge anything); needs a human decision → one
-                 bullet in the report; pure noise (renovate, bot echoes, auto-closes) → nothing.
-              5. Mark processed threads read: PATCH /notifications/threads/<id>. Never leave the
-                 same thread in two consecutive reports.
-              6. Before reporting: honcho_search "notification sweep" and honcho_context -
+              1. Before reporting: honcho_search "notification sweep" and honcho_context -
                  reuse recurring context (threads a previous run answered, noise
                  patterns to skip), then honcho_conclude write one line per durable
                  lesson.
@@ -576,6 +485,7 @@
               expr = "45 10 * * *";
             };
             skills = [
+              "sks-k8s-audit"
               "sks-issue"
               "sks-fastlane"
             ];
@@ -587,25 +497,8 @@
                  kubectl get events -A --field-selector type=Warning -o json. Parse with python3.
                  Group by involvedObject kind, namespace, name, and reason; record count,
                  lastTimestamp, and a one-line message.
-              2. Dedup: gh issue list -R shikanime-labs/manifests --state open; skip objects
-                 already covered by an open issue (match namespace/name and reason).
-              3. First pass noise filter: drop node-level kubelet events (FailedSync,
-                 FailedMount with short local durations for well-known paths) only when the
-                 object is otherwise healthy; every crashloop, probe failure, and evicted
-                 pod keeps its item even when counts are high.
-              4. New finding: gh issue create -R shikanime-labs/manifests with object, namespace,
-                 reason, count, first-seen (eventTime), message, and a kubectl describe
-                 excerpt. Assignee yorha-operator if eligible.
-              5. Fastlane path: small manifest patch only (probe timing, resource requests,
-                 image pin), same gate and mechanics as the alert job: trivial framing;
-                 <=5 files; <=100 changed lines; nothing matching
-                 lock|secret|.enc.|auth|iam|cert|token; no schema/API change; checks green
-                 on the exact head (gh pr merge --squash --admin --match-head-commit
-                 <head sha>), then the receipt comment. Pending or red checks: leave the PR
-                 open for the next run; never wait. Any eligibility fail: leave the PR open.
-                 Max 3 fastlanes per run.
-              6. Cluster-level failures (node down, Longhorn recovery, storage): issue only.
-              7. Before reporting: honcho_search "kubernetes events triage" and honcho_context -
+              2. Cluster-level failures (node down, Longhorn recovery, storage): issue only.
+              3. Before reporting: honcho_search "kubernetes events triage" and honcho_context -
                  reuse recurring context (objects that chronically emit warning events,
                  fastlane fixes that landed), then honcho_conclude write one line per durable
                  lesson.
