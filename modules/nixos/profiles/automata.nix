@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  osConfig,
+  pkgs,
+  ...
+}:
 
 {
   imports = [
@@ -56,6 +61,13 @@
   };
 
   services = {
+    openssh = {
+      enable = true;
+      openFirewall = true;
+    };
+  };
+
+  home-manager.users.hermes.services = {
     hermes-agent = {
       environment = {
         A2A_HOST = "0.0.0.0";
@@ -677,11 +689,6 @@
       backend.host = "0.0.0.0";
 
       settings.dashboard.public_url = "https://automata.i.shikanime.studio";
-    };
-
-    openssh = {
-      enable = true;
-      openFirewall = true;
     };
   };
 
