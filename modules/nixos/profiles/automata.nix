@@ -246,10 +246,11 @@
               "sks-fastlane"
             ];
             prompt = ''
-              Daily CI failure sweep for shikanime-labs and shikanime-studio.
+              Daily CI failure sweep for shikanime-labs, shikanime-studio and
+              cloud-pi-native.
 
               1. gh repo list shikanime-labs --limit 100 --json nameWithOwner (same for
-                 shikanime-studio), then gh run list -R <repo> --status failure --created
+                 shikanime-studio and cloud-pi-native), then gh run list -R <repo> --status failure --created
                  ">$(date -d "-24 hours" "+%Y-%m-%d")". Ignore renovate PRs, draft-PR CI skips, and
                  flakes that passed on rerun.
               2. File new failures: one issue per repo+workflow
@@ -259,7 +260,10 @@
                  or checks pending: leave the PR open; never wait. Max 3 per run.
               4. Console quirk: apps/server-only push branches run no CI - re-arm with
                  gh workflow run workflow-continuous-integration.yml --ref <branch>.
-              5. Before reporting: honcho_search "CI failure sweep" and honcho_context -
+              5. In cloud-pi-native only sweep repos with open PRs or issues authored by
+                 shikanime (gh search prs/issues --owner cloud-pi-native --author
+                 shikanime --state open); file issues only in those repos.
+              6. Before reporting: honcho_search "CI failure sweep" and honcho_context -
                  reuse recurring context (workflows that flap, fastlane fixes that
                  landed, re-arm quirks), then honcho_conclude write one line per
                  durable lesson.
@@ -346,11 +350,12 @@
               "sks-fastlane"
             ];
             prompt = ''
-              Daily security audit for shikanime-labs and shikanime-studio.
+              Daily security audit for shikanime-labs, shikanime-studio and
+              cloud-pi-native.
 
               1. Enumerate org alerts: gh api /orgs/shikanime-labs/code-scanning/alerts --paginate
                  (same for secret-scanning and dependabot alerts, and all three again for
-                 shikanime-studio); keep state=="open". Record alert type, repo, severity, CVE,
+                 shikanime-studio and cloud-pi-native); keep state=="open". Record alert type, repo, severity, CVE,
                  html_url, created_at.
               2. File new alerts in the affected repo:
                  title "<type>: <CVE or rule>", body = severity, affected path, first-seen,
@@ -359,7 +364,10 @@
               3. Small dependency bump or config fix only: fastlane. Ineligible or checks
                  pending: leave the PR open; never wait. Max 3 per run.
               4. Never close or dismiss alerts from this job; resolved alerts are noted only.
-              5. Before reporting: honcho_search "security audit" and honcho_context -
+              5. In cloud-pi-native only file issues for repos with open PRs or issues
+                 authored by shikanime (gh search prs/issues --owner cloud-pi-native
+                 --author shikanime --state open); note other alerts without filing.
+              6. Before reporting: honcho_search "security audit" and honcho_context -
                  reuse recurring context (alert types that recur, remediations already
                  in flight, duplicates the redteam run already exploited), then
                  honcho_conclude write one line per durable lesson.
@@ -421,24 +429,27 @@
               "sks-land"
             ];
             prompt = ''
-              Daily landing pass over open renovate PRs across shikanime-labs and
-              shikanime-studio.
+              Daily landing pass over open renovate PRs across shikanime-labs,
+              shikanime-studio and cloud-pi-native.
 
               1. Enumerate: gh repo list shikanime-labs --limit 100 --json nameWithOwner (same
-                 for shikanime-studio), then gh pr list -R <repo> --author app/renovate
+                 for shikanime-studio and cloud-pi-native), then gh pr list -R <repo> --author app/renovate
                  --state open --json number,title,headRefName,updatedAt,statusCheckRollup.
-              2. Triage per PR: green checks on the exact head -> eligible; red checks ->
+              2. In cloud-pi-native only land repos with open PRs authored by shikanime
+                 (gh search prs --owner cloud-pi-native --author shikanime --state open);
+                 skip the rest.
+              3. Triage per PR: green checks on the exact head -> eligible; red checks ->
                  read gh pr checks and the failing job's first error lines (gh run view
                  <run> --log-failed); stalled (no check runs, CI not triggered) ->
                  note the re-arm path per repo quirk. Drop PRs whose branch is behind
                  main with a merge conflict - renovate rebases those itself.
-              3. Land eligible PRs; never merge past a red required check or a stale head.
+              4. Land eligible PRs; never merge past a red required check or a stale head.
                  Report the rest: one line per PR with repo, number, update, check
                  state, and the blocking reason when red.
-              4. A PR red for 3+ consecutive days with the same error: one summary issue
+              5. A PR red for 3+ consecutive days with the same error: one summary issue
                  in its repo with the error pattern;
                  assignee yorha-operator if eligible.
-              5. Before reporting: honcho_search "renovate sweep" and honcho_context -
+              6. Before reporting: honcho_search "renovate sweep" and honcho_context -
                  reuse recurring context (PRs reported in previous runs and why they are
                  stuck, repos with known renovate CI quirks), then honcho_conclude write
                  one line per durable lesson.
@@ -458,10 +469,11 @@
               "sks-issue"
             ];
             prompt = ''
-              Daily GitHub triage for shikanime-labs and shikanime-studio.
+              Daily GitHub triage for shikanime-labs, shikanime-studio and
+              cloud-pi-native.
 
               1. Enumerate: gh repo list shikanime-labs --limit 100 --json nameWithOwner (same for
-                 shikanime-studio), then gh issue list -R <repo> --state open --json (same for PRs).
+                 shikanime-studio and cloud-pi-native), then gh issue list -R <repo> --state open --json (same for PRs).
                  Collect unlabeled or unassigned issues older than 48h, PRs with requested changes
                  or red checks, and issues awaiting a first reply for 7+ days.
               2. Triage: apply missing type and area labels, assign yorha-operator where eligible,
@@ -469,7 +481,10 @@
                  (repeat failure, cross-repo pattern) in the repo where it belongs.
               3. Triage only - no PRs from this job; label, comment, and assign via gh only. Close
                  nothing automatically; note items resolved since the last sweep.
-              4. Before reporting: honcho_search "GitHub triage" and honcho_context -
+              4. In cloud-pi-native only triage repos with open PRs or issues authored by
+                 shikanime (gh search prs/issues --owner cloud-pi-native --author
+                 shikanime --state open); leave the rest untouched.
+              5. Before reporting: honcho_search "GitHub triage" and honcho_context -
                  reuse recurring context (systemic findings already filed, items a
                  previous run left pending on purpose), then honcho_conclude write
                  one line per durable lesson.
@@ -486,21 +501,25 @@
             };
             skills = [ ];
             prompt = ''
-              Daily GitHub cleanup for shikanime-labs and shikanime-studio.
+              Daily GitHub cleanup for shikanime-labs, shikanime-studio and
+              cloud-pi-native.
 
               1. Enumerate: gh repo list shikanime-labs --limit 100 --json nameWithOwner (same for
-                 shikanime-studio), then for each repo list fully-merged remote branches with
+                 shikanime-studio and cloud-pi-native), then for each repo list fully-merged remote branches with
                  gh api repos/<repo>/branches --paginate. A branch is stale when its head is an
                  ancestor of the default branch (gh api repos/<repo>/compare/<default>...<branch>
                  status=="identical" or behind), or its PR is closed/merged. Never touch the
                  default branch, protected branches, release/* tags, or ghstack role branches
                  (<prefix>/base|head|orig) of OPEN ghstack stacks - only fully-landed ones.
-              2. Never re-delete anything a previous run flagged as blocked (open PR,
+              2. In cloud-pi-native only touch repos with open PRs or issues authored by
+                 shikanime (gh search prs/issues --owner cloud-pi-native --author
+                 shikanime --state open); never touch any other branch there.
+              3. Never re-delete anything a previous run flagged as blocked (open PR,
                  recent push < 7 days).
-              3. Delete stale branches older than 7 days with gh api -X DELETE
+              4. Delete stale branches older than 7 days with gh api -X DELETE
                  repos/<repo>/git/refs/heads/<branch> or git push origin --delete after a depth-1
                  clone. Branches of closed-but-unmerged PRs are only deleted after 30 days idle.
-              4. Before reporting: honcho_search "stale branch cleanup" and honcho_context -
+              5. Before reporting: honcho_search "stale branch cleanup" and honcho_context -
                  reuse recurring context (branches a previous run flagged blocked and why),
                  then honcho_conclude write one line per durable lesson.
             '';
