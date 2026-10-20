@@ -261,8 +261,10 @@
               4. Console quirk: apps/server-only push branches run no CI - re-arm with
                  gh workflow run workflow-continuous-integration.yml --ref <branch>.
               5. In cloud-pi-native only sweep repos with open PRs or issues authored by
-                 shikanime (gh search prs/issues --owner cloud-pi-native --author
-                 shikanime --state open); file issues only in those repos.
+                 shikanime or yorha-operator (gh search prs/issues --owner
+                 cloud-pi-native --author shikanime --state open, then the same with
+                 --author yorha-operator; one flag per run, union the results);
+                 file issues only in those repos.
               6. Before reporting: honcho_search "CI failure sweep" and honcho_context -
                  reuse recurring context (workflows that flap, fastlane fixes that
                  landed, re-arm quirks), then honcho_conclude write one line per
@@ -365,8 +367,10 @@
                  pending: leave the PR open; never wait. Max 3 per run.
               4. Never close or dismiss alerts from this job; resolved alerts are noted only.
               5. In cloud-pi-native only file issues for repos with open PRs or issues
-                 authored by shikanime (gh search prs/issues --owner cloud-pi-native
-                 --author shikanime --state open); note other alerts without filing.
+                 authored by shikanime or yorha-operator (gh search prs/issues --owner
+                 cloud-pi-native --author shikanime --state open, then the same with
+                 --author yorha-operator; one flag per run, union the results);
+                 note other alerts without filing.
               6. Before reporting: honcho_search "security audit" and honcho_context -
                  reuse recurring context (alert types that recur, remediations already
                  in flight, duplicates the redteam run already exploited), then
@@ -436,8 +440,9 @@
                  for shikanime-studio and cloud-pi-native), then gh pr list -R <repo> --author app/renovate
                  --state open --json number,title,headRefName,updatedAt,statusCheckRollup.
               2. In cloud-pi-native only land repos with open PRs authored by shikanime
-                 (gh search prs --owner cloud-pi-native --author shikanime --state open);
-                 skip the rest.
+                 or yorha-operator (gh search prs --owner cloud-pi-native --author
+                 shikanime --state open, then the same with --author yorha-operator;
+                 one flag per run, union the results); skip the rest.
               3. Triage per PR: green checks on the exact head -> eligible; red checks ->
                  read gh pr checks and the failing job's first error lines (gh run view
                  <run> --log-failed); stalled (no check runs, CI not triggered) ->
@@ -482,8 +487,10 @@
               3. Triage only - no PRs from this job; label, comment, and assign via gh only. Close
                  nothing automatically; note items resolved since the last sweep.
               4. In cloud-pi-native only triage repos with open PRs or issues authored by
-                 shikanime (gh search prs/issues --owner cloud-pi-native --author
-                 shikanime --state open); leave the rest untouched.
+                 shikanime or yorha-operator (gh search prs/issues --owner
+                 cloud-pi-native --author shikanime --state open, then the same with
+                 --author yorha-operator; one flag per run, union the results);
+                 leave the rest untouched.
               5. Before reporting: honcho_search "GitHub triage" and honcho_context -
                  reuse recurring context (systemic findings already filed, items a
                  previous run left pending on purpose), then honcho_conclude write
@@ -512,8 +519,10 @@
                  default branch, protected branches, release/* tags, or ghstack role branches
                  (<prefix>/base|head|orig) of OPEN ghstack stacks - only fully-landed ones.
               2. In cloud-pi-native only touch repos with open PRs or issues authored by
-                 shikanime (gh search prs/issues --owner cloud-pi-native --author
-                 shikanime --state open); never touch any other branch there.
+                 shikanime or yorha-operator (gh search prs/issues --owner
+                 cloud-pi-native --author shikanime --state open, then the same with
+                 --author yorha-operator; one flag per run, union the results);
+                 never touch any other branch there.
               3. Never re-delete anything a previous run flagged as blocked (open PR,
                  recent push < 7 days).
               4. Delete stale branches older than 7 days with gh api -X DELETE
