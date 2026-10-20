@@ -741,46 +741,6 @@
                 "skills"
               ];
             };
-            github-moderation = {
-              deliver = "log";
-              events = [
-                "issue_comment"
-                "pull_request_review_comment"
-              ];
-              filters = [
-                {
-                  field = "action";
-                  "in" = [
-                    "created"
-                    "edited"
-                  ];
-                }
-                {
-                  field = "sender.login";
-                  not_equals = "yorha-operator";
-                }
-                {
-                  not = {
-                    field = "comment.body";
-                    contains = "@yorha-operator";
-                  };
-                }
-                {
-                  field = "comment.user.type";
-                  not_equals = "Bot";
-                }
-              ];
-              prompt = ''
-                Moderate the comment at {comment.html_url}.
-              '';
-              skills = [ "sks-moderate" ];
-              toolsets = [
-                "terminal"
-                "file"
-                "web"
-                "skills"
-              ];
-            };
             github-pr = {
               deliver = "log";
               events = [ "pull_request" ];
