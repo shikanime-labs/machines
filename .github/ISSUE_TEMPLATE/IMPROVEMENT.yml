@@ -1,0 +1,30 @@
+name: Improvement request
+description: Improve an existing thing without changing its purpose.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: current_state
+    attributes:
+      label: Current state
+      description: Describe the existing behavior as it works today, with the documentation or reference that defines it.
+      placeholder: Per https://..., the current behavior is...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_state
+    attributes:
+      label: Expected improvement
+      description: Describe the behavior or state expected after the improvement.
+      placeholder: After the improvement, ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Related issues, PRs, discussions, or documents — anything that gives more context. Leave empty if none.
+      placeholder: https://github.com/...
+    validations:
+      required: false

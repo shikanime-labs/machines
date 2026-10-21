@@ -1,0 +1,49 @@
+name: Experiment
+description: Test a hypothesis spun off from a parent issue, recording observations instead of flooding the parent with comments.
+labels: [question]
+body:
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Hypothesis
+      description: State the claim this experiment tests, and link the parent issue it explores for.
+      placeholder: We believe that ... — parent #...
+    validations:
+      required: true
+
+  - type: textarea
+    id: demands
+    attributes:
+      label: Demands
+      description: List the requirements the solution must satisfy regardless of the experiment outcome.
+      placeholder: "- [ ] ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: protocol
+    attributes:
+      label: Protocol
+      description: State how the claim is tested (measurement, candidate set, duration).
+      placeholder: Measure ..., compare ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: observations
+    attributes:
+      label: Observations
+      description: Append one entry per pass with date, evidence and effect on the hypothesis. Update this field instead of growing comment threads on the parent issue.
+      value: |
+        - YYYY-MM-DD: ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Related issues, PRs, discussions, or documents — anything that gives more context. Leave empty if none.
+      placeholder: https://github.com/...
+    validations:
+      required: false

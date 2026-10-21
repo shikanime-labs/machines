@@ -1,0 +1,56 @@
+name: Bug report
+description: Report a behavior that does not match what is expected.
+labels: [bug]
+body:
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected behavior
+      description: Describe what should have happened and point to the documentation or any other relevant reference.
+      placeholder: Per https://..., the product should...
+    validations:
+      required: true
+
+  - type: textarea
+    id: observed_behavior
+    attributes:
+      label: Observed behavior
+      description: Describe what actually happened, with the steps that expose it.
+      placeholder: |
+        The product...
+
+        1. ...
+        2. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Pin the context the problem was observed in.
+      placeholder: |
+        - Cluster:
+        - Workload (namespace/name):
+        - Revision (Flux KS or commit):
+      render: bash
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Attach captures, logs, links or anything useful if you have it.
+      placeholder: Capture, log or link...
+    validations:
+      required: false
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Related issues, PRs, discussions, or documents — anything that gives more context. Leave empty if none.
+      placeholder: https://github.com/...
+    validations:
+      required: false
