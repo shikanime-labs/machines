@@ -1,16 +1,17 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 
 {
   imports = [ ./machine.nix ];
 
   services.forgejo-runner = {
-    package = pkgs.forgejo-runner;
     instances = {
       forgejo = {
         enable = true;
-        name = config.networking.hostName;
-        tokenFile = config.sops.templates.forgejo-runner-token.path;
-        url = "https://forgejo.i.shikanime.studio";
+        settings.server.connections.default = {
+          url = "https://forgejo.i.shikanime.studio";
+          uuid = config.sops.placeholder.forgejo-runner-uuid;
+          token = config.sops.placeholder.forgejo-runner-auth-token;
+        };
         labels = [
           "docker:docker://node:22-bookworm"
           "nixos-latest:docker://nixos/nix"
@@ -26,17 +27,18 @@
         sopsFile = ../../../secrets/builder.enc.yaml;
         restartUnits = [ "codeberg-runner-${config.networking.hostName}.service" ];
       };
-      forgejo-runner-token = {
+      forgejo-runner-uuid = {
         sopsFile = ../../../secrets/builder.enc.yaml;
-        restartUnits = [ "forgejo-runner-${config.networking.hostName}.service" ];
+        restartUnits = [ "forgejo-runner-forgejo.service" ];
+      };
+      forgejo-runner-auth-token = {
+        sopsFile = ../../../secrets/builder.enc.yaml;
+        restartUnits = [ "forgejo-runner-forgejo.service" ];
       };
     };
     templates = {
       codeberg-runner-token.content = ''
         TOKEN=${config.sops.placeholder.codeberg-runner-token}
-      '';
-      forgejo-runner-token.content = ''
-        TOKEN=${config.sops.placeholder.forgejo-runner-token}
       '';
     };
   };
