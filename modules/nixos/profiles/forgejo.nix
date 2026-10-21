@@ -3,19 +3,19 @@
 {
   imports = [ ./machine.nix ];
 
-  services.gitea-actions-runner = {
+  services.forgejo-runner = {
     package = pkgs.forgejo-runner;
     instances = {
       forgejo = {
         enable = true;
-        name = config.networking.hostName;
-        tokenFile = config.sops.templates.forgejo-runner-token.path;
         url = "https://forgejo.i.shikanime.studio";
         labels = [
           "docker:docker://node:22-bookworm"
           "nixos-latest:docker://nixos/nix"
           "native:host"
         ];
+        secrets.server.connections.default.token_url = config.sops.templates.forgejo-runner-token.path;
+        settings.server.connections.default.uuid = "__placeholder__"; # placeholder; set real runner UUID after registration (old .runner file)
       };
     };
   };
