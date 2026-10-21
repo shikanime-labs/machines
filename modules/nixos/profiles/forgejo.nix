@@ -9,9 +9,9 @@
         enable = true;
         settings.server.connections.default = {
           url = "https://forgejo.i.shikanime.studio";
-          uuid = config.sops.placeholder.forgejo-runner-uuid;
-          token = config.sops.placeholder.forgejo-runner-auth-token;
+          uuid = "5cc9b69c-45d8-4bb2-a472-f3eb5e04f859";
         };
+        secrets.server.connections.default.token_url = config.sops.secrets.forgejo-runner-auth-token.path;
         labels = [
           "docker:docker://node:22-bookworm"
           "nixos-latest:docker://nixos/nix"
@@ -26,10 +26,6 @@
       codeberg-runner-token = {
         sopsFile = ../../../secrets/builder.enc.yaml;
         restartUnits = [ "codeberg-runner-${config.networking.hostName}.service" ];
-      };
-      forgejo-runner-uuid = {
-        sopsFile = ../../../secrets/builder.enc.yaml;
-        restartUnits = [ "forgejo-runner-forgejo.service" ];
       };
       forgejo-runner-auth-token = {
         sopsFile = ../../../secrets/builder.enc.yaml;
