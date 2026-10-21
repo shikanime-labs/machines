@@ -645,7 +645,16 @@
                     "reopened"
                     "synchronize"
                     "review_requested"
+                    "edited"
                   ];
+                }
+                {
+                  field = "pull_request.draft";
+                  not_equals = true;
+                }
+                {
+                  field = "pull_request.mergeable";
+                  not_equals = false;
                 }
                 {
                   field = "pull_request.requested_reviewers";
