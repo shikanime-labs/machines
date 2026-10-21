@@ -1,44 +1,51 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 
 {
   imports = [ ./machine.nix ];
 
   services.forgejo-runner = {
-    package = pkgs.forgejo-runner;
     instances = {
       forgejo = {
         enable = true;
-        name = config.networking.hostName;
-        tokenFile = config.sops.templates.forgejo-runner-token.path;
-        url = "https://forgejo.i.shikanime.studio";
         labels = [
           "docker:docker://node:22-bookworm"
           "nixos-latest:docker://nixos/nix"
           "native:host"
         ];
+        secrets.server.connections.default.token_url = config.sops.secrets.forgejo-runner-auth-token.path;
+        settings.server.connections.default = {
+          url = "https://forgejo.i.shikanime.studio";
+          uuid = "5cc9b69c-45d8-4bb2-a472-f3eb5e04f859";
+        };
+      };
+      codeberg = {
+        enable = true;
+        labels = [
+          "docker:docker://node:22-bookworm"
+          "nixos-latest:docker://nixos/nix"
+          "native:host"
+        ];
+        secrets.server.connections.default.token_url = config.sops.secrets.codeberg-runner-auth-token.path;
+        settings.server.connections.default = {
+          url = "https://codeberg.org";
+          uuid = "2386bbfc-04e5-4d87-9251-d08c67ab86fc";
+        };
       };
     };
   };
 
   sops = {
     secrets = {
-      codeberg-runner-token = {
+      codeberg-runner-auth-token = {
         sopsFile = ../../../secrets/builder.enc.yaml;
-        restartUnits = [ "codeberg-runner-${config.networking.hostName}.service" ];
+        restartUnits = [ "forgejo-runner-codeberg.service" ];
       };
-      forgejo-runner-token = {
+      forgejo-runner-auth-token = {
         sopsFile = ../../../secrets/builder.enc.yaml;
-        restartUnits = [ "forgejo-runner-${config.networking.hostName}.service" ];
+        restartUnits = [ "forgejo-runner-forgejo.service" ];
       };
     };
-    templates = {
-      codeberg-runner-token.content = ''
-        TOKEN=${config.sops.placeholder.codeberg-runner-token}
-      '';
-      forgejo-runner-token.content = ''
-        TOKEN=${config.sops.placeholder.forgejo-runner-token}
-      '';
-    };
+    templates = { };
   };
 
   virtualisation.docker = {
