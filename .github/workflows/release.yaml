@@ -29,7 +29,7 @@ jobs:
       OPERATOR_PRIVATE_KEY: ${{ secrets.OPERATOR_PRIVATE_KEY }}
     uses: $/.github/workflows/nix.yaml
     with:
-      cachix-name: shikanime
+      cachix-name: shikanime-studio
   release:
     if: (startsWith(github.ref, 'refs/tags/v')) || (github.event_name == 'workflow_dispatch' && startsWith(github.event.inputs.ref_name, 'v'))
     needs:
