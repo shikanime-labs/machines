@@ -36,13 +36,13 @@
 
   sops = {
     secrets = {
-      forgejo-runner-auth-token = {
-        sopsFile = ../../../secrets/builder.enc.yaml;
-        restartUnits = [ "forgejo-runner-forgejo.service" ];
-      };
       codeberg-runner-auth-token = {
         sopsFile = ../../../secrets/builder.enc.yaml;
         restartUnits = [ "forgejo-runner-codeberg.service" ];
+      };
+      forgejo-runner-auth-token = {
+        sopsFile = ../../../secrets/builder.enc.yaml;
+        restartUnits = [ "forgejo-runner-forgejo.service" ];
       };
     };
     templates = { };
