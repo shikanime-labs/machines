@@ -18,6 +18,19 @@
           "native:host"
         ];
       };
+      codeberg = {
+        enable = true;
+        settings.server.connections.default = {
+          url = "https://codeberg.org";
+          uuid = "2386bbfc-04e5-4d87-9251-d08c67ab86fc";
+        };
+        secrets.server.connections.default.token_url = config.sops.secrets.codeberg-runner-auth-token.path;
+        labels = [
+          "docker:docker://node:22-bookworm"
+          "nixos-latest:docker://nixos/nix"
+          "native:host"
+        ];
+      };
     };
   };
 
@@ -26,6 +39,10 @@
       forgejo-runner-auth-token = {
         sopsFile = ../../../secrets/builder.enc.yaml;
         restartUnits = [ "forgejo-runner-forgejo.service" ];
+      };
+      codeberg-runner-auth-token = {
+        sopsFile = ../../../secrets/builder.enc.yaml;
+        restartUnits = [ "forgejo-runner-codeberg.service" ];
       };
     };
     templates = { };
