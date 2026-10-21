@@ -84,6 +84,8 @@
             age
             skaffold
             inputs.wharf.packages.${pkgs.system}.default
+            victimialogs
+            prometheus-alertmanager
           ]
           ++ lib.optional stdenv.hostPlatform.isLinux nixos-facter;
 
