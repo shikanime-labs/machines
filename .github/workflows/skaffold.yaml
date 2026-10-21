@@ -40,6 +40,10 @@ jobs:
       - uses: shikanime-labs/actions/nix/setup@5993d4d95befc190a14c0d143583683d203ad8d1
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          cachix-name: shikanime-studio
+          extra-config: |
+            extra-substituters = https://shikanime.cachix.org https://shikanime-studio.cachix.org
+            extra-trusted-public-keys = shikanime.cachix.org-1:OrpjVTH6RzYf2R97IqcTWdLRejF6+XbpFNNZJxKG8Ts= shikanime-studio.cachix.org-1:KxV6aDFU81wzoR9u6pF1uq0dQbUuKbodOSP8/EJHXO0=
           extra-platforms: arm64
           github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - id: direnv
@@ -91,6 +95,10 @@ jobs:
       - uses: shikanime-labs/actions/nix/setup@5993d4d95befc190a14c0d143583683d203ad8d1
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          cachix-name: shikanime-studio
+          extra-config: |
+            extra-substituters = https://shikanime.cachix.org https://shikanime-studio.cachix.org
+            extra-trusted-public-keys = shikanime.cachix.org-1:OrpjVTH6RzYf2R97IqcTWdLRejF6+XbpFNNZJxKG8Ts= shikanime-studio.cachix.org-1:KxV6aDFU81wzoR9u6pF1uq0dQbUuKbodOSP8/EJHXO0=
           extra-platforms: arm64
           github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - id: direnv
@@ -119,6 +127,10 @@ jobs:
       - uses: shikanime-labs/actions/nix/setup@5993d4d95befc190a14c0d143583683d203ad8d1
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          cachix-name: shikanime-studio
+          extra-config: |
+            extra-substituters = https://shikanime.cachix.org https://shikanime-studio.cachix.org
+            extra-trusted-public-keys = shikanime.cachix.org-1:OrpjVTH6RzYf2R97IqcTWdLRejF6+XbpFNNZJxKG8Ts= shikanime-studio.cachix.org-1:KxV6aDFU81wzoR9u6pF1uq0dQbUuKbodOSP8/EJHXO0=
           extra-platforms: arm64
           github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - id: setup-profiles-jobs
