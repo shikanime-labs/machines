@@ -166,7 +166,7 @@
             deliver = "local";
             schedule = {
               kind = "cron";
-              expr = "0 8 * * *";
+              expr = "0 0 * * *";
             };
             skills = [
               "sks-grafana-audit"
@@ -196,7 +196,7 @@
             deliver = "local";
             schedule = {
               kind = "cron";
-              expr = "15 8 * * *";
+              expr = "15 0 * * *";
             };
             skills = [
               "sks-flux-audit"
@@ -226,7 +226,7 @@
             deliver = "local";
             schedule = {
               kind = "cron";
-              expr = "30 8 * * *";
+              expr = "30 0 * * *";
             };
             skills = [
               "sks-github-actions-audit"
@@ -257,7 +257,7 @@
             deliver = "local";
             schedule = {
               kind = "cron";
-              expr = "0 9 * * 1";
+              expr = "0 1 * * 1";
             };
             skills = [ "sks-issue" ];
             prompt = ''
@@ -287,7 +287,7 @@
             deliver = "local";
             schedule = {
               kind = "cron";
-              expr = "45 8 * * *";
+              expr = "45 0 * * *";
             };
             skills = [
               "sks-issue"
@@ -322,7 +322,7 @@
             deliver = "local";
             schedule = {
               kind = "cron";
-              expr = "15 9 * * *";
+              expr = "15 1 * * *";
             };
             skills = [
               "sks-security-audit"
@@ -355,7 +355,7 @@
             deliver = "local";
             schedule = {
               kind = "cron";
-              expr = "15 10 * * *";
+              expr = "15 2 * * *";
             };
             skills = [
               "sks-redteam"
@@ -379,7 +379,7 @@
             deliver = "local";
             schedule = {
               kind = "cron";
-              expr = "30 10 * * *";
+              expr = "30 2 * * *";
             };
             skills = [
               "sks-renovate-sweep"
@@ -407,7 +407,7 @@
             deliver = "local";
             schedule = {
               kind = "cron";
-              expr = "30 9 * * *";
+              expr = "30 1 * * *";
             };
             skills = [
               "sks-triage"
@@ -435,7 +435,7 @@
             deliver = "local";
             schedule = {
               kind = "cron";
-              expr = "45 9 * * *";
+              expr = "45 1 * * *";
             };
             skills = [ "sks-gc" ];
             prompt = ''
@@ -459,7 +459,7 @@
             deliver = "local";
             schedule = {
               kind = "cron";
-              expr = "0 10 * * *";
+              expr = "0 2 * * *";
             };
             skills = [
               "sks-github-notif-sweep"
@@ -482,7 +482,7 @@
             deliver = "local";
             schedule = {
               kind = "cron";
-              expr = "45 10 * * *";
+              expr = "45 2 * * *";
             };
             skills = [
               "sks-k8s-audit"
