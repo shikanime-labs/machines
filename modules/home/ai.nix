@@ -22,7 +22,10 @@ let
     }
   ];
 
-  fleetPeers = ai.mkSelfExcludedPeers hostName hubPeers;
+  fleetPeers = ai.mkSelfExcludedPeers {
+    inherit hostName;
+    peers = hubPeers;
+  };
 
   hermesHonchoPlugin =
     config.services.hermes-agent.package.python.pkgs.callPackage ../../pkgs/hermes-plugin-honcho
@@ -262,8 +265,14 @@ in
       hermes-agent-sks-api-key.sopsFile = ../../secrets/machine.enc.yaml;
       hermes-agent-github-token.sopsFile = ../../secrets/machine.enc.yaml;
     }
-    // (ai.mkA2aTokenSecrets ../../secrets/machine.enc.yaml ai.peers)
-    // (ai.mkPeerApiServerKeySecrets ../../secrets/machine.enc.yaml ai.peers);
+    // (ai.mkA2aTokenSecrets {
+      sopsFile = ../../secrets/machine.enc.yaml;
+      inherit (ai) peers;
+    })
+    // (ai.mkPeerApiServerKeySecrets {
+      sopsFile = ../../secrets/machine.enc.yaml;
+      inherit (ai) peers;
+    });
 
     templates = {
       hermes-agent-env.content = ''
@@ -278,10 +287,20 @@ in
         A2A_PORT=9900
         A2A_AGENT_NAME=${hostName}
         A2A_OWN_TOKEN=${config.sops.placeholder."${ai.mkA2aTokenSecretName hostName}"}
-        A2A_PEER_TOKENS=${ai.mkA2aPeerTokens config.sops.placeholder fleetPeers}
+        A2A_PEER_TOKENS=${
+          ai.mkA2aPeerTokens {
+            placeholder = config.sops.placeholder;
+            peers = fleetPeers;
+          }
+        }
         A2A_TRUSTED_PEERS=${ai.mkA2aTrustedPeers fleetPeers}
       '';
-      hermes-agent-peer-keys-env.content = toString (ai.mkPeerKeyEnvs config.sops.placeholder fleetPeers);
+      hermes-agent-peer-keys-env.content = toString (
+        ai.mkPeerKeyEnvs {
+          placeholder = config.sops.placeholder;
+          peers = fleetPeers;
+        }
+      );
     };
   };
 }

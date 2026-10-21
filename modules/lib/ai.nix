@@ -107,7 +107,7 @@ let
     }
   ];
 
-  mkSelfExcludedPeers = hostName: peers: builtins.filter (p: p.name != hostName) peers;
+  mkSelfExcludedPeers = { hostName, peers }: builtins.filter (p: p.name != hostName) peers;
 
   mkA2aAgent =
     {
@@ -126,7 +126,7 @@ let
   mkA2aAgents = peers: listToAttrs (map (peer: nameValuePair peer.name (mkA2aAgent peer)) peers);
 
   mkA2aPeerToken =
-    placeholder: peer: "${peer.name}:${placeholder."hermes-agent-a2a-token-${peer.name}"}";
+    { placeholder, peer }: "${peer.name}:${placeholder."hermes-agent-a2a-token-${peer.name}"}";
 
   mkA2aTokenSecretName = peer: "hermes-agent-a2a-token-${peer}";
 
@@ -134,7 +134,9 @@ let
 
   mkA2aTrustedPeers = peers: concatStringsSep "," (map (p: p.name) peers);
 
-  mkA2aPeerTokens = placeholder: peers: concatStringsSep "," (map (mkA2aPeerToken placeholder) peers);
+  mkA2aPeerTokens =
+    { placeholder, peers }:
+    concatStringsSep "," (map (peer: mkA2aPeerToken { inherit placeholder peer; }) peers);
 
   mkBotPeers =
     peers:
@@ -143,7 +145,7 @@ let
     );
 
   mkPeerKeyEnvs =
-    placeholder: peers:
+    { placeholder, peers }:
     concatStringsSep "\n" (
       map (
         peer: "HERMES_PEER_${toUpper peer.name}_KEY=${placeholder."${mkPeerApiServerKeyName peer.name}"}"
@@ -198,13 +200,13 @@ in
   inherit hubPeers a2aTopology;
 
   mkA2aTokenSecrets =
-    sopsFile: peers:
+    { sopsFile, peers }:
     listToAttrs (
       map (peer: nameValuePair (mkA2aTokenSecretName peer.name) { inherit sopsFile; }) peers
     );
 
   mkPeerApiServerKeySecrets =
-    sopsFile: peers:
+    { sopsFile, peers }:
     listToAttrs (
       map (peer: nameValuePair (mkPeerApiServerKeyName peer.name) { inherit sopsFile; }) peers
     );

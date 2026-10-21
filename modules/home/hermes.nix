@@ -168,7 +168,12 @@ in
       };
       platforms.a2a.enabled = true;
       a2a_agents = ai.mkA2aAgents topology.targets;
-      bot_peers = ai.mkBotPeers (ai.mkSelfExcludedPeers hostName ai.peers);
+      bot_peers = ai.mkBotPeers (
+        ai.mkSelfExcludedPeers {
+          inherit hostName;
+          inherit (ai) peers;
+        }
+      );
       platform_toolsets = {
         cli = [
           "hermes-cli"

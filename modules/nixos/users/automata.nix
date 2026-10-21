@@ -52,8 +52,18 @@ in
       hermes-agent-sks-api-key.sopsFile = ../../../secrets/machine.enc.yaml;
       hermes-agent-github-token.sopsFile = ../../../secrets/machine.enc.yaml;
     }
-    // hermesOwned (ai.mkA2aTokenSecrets ../../../secrets/machine.enc.yaml ai.peers)
-    // hermesOwned (ai.mkPeerApiServerKeySecrets ../../../secrets/machine.enc.yaml ai.peers);
+    // hermesOwned (
+      ai.mkA2aTokenSecrets {
+        sopsFile = ../../../secrets/machine.enc.yaml;
+        inherit (ai) peers;
+      }
+    )
+    // hermesOwned (
+      ai.mkPeerApiServerKeySecrets {
+        sopsFile = ../../../secrets/machine.enc.yaml;
+        inherit (ai) peers;
+      }
+    );
 
     templates = {
       hermes-agent-env.content = ''
@@ -61,9 +71,13 @@ in
         API_SERVER_KEY=${config.sops.placeholder."${ai.mkPeerApiServerKeyName config.networking.hostName}"}
       '';
       hermes-agent-peer-keys-env.content = toString (
-        ai.mkPeerKeyEnvs config.sops.placeholder (
-          ai.mkSelfExcludedPeers config.networking.hostName ai.peers
-        )
+        ai.mkPeerKeyEnvs {
+          placeholder = config.sops.placeholder;
+          peers = ai.mkSelfExcludedPeers {
+            hostName = config.networking.hostName;
+            inherit (ai) peers;
+          };
+        }
       );
       hermes-agent-matrix-env.content = ''
         MATRIX_HOMESERVER=https://matrix.taila659a.ts.net/
@@ -85,7 +99,15 @@ in
           A2A_PORT=9900
           A2A_AGENT_NAME=${config.networking.hostName}
           A2A_OWN_TOKEN=${config.sops.placeholder."${ai.mkA2aTokenSecretName config.networking.hostName}"}
-          A2A_PEER_TOKENS=${ai.mkA2aPeerTokens config.sops.placeholder (ai.mkSelfExcludedPeers config.networking.hostName ai.peers)}
+          A2A_PEER_TOKENS=${
+            ai.mkA2aPeerTokens {
+              placeholder = config.sops.placeholder;
+              peers = ai.mkSelfExcludedPeers {
+                hostName = config.networking.hostName;
+                inherit (ai) peers;
+              };
+            }
+          }
           A2A_TRUSTED_PEERS=${ai.mkA2aTrustedPeers topology.trusted}
         '';
     };
