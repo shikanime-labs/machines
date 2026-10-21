@@ -6,107 +6,10 @@
   ...
 }:
 
-with lib;
-
 let
-  clusterPeers = [
-    {
-      name = "ashira";
-      capabilities = [
-        "build"
-        "build-x86"
-        "k8s-follower"
-      ];
-    }
-    {
-      name = "fushi";
-      capabilities = [
-        "build"
-        "build-arm"
-        "k8s-node"
-      ];
-    }
-    {
-      name = "kushira";
-      capabilities = [
-        "build-x86"
-        "k8s-node"
-      ];
-    }
-    {
-      name = "manash";
-      capabilities = [
-        "build"
-        "build-x86"
-        "k8s-leader"
-      ];
-    }
-    {
-      name = "minish";
-      capabilities = [
-        "build"
-        "build-arm"
-        "k8s-node"
-      ];
-    }
-    {
-      name = "nalsha";
-      capabilities = [
-        "build"
-        "build-x86"
-        "k8s-follower"
-      ];
-    }
-    {
-      name = "nemishi";
-      capabilities = [
-        "build"
-        "build-arm"
-        "k8s-node"
-      ];
-    }
-    {
-      name = "nishir";
-      capabilities = [
-        "build-x86"
-        "k8s-leader"
-      ];
-    }
-    {
-      name = "sashina";
-      capabilities = [
-        "build-x86"
-        "k8s-node"
-      ];
-    }
-  ];
+  ai = import ../lib/ai.nix { inherit lib; };
 
-  workstationPeers = [
-    {
-      name = "automata";
-      capabilities = [
-        "command"
-        "workstation"
-      ];
-    }
-    {
-      name = "nixtar";
-      capabilities = [
-        "graphical"
-        "media"
-        "nvidia"
-        "k8s-leader"
-      ];
-    }
-    {
-      name = "telsha";
-      capabilities = [
-        "command"
-        "workstation"
-        "darwin"
-      ];
-    }
-  ];
+  hostName = osConfig.networking.hostName;
 
   hubPeers = [
     {
@@ -119,12 +22,11 @@ let
     }
   ];
 
-  fleetPeers = mkSelfExcludedPeers hubPeers;
+  fleetPeers = ai.mkSelfExcludedPeers hostName hubPeers;
 
   hermesHonchoPlugin =
     config.services.hermes-agent.package.python.pkgs.callPackage ../../pkgs/hermes-plugin-honcho
       { };
-
   hermesLcmPlugin = pkgs.callPackage ../../pkgs/hermes-plugin-lcm { };
   honchoAi = config.services.hermes-agent.package.python.pkgs.callPackage ../../pkgs/honcho-ai { };
   lspBackends = with pkgs; [
@@ -155,78 +57,8 @@ let
     yaml-language-server
     zls
   ];
-
   memoryWikiPlugin = pkgs.callPackage ../../pkgs/hermes-plugin-memory-wiki { };
-  mkA2aAgent =
-    {
-      name,
-      capabilities,
-      url ? "http://${name}.taila659a.ts.net:9900",
-    }:
-    {
-      inherit capabilities url;
-      auth = {
-        type = "bearer";
-        token = "\${env:A2A_OWN_TOKEN}";
-      };
-    };
-
-  mkA2aAgents =
-    peers: builtins.listToAttrs (map (peer: lib.nameValuePair peer.name (mkA2aAgent peer)) peers);
-
-  mkA2aPeerToken =
-    peer: "${peer.name}:${config.sops.placeholder."hermes-agent-a2a-token-${peer.name}"}";
-
-  mkA2aPeerTokens = peers: lib.concatStringsSep "," (map mkA2aPeerToken peers);
-
-  mkA2aTokenSecretName = peer: "hermes-agent-a2a-token-${peer}";
-
-  mkA2aTokenSecrets =
-    peers:
-    builtins.listToAttrs (
-      map (
-        peer:
-        lib.nameValuePair (mkA2aTokenSecretName peer.name) { sopsFile = ../../secrets/machine.enc.yaml; }
-      ) peers
-    );
-
-  mkA2aTrustedPeers = peers: lib.concatStringsSep "," (map (p: p.name) peers);
-
-  mkBotPeers =
-    peers:
-    builtins.listToAttrs (
-      map (peer: lib.nameValuePair peer.name { url = "http://${peer.name}.taila659a.ts.net:8642"; }) peers
-    );
-
-  mkPeerApiServerKeyName = peer: "hermes-agent-api-server-key-${peer}";
-
-  mkPeerApiServerKeySecrets =
-    peers:
-    builtins.listToAttrs (
-      map (
-        peer:
-        lib.nameValuePair (mkPeerApiServerKeyName peer.name) { sopsFile = ../../secrets/machine.enc.yaml; }
-      ) peers
-    );
-
-  mkPeerKeyEnvs =
-    peers:
-    lib.concatStringsSep "\n" (
-      map (
-        peer:
-        let
-          secretName = mkPeerApiServerKeyName peer.name;
-        in
-        "HERMES_PEER_${lib.toUpper peer.name}_KEY=${config.sops.placeholder.${secretName}}"
-      ) peers
-    );
-
-  mkSelfExcludedPeers = peers: builtins.filter (p: p.name != osConfig.networking.hostName) peers;
-
-  peers = clusterPeers ++ workstationPeers;
-
   ponytailPlugin = pkgs.callPackage ../../pkgs/hermes-plugin-ponytail { };
-
   powershellEditorServices = pkgs.powershell-editor-services;
 in
 {
@@ -340,9 +172,9 @@ in
 
       platforms.a2a.enabled = true;
 
-      a2a_agents = mkA2aAgents fleetPeers;
+      a2a_agents = ai.mkA2aAgents fleetPeers;
 
-      bot_peers = mkBotPeers fleetPeers;
+      bot_peers = ai.mkBotPeers fleetPeers;
 
       platform_toolsets = {
         cli = [
@@ -430,13 +262,13 @@ in
       hermes-agent-sks-api-key.sopsFile = ../../secrets/machine.enc.yaml;
       hermes-agent-github-token.sopsFile = ../../secrets/machine.enc.yaml;
     }
-    // (mkA2aTokenSecrets peers)
-    // (mkPeerApiServerKeySecrets peers);
+    // (ai.mkA2aTokenSecrets ../../secrets/machine.enc.yaml ai.peers)
+    // (ai.mkPeerApiServerKeySecrets ../../secrets/machine.enc.yaml ai.peers);
 
     templates = {
       hermes-agent-env.content = ''
         API_SERVER_ENABLED=true
-        API_SERVER_KEY=${config.sops.placeholder."${mkPeerApiServerKeyName osConfig.networking.hostName}"}
+        API_SERVER_KEY=${config.sops.placeholder."${ai.mkPeerApiServerKeyName hostName}"}
       '';
       hermes-agent-providers-env.content = ''
         SKS_API_KEY=${config.sops.placeholder.hermes-agent-sks-api-key}
@@ -444,12 +276,12 @@ in
       '';
       hermes-agent-a2a-env.content = ''
         A2A_PORT=9900
-        A2A_AGENT_NAME=${osConfig.networking.hostName}
-        A2A_OWN_TOKEN=${config.sops.placeholder."${mkA2aTokenSecretName osConfig.networking.hostName}"}
-        A2A_PEER_TOKENS=${mkA2aPeerTokens fleetPeers}
-        A2A_TRUSTED_PEERS=${mkA2aTrustedPeers fleetPeers}
+        A2A_AGENT_NAME=${hostName}
+        A2A_OWN_TOKEN=${config.sops.placeholder."${ai.mkA2aTokenSecretName hostName}"}
+        A2A_PEER_TOKENS=${ai.mkA2aPeerTokens config.sops.placeholder fleetPeers}
+        A2A_TRUSTED_PEERS=${ai.mkA2aTrustedPeers fleetPeers}
       '';
-      hermes-agent-peer-keys-env.content = toString (mkPeerKeyEnvs fleetPeers);
+      hermes-agent-peer-keys-env.content = toString (ai.mkPeerKeyEnvs config.sops.placeholder fleetPeers);
     };
   };
 }
