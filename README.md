@@ -90,14 +90,14 @@ no repo-owned theme schema or UI component to edit. The theme is set per user in
   explicit `sunrise`/`sunset` times.
 
 Plugins (e.g. `noctalia/translator`, the launcher `/tr` provider) are enabled
-under the same `programs.noctalia.settings.plugins.enabled` attrset — see
-[docs/noctalia-plugins.md](docs/noctalia-plugins.md).
+under the same `programs.noctalia.settings.plugins.enabled` attrset — setup
+lives in the repository wiki.
 
 ### Bitwarden biometric unlock
 
 Graphical NixOS hosts wire Bitwarden's fingerprint/PAM unlock and relocate its
-SSH agent socket — setup, enrollment, and troubleshooting live in
-[docs/bitwarden-biometric.md](docs/bitwarden-biometric.md).
+SSH agent socket — setup, enrollment, and troubleshooting live in the
+repository wiki.
 
 ### `secrets/`
 

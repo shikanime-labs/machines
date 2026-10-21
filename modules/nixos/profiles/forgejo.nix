@@ -3,7 +3,7 @@
 {
   imports = [ ./machine.nix ];
 
-  services.gitea-actions-runner = {
+  services.forgejo-runner = {
     package = pkgs.forgejo-runner;
     instances = {
       forgejo = {
