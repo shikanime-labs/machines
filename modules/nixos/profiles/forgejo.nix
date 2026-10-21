@@ -23,20 +23,12 @@
 
   sops = {
     secrets = {
-      codeberg-runner-token = {
-        sopsFile = ../../../secrets/builder.enc.yaml;
-        restartUnits = [ "codeberg-runner-${config.networking.hostName}.service" ];
-      };
       forgejo-runner-auth-token = {
         sopsFile = ../../../secrets/builder.enc.yaml;
         restartUnits = [ "forgejo-runner-forgejo.service" ];
       };
     };
-    templates = {
-      codeberg-runner-token.content = ''
-        TOKEN=${config.sops.placeholder.codeberg-runner-token}
-      '';
-    };
+    templates = { };
   };
 
   virtualisation.docker = {
