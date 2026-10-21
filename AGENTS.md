@@ -69,3 +69,7 @@ full directory layout.
 - ARM (`aarch64-linux`) and x86_64 hosts share profiles but differ in the flake
   `systems` list — keep both in mind when touching
   `modules/nixos/profiles/distributed.nix`.
+- Every host vmagent scrape of a localhost exporter must relabel
+  `instance` to `config.networking.hostName` (plus a `cluster` label):
+  `127.0.0.1` targets otherwise merge every host into one series and per-host
+  rates are garbage. The node-exporter and comin jobs are the pattern.
