@@ -11,15 +11,6 @@ body:
       required: true
 
   - type: textarea
-    id: references
-    attributes:
-      label: References
-      description: Related issues, PRs, discussions, or documents — anything that helps whoever picks this up.
-      placeholder: Parent issue, prior discussion, related PRs...
-    validations:
-      required: false
-
-  - type: textarea
     id: definition_of_done
     attributes:
       label: Definition of done
@@ -27,3 +18,12 @@ body:
       placeholder: "- [ ] ..."
     validations:
       required: true
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Related issues, PRs, discussions, or documents — anything that helps whoever picks this up.
+      placeholder: Parent issue, prior discussion, related PRs...
+    validations:
+      required: false
