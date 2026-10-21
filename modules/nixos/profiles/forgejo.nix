@@ -7,29 +7,29 @@
     instances = {
       forgejo = {
         enable = true;
+        labels = [
+          "docker:docker://node:22-bookworm"
+          "nixos-latest:docker://nixos/nix"
+          "native:host"
+        ];
+        secrets.server.connections.default.token_url = config.sops.secrets.forgejo-runner-auth-token.path;
         settings.server.connections.default = {
           url = "https://forgejo.i.shikanime.studio";
           uuid = "5cc9b69c-45d8-4bb2-a472-f3eb5e04f859";
         };
-        secrets.server.connections.default.token_url = config.sops.secrets.forgejo-runner-auth-token.path;
+      };
+      codeberg = {
+        enable = true;
         labels = [
           "docker:docker://node:22-bookworm"
           "nixos-latest:docker://nixos/nix"
           "native:host"
         ];
-      };
-      codeberg = {
-        enable = true;
+        secrets.server.connections.default.token_url = config.sops.secrets.codeberg-runner-auth-token.path;
         settings.server.connections.default = {
           url = "https://codeberg.org";
           uuid = "2386bbfc-04e5-4d87-9251-d08c67ab86fc";
         };
-        secrets.server.connections.default.token_url = config.sops.secrets.codeberg-runner-auth-token.path;
-        labels = [
-          "docker:docker://node:22-bookworm"
-          "nixos-latest:docker://nixos/nix"
-          "native:host"
-        ];
       };
     };
   };
