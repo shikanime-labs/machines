@@ -270,11 +270,11 @@ in
         nodejs
         yarn
         tigervnc
-        xfce.xfwm4
-        xfce.xfce4-panel
-        xfce.xfdesktop
-        xfce.xfce4-settings
-        xfce.xfce4-terminal
+        xfwm4
+        xfce4-panel
+        xfdesktop
+        xfce4-settings
+        xfce4-terminal
         dbus
         setxkbmap
         xauth
