@@ -245,6 +245,7 @@
               cloud-pi-native) across every sks-audit surface: GitHub security
               alerts, perimeter redteam, CI failures, alertmanager alerts, Flux
               readiness, Kubernetes warning events.
+
               1. Cover every surface each run; the skill owns procedure, filing,
                  adversarial discovery and the memory loop.
               2. In cloud-pi-native only file issues for repos with open PRs or issues
@@ -363,7 +364,6 @@
                  lesson.
             '';
           }
-          
         ];
       };
 
