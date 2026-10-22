@@ -160,36 +160,6 @@
       hermesHomeFiles."cron/jobs.json" = builtins.toJSON {
         jobs = [
           {
-            id = "3453978b1312";
-            name = "weekly-cluster-efficiency-audit";
-            enabled = true;
-            deliver = "local";
-            schedule = {
-              kind = "cron";
-              expr = "0 1 * * 1";
-            };
-            skills = [ "sks-issue" ];
-            prompt = ''
-              Weekly cluster-efficiency brainstorm with the A2A fleet.
-
-              1. Discover peers with a2a_list. Every reachable peer participates; note unreachable
-                 ones and continue.
-              2. One a2a_call per peer: "From your vantage point, what is the single
-                 highest-leverage efficiency improvement in the fleet right now (compute, storage,
-                 cost, redundancy)?" Each answer must state: observation, evidence, proposed change,
-                 expected saving.
-              3. Aggregate: dedup overlapping proposals, rank by leverage / effort. Drop proposals
-                 already filed or rejected: gh issue list -R shikanime-labs/manifests, open and
-                 recently closed.
-              4. File the top proposals (max 3) as issues in shikanime-labs/manifests, one per proposal, crediting the contributing agents in the body.
-                 Proposals only - no PRs from this job.
-              5. Before reporting: honcho_search "cluster efficiency" and honcho_reasoning
-                 "Which efficiency lessons from previous audits still apply?" - drop proposals
-                 already tried and rejected, then honcho_conclude write one line per durable
-                 lesson.
-            '';
-          }
-          {
             id = "adfc09a25ae9";
             name = "daily-documentation-sync";
             enabled = true;
@@ -225,8 +195,39 @@
             '';
           }
           {
+            id = "3453978b1312";
+            name = "weekly-fleet-efficiency-audit";
+            enabled = true;
+            deliver = "local";
+            schedule = {
+              kind = "cron";
+              expr = "0 1 * * 1";
+            };
+            skills = [ "sks-issue" ];
+            prompt = ''
+              Weekly fleet-efficiency brainstorm with the A2A fleet.
+
+              1. Discover peers with a2a_list. Every reachable peer participates; note unreachable
+                 ones and continue.
+              2. One a2a_call per peer: "From your vantage point, what is the single
+                 highest-leverage efficiency improvement in the fleet right now (compute, storage,
+                 cost, redundancy)?" Each answer must state: observation, evidence, proposed change,
+                 expected saving.
+              3. Aggregate: dedup overlapping proposals, rank by leverage / effort. Drop proposals
+                 already filed or rejected: gh issue list -R shikanime-labs/manifests, open and
+                 recently closed.
+              4. File the top proposals (max 3) as issues in shikanime-labs/manifests, one per proposal, crediting the contributing agents in the body.
+              5. Audit family policy: at most 3 filed issues per run; never close,
+                 dismiss or edit what the brainstorm touches; proposals only, no PRs.
+              6. Before reporting: honcho_search "fleet efficiency" and honcho_reasoning
+                 "Which efficiency lessons from previous audits still apply?" - drop proposals
+                 already tried and rejected, then honcho_conclude write one line per durable
+                 lesson.
+            '';
+          }
+          {
             id = "a13c7b90e4f2";
-            name = "daily-audit";
+            name = "daily-fleet-health-audit";
             enabled = true;
             deliver = "local";
             schedule = {
@@ -241,10 +242,11 @@
               "sks-fastlane"
             ];
             prompt = ''
-              Daily audit of the shikanime orgs (shikanime-labs, shikanime-studio and
-              cloud-pi-native) across every sks-audit surface: GitHub security
-              alerts, perimeter redteam, CI failures, alertmanager alerts, Flux
-              readiness, Kubernetes warning events.
+              Daily fleet health audit over the entire fleet and its orgs
+              (shikanime-labs, shikanime-studio and cloud-pi-native), across every
+              sks-audit surface: GitHub security alerts, perimeter redteam, CI
+              failures, alertmanager alerts, Flux readiness, Kubernetes warning
+              events.
 
               1. Cover every surface each run; the skill owns procedure, filing,
                  adversarial discovery and the memory loop.
@@ -253,40 +255,13 @@
                  cloud-pi-native --author shikanime --state open, then the same with
                  --author yorha-operator; one flag per run, union the results); note
                  other findings without filing.
-              3. Never close or dismiss alerts from this job; resolved findings are
-                 noted only.
-              4. After the surfaces: hunt for audit gaps the surfaces do not cover
+              3. After the surfaces: hunt for audit gaps the surfaces do not cover
                  yet - an org repo, fleet endpoint, alert class or failure mode with
                  no surface - and file one issue per gap in shikanime-labs/manifests
                  proposing the new surface (what to read, with which command).
-            '';
-          }
-          {
-            id = "f077dc14361e";
-            name = "daily-renovate-landing";
-            enabled = true;
-            deliver = "local";
-            schedule = {
-              kind = "cron";
-              expr = "30 2 * * *";
-            };
-            skills = [
-              "sks-renovate-sweep"
-              "sks-issue"
-              "sks-land"
-            ];
-            prompt = ''
-              Daily landing pass over open renovate PRs across shikanime-labs,
-              shikanime-studio and cloud-pi-native.
-
-              1. In cloud-pi-native only land repos with open PRs authored by
-                 shikanime or yorha-operator (gh search prs --owner cloud-pi-native
-                 --author shikanime --state open, then the same with --author
-                 yorha-operator; one flag per run, union the results); skip the rest.
-              2. Before reporting: honcho_search "renovate sweep" and honcho_context -
-                 reuse recurring context (PRs reported in previous runs and why they are
-                 stuck, repos with known renovate CI quirks), then honcho_conclude write
-                 one line per durable lesson.
+              4. Audit family policy: at most 3 filed issues per run; never close,
+                 dismiss, silence or edit anything audited; fastlane only where the
+                 owning skill's surface allows it.
             '';
           }
           {
@@ -365,6 +340,34 @@
             '';
           }
           {
+            id = "f077dc14361e";
+            name = "daily-renovate-landing";
+            enabled = true;
+            deliver = "local";
+            schedule = {
+              kind = "cron";
+              expr = "30 2 * * *";
+            };
+            skills = [
+              "sks-renovate-sweep"
+              "sks-issue"
+              "sks-land"
+            ];
+            prompt = ''
+              Daily landing pass over open renovate PRs across shikanime-labs,
+              shikanime-studio and cloud-pi-native.
+
+              1. In cloud-pi-native only land repos with open PRs authored by
+                 shikanime or yorha-operator (gh search prs --owner cloud-pi-native
+                 --author shikanime --state open, then the same with --author
+                 yorha-operator; one flag per run, union the results); skip the rest.
+              2. Before reporting: honcho_search "renovate sweep" and honcho_context -
+                 reuse recurring context (PRs reported in previous runs and why they are
+                 stuck, repos with known renovate CI quirks), then honcho_conclude write
+                 one line per durable lesson.
+            '';
+          }
+          {
             id = "98bded605070";
             name = "monthly-sdlc-efficiency-audit";
             enabled = true;
@@ -374,22 +377,25 @@
               expr = "0 3 1 * *";
             };
             skills = [
-              "sks-sdlc-efficiency"
+              "sks-audit"
               "sks-issue"
             ];
             prompt = ''
-              Monthly SDLC efficiency audit for shikanime-labs and shikanime-studio.
+              Monthly SDLC efficiency audit for shikanime-labs and shikanime-studio,
+              over the sks-audit SDLC efficiency surface.
 
-              1. Load sks-sdlc-efficiency and run its measurement pass over both orgs:
-                 census, untriaged scan, review and merge latency with bot rows split
-                 out, merged-PR residue, landing-gate stalls, stale branches.
+              1. Measure every surface metric each run: census, untriaged scan,
+                 review and merge latency with bot rows split out, merged-PR
+                 residue, landing-gate stalls, stale branches; the skill owns
+                 procedure, filing, dedup and the memory loop.
               2. Dedup findings against open issues in
                  shikanime-labs/manifests: gh issue list -R shikanime-labs/manifests
                  --state open. Already-tracked findings are listed, never re-filed.
-              3. File at most 3 proposal issues in shikanime-labs/manifests via sks-issue,
-                 each acceptance ledger carrying the measured baseline as starting value.
-                 This run is interrupted at about 3 minutes: measure, dedup, file,
-                 report - proposals only, no PRs, no edits to the items measured.
+              3. Audit family policy: at most 3 filed issues per run in
+                 shikanime-labs/manifests, each acceptance ledger carrying the
+                 measured baseline; never close, dismiss, silence or edit anything
+                 audited; the SDLC surface allows no fastlane PR; the run is
+                 interrupted at about 3 minutes.
             '';
           }
         ];
