@@ -226,7 +226,7 @@
           }
           {
             id = "a13c7b90e4f2";
-            name = "daily-org-audit";
+            name = "daily-audit";
             enabled = true;
             deliver = "local";
             schedule = {
@@ -245,7 +245,6 @@
               cloud-pi-native) across every sks-audit surface: GitHub security
               alerts, perimeter redteam, CI failures, alertmanager alerts, Flux
               readiness, Kubernetes warning events.
-
               1. Cover every surface each run; the skill owns procedure, filing,
                  adversarial discovery and the memory loop.
               2. In cloud-pi-native only file issues for repos with open PRs or issues
