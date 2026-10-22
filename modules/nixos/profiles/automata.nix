@@ -161,7 +161,7 @@
         jobs = [
           {
             id = "adfc09a25ae9";
-            name = "daily-documentation-sync";
+            name = "daily-docs-sync";
             enabled = true;
             deliver = "local";
             schedule = {
@@ -169,29 +169,79 @@
               expr = "45 0 * * *";
             };
             skills = [
+              "sks-wiki"
               "sks-issue"
               "sks-commit"
               "sks-pr"
               "sks-fastlane"
             ];
             prompt = ''
-              Daily documentation verification for docs.shikanime.studio.
+              Daily docs sync for the fleet: mirror recent org changes into the
+              per-repo GitHub wikis, then keep docs.shikanime.studio factually true.
 
-              1. Clone https://github.com/shikanime-studio/websites (depth 1) to /tmp; the site is
+              1. Enumerate recently changed repos, one query per org (shikanime-labs,
+                 shikanime-studio, cloud-pi-native):
+                 gh api -H 'Accept: application/vnd.github.cloak-preview' "search/commits?q=org%3A<org>+committer-date%3A>$(date -u -d '-30 days' +%F)&per_page=100&sort=committer-date&order=desc" --jq '.items[] | [.repository.full_name, .commit.committer.date, (.commit.message | split("\n")[0])] | @tsv'
+                 The explicit sort matters: without sort=committer-date&order=desc the search returns
+                 best-match results and the org cap fills with the oldest commits of the window.
+                 Group by repo and drop repos whose only changes are dependency noise (renovate,
+                 bump, pin, chore(deps) subjects). Expect roughly 20 repos: do NOT cap this list
+                 before the wiki probe in step 2 - the repos carrying a wiki are the ones that
+                 matter and they are not the most recently changed ones.
+                 Never add -repo: excludes: org plus negated repo qualifiers return zero results
+                 on GitHub commit search.
+              2. Probe every candidate wiki, one line each:
+                 git ls-remote "https://github.com/<owner>/<repo>.wiki.git" HEAD
+                 Empty output means the wiki has no pages: page creation is a manual GitHub UI step,
+                 so never attempt it here - collect those repos for one report line.
+                 Otherwise clone it shallow - git clone --depth 1 -q
+                 "https://github.com/<owner>/<repo>.wiki.git" /tmp/<repo>.wiki - and compare
+                 git -C /tmp/<repo>.wiki log -1 --format=%cI with the newest change timestamp of
+                 that repo from step 1. A wiki equal to or newer than its repo is already in sync:
+                 skip it silently. Keep the rest as lagging.
+              3. Sync the lagging wikis, stalest first (oldest wiki commit first), AT MOST 2 PER RUN;
+                 list every other lagging wiki as a Deferred bullet. The order is self-correcting: a
+                 wiki you just synced becomes the newest and drops to the back, so the backlog drains
+                 instead of one busy repo winning every run, and a wiki that is already current is
+                 never re-synced.
+                 Page doctrine: a page documents THIS repo own internals - architecture, mechanics,
+                 runbooks, procedure detail - never another repo automation, jobs or machinery.
+                 Update the page that already covers the changed area; add a page only when a whole
+                 new subsystem appeared, and then register it in BOTH Home.md and _Sidebar.md in the
+                 same commit - an unlisted page is unreachable. Head each new page with
+                 `<!-- owner: Automata | zone: technical | purpose: <one line> -->` and keep the
+                 voice of the pages already there.
+                 Ground every claim in the changed code (gh api repos/<owner>/<repo>/commits/<sha>,
+                 or a depth 1 clone under /tmp), never in a commit subject, never in another wiki
+                 page.
+              4. Land each wiki update as ONE commit on master - no PR, no review, no sign-off, a
+                 wiki bypasses branch protection by design: imperative one line title, blank line,
+                 then Co-authored-by: Automata <automata@shikanime.studio>.
+                 Push with the GitHub token, never through origin (the hermes user has no SSH key):
+                 git -C /tmp/<repo>.wiki push -q "https://x-access-token:$GITHUB_TOKEN@github.com/<owner>/<repo>.wiki.git" HEAD:master
+                 Verify with git ls-remote
+                 "https://x-access-token:$GITHUB_TOKEN@github.com/<owner>/<repo>.wiki.git" HEAD and
+                 require it to equal git -C /tmp/<repo>.wiki rev-parse HEAD. A push success line is
+                 not proof.
+              5. docs.shikanime.studio drift check, unchanged scope: clone
+                 https://github.com/shikanime-studio/websites (depth 1) to /tmp; the site is
                  apps/docs, pages under apps/docs/docs/<section>/, sidebars.ts, product table.
-              2. Verify factual claims against ground truth - deployed manifests (clone
+                 Verify factual claims against ground truth - deployed manifests (clone
                  https://github.com/shikanime-labs/manifests depth 1), live cluster state (kubectl,
                  context automata), repo git logs - never from memory. Stale references are the norm.
                  Drift between a documented service (name, hostname, port, image) and its manifest is
-                 a defect.
-              3. File new drift in shikanime-studio/websites:
-                 page, claim, ground truth, source links. Assignee yorha-operator if eligible.
-              4. Small factual fixes only (typo, stale name, corrected port): fastlane.
-                 Deploy stays manual - never wrangler deploy from this job.
-              5. Before reporting: honcho_search "documentation drift" and honcho_context -
-                 reuse recurring context (pages that keep drifting, ground-truth
-                 sources that settled past drift), then honcho_conclude write one
-                 line per durable lesson.
+                 a defect. File new drift in shikanime-studio/websites: page, claim, ground truth,
+                 source links. Assignee yorha-operator if eligible. Small factual fixes only (typo,
+                 stale name, corrected port): fastlane. Deploy stays manual - never wrangler deploy
+                 from this job. If step 3 already spent the run, report this step as Deferred
+                 instead of starting it.
+              6. Before reporting: honcho_search "docs sync" and honcho_context - reuse recurring
+                 context (wikis that keep lagging, pages that keep drifting, ground-truth sources
+                 that settled past drift), then honcho_conclude write one line per durable lesson.
+
+              Report: one bullet per wiki page updated (repo, page, change mirrored), the Deferred
+              list, one line naming the changed repos whose wiki has no pages yet, then the drift
+              findings with the issues and PRs opened.
             '';
           }
           {
