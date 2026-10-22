@@ -342,10 +342,6 @@
                  note other alerts without filing.
               2. Never close or dismiss alerts from this job; resolved alerts are noted
                  only.
-              3. Before reporting: honcho_search "security audit" and honcho_context -
-                 reuse recurring context (alert types that recur, remediations already
-                 in flight, duplicates the redteam run already exploited), then
-                 honcho_conclude write one line per durable lesson.
             '';
           }
           {
@@ -366,10 +362,6 @@
             ];
             prompt = ''
               Daily offensive security probe for shikanime-labs and shikanime-studio.
-
-              1. Before reporting: honcho_reasoning "Which attack paths from previous probes
-                 remain unpatched?" - re-verify the top open items instead of rediscovering
-                 them, then honcho_conclude write one line per durable lesson.
             '';
           }
           {
