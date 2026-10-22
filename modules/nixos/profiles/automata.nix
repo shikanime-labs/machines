@@ -169,7 +169,7 @@
               expr = "0 0 * * *";
             };
             skills = [
-              "sks-grafana-audit"
+              "sks-audit"
               "sks-issue"
               "sks-commit"
               "sks-pr"
@@ -177,16 +177,6 @@
             ];
             prompt = ''
               Daily alert triage for the nishir fleet.
-
-              1. Read firing alerts (no auth, pod network):
-                 curl -s http://vmalertmanager-vmks-victoria-metrics-k8s-stack.monitoring-system.svc:9093/api/v2/alerts
-                 Parse with python3. Record alertname, labels, annotations, startsAt.
-              2. Note alerts resolved since the last sweep; close nothing automatically.
-              3. Before reporting: honcho_search "grafana alert triage" and
-                 honcho_reasoning "What alert-handling lessons from previous runs apply
-                 here?" - apply recurring context (known flapping alerts, fastlane
-                 patterns that worked), then honcho_conclude write one line per durable
-                 lesson.
             '';
           }
           {
@@ -199,7 +189,7 @@
               expr = "15 0 * * *";
             };
             skills = [
-              "sks-flux-audit"
+              "sks-audit"
               "sks-issue"
               "sks-commit"
               "sks-pr"
@@ -207,16 +197,6 @@
             ];
             prompt = ''
               Daily Flux health triage for the nishir fleet.
-
-              1. Read cluster state with kubectl (context automata, credentials from the projected
-                 service-account volume at /var/run/secrets/kubernetes.io/serviceaccount):
-                 kubectl get kustomizations -A -o wide and kubectl get helmreleases -A -o wide,
-                 plus -o json for conditions. List every object whose Ready condition is False,
-                 with message and source revision.
-              2. Before reporting: honcho_search "flux triage" and honcho_context - reuse
-                 recurring context (objects that chronically fail, suspended-object
-                 policy, fastlane fixes that landed), then honcho_conclude write one
-                 line per durable lesson.
             '';
           }
           {
@@ -229,7 +209,7 @@
               expr = "30 0 * * *";
             };
             skills = [
-              "sks-github-actions-audit"
+              "sks-audit"
               "sks-issue"
               "sks-commit"
               "sks-pr"
@@ -244,10 +224,6 @@
                  cloud-pi-native --author shikanime --state open, then the same with
                  --author yorha-operator; one flag per run, union the results);
                  file issues only in those repos.
-              2. Before reporting: honcho_search "CI failure sweep" and honcho_context -
-                 reuse recurring context (workflows that flap, fastlane fixes that
-                 landed, re-arm quirks), then honcho_conclude write one line per
-                 durable lesson.
             '';
           }
           {
@@ -325,7 +301,7 @@
               expr = "15 1 * * *";
             };
             skills = [
-              "sks-security-audit"
+              "sks-audit"
               "sks-issue"
               "sks-commit"
               "sks-pr"
@@ -354,7 +330,7 @@
               expr = "15 2 * * *";
             };
             skills = [
-              "sks-redteam"
+              "sks-audit"
               "sks-issue"
               "sks-commit"
               "sks-pr"
@@ -477,23 +453,12 @@
               expr = "45 2 * * *";
             };
             skills = [
-              "sks-k8s-audit"
+              "sks-audit"
               "sks-issue"
               "sks-fastlane"
             ];
             prompt = ''
               Daily Kubernetes warning-events triage for the nishir fleet.
-
-              1. Read warning events with kubectl (context automata, credentials from the projected
-                 service-account volume at /var/run/secrets/kubernetes.io/serviceaccount):
-                 kubectl get events -A --field-selector type=Warning -o json. Parse with python3.
-                 Group by involvedObject kind, namespace, name, and reason; record count,
-                 lastTimestamp, and a one-line message.
-              2. Cluster-level failures (node down, Longhorn recovery, storage): issue only.
-              3. Before reporting: honcho_search "kubernetes events triage" and honcho_context -
-                 reuse recurring context (objects that chronically emit warning events,
-                 fastlane fixes that landed), then honcho_conclude write one line per durable
-                 lesson.
             '';
           }
         ];
