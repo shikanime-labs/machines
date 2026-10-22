@@ -1169,11 +1169,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792663468,
-        "narHash": "sha256-0OzoL1475a8CGOWBohFzAtEDIbDzubWT8xKp/Bp/CZw=",
+        "lastModified": 1792665552,
+        "narHash": "sha256-cKb/zJI2/LWOFSAZ859mPhgNbxfaYc3pRfc0EVbAXS4=",
         "owner": "shikanime-labs",
         "repo": "skills",
-        "rev": "d49479b2fbe7cdc98c24a8e7f12662c76409e5af",
+        "rev": "883caa2b1ececad86c2ed0b0928cc32fc4709a44",
         "type": "github"
       },
       "original": {
