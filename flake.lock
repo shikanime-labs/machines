@@ -1371,11 +1371,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792411230,
-        "narHash": "sha256-FH6U/zudMLlz6RPyK8wFQ4djWkWEwsWeX2Pz1GdD6rE=",
+        "lastModified": 1792684778,
+        "narHash": "sha256-wYBRpPukyhcWn9bznsZHVFeEu/cV36ZnHOCf9uOGcRk=",
         "owner": "shikanime-labs",
         "repo": "wharf",
-        "rev": "8e045c00fa8e89cca5dc0ee310c61a677f41a1bb",
+        "rev": "d95158f4aa3066ba1229d8f3c2ddbf43f700e5bc",
         "type": "github"
       },
       "original": {
