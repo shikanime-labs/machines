@@ -29,7 +29,7 @@ jobs:
           client-id: ${{ vars.OPERATOR_APP_CLIENT_ID }}
           permission-contents: read
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
-      - uses: shikanime-labs/actions/checkout@5993d4d95befc190a14c0d143583683d203ad8d1
+      - uses: shikanime-labs/actions/checkout@a3080c13ff2d812fcefd29c6655d042d5ea6b8e7
         with:
           github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f
@@ -37,7 +37,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
           username: ${{ github.actor }}
-      - uses: shikanime-labs/actions/nix/setup@5993d4d95befc190a14c0d143583683d203ad8d1
+      - uses: shikanime-labs/actions/nix/setup@a3080c13ff2d812fcefd29c6655d042d5ea6b8e7
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
           cachix-name: shikanime-studio
@@ -47,9 +47,9 @@ jobs:
           extra-platforms: arm64
           github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - id: direnv
-        uses: shikanime-labs/actions/direnv@5993d4d95befc190a14c0d143583683d203ad8d1
+        uses: shikanime-labs/actions/direnv@a3080c13ff2d812fcefd29c6655d042d5ea6b8e7
       - id: skaffold
-        uses: shikanime-labs/actions/skaffold/integration@5993d4d95befc190a14c0d143583683d203ad8d1
+        uses: shikanime-labs/actions/skaffold/integration@a3080c13ff2d812fcefd29c6655d042d5ea6b8e7
         with:
           push: ${{ inputs.push }}
       - name: Save manifest
@@ -84,7 +84,7 @@ jobs:
           client-id: ${{ vars.OPERATOR_APP_CLIENT_ID }}
           permission-contents: read
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
-      - uses: shikanime-labs/actions/checkout@5993d4d95befc190a14c0d143583683d203ad8d1
+      - uses: shikanime-labs/actions/checkout@a3080c13ff2d812fcefd29c6655d042d5ea6b8e7
         with:
           github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f
@@ -92,7 +92,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
           username: ${{ github.actor }}
-      - uses: shikanime-labs/actions/nix/setup@5993d4d95befc190a14c0d143583683d203ad8d1
+      - uses: shikanime-labs/actions/nix/setup@a3080c13ff2d812fcefd29c6655d042d5ea6b8e7
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
           cachix-name: shikanime-studio
@@ -102,8 +102,8 @@ jobs:
           extra-platforms: arm64
           github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - id: direnv
-        uses: shikanime-labs/actions/direnv@5993d4d95befc190a14c0d143583683d203ad8d1
-      - uses: shikanime-labs/actions/skaffold/integration@5993d4d95befc190a14c0d143583683d203ad8d1
+        uses: shikanime-labs/actions/direnv@a3080c13ff2d812fcefd29c6655d042d5ea6b8e7
+      - uses: shikanime-labs/actions/skaffold/integration@a3080c13ff2d812fcefd29c6655d042d5ea6b8e7
         with:
           profile: ${{ matrix.name }}
           push: ${{ inputs.push }}
@@ -121,10 +121,10 @@ jobs:
           client-id: ${{ vars.OPERATOR_APP_CLIENT_ID }}
           permission-contents: read
           private-key: ${{ secrets.OPERATOR_PRIVATE_KEY }}
-      - uses: shikanime-labs/actions/checkout@5993d4d95befc190a14c0d143583683d203ad8d1
+      - uses: shikanime-labs/actions/checkout@a3080c13ff2d812fcefd29c6655d042d5ea6b8e7
         with:
           github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
-      - uses: shikanime-labs/actions/nix/setup@5993d4d95befc190a14c0d143583683d203ad8d1
+      - uses: shikanime-labs/actions/nix/setup@a3080c13ff2d812fcefd29c6655d042d5ea6b8e7
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
           cachix-name: shikanime-studio
@@ -134,4 +134,4 @@ jobs:
           extra-platforms: arm64
           github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - id: setup-profiles-jobs
-        uses: shikanime-labs/actions/skaffold/setup-profiles-jobs@5993d4d95befc190a14c0d143583683d203ad8d1
+        uses: shikanime-labs/actions/skaffold/setup-profiles-jobs@a3080c13ff2d812fcefd29c6655d042d5ea6b8e7
