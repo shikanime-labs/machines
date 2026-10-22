@@ -399,7 +399,7 @@
               expr = "30 2 * * *";
             };
             skills = [
-              "sks-renovate-sweep"
+              "sks-maintenance"
               "sks-issue"
               "sks-land"
             ];
