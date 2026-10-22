@@ -161,7 +161,7 @@
         jobs = [
           {
             id = "3453978b1312";
-            name = "weekly-a2a-cluster-efficiency-audit";
+            name = "weekly-cluster-efficiency-audit";
             enabled = true;
             deliver = "local";
             schedule = {
@@ -362,6 +362,34 @@
                  reuse recurring context (threads a previous run answered, noise
                  patterns to skip), then honcho_conclude write one line per durable
                  lesson.
+            '';
+          }
+          {
+            id = "98bded605070";
+            name = "monthly-sdlc-efficiency-audit";
+            enabled = true;
+            deliver = "local";
+            schedule = {
+              kind = "cron";
+              expr = "0 3 1 * *";
+            };
+            skills = [
+              "sks-sdlc-efficiency"
+              "sks-issue"
+            ];
+            prompt = ''
+              Monthly SDLC efficiency audit for shikanime-labs and shikanime-studio.
+
+              1. Load sks-sdlc-efficiency and run its measurement pass over both orgs:
+                 census, untriaged scan, review and merge latency with bot rows split
+                 out, merged-PR residue, landing-gate stalls, stale branches.
+              2. Dedup findings against open issues in
+                 shikanime-labs/manifests: gh issue list -R shikanime-labs/manifests
+                 --state open. Already-tracked findings are listed, never re-filed.
+              3. File at most 3 proposal issues in shikanime-labs/manifests via sks-issue,
+                 each acceptance ledger carrying the measured baseline as starting value.
+                 This run is interrupted at about 3 minutes: measure, dedup, file,
+                 report - proposals only, no PRs, no edits to the items measured.
             '';
           }
         ];
