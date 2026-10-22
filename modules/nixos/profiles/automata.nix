@@ -160,73 +160,6 @@
       hermesHomeFiles."cron/jobs.json" = builtins.toJSON {
         jobs = [
           {
-            id = "164a6977d1ea";
-            name = "daily-grafana-alert-triage";
-            enabled = true;
-            deliver = "local";
-            schedule = {
-              kind = "cron";
-              expr = "0 0 * * *";
-            };
-            skills = [
-              "sks-audit"
-              "sks-issue"
-              "sks-commit"
-              "sks-pr"
-              "sks-fastlane"
-            ];
-            prompt = ''
-              Daily alert triage for the nishir fleet.
-            '';
-          }
-          {
-            id = "58e6ae639a88";
-            name = "daily-flux-failure-triage";
-            enabled = true;
-            deliver = "local";
-            schedule = {
-              kind = "cron";
-              expr = "15 0 * * *";
-            };
-            skills = [
-              "sks-audit"
-              "sks-issue"
-              "sks-commit"
-              "sks-pr"
-              "sks-fastlane"
-            ];
-            prompt = ''
-              Daily Flux health triage for the nishir fleet.
-            '';
-          }
-          {
-            id = "c2e85641351b";
-            name = "daily-github-actions-failure-triage";
-            enabled = true;
-            deliver = "local";
-            schedule = {
-              kind = "cron";
-              expr = "30 0 * * *";
-            };
-            skills = [
-              "sks-audit"
-              "sks-issue"
-              "sks-commit"
-              "sks-pr"
-              "sks-fastlane"
-            ];
-            prompt = ''
-              Daily CI failure sweep for shikanime-labs, shikanime-studio and
-              cloud-pi-native.
-
-              1. In cloud-pi-native only sweep repos with open PRs or issues authored by
-                 shikanime or yorha-operator (gh search prs/issues --owner
-                 cloud-pi-native --author shikanime --state open, then the same with
-                 --author yorha-operator; one flag per run, union the results);
-                 file issues only in those repos.
-            '';
-          }
-          {
             id = "3453978b1312";
             name = "weekly-a2a-cluster-efficiency-audit";
             enabled = true;
@@ -292,8 +225,8 @@
             '';
           }
           {
-            id = "94e210d7e1fd";
-            name = "daily-security-audit";
+            id = "a13c7b90e4f2";
+            name = "daily-org-audit";
             enabled = true;
             deliver = "local";
             schedule = {
@@ -308,36 +241,24 @@
               "sks-fastlane"
             ];
             prompt = ''
-              Daily security audit for shikanime-labs, shikanime-studio and
-              cloud-pi-native.
+              Daily audit of the shikanime orgs (shikanime-labs, shikanime-studio and
+              cloud-pi-native) across every sks-audit surface: GitHub security
+              alerts, perimeter redteam, CI failures, alertmanager alerts, Flux
+              readiness, Kubernetes warning events.
 
-              1. In cloud-pi-native only file issues for repos with open PRs or issues
+              1. Cover every surface each run; the skill owns procedure, filing,
+                 adversarial discovery and the memory loop.
+              2. In cloud-pi-native only file issues for repos with open PRs or issues
                  authored by shikanime or yorha-operator (gh search prs/issues --owner
                  cloud-pi-native --author shikanime --state open, then the same with
-                 --author yorha-operator; one flag per run, union the results);
-                 note other alerts without filing.
-              2. Never close or dismiss alerts from this job; resolved alerts are noted
-                 only.
-            '';
-          }
-          {
-            id = "2cf2e9db64d5";
-            name = "daily-security-redteam";
-            enabled = true;
-            deliver = "local";
-            schedule = {
-              kind = "cron";
-              expr = "15 2 * * *";
-            };
-            skills = [
-              "sks-audit"
-              "sks-issue"
-              "sks-commit"
-              "sks-pr"
-              "sks-fastlane"
-            ];
-            prompt = ''
-              Daily offensive security probe for shikanime-labs and shikanime-studio.
+                 --author yorha-operator; one flag per run, union the results); note
+                 other findings without filing.
+              3. Never close or dismiss alerts from this job; resolved findings are
+                 noted only.
+              4. After the surfaces: hunt for audit gaps the surfaces do not cover
+                 yet - an org repo, fleet endpoint, alert class or failure mode with
+                 no surface - and file one issue per gap in shikanime-labs/manifests
+                 proposing the new surface (what to read, with which command).
             '';
           }
           {
@@ -443,24 +364,7 @@
                  lesson.
             '';
           }
-          {
-            id = "07ace7423c04";
-            name = "daily-kubernetes-events-triage";
-            enabled = true;
-            deliver = "local";
-            schedule = {
-              kind = "cron";
-              expr = "45 2 * * *";
-            };
-            skills = [
-              "sks-audit"
-              "sks-issue"
-              "sks-fastlane"
-            ];
-            prompt = ''
-              Daily Kubernetes warning-events triage for the nishir fleet.
-            '';
-          }
+          
         ];
       };
 
