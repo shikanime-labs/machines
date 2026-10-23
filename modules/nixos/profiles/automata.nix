@@ -507,7 +507,7 @@
                 "skills"
               ];
             };
-            github-refine = {
+            github-issue-assigned = {
               deliver = "log";
               events = [ "issues" ];
               filters = [
@@ -532,11 +532,13 @@
                 }
               ];
               prompt = ''
-                Refine GitHub issue #{issue.number} in {repository.full_name}:
-                converge the solution with all assignees before any development.
-                Implementation needs an explicit go-ahead.
+                GitHub issue #{issue.number} in {repository.full_name} was assigned to
+                yorha-operator: the assignment is the mandate to own the solution.
               '';
-              skills = [ "sks-issue-refine" ];
+              skills = [
+                "sks-dev"
+                "sks-delegate"
+              ];
               toolsets = [
                 "terminal"
                 "file"
@@ -616,6 +618,35 @@
                 Review pull request #{number} in {repository.full_name}.
               '';
               skills = [ "sks-pr-review" ];
+              toolsets = [
+                "terminal"
+                "file"
+                "web"
+                "skills"
+              ];
+            };
+            github-pr-assigned = {
+              deliver = "log";
+              events = [ "pull_request_review" ];
+              filters = [
+                {
+                  field = "action";
+                  equals = "submitted";
+                }
+                {
+                  field = "pull_request.draft";
+                  not_equals = true;
+                }
+                {
+                  field = "pull_request.assignees";
+                  regex = ''"login": "yorha-operator"'';
+                }
+              ];
+              prompt = ''
+                A review was submitted on pull request #{number} in {repository.full_name},
+                where yorha-operator is the assignee and owns the PR. Address it.
+              '';
+              skills = [ "sks-pr-resolve" ];
               toolsets = [
                 "terminal"
                 "file"
