@@ -226,9 +226,13 @@ in
     home.stateVersion = "26.05";
     programs.git = {
       enable = true;
-      extraConfig.commit.gpgsign = false;
-      userEmail = "243783539+yorha-operator@users.noreply.github.com";
-      userName = "YoRHa Operator";
+      settings = {
+        commit.gpgsign = false;
+        user = {
+          email = "243783539+yorha-operator@users.noreply.github.com";
+          name = "YoRHa Operator";
+        };
+      };
     };
   };
 
