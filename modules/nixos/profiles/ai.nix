@@ -114,7 +114,7 @@ let
         "command"
         "workstation"
       ];
-      url = "http://automata.taila659a.ts.net:9900";
+      url = "https://a2a.automata.i.shikanime.studio";
     }
   ];
 
