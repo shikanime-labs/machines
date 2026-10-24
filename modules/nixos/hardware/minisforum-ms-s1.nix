@@ -1,6 +1,8 @@
 { pkgs, ... }:
 
 {
+  imports = [ ./amd-npu.nix ];
+
   # RKE2 kubelet reserves scaled to this hardware class; without them
   # allocatable equals physical RAM and a large pod can OOM system daemons.
   services.knix.extraConfig.kubelet-arg = [
