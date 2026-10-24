@@ -48,6 +48,7 @@ let
     inputs.skills.nixosModules.skills
     (mkCuaDriverModule system)
     (mkHermesAgentModule system)
+    { home-manager.sharedModules = [ inputs.identities.homeModules.default ]; }
   ];
 
   mkBeelinkClusterModules =
@@ -106,7 +107,11 @@ let
         inherit system;
         config.allowUnfree = true;
       };
-      modules = [ ../../modules/nixos/profiles/automata.nix ] ++ (mkWorkstationsModules system);
+      modules = [
+        ../../modules/nixos/profiles/automata.nix
+        ../../modules/nixos/users/hermes.nix
+      ]
+      ++ (mkWorkstationsModules system);
     }).config.system.build.containerdiskImage;
 
   mkAshiraNixosConfiguration =
