@@ -221,26 +221,6 @@ let
 
 in
 {
-  home-manager.users.hermes = {
-    home.packages = lib.mkForce [ ];
-    home.stateVersion = "26.05";
-    programs.git = {
-      enable = true;
-      settings = {
-        commit.gpgsign = false;
-        user = {
-          email = "243783539+yorha-operator@users.noreply.github.com";
-          name = "YoRHa Operator";
-        };
-      };
-    };
-  };
-
-  users.users.hermes.extraGroups = [
-    "adm"
-    "systemd-journal"
-  ];
-
   networking.firewall.allowedTCPPorts = [
     9119
     9900
