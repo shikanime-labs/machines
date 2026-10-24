@@ -108,6 +108,11 @@
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    nix-amd-ai = {
+      url = "github:noamsto/nix-amd-ai";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware";
       inputs.nixpkgs.follows = "nixpkgs";
