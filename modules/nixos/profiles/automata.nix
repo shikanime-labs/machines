@@ -466,162 +466,166 @@
         "a2a"
       ];
 
-      settings.platforms.webhook = {
-        enabled = true;
-        extra = {
-          port = 8644;
-          rate_limit = 120;
-          routes = {
-            github-issue = {
-              deliver = "log";
-              events = [ "issues" ];
-              filters = [
-                {
-                  field = "action";
-                  "in" = [
-                    "opened"
-                    "reopened"
-                    "edited"
-                  ];
-                }
-                {
-                  field = "issue.pull_request";
-                  missing = true;
-                }
-                {
-                  field = "sender.login";
-                  "in" = [
-                    "shikanime"
-                    "yorha-operator"
-                  ];
-                }
-              ];
-              prompt = ''
-                Triage GitHub issue #{issue.number} in {repository.full_name}.
-              '';
-              skills = [ "sks-triage" ];
-              toolsets = [
-                "terminal"
-                "file"
-                "web"
-                "skills"
-              ];
-            };
-            github-refine = {
-              deliver = "log";
-              events = [ "issues" ];
-              filters = [
-                {
-                  field = "action";
-                  equals = "assigned";
-                }
-                {
-                  field = "issue.pull_request";
-                  missing = true;
-                }
-                {
-                  field = "assignee.login";
-                  equals = "yorha-operator";
-                }
-                {
-                  field = "sender.login";
-                  "in" = [
-                    "shikanime"
-                    "yorha-operator"
-                  ];
-                }
-              ];
-              prompt = ''
-                Refine GitHub issue #{issue.number} in {repository.full_name}:
-                converge the solution with all assignees before any development.
-                Implementation needs an explicit go-ahead.
-              '';
-              skills = [ "sks-issue-refine" ];
-              toolsets = [
-                "terminal"
-                "file"
-                "web"
-                "skills"
-              ];
-            };
-            github-mention = {
-              deliver = "log";
-              events = [
-                "issue_comment"
-                "pull_request_review_comment"
-              ];
-              filters = [
-                {
-                  field = "action";
-                  "in" = [
-                    "created"
-                    "edited"
-                  ];
-                }
-                {
-                  field = "comment.body";
-                  contains = "@yorha-operator";
-                }
-                {
-                  field = "sender.login";
-                  "in" = [ "shikanime" ];
-                }
-              ];
-              prompt = ''
-                Answer the mention in {comment.html_url}.
-              '';
-              skills = [ "sks-triage" ];
-              toolsets = [
-                "terminal"
-                "file"
-                "web"
-                "skills"
-              ];
-            };
-            github-pr = {
-              deliver = "log";
-              events = [ "pull_request" ];
-              filters = [
-                {
-                  field = "action";
-                  "in" = [
-                    "opened"
-                    "reopened"
-                    "synchronize"
-                    "review_requested"
-                    "edited"
-                  ];
-                }
-                {
-                  field = "pull_request.draft";
-                  not_equals = true;
-                }
-                {
-                  field = "pull_request.mergeable";
-                  not_equals = false;
-                }
-                {
-                  field = "pull_request.requested_reviewers";
-                  regex = ''"login": "yorha-operator"'';
-                }
-                {
-                  field = "sender.login";
-                  "in" = [
-                    "shikanime"
-                    "yorha-operator"
-                  ];
-                }
-              ];
-              prompt = ''
-                Review pull request #{number} in {repository.full_name}.
-              '';
-              skills = [ "sks-pr-review" ];
-              toolsets = [
-                "terminal"
-                "file"
-                "web"
-                "skills"
-              ];
+      settings.platforms = {
+        discord.unauthorized_dm_behavior = "pair";
+        matrix.unauthorized_dm_behavior = "pair";
+        webhook = {
+          enabled = true;
+          extra = {
+            port = 8644;
+            rate_limit = 120;
+            routes = {
+              github-issue = {
+                deliver = "log";
+                events = [ "issues" ];
+                filters = [
+                  {
+                    field = "action";
+                    "in" = [
+                      "opened"
+                      "reopened"
+                      "edited"
+                    ];
+                  }
+                  {
+                    field = "issue.pull_request";
+                    missing = true;
+                  }
+                  {
+                    field = "sender.login";
+                    "in" = [
+                      "shikanime"
+                      "yorha-operator"
+                    ];
+                  }
+                ];
+                prompt = ''
+                  Triage GitHub issue #{issue.number} in {repository.full_name}.
+                '';
+                skills = [ "sks-triage" ];
+                toolsets = [
+                  "terminal"
+                  "file"
+                  "web"
+                  "skills"
+                ];
+              };
+              github-refine = {
+                deliver = "log";
+                events = [ "issues" ];
+                filters = [
+                  {
+                    field = "action";
+                    equals = "assigned";
+                  }
+                  {
+                    field = "issue.pull_request";
+                    missing = true;
+                  }
+                  {
+                    field = "assignee.login";
+                    equals = "yorha-operator";
+                  }
+                  {
+                    field = "sender.login";
+                    "in" = [
+                      "shikanime"
+                      "yorha-operator"
+                    ];
+                  }
+                ];
+                prompt = ''
+                  Refine GitHub issue #{issue.number} in {repository.full_name}:
+                  converge the solution with all assignees before any development.
+                  Implementation needs an explicit go-ahead.
+                '';
+                skills = [ "sks-issue-refine" ];
+                toolsets = [
+                  "terminal"
+                  "file"
+                  "web"
+                  "skills"
+                ];
+              };
+              github-mention = {
+                deliver = "log";
+                events = [
+                  "issue_comment"
+                  "pull_request_review_comment"
+                ];
+                filters = [
+                  {
+                    field = "action";
+                    "in" = [
+                      "created"
+                      "edited"
+                    ];
+                  }
+                  {
+                    field = "comment.body";
+                    contains = "@yorha-operator";
+                  }
+                  {
+                    field = "sender.login";
+                    "in" = [ "shikanime" ];
+                  }
+                ];
+                prompt = ''
+                  Answer the mention in {comment.html_url}.
+                '';
+                skills = [ "sks-triage" ];
+                toolsets = [
+                  "terminal"
+                  "file"
+                  "web"
+                  "skills"
+                ];
+              };
+              github-pr = {
+                deliver = "log";
+                events = [ "pull_request" ];
+                filters = [
+                  {
+                    field = "action";
+                    "in" = [
+                      "opened"
+                      "reopened"
+                      "synchronize"
+                      "review_requested"
+                      "edited"
+                    ];
+                  }
+                  {
+                    field = "pull_request.draft";
+                    not_equals = true;
+                  }
+                  {
+                    field = "pull_request.mergeable";
+                    not_equals = false;
+                  }
+                  {
+                    field = "pull_request.requested_reviewers";
+                    regex = ''"login": "yorha-operator"'';
+                  }
+                  {
+                    field = "sender.login";
+                    "in" = [
+                      "shikanime"
+                      "yorha-operator"
+                    ];
+                  }
+                ];
+                prompt = ''
+                  Review pull request #{number} in {repository.full_name}.
+                '';
+                skills = [ "sks-pr-review" ];
+                toolsets = [
+                  "terminal"
+                  "file"
+                  "web"
+                  "skills"
+                ];
+              };
             };
           };
         };
