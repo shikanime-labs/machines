@@ -40,6 +40,41 @@
     };
   };
 
+  environment.systemPackages = [ pkgs.himalaya ];
+
+  # CLI mail for Operator 6O's mailbox, beside the Hermes email gateway that
+  # already owns the credentials. The password is read from the sops secret
+  # file at use time (hermes-owned, 0400) so no secret lands in the config.
+  home-manager.users.hermes.home.file.".config/himalaya/config.toml".text = ''
+    [accounts.operator6o]
+    default = true
+    email = "operator6o.automata@gmail.com"
+    display-name = "Operator 6O"
+
+    folder.aliases.inbox = "INBOX"
+    folder.aliases.sent = "[Gmail]/Sent Mail"
+    folder.aliases.drafts = "[Gmail]/Drafts"
+    folder.aliases.trash = "[Gmail]/Trash"
+
+    backend.type = "imap"
+    backend.host = "imap.gmail.com"
+    backend.port = 993
+    backend.encryption.type = "tls"
+    backend.login = "operator6o.automata@gmail.com"
+    backend.auth.type = "password"
+    backend.auth.cmd = "cat /run/secrets/hermes-agent-email-password"
+
+    message.send.backend.type = "smtp"
+    message.send.backend.host = "smtp.gmail.com"
+    message.send.backend.port = 465
+    message.send.backend.encryption.type = "tls"
+    message.send.backend.login = "operator6o.automata@gmail.com"
+    message.send.backend.auth.type = "password"
+    message.send.backend.auth.cmd = "cat /run/secrets/hermes-agent-email-password"
+
+    message.send.save-copy = true
+  '';
+
   programs.nix-ld = {
     enable = true;
     libraries = [
