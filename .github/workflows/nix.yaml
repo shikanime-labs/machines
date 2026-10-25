@@ -83,6 +83,8 @@ jobs:
           github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - id: direnv
         uses: shikanime-labs/actions/direnv@a3080c13ff2d812fcefd29c6655d042d5ea6b8e7
+      - name: Free disk space
+        run: 'sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /usr/local/.ghcup'
       - uses: shikanime-labs/actions/nix/integration@a3080c13ff2d812fcefd29c6655d042d5ea6b8e7
         with:
           name: ${{ matrix.name }}
