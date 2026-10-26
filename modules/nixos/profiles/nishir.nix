@@ -258,6 +258,10 @@ with lib;
       };
     };
 
+    # Tailworm serve audit (#1639, F7): both services forward tailnet-only
+    # HTTPS ports to loopback HTTP ports (a2a :9900, api :8642). Loopback TCP
+    # targets, no unix API sockets, no funnel -- F7 does not apply. Keep both
+    # listeners bound to 127.0.0.1 only; never forward socket or file targets.
     tailscale-serve-a2a = {
       description = "Expose Hermes A2A agent via Tailscale serve";
       after = [

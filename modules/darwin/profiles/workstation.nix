@@ -1,4 +1,11 @@
 let
+  # Tailworm serve audit (#1639, F7): these launchd daemons forward tailnet-only
+  # HTTPS ports to loopback HTTP ports (a2a :9900, lmstudio :1234) on this macOS
+  # workstation. Targets are loopback TCP, not unix API sockets, so the F7
+  # socket-takeover pattern does not apply; the sockets listen on 127.0.0.1 only
+  # and `tailscale serve` grants access to tailnet identities, not the public
+  # internet (no funnel here). Keep ports loopback-bound; never forward socket
+  # or file targets.
   mkTailscaleServe = name: port: {
     command = "/Applications/Tailscale.app/Contents/MacOS/Tailscale serve --yes --bg --https=${toString port} http://127.0.0.1:${toString port}";
     serviceConfig = {

@@ -231,6 +231,10 @@
 
   # Expose LM Studio over Tailscale HTTPS (ts.net endpoint on :1234). Runs after
   # tailscaled is up; `serve` persists in tailscaled state after first apply.
+  # Tailworm serve audit (#1639, F7): forwards tailnet-only HTTPS :1234 to
+  # loopback http://127.0.0.1:1234 (LM Studio). Loopback TCP target, no unix API
+  # socket, no funnel -- the F7 socket-takeover pattern does not apply. Keep the
+  # LM Studio listener bound to 127.0.0.1; never forward socket or file targets.
   systemd.services.tailscale-serve-lmstudio = {
     description = "Expose LM Studio over Tailscale serve";
     after = [ "tailscaled.service" ];
