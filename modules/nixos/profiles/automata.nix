@@ -626,6 +626,51 @@
                   "skills"
                 ];
               };
+              github-pr-land = {
+                deliver = "log";
+                events = [ "pull_request_review" ];
+                filters = [
+                  {
+                    field = "action";
+                    "in" = [ "submitted" ];
+                  }
+                  {
+                    field = "review.state";
+                    "in" = [
+                      "approved"
+                      "commented"
+                      "changes_requested"
+                    ];
+                  }
+                  {
+                    field = "pull_request.user.login";
+                    equals = "yorha-operator";
+                  }
+                  {
+                    field = "sender.login";
+                    not_equals = "yorha-operator";
+                  }
+                  {
+                    field = "review.author_association";
+                    "in" = [
+                      "COLLABORATOR"
+                      "MEMBER"
+                      "OWNER"
+                    ];
+                  }
+                ];
+                prompt = ''
+                  Land pull request #{number} in {repository.full_name} after
+                  review by {sender.login} ({review.state}).
+                '';
+                skills = [ "sks-land" ];
+                toolsets = [
+                  "terminal"
+                  "file"
+                  "web"
+                  "skills"
+                ];
+              };
             };
           };
         };
