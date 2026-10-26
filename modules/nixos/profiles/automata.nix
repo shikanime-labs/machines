@@ -492,10 +492,18 @@
                     missing = true;
                   }
                   {
-                    field = "sender.login";
-                    "in" = [
-                      "shikanime"
-                      "yorha-operator"
+                    any = [
+                      {
+                        field = "sender.login";
+                        "in" = [
+                          "shikanime"
+                          "yorha-operator"
+                        ];
+                      }
+                      {
+                        field = "repository.owner.login";
+                        equals = "cloud-pi-native";
+                      }
                     ];
                   }
                 ];
@@ -527,10 +535,18 @@
                     equals = "yorha-operator";
                   }
                   {
-                    field = "sender.login";
-                    "in" = [
-                      "shikanime"
-                      "yorha-operator"
+                    any = [
+                      {
+                        field = "sender.login";
+                        "in" = [
+                          "shikanime"
+                          "yorha-operator"
+                        ];
+                      }
+                      {
+                        field = "repository.owner.login";
+                        equals = "cloud-pi-native";
+                      }
                     ];
                   }
                 ];
@@ -566,8 +582,16 @@
                     contains = "@yorha-operator";
                   }
                   {
-                    field = "sender.login";
-                    "in" = [ "shikanime" ];
+                    any = [
+                      {
+                        field = "sender.login";
+                        "in" = [ "shikanime" ];
+                      }
+                      {
+                        field = "repository.owner.login";
+                        equals = "cloud-pi-native";
+                      }
+                    ];
                   }
                 ];
                 prompt = ''
@@ -608,10 +632,18 @@
                     regex = ''"login": "yorha-operator"'';
                   }
                   {
-                    field = "sender.login";
-                    "in" = [
-                      "shikanime"
-                      "yorha-operator"
+                    any = [
+                      {
+                        field = "sender.login";
+                        "in" = [
+                          "shikanime"
+                          "yorha-operator"
+                        ];
+                      }
+                      {
+                        field = "repository.owner.login";
+                        equals = "cloud-pi-native";
+                      }
                     ];
                   }
                 ];
