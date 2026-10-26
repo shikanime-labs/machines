@@ -494,6 +494,8 @@
                   {
                     any = [
                       {
+                        # roster: shikanime-labs/core
+                        # (refresh: gh api orgs/shikanime-labs/teams/core/members --jq '.[].login')
                         field = "sender.login";
                         "in" = [
                           "shikanime"
@@ -501,8 +503,34 @@
                         ];
                       }
                       {
-                        field = "repository.owner.login";
-                        equals = "cloud-pi-native";
+                        # roster: shikanime-studio/core (currently identical to labs)
+                        # (refresh: gh api orgs/shikanime-studio/teams/core/members --jq '.[].login')
+                        field = "sender.login";
+                        "in" = [
+                          "shikanime"
+                          "yorha-operator"
+                        ];
+                      }
+                      {
+                        # roster: cloud-pi-native/socle, owner-scoped so the
+                        # roster never passes gates on other orgs' events
+                        # (refresh: gh api orgs/cloud-pi-native/teams/socle/members --jq '.[].login')
+                        all = [
+                          {
+                            field = "repository.owner.login";
+                            equals = "cloud-pi-native";
+                          }
+                          {
+                            field = "sender.login";
+                            "in" = [
+                              "KepoParis"
+                              "StephaneTrebel"
+                              "shikanime"
+                              "AkramBlouza"
+                              "iliesmrf"
+                            ];
+                          }
+                        ];
                       }
                     ];
                   }
@@ -537,6 +565,8 @@
                   {
                     any = [
                       {
+                        # roster: shikanime-labs/core
+                        # (refresh: gh api orgs/shikanime-labs/teams/core/members --jq '.[].login')
                         field = "sender.login";
                         "in" = [
                           "shikanime"
@@ -544,8 +574,34 @@
                         ];
                       }
                       {
-                        field = "repository.owner.login";
-                        equals = "cloud-pi-native";
+                        # roster: shikanime-studio/core (currently identical to labs)
+                        # (refresh: gh api orgs/shikanime-studio/teams/core/members --jq '.[].login')
+                        field = "sender.login";
+                        "in" = [
+                          "shikanime"
+                          "yorha-operator"
+                        ];
+                      }
+                      {
+                        # roster: cloud-pi-native/socle, owner-scoped so the
+                        # roster never passes gates on other orgs' events
+                        # (refresh: gh api orgs/cloud-pi-native/teams/socle/members --jq '.[].login')
+                        all = [
+                          {
+                            field = "repository.owner.login";
+                            equals = "cloud-pi-native";
+                          }
+                          {
+                            field = "sender.login";
+                            "in" = [
+                              "KepoParis"
+                              "StephaneTrebel"
+                              "shikanime"
+                              "AkramBlouza"
+                              "iliesmrf"
+                            ];
+                          }
+                        ];
                       }
                     ];
                   }
@@ -584,18 +640,38 @@
                   {
                     any = [
                       {
+                        # own-org mentions: human operator only — the bot's own
+                        # comments quoting @yorha-operator must not refire (echo loop)
                         field = "sender.login";
                         "in" = [ "shikanime" ];
                       }
                       {
-                        field = "repository.owner.login";
-                        equals = "cloud-pi-native";
+                        # roster: cloud-pi-native/socle on cpn repos only; the socle
+                        # roster excludes the bot, so this branch is echo-safe
+                        # (refresh: gh api orgs/cloud-pi-native/teams/socle/members --jq '.[].login')
+                        all = [
+                          {
+                            field = "repository.owner.login";
+                            equals = "cloud-pi-native";
+                          }
+                          {
+                            field = "sender.login";
+                            "in" = [
+                              "KepoParis"
+                              "StephaneTrebel"
+                              "shikanime"
+                              "AkramBlouza"
+                              "iliesmrf"
+                            ];
+                          }
+                        ];
                       }
                     ];
                   }
                 ];
                 prompt = ''
                   Answer the mention in {comment.html_url}.
+                  If the repository owner is cloud-pi-native, answer in French.
                 '';
                 skills = [ "sks-triage" ];
                 toolsets = [
@@ -634,6 +710,8 @@
                   {
                     any = [
                       {
+                        # roster: shikanime-labs/core
+                        # (refresh: gh api orgs/shikanime-labs/teams/core/members --jq '.[].login')
                         field = "sender.login";
                         "in" = [
                           "shikanime"
@@ -641,8 +719,34 @@
                         ];
                       }
                       {
-                        field = "repository.owner.login";
-                        equals = "cloud-pi-native";
+                        # roster: shikanime-studio/core (currently identical to labs)
+                        # (refresh: gh api orgs/shikanime-studio/teams/core/members --jq '.[].login')
+                        field = "sender.login";
+                        "in" = [
+                          "shikanime"
+                          "yorha-operator"
+                        ];
+                      }
+                      {
+                        # roster: cloud-pi-native/socle, owner-scoped so the
+                        # roster never passes gates on other orgs' events
+                        # (refresh: gh api orgs/cloud-pi-native/teams/socle/members --jq '.[].login')
+                        all = [
+                          {
+                            field = "repository.owner.login";
+                            equals = "cloud-pi-native";
+                          }
+                          {
+                            field = "sender.login";
+                            "in" = [
+                              "KepoParis"
+                              "StephaneTrebel"
+                              "shikanime"
+                              "AkramBlouza"
+                              "iliesmrf"
+                            ];
+                          }
+                        ];
                       }
                     ];
                   }
