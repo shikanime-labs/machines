@@ -22,10 +22,11 @@
 
     tailscale = {
       enable = true;
-      extraUpFlags = [
-        "--accept-routes"
-        "--ssh"
-      ];
+      # Tailworm F1-F5 interim mitigation: Tailscale SSH is root-equivalent
+      # whenever forwarding is allowed, so the fleet default is off. Plain
+      # OpenSSH (enabled above) over the tailnet remains the standing access
+      # path; hosts that genuinely need Tailscale SSH opt back in explicitly.
+      extraUpFlags = [ "--accept-routes" ];
       openFirewall = true;
       useRoutingFeatures = "both";
     };
