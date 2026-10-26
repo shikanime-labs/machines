@@ -368,19 +368,19 @@
           }
           {
             id = "3c7ce2a4c3e1";
-            name = "daily-github-notification-sweep";
+            name = "15m-github-notification-sweep";
             enabled = true;
             deliver = "local";
             schedule = {
               kind = "cron";
-              expr = "0 2 * * *";
+              expr = "2,17,32,47 * * * *";
             };
             skills = [
               "sks-github-notif-sweep"
               "sks-triage"
             ];
             prompt = ''
-              Daily sweep of unread GitHub notifications for shikanime-labs and
+              Frequent sweep of unread GitHub notifications for shikanime-labs and
               shikanime-studio.
 
               1. Before reporting: honcho_search "notification sweep" and honcho_context -
