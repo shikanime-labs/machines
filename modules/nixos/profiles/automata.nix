@@ -621,7 +621,7 @@
                   }
                 ];
                 prompt = ''
-                  Land pull request #{number} in {repository.full_name} after
+                  Land pull request #{pull_request.number} in {repository.full_name} after
                   review by {sender.login} ({review.state}).
                 '';
                 skills = [ "sks-land" ];
