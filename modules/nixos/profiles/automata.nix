@@ -235,9 +235,6 @@
                  stale name, corrected port): fastlane. Deploy stays manual - never wrangler deploy
                  from this job. If step 3 already spent the run, report this step as Deferred
                  instead of starting it.
-              6. Before reporting: honcho_search "docs sync" and honcho_context - reuse recurring
-                 context (wikis that keep lagging, pages that keep drifting, ground-truth sources
-                 that settled past drift), then honcho_conclude write one line per durable lesson.
 
               Report: one bullet per wiki page updated (repo, page, change mirrored), the Deferred
               list, one line naming the changed repos whose wiki has no pages yet, then the drift
@@ -300,11 +297,8 @@
 
               1. Cover every surface each run; the skill owns procedure, filing,
                  adversarial discovery and the memory loop.
-              2. In cloud-pi-native only file issues for repos with open PRs or issues
-                 authored by shikanime or yorha-operator (gh search prs/issues --owner
-                 cloud-pi-native --author shikanime --state open, then the same with
-                 --author yorha-operator; one flag per run, union the results); note
-                 other findings without filing.
+              2. File issues across all three orgs on equal footing: no author
+                 filtering, no repo exclusions.
               3. After the surfaces: hunt for audit gaps the surfaces do not cover
                  yet - an org repo, fleet endpoint, alert class or failure mode with
                  no surface - and file one issue per gap in shikanime-labs/manifests
@@ -330,16 +324,6 @@
             prompt = ''
               Daily GitHub triage for shikanime-labs, shikanime-studio and
               cloud-pi-native.
-
-              1. In cloud-pi-native only triage repos with open PRs or issues authored by
-                 shikanime or yorha-operator (gh search prs/issues --owner
-                 cloud-pi-native --author shikanime --state open, then the same with
-                 --author yorha-operator; one flag per run, union the results);
-                 leave the rest untouched.
-              2. Before reporting: honcho_search "GitHub triage" and honcho_context -
-                 reuse recurring context (systemic findings already filed, items a
-                 previous run left pending on purpose), then honcho_conclude write
-                 one line per durable lesson.
             '';
           }
           {
@@ -355,15 +339,6 @@
             prompt = ''
               Daily GitHub cleanup for shikanime-labs, shikanime-studio and
               cloud-pi-native.
-
-              1. In cloud-pi-native only touch repos with open PRs or issues authored by
-                 shikanime or yorha-operator (gh search prs/issues --owner
-                 cloud-pi-native --author shikanime --state open, then the same with
-                 --author yorha-operator; one flag per run, union the results);
-                 never touch any other branch there.
-              2. Before reporting: honcho_search "stale branch cleanup" and honcho_context -
-                 reuse recurring context (branches a previous run flagged blocked and why),
-                 then honcho_conclude write one line per durable lesson.
             '';
           }
           {
@@ -382,11 +357,6 @@
             prompt = ''
               Frequent sweep of unread GitHub notifications for shikanime-labs and
               shikanime-studio.
-
-              1. Before reporting: honcho_search "notification sweep" and honcho_context -
-                 reuse recurring context (threads a previous run answered, noise
-                 patterns to skip), then honcho_conclude write one line per durable
-                 lesson.
             '';
           }
           {
@@ -406,15 +376,6 @@
             prompt = ''
               Daily landing pass over open renovate PRs across shikanime-labs,
               shikanime-studio and cloud-pi-native.
-
-              1. In cloud-pi-native only land repos with open PRs authored by
-                 shikanime or yorha-operator (gh search prs --owner cloud-pi-native
-                 --author shikanime --state open, then the same with --author
-                 yorha-operator; one flag per run, union the results); skip the rest.
-              2. Before reporting: honcho_search "renovate sweep" and honcho_context -
-                 reuse recurring context (PRs reported in previous runs and why they are
-                 stuck, repos with known renovate CI quirks), then honcho_conclude write
-                 one line per durable lesson.
             '';
           }
           {
