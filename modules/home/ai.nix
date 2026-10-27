@@ -277,6 +277,17 @@ in
     settings = {
       context.engine = "lcm";
 
+      # Secret manager posture: vaultwarden implements the Bitwarden Password
+      # Manager protocol (`bw`), not Secrets Manager (bws) — the bws source
+      # stays off. The generic command source is the supported substitute:
+      # a darwin-gated helper reading the base64-encoded KEY=VALUE blob from
+      # the login keychain.
+      secrets.bitwarden.enabled = false;
+      secrets.command = lib.optionalAttrs pkgs.stdenv.isDarwin {
+        enabled = true;
+        command = "security find-generic-password -a hermes-agent -s hermes-secrets -w | base64 -d";
+      };
+
       dashboard.oauth.self_hosted = {
         client_id = "hermes-agent";
         issuer = "https://accounts.i.shikanime.studio";
