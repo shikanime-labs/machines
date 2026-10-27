@@ -76,10 +76,7 @@
         clusters = [
           {
             name = "automata";
-            cluster = {
-              server = "https://nishir-k8s-operator.taila659a.ts.net";
-              certificate-authority = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt";
-            };
+            cluster.server = "https://nishir-k8s-operator.taila659a.ts.net";
           }
         ];
         users = [
