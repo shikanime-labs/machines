@@ -70,6 +70,16 @@ in
   };
 
   launchd.daemons = {
+    tailscale-accept-dns = {
+      command = "/Applications/Tailscale.app/Contents/MacOS/Tailscale set --accept-dns=true";
+      serviceConfig = {
+        KeepAlive.SuccessfulExit = false;
+        Label = "org.nixos.tailscale-accept-dns";
+        RunAtLoad = true;
+        StandardErrorPath = "/var/log/tailscale-accept-dns.log";
+        StandardOutPath = "/var/log/tailscale-accept-dns.log";
+      };
+    };
     tailscale-serve-a2a = mkTailscaleServe "a2a" 9900;
     tailscale-serve-lmstudio = mkTailscaleServe "lmstudio" 1234;
   };
