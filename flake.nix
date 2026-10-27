@@ -56,6 +56,11 @@
 
     hermes-agent = {
       url = "github:NousResearch/hermes-agent";
+      # Secrets-manager posture: Hermes' Bitwarden Secrets Manager source
+      # (bws) ships disabled by default (secrets.bitwarden.enabled = false)
+      # and stays that way — vaultwarden does not implement BSM, the fleet
+      # secret plane is sops-nix. The `bw` Password Manager protocol is
+      # vaultwarden-compatible and remains the desktop path.
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";
