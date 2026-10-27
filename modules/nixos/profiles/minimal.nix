@@ -35,6 +35,12 @@
     flake = "github:shikanime-labs/machines";
   };
 
+  # A wedged run must die, not block every later timer fire: the default
+  # oneshot has no runtime cap, so a hung remote-builder session froze
+  # upgrades for weeks on the sd-card hosts (machines#1651). Worst-case
+  # honest rebuild time; expiry terminates the whole cgroup incl. builders.
+  systemd.services.nixos-upgrade.serviceConfig.RuntimeMaxSec = "4h";
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken It‘s perfectly fine and recommended to leave
