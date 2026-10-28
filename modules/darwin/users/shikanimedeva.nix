@@ -7,7 +7,7 @@ let
 in
 {
   imports = [
-    ../../../modules/home/ai.nix
+    ../../../modules/home/automata.nix
     ../../../modules/home/base.nix
     ../../../modules/home/cloud.nix
     ../../../modules/home/fontconfig.nix
@@ -15,7 +15,7 @@ in
     ../../../modules/home/helix.nix
     ../../../modules/home/starship.nix
     ../../../modules/home/vcs.nix
-    ../../../modules/home/workstation.nix
+    ../../../modules/home/ai.nix
     ../../../modules/home/zed-editor.nix
   ];
 

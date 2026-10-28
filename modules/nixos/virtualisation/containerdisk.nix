@@ -63,7 +63,9 @@ in
 
     users = {
       groups.qemu.gid = 107;
-      users.hermes.extraGroups = [ "qemu" ];
+      # The automata persona account (operator-6o, declared by
+      # operator-6o.nix); this only adds the qemu membership.
+      users.operator-6o.extraGroups = [ "qemu" ];
     };
 
     services = {
