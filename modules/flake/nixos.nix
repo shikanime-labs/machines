@@ -6,6 +6,7 @@ let
       inputs.catppuccin.homeModules.default
       inputs.colemak.homeModules.default
       inputs.hermes-agent.homeManagerModules.default
+      inputs.skills.homeModules.skills
       inputs.sops-nix.homeModules.default
     ];
   };
@@ -107,11 +108,7 @@ let
         inherit system;
         config.allowUnfree = true;
       };
-      modules = [
-        ../../modules/nixos/profiles/automata.nix
-        ../../modules/nixos/users/hermes.nix
-      ]
-      ++ (mkWorkstationsModules system);
+      modules = [ ../../modules/nixos/profiles/automata.nix ] ++ (mkWorkstationsModules system);
     }).config.system.build.containerdiskImage;
 
   mkAshiraNixosConfiguration =
