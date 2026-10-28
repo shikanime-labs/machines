@@ -5,7 +5,7 @@
       ../../../modules/home/graphical.nix
       ../../../modules/home/ghostty.nix
       ../../../modules/home/starship.nix
-      ../../../modules/home/workstation.nix
+      ../../../modules/home/ai.nix
     ];
   };
 
