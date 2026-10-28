@@ -629,6 +629,79 @@
                   "skills"
                 ];
               };
+              fleet-gc = {
+                deliver = "log";
+                events = [ "issue_comment" ];
+                filters = [
+                  {
+                    field = "action";
+                    equals = "created";
+                  }
+                  {
+                    field = "repository.name";
+                    equals = "machines";
+                  }
+                  {
+                    field = "issue.pull_request";
+                    missing = true;
+                  }
+                  {
+                    field = "comment.body";
+                    contains = "/fleet-gc";
+                  }
+                  {
+                    field = "sender.login";
+                    "in" = [ "shikanime" ];
+                  }
+                ];
+                # Inline procedure until the machines skills pin carries the
+                # sks-gc fleet section; then shrink the prompt and rely on the
+                # injected skill. Route runs are unattended: the sweep only
+                # runs the three non-destructive reclaims (journals, nix gc,
+                # unused images) - never rm -rf, never user data.
+                prompt = ''
+                  Sweep the nishir fleet node disks (Longhorn DiskPressure
+                  recovery), then report per node. kubectl with the automata
+                  context is authenticated and holds pods create/exec/delete in
+                  longhorn-system; work only through that API, no ssh.
+
+                  1. Enumerate nodes: kubectl --context automata get nodes -o
+                     json | jq -r '.items[].metadata.name'
+                  2. Per node, start a privileged probe pod on that node (keep
+                     every pod until step 5, tolerate per-node failures and
+                     continue):
+                     kubectl --context automata -n longhorn-system run
+                     fleet-gc-<node> --restart=Never --image=busybox:1.36
+                     --overrides='{"spec":{"nodeName":"<node>","hostPID":true,"containers":[{"name":"gc","image":"busybox:1.36","securityContext":{"privileged":true},"command":["sh","-c","sleep 7200"],"volumeMounts":[{"name":"host","mountPath":"/host"}]}],"volumes":[{"name":"host","hostPath":{"path":"/","type":"Directory"}}]}}'
+                  3. Per node, run inside the probe pod via kubectl exec, each
+                     command with its own timeout and its output captured: df
+                     baseline (df -BM /host), then
+                     nsenter -t 1 -m -- sh -c 'journalctl --vacuum-size=500M',
+                     nsenter -t 1 -m -- sh -c
+                     '/run/current-system/sw/bin/nix-store --gc 2>&1 | tail -2',
+                     nsenter -t 1 -m -- sh -c 'export
+                     PATH=/var/lib/rancher/rke2/bin:$PATH
+                     CRI_CONFIG_FILE=/var/lib/rancher/rke2/agent/etc/crictl.yaml;
+                     crictl rmi --prune 2>&1 | tail -3', then df again. The df
+                     after the prune lags: containerd deletes blobs
+                     asynchronously, so read the df once more minutes later
+                     before judging the pass failed.
+                  4. Only the three commands above are authorized. Never delete
+                     files, never prune models or user data, never restart
+                     services.
+                  5. Delete every fleet-gc-* probe pod.
+                  6. Report one line per node: freed bytes, end state, failures.
+                     A node where the prune timed out still counts when its df
+                     dropped on the later read.
+                '';
+                skills = [ "sks-gc" ];
+                toolsets = [
+                  "terminal"
+                  "file"
+                  "web"
+                  "skills"
+                ];
+              };
             };
           };
         };
