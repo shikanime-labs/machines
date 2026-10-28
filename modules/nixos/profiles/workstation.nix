@@ -1,7 +1,10 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./machine.nix ];
+  imports = [
+    ./machine.nix
+    ./rapl-exporter.nix
+  ];
 
   programs.nix-ld = {
     enable = true;
