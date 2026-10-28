@@ -23,9 +23,6 @@
     kernelParams = [
       "amdgpu.gttsize=131072"
       "ttm.pages_limit=33554432"
-      # Prefill runs 13-16% faster in passthrough mode on this SoC (upstream
-      # measured 460 vs 385 tok/s @ 2k, decode unchanged). passthrough is the
-      # NPU-compatible setting: amd_iommu=off would hide amdxdna entirely.
       "iommu=pt"
     ];
 
