@@ -629,6 +629,53 @@
                   "skills"
                 ];
               };
+              github-project = {
+                deliver = "log";
+                events = [ "projects_v2_item" ];
+                filters = [
+                  {
+                    field = "action";
+                    equals = "edited";
+                  }
+                  {
+                    field = "projects_v2_item.project_node_id";
+                    equals = "PVT_kwDOEX1U4M4BoW9_";
+                  }
+                  {
+                    field = "projects_v2_item.content_type";
+                    equals = "Issue";
+                  }
+                  {
+                    field = "changes.field_value.field_node_id";
+                    equals = "PVTSSF_lADOEX1U4M4BoW9_zhm3c4U";
+                  }
+                  {
+                    field = "changes.field_value.to.name";
+                    equals = "In Progress";
+                  }
+                  {
+                    field = "sender.login";
+                    "in" = [ "shikanime" ];
+                  }
+                ];
+                prompt = ''
+                  Dispatch issue for project item {projects_v2_item.id}: resolve its
+                  number and repository with the GraphQL node API
+                  (node(id: "{projects_v2_item.content_node_id}"), fragment on Issue:
+                  number, repository{name, owner{login}}) and implement it.
+
+                  Follow the dev loop. Cap the run: implement the issue, land the
+                  PR if it is small and fastlane-eligible; anything bigger stays
+                  a reviewed PR. Never write to the project board.
+                '';
+                skills = [ "sks-dev" ];
+                toolsets = [
+                  "terminal"
+                  "file"
+                  "web"
+                  "skills"
+                ];
+              };
             };
           };
         };
