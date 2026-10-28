@@ -110,7 +110,6 @@ with lib;
           "mdadm"
           "nfsd"
           "os"
-          "rapl"
           "tapestats"
           "zfs"
         ];
