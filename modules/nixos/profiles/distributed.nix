@@ -21,6 +21,11 @@ let
     mandatoryFeatures = [ ];
   };
 
+  # sd-card hosts (fushi, minish, nemishi) no longer serve as remote builders:
+  # their flaky SSH fails the peers' distributed builds mid-closure (three
+  # instances during the 2026-10-26 sync2 run, machines#1651), and a
+  # speedFactor 1 / maxJobs 2 aarch64 peer adds nothing against four
+  # speedFactor 2 x86_64 builders. Re-add only with a stable SSH story.
   mkBuildMachines =
     machines:
     let
@@ -58,18 +63,21 @@ in
     settings = {
       trusted-users = [ "builder" ];
       builders-use-substitutes = true;
+      # Dead builders must fail fast, not hang the switch forever:
+      # a builder whose ssh peer died without EOF otherwise parks
+      # __build-remote in anon_pipe_read indefinitely (machines#1651).
+      connect-timeout = 15;
     };
   };
 
+  programs.ssh.extraConfig = ''
+    Host *.taila659a.ts.net
+      ServerAliveInterval 30
+      ServerAliveCountMax 3
+      ConnectTimeout 15
+  '';
+
   programs.ssh.knownHosts = mkSshKnownHosts [
-    (mkSshKnownHost {
-      hostName = "fushi";
-      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILrDoPfjV+jRuGXdsc+TlgaL/+eO9pPqav6SG+tl1nPC";
-    })
-    (mkSshKnownHost {
-      hostName = "minish";
-      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFWXSOEAx3pEzeoaqKV4gCCEVK3do+f2oJWlL++lGA/N";
-    })
     (mkSshKnownHost {
       hostName = "manash";
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDW8I5803nYCNIKmzXBgfVDYpOJvYH0jg8ht5Djr72eL";
