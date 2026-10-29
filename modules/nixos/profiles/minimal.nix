@@ -28,20 +28,6 @@
 
   };
 
-  # Automatically upgrade NixOS
-  system.autoUpgrade = {
-    enable = true;
-    flags = [ "--accept-flake-config" ];
-    flake = "github:shikanime-labs/machines";
-  };
-
-  # A wedged run must die, not block every later timer fire: the default
-  # oneshot has no runtime cap, so a hung remote-builder session froze
-  # upgrades for weeks on the sd-card hosts (machines#1651). TimeoutStartSec
-  # (RuntimeMaxSec is inert on Type=oneshot) expires into SIGTERM of the
-  # whole cgroup incl. builder children.
-  systemd.services.nixos-upgrade.serviceConfig.TimeoutStartSec = "4h";
-
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken It‘s perfectly fine and recommended to leave
