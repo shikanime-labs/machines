@@ -325,6 +325,13 @@ in
             default_model = "qwen/qwen3.8-flash";
             models = [ "qwen/qwen3.8-flash" ];
           };
+          shikanime-hetzner = {
+            api = "https://inference.i.shikanime.studio/v1";
+            transport = "chat_completions";
+            key_env = "SKS_API_KEY";
+            session_affinity_header = "x-sks-session-id";
+            default_model = "Qwen3.8-27B";
+          };
         };
         matrix = {
           allowed_rooms = [ "#automata:matrix.taila659a.ts.net" ];
