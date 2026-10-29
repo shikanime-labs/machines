@@ -37,9 +37,10 @@
 
   # A wedged run must die, not block every later timer fire: the default
   # oneshot has no runtime cap, so a hung remote-builder session froze
-  # upgrades for weeks on the sd-card hosts (machines#1651). Worst-case
-  # honest rebuild time; expiry terminates the whole cgroup incl. builders.
-  systemd.services.nixos-upgrade.serviceConfig.RuntimeMaxSec = "4h";
+  # upgrades for weeks on the sd-card hosts (machines#1651). TimeoutStartSec
+  # (RuntimeMaxSec is inert on Type=oneshot) expires into SIGTERM of the
+  # whole cgroup incl. builder children.
+  systemd.services.nixos-upgrade.serviceConfig.TimeoutStartSec = "4h";
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

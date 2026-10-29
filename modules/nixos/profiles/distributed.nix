@@ -74,6 +74,7 @@ in
     Host *.taila659a.ts.net
       ServerAliveInterval 30
       ServerAliveCountMax 3
+      ConnectTimeout 15
   '';
 
   programs.ssh.knownHosts = mkSshKnownHosts [
