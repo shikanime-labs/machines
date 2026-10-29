@@ -36,7 +36,6 @@ in
       "google-drive"
       "ibkr"
       "jellyfin-media-player"
-      "lm-studio"
       "macfuse"
       "mattermost"
       "microsoft-edge"
@@ -69,8 +68,5 @@ in
     };
   };
 
-  launchd.daemons = {
-    tailscale-serve-a2a = mkTailscaleServe "a2a" 9900;
-    tailscale-serve-lmstudio = mkTailscaleServe "lmstudio" 1234;
-  };
+  launchd.daemons.tailscale-serve-a2a = mkTailscaleServe "a2a" 9900;
 }
