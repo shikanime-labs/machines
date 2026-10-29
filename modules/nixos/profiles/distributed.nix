@@ -21,11 +21,6 @@ let
     mandatoryFeatures = [ ];
   };
 
-  # sd-card hosts (fushi, minish, nemishi) no longer serve as remote builders:
-  # their flaky SSH fails the peers' distributed builds mid-closure (three
-  # instances during the 2026-10-26 sync2 run, machines#1651), and a
-  # speedFactor 1 / maxJobs 2 aarch64 peer adds nothing against four
-  # speedFactor 2 x86_64 builders. Re-add only with a stable SSH story.
   mkBuildMachines =
     machines:
     let
@@ -52,20 +47,12 @@ in
       (mkBeelinkBuildMachine "nalsha")
       (mkBeelinkBuildMachine "sashina")
     ];
-    # sd-card hosts (fushi, minish, nemishi) no longer serve as remote builders:
-    # their flaky SSH fails the peers' distributed builds mid-closure (three
-    # instances during the 2026-10-26 sync2 run, machines#1651), and a
-    # speedFactor 1 / maxJobs 2 aarch64 peer adds nothing against four
-    # speedFactor 2 x86_64 builders. Re-add only with a stable SSH story.
 
     distributedBuilds = true;
 
     settings = {
       trusted-users = [ "builder" ];
       builders-use-substitutes = true;
-      # Dead builders must fail fast, not hang the switch forever:
-      # a builder whose ssh peer died without EOF otherwise parks
-      # __build-remote in anon_pipe_read indefinitely (machines#1651).
       connect-timeout = 15;
     };
   };
