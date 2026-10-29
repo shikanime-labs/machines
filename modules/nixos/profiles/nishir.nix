@@ -226,6 +226,8 @@ with lib;
   };
 
   systemd.tmpfiles.rules = [
+    "a+ /var/log/pods - - - - user:vlagent:rX"
+    "a+ /var/log/pods - - - - default:user:vlagent:rX"
     "d /var/lib/node_exporter/textfile_collector 0755 root root -"
   ]
   ++ (optionals (config.services.knix.role == "server") [
