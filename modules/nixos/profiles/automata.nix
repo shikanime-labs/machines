@@ -406,51 +406,6 @@
                  interrupted at about 3 minutes.
             '';
           }
-          {
-            id = "b7e2c41a9f83";
-            name = "weekly-automata-board-hygiene";
-            enabled = true;
-            deliver = "local";
-            schedule = {
-              kind = "cron";
-              expr = "15 4 * * 2";
-            };
-            skills = [ "sks-project" ];
-            prompt = ''
-              Weekly hygiene audit of the GitHub project boards carrying
-              automata-scope work: the Automata board (shikanime-labs project
-              5) for agent work across machines, skills, apeiron, dotfiles,
-              identities and manifests, and the Nishir board (project 4) for
-              the infra cards machines and manifests carry there. READ-ONLY
-              audit: never move, edit, or archive cards; only report. The
-              previous run's output is the dedup ledger - mark each finding
-              NEW or KNOWN.
-
-              1. Enumerate both boards: gh project item-list <n> --owner
-                 shikanime-labs --format json --limit 100 for n in 5 4.
-              2. Classify and report, as a terse table:
-                 - STALE Todo: Todo cards whose linked issue has had no commit,
-                   comment or PR movement in 21 days (gh api
-                   repos/<owner>/<repo>/issues/<n> --jq .updated_at).
-                 - ZOMBIE In Progress: In Progress cards with no open PR, no
-                   branch activity, and no issue update in 14 days.
-                 - DONE residue: Done cards still on the board (recommend
-                   archive). Known recurring: renovate Lock file maintenance
-                   duplicates.
-                 - DUPLICATES: same-title cards within a board; machines and
-                   manifests cards may legitimately sit on both boards - only
-                   same-board duplication counts.
-                 - UNOWNED In Progress: In Progress cards with empty assignees.
-              3. Dedup against the previous report: unchanged known items
-                 compress to one line each.
-              4. End with one recommended action per category (archive /
-                 re-prioritize / close underlying issue). Recommendations only -
-                 execution stays human.
-
-              Hard bound: finish within 3 minutes. If a board query fails with
-              a scope error, report that in one line and stop.
-            '';
-          }
         ];
       };
 
@@ -504,11 +459,6 @@
                 ];
                 prompt = ''
                   Triage GitHub issue #{issue.number} in {repository.full_name}.
-                  Orchestration runs through the issue's pertinent GitHub
-                  project (resolve live with GraphQL projectItems on the
-                  issue; automata-scope work defaults to the Automata board,
-                  shikanime-labs project 5). The issue must have a board card
-                  to enter the pipeline - report when it has none.
                 '';
                 skills = [ "sks-triage" ];
                 toolsets = [
@@ -545,11 +495,6 @@
                 prompt = ''
                   Refine GitHub issue #{issue.number} in {repository.full_name}:
                   converge the solution with all assignees before any development.
-                  The issue's pertinent project card (resolve live via GraphQL
-                  projectItems; automata-scope defaults to the Automata board)
-                  stays Todo in human priority order; a human moving it to
-                  In Progress is the development go-ahead - implementation
-                  never starts from refinement alone.
                 '';
                 skills = [ "sks-issue-refine" ];
                 toolsets = [
