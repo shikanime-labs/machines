@@ -59,7 +59,32 @@ with lib;
     };
   };
 
+  # Host DNS split (#1687). Tailscale's default --accept-dns installs the
+  # tailnet resolver with a ~. routing domain, routing every lookup —
+  # kubelet registry pulls included — through the tailnet. When the tailnet
+  # DNS dataplane (blocky) could not schedule, the whole fleet lost DNS.
+  # Opt out and split instead:
+  #   br0      192.168.1.1, the default-route resolver (v4 router); the
+  #            router's v6 RA-advertised resolver is dead, so RA stops
+  #            supplying DNS
+  #   resolved 100.100.100.100 for ~taila659a.ts.net only — MagicDNS is
+  #            answered by the tailnet itself, no blocky dataplane
+  #            dependency, so .ts.net names survive a blocky outage
+  systemd.network.networks."40-br0" = {
+    dns = [ "192.168.1.1" ];
+    ipv6AcceptRAConfig.UseDNS = "no";
+  };
+
   services = {
+    # Machine.nix provides --accept-routes/--ssh (list options merge by
+    # concat); the nishir-only opt-out goes here.
+    tailscale.extraUpFlags = [ "--accept-dns=false" ];
+
+    resolved.settings.Resolve = {
+      DNS = [ "100.100.100.100" ];
+      Domains = [ "~taila659a.ts.net" ];
+    };
+
     knix = {
       addons.flux = {
         instance.extraConfig.instance.sync = {
