@@ -83,12 +83,6 @@ with lib;
 
     comin = {
       enable = lib.mkDefault true;
-      # The 1800 s defaults kill every sd-card deploy: an aarch64 linux-rpi
-      # kernel build legitimately runs past 30 min on RPi hardware, so comin
-      # cancelled each attempt (machines#1651). Three hours covers the
-      # worst-case local build on the slowest node.
-      buildTimeout = 10800;
-      evalTimeout = 3600;
       # Node exporter listens on localhost only — vmagent scrapes from 127.0.0.1.
       exporter.listen_address = "127.0.0.1";
       remotes = [
