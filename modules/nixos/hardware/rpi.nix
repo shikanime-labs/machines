@@ -16,6 +16,9 @@
   # fushi/nemishi/minish. 3 = warnings and above still appear.
   boot.consoleLogLevel = 3;
 
+  services.comin.buildTimeout = 10800;
+  services.comin.evalTimeout = 3600;
+
   nixpkgs.overlays = [
     (_: super: { makeModulesClosure = x: super.makeModulesClosure (x // { allowMissing = true; }); })
   ];
