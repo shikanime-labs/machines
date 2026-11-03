@@ -12,7 +12,6 @@ with lib;
     ./ai.nix
     ./distributed.nix
     ./forgejo.nix
-    ./rapl-exporter.nix
     ./server.nix
     ./wifi.nix
     ../users/builder.nix
