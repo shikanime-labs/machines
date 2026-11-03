@@ -73,6 +73,79 @@ with lib;
         operator.extraConfig.web.configSecretName = "flux-operator-web";
       };
 
+      coredns.extraConfig = {
+        servers = [
+          {
+            port = 53;
+            zones = [
+              {
+                zone = ".";
+                use_tcp = true;
+              }
+            ];
+            plugins = [
+              { name = "errors"; }
+              {
+                name = "health";
+                configBlock = "lameduck 10s";
+              }
+              { name = "ready"; }
+              {
+                name = "kubernetes";
+                parameters = "in-addr.arpa ip6.arpa";
+                configBlock = ''
+                  pods insecure
+                  fallthrough in-addr.arpa ip6.arpa
+                  ttl 30
+                '';
+              }
+              {
+                name = "prometheus";
+                parameters = "0.0.0.0:9153";
+              }
+              {
+                name = "forward";
+                parameters = ". /etc/resolv.conf";
+              }
+              {
+                name = "cache";
+                parameters = 30;
+              }
+              { name = "loop"; }
+              { name = "reload"; }
+              { name = "loadbalance"; }
+            ];
+          }
+          {
+            port = 53;
+            zones = [ { zone = "ts.net"; } ];
+            plugins = [
+              { name = "errors"; }
+              {
+                name = "cache";
+                parameters = 30;
+                configBlock = ''
+                  success 1024
+                  denial 1024
+                  serve_stale 10m
+                  prefetch 1 1m 10%
+                '';
+              }
+              {
+                name = "forward";
+                parameters = ". 10.96.99.99";
+                configBlock = ''
+                  max_fails 3
+                  expire 10m
+                  health_check 5s
+                '';
+              }
+              { name = "loop"; }
+            ];
+          }
+        ];
+      };
+
       # Bridge interface — flannel, firewall, and sysctl rules all target br0.
       # Bonded on Beelink (bond0 -> br0), single-NIC on RPi (end0 -> br0).
       interface = "br0";
