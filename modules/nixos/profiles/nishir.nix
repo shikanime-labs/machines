@@ -259,6 +259,17 @@ with lib;
         "-tmpDataPath=/var/cache/vlagent"
       ];
     };
+
+    # MagicDNS only: resolved routes ~taila659a.ts.net to the tailnet resolver
+    # while br0 keeps the LAN router for everything else (#1687).
+    resolved.settings.Resolve = {
+      DNS = [ "100.100.100.100" ];
+      Domains = [ "~taila659a.ts.net" ];
+    };
+
+    # Never let the tailnet claim the default route via DNS: the node's
+    # registry pulls must not depend on the in-cluster resolver dataplane (#1687).
+    tailscale.extraUpFlags = [ "--accept-dns=false" ];
   };
 
   sops = {
@@ -301,6 +312,15 @@ with lib;
         };
       };
     };
+  };
+
+  # Host DNS split (#1687): br0 carries the LAN router as the default-route
+  # resolver (the router's v6 RA-advertised DNS is dead, so RA stops supplying
+  # DNS at all) and the tailnet answers only ~taila659a.ts.net via resolved —
+  # a blocky outage can no longer wedge kubelet registry pulls fleet-wide.
+  systemd.network.networks."40-br0" = {
+    dns = [ "192.168.1.1" ];
+    ipv6AcceptRAConfig.UseDNS = "no";
   };
 
   systemd.tmpfiles.rules = [
