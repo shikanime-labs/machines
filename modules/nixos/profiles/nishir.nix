@@ -73,6 +73,8 @@ with lib;
       };
 
       coredns.extraConfig = {
+        nodelocal.extraClusterDomains = [ "ts.net" ];
+
         servers = [
           {
             port = 53;
