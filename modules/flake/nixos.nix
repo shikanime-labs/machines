@@ -232,18 +232,8 @@ in
   };
 
   perSystem = { lib, pkgs, system, ... }: {
-    packages =
-      let
-        hermes-agent = pkgs.callPackage ../../pkgs/hermes-agent/default.nix {
-          hermes-agent = inputs.hermes-agent.packages.${system}.default;
-        };
-      in
-      lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
-        automata-oci-image = mkAutomataContainerdisk system;
-        inherit hermes-agent;
-        hermes-agent-oci-image = pkgs.callPackage ../../pkgs/hermes-agent-oci-image/default.nix {
-          inherit pkgs system hermes-agent;
-        };
-      };
+    packages = lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
+      automata-oci-image = mkAutomataContainerdisk system;
+    };
   };
 }
