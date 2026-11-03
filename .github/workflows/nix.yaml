@@ -42,6 +42,8 @@ jobs:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
           cachix-name: ${{ inputs['cachix-name'] }}
           extra-platforms: ${{ matrix.system == 'x86_64-linux' && 'arm64' || '' }}
+          extra-config: |
+            extra-system-features = kvm
           github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - uses: shikanime-labs/actions/checkout@a3080c13ff2d812fcefd29c6655d042d5ea6b8e7
         with:
@@ -77,6 +79,8 @@ jobs:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
           cachix-name: ${{ inputs['cachix-name'] }}
           extra-platforms: ${{ matrix.system == 'x86_64-linux' && 'arm64' || '' }}
+          extra-config: |
+            extra-system-features = kvm
           github-token: ${{ steps.createGithubAppToken.outputs.token || secrets.GITHUB_TOKEN }}
       - uses: shikanime-labs/actions/checkout@a3080c13ff2d812fcefd29c6655d042d5ea6b8e7
         with:
