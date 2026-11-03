@@ -1,7 +1,7 @@
 { pkgs, lib, system, hermes-agent, ... }:
 
 pkgs.dockerTools.buildLayeredImage {
-  name = "hermes";
+  name = "hermes-agent";
   tag = "latest";
 
   contents = [
@@ -12,13 +12,11 @@ pkgs.dockerTools.buildLayeredImage {
   ];
 
   fakeRootCommands = ''
-    # proot fakechroot is not uid 0: shadow groupadd/useradd flush glibc nscd
-    # (exit 4) at the cache-flush step and fail the layer; write /etc/passwd
-    # and /etc/group directly instead of calling the shadow tools.
-    { echo hermes:x:65532:; } >> /etc/group
-    { echo hermes:x:65532:65532:Hermes agent:/var/lib/hermes:/bin/sh; } >> /etc/passwd
+    ${pkgs.dockerTools.shadowSetup}
+    groupadd -g 65532 hermes
+    useradd -u 65532 -g 65532 -d /var/lib/hermes hermes
     mkdir -p /var/lib/hermes
-    chown 65532:65532 /var/lib/hermes
+    chown hermes:hermes /var/lib/hermes
   '';
   enableFakechroot = true;
 
