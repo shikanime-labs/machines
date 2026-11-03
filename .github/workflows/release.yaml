@@ -37,7 +37,7 @@ jobs:
       - nix
     permissions:
       contents: write
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     steps:
       - id: createGithubAppToken
         continue-on-error: true
