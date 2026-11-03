@@ -340,12 +340,12 @@
           }
           {
             id = "3c7ce2a4c3e1";
-            name = "15m-github-notification-sweep";
+            name = "hourly-github-notification-sweep";
             enabled = true;
             deliver = "local";
             schedule = {
               kind = "cron";
-              expr = "2,17,32,47 * * * *";
+              expr = "23 * * * *";
             };
             skills = [
               "sks-github-notif-sweep"
