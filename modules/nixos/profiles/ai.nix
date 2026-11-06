@@ -135,7 +135,9 @@ let
     config.services.hermes-agent.package.python.pkgs.callPackage ../../../pkgs/hermes-plugin-honcho
       { };
 
+  hermesLcmPlugin = pkgs.callPackage ../../../pkgs/hermes-plugin-lcm { };
   honchoAi = config.services.hermes-agent.package.python.pkgs.callPackage ../../../pkgs/honcho-ai { };
+  memoryWikiPlugin = pkgs.callPackage ../../../pkgs/hermes-plugin-memory-wiki { };
   mkA2aAgent =
     {
       name,
@@ -215,6 +217,8 @@ let
 
   peers = clusterPeers ++ workstationPeers;
 
+  ponytailPlugin = pkgs.callPackage ../../../pkgs/hermes-plugin-ponytail { };
+
 in
 {
   networking.firewall.allowedTCPPorts = [
@@ -266,7 +270,11 @@ in
         papirus-icon-theme
         dejavu_fonts.minimal
       ];
-      extraPlugins = [ ];
+      extraPlugins = [
+        hermesLcmPlugin
+        memoryWikiPlugin
+        ponytailPlugin
+      ];
       extraPythonPackages = [
         honchoAi
         hermesHonchoPlugin
