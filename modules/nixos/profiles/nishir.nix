@@ -105,6 +105,10 @@ with lib;
                 parameters = "0.0.0.0:9153";
               }
               {
+                name = "rewrite";
+                parameters = "name metrics.i.shikanime.studio grafana-egress-proxy.tailscale-system.svc.cluster.local";
+              }
+              {
                 name = "forward";
                 parameters = ". /etc/resolv.conf";
               }
