@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ self, inputs, ... }:
 
 let
   baseHomeModule = {
@@ -27,17 +27,8 @@ let
     services.cua-driver.package = inputs.cua.packages.${system}.default;
   };
 
-  mkHermesAgentModule = system: { pkgs, ... }: {
-    services.hermes-agent.package = inputs.hermes-agent.packages.${system}.default.overrideAttrs (
-      _finalAttrs: previousAttrs: {
-        postInstall = (previousAttrs.postInstall or "") + ''
-          rm $out/share/hermes-agent/plugins
-          cp --no-preserve=mode -r ${inputs.hermes-agent}/plugins $out/share/hermes-agent/plugins
-          substituteInPlace $out/share/hermes-agent/plugins/platforms/discord/adapter.py \
-            --replace-fail 'opus_path = ctypes.util.find_library("opus")' 'opus_path = "${pkgs.lib.getLib pkgs.libopus}/lib/libopus.so.0"'
-        '';
-      }
-    );
+  mkHermesAgentModule = system: {
+    services.hermes-agent.package = self.packages.${system}.hermes-agent;
   };
 
   mkAiModules = system: [
