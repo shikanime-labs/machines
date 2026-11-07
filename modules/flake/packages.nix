@@ -14,6 +14,9 @@
         llama-cpp-oci-image = pkgs.callPackage ../../pkgs/llama-cpp-oci-image/default.nix {
           inherit system;
         };
+        catbox-oci-image = pkgs.callPackage ../../pkgs/catbox-oci-image/default.nix {
+          inherit system;
+        };
       };
     };
 }
