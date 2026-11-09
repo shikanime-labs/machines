@@ -1,7 +1,4 @@
 {
-  pkgs,
-  lib,
-  config,
   ...
 }:
 
@@ -46,14 +43,6 @@
       useRoutingFeatures = "both";
     };
 
-    # RAPL energy counters are root-only 0400 by default; node_exporter runs as
-    # the node-exporter user and the rapl collector fails without read access.
-    # Group + udev rule keep the counters readable without running as root.
-    udev.extraRules = ''
-      SUBSYSTEM=="powercap", RUN+="${pkgs.coreutils}/bin/chgrp rapl /sys/class/powercap/intel-rapl*"
-      SUBSYSTEM=="powercap", RUN+="${pkgs.coreutils}/bin/chmod 0440 /sys/class/powercap/intel-rapl*"
-    '';
-
     # Userspace hardware watchdog + system resource monitor
     watchdogd = {
       enable = true;
@@ -69,18 +58,6 @@
     # enclosure I/O error was panicking the kernel and reboot-looping. Let XFS
     # remount read-only and ride out the hiccup instead.
     oomd.enable = true;
-
-    tmpfiles.rules = [ "z /sys/class/powercap/intel-rapl* 0440 root rapl - -" ];
-  };
-
-  users = {
-    groups.rapl = { };
-
-    # Only define the user when the exporter exists: the key itself instantiates
-    # the record, so an ungated stub trips the isSystemUser/group assertions.
-    users.node-exporter = lib.mkIf config.services.prometheus.exporters.node.enable {
-      extraGroups = [ "rapl" ];
-    };
   };
 
   # zram swap so the kernel OOM-killer isn't the first responder on small nodes.

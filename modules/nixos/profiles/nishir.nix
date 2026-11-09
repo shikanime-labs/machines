@@ -295,6 +295,16 @@ with lib;
   ]);
 
   systemd.services = {
+    # CPU power series. node_exporter's rapl collector reads
+    # /sys/class/powercap, where the energy counters are 0400 root and kernfs
+    # ignores runtime chmod/chgrp — verified: even 0444 world-readable returns
+    # EACCES to the exporter user. The collector therefore needs the DAC
+    # bypass; group ownership cannot express the grant (#1671).
+    prometheus-node-exporter.serviceConfig = {
+      CapabilityBoundingSet = [ "CAP_DAC_READ_SEARCH" ];
+      AmbientCapabilities = [ "CAP_DAC_READ_SEARCH" ];
+    };
+
     tailscale-serve-a2a = {
       description = "Expose Hermes A2A agent via Tailscale serve";
       after = [

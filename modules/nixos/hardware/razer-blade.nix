@@ -1,7 +1,5 @@
 {
-
   config,
-  lib,
   pkgs,
   ...
 }:
@@ -29,8 +27,14 @@
   powerManagement.enable = true;
 
   hardware = {
-    # NVDEC hardware video decode (browser/media players) on the dGPU.
-    graphics.extraPackages = with pkgs; [ nvidia-vaapi-driver ];
+    # GPU management belongs here, not in the graphical profile: this module is
+    # the fleet's only NVIDIA host and the profile stays GPU-agnostic.
+    graphics = {
+      enable = true;
+      enable32Bit = true; # Gaming: 32-bit for Wine/Proton
+      # NVDEC hardware video decode (browser/media players) on the dGPU.
+      extraPackages = with pkgs; [ nvidia-vaapi-driver ];
+    };
 
     # NVIDIA GeForce RTX (Max-Q) dGPU — Razer Blade 17 specific.
     nvidia = {
@@ -54,13 +58,12 @@
     fstrim.enable = true;
     udisks2.enable = true;
 
-    # NVIDIA host monitoring: exporter + vmagent scrape job, keyed on
-    # hardware.nvidia.enabled so GPU-less hosts stop scraping a dead 9835.
-    prometheus.exporters.nvidia-gpu = lib.mkIf config.hardware.nvidia.enabled {
+    # NVIDIA host monitoring: exporter + vmagent scrape job.
+    prometheus.exporters.nvidia-gpu = {
       enable = true;
       listenAddress = "127.0.0.1";
     };
-    vmagent.prometheusConfig.scrape_configs = lib.mkIf config.hardware.nvidia.enabled [
+    vmagent.prometheusConfig.scrape_configs = [
       {
         job_name = "nvidia-gpu";
         static_configs = [ { targets = [ "127.0.0.1:9835" ]; } ];

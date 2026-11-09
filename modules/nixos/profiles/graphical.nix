@@ -68,20 +68,7 @@
     # 60-steam-vr.rules) so gamepads grant the seated user uaccess without root.
     steam-hardware.enable = true;
 
-    graphics = {
-      enable = true;
-      enable32Bit = true; # Gaming: 32-bit for Wine/Proton
-    };
     bluetooth.enable = true;
-    nvidia = {
-      open = false; # proprietary/closed kernel module, per explicit request
-      modesetting.enable = true;
-      powerManagement.enable = true;
-      prime.offload = {
-        enable = true;
-        enableOffloadCmd = true; # provides `nvidia-offload` wrapper
-      };
-    };
   };
 
   programs = {
