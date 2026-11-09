@@ -69,4 +69,18 @@ in
   };
 
   launchd.daemons.tailscale-serve-a2a = mkTailscaleServe "a2a" 9900;
+
+  # The GUI app ships with DNS acceptance off and nothing re-asserts it, so the
+  # workstation silently loses MagicDNS (peer URLs, remote builders) — #1666.
+  # One shot per boot; tailscaled persists the pref once set.
+  launchd.daemons.tailscale-dns = {
+    command = "/Applications/Tailscale.app/Contents/MacOS/Tailscale set --accept-dns=true";
+    serviceConfig = {
+      KeepAlive.SuccessfulExit = false;
+      Label = "org.nixos.tailscale-dns";
+      RunAtLoad = true;
+      StandardErrorPath = "/var/log/tailscale-dns.log";
+      StandardOutPath = "/var/log/tailscale-dns.log";
+    };
+  };
 }
