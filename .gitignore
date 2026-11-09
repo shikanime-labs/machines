@@ -313,3 +313,10 @@ $RECYCLE.BIN/
 ###-------------------###
 
 .pre-commit-config.yaml
+
+###--------------------###
+###  Nix build output  ###
+###--------------------###
+
+result
+result-*
