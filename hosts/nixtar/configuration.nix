@@ -51,7 +51,7 @@
       nixtar — Razer Blade 17 (Intel + NVIDIA), x86_64 laptop. knix leader node.
       Colemak at the OS layer (TTY + localed; the compositor inherits it).
       Windows dual-boot mounted read-only at `/boot` — observed, never written.
-      Tailscale interface `tailscale0`; control plane `nishir.taila659a.ts.net`.
+      Tailscale interface `tailscale0`; control plane `nishir-k8s-operator.taila659a.ts.net`.
       Imports: `ai.nix`, `razer-blade.nix`, `leader.nix`. State version `26.05`.
 
       ## STYLE
