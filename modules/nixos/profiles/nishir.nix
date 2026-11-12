@@ -53,7 +53,10 @@ with lib;
       };
 
       coredns.extraConfig = {
-        nodelocal.extraClusterDomains = [ "ts.net" ];
+        nodelocal.extraClusterDomains = [
+          "ts.net"
+          "i.shikanime.studio"
+        ];
 
         servers = [
           {
@@ -86,11 +89,171 @@ with lib;
               }
               {
                 name = "rewrite";
-                parameters = "name metrics.i.shikanime.studio grafana-egress-proxy.tailscale-system.svc.cluster.local";
+                parameters = "name a2a.automata.i.shikanime.studio automata.envoy-gateway-system.svc.cluster.local";
               }
               {
                 name = "rewrite";
                 parameters = "name accounts.i.shikanime.studio authelia.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name api.automata.i.shikanime.studio automata.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name authelia.i.shikanime.studio authelia.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name automata.i.shikanime.studio automata.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name bazarr.i.shikanime.studio bazarr.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name copyparty.i.shikanime.studio copyparty.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name dns.i.shikanime.studio blocky.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name flux.i.shikanime.studio flux-operator.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name forgejo.i.shikanime.studio forgejo.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name gitea-mirror.i.shikanime.studio gitea-mirror.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name grafana.i.shikanime.studio grafana.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name honcho.i.shikanime.studio honcho.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name immich.i.shikanime.studio immich.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name inference.i.shikanime.studio inference.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name jellyfin.i.shikanime.studio jellyfin.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name lidarr.i.shikanime.studio lidarr.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name llama-cpp.i.shikanime.studio llama-cpp.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name lldap.i.shikanime.studio lldap.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name logs.i.shikanime.studio victoria-logs.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name longhorn.i.shikanime.studio longhorn.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name maintainerr.i.shikanime.studio maintainerr.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name matrix-discord-media.i.shikanime.studio synapse.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name matrix.i.shikanime.studio synapse.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name mautrix-discord.i.shikanime.studio discord.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name mautrix-googlechat.i.shikanime.studio googlechat.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name mautrix-linkedin.i.shikanime.studio linkedin.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name mautrix-meta.i.shikanime.studio meta.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name mautrix-signal.i.shikanime.studio signal.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name mautrix-slack.i.shikanime.studio slack.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name mautrix-twitter.i.shikanime.studio twitter.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name mautrix-whatsapp.i.shikanime.studio whatsapp.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name metatube.i.shikanime.studio metatube.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name metrics.i.shikanime.studio grafana.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name prowlarr.i.shikanime.studio prowlarr.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name qbittorrent.i.shikanime.studio qbittorrent.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name radarr.i.shikanime.studio radarr.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name seerr.i.shikanime.studio seerr.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name sonarr.i.shikanime.studio sonarr.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name syncthing.i.shikanime.studio syncthing.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name vaultwarden.i.shikanime.studio vaultwarden.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name whisparr.i.shikanime.studio whisparr.envoy-gateway-system.svc.cluster.local";
               }
               {
                 name = "forward";
