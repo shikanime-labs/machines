@@ -53,7 +53,10 @@ with lib;
       };
 
       coredns.extraConfig = {
-        nodelocal.extraClusterDomains = [ "ts.net" ];
+        nodelocal.extraClusterDomains = [
+          "ts.net"
+          "i.shikanime.studio"
+        ];
 
         servers = [
           {
