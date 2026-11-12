@@ -89,6 +89,10 @@ with lib;
                 parameters = "name metrics.i.shikanime.studio grafana-egress-proxy.tailscale-system.svc.cluster.local";
               }
               {
+                name = "rewrite";
+                parameters = "name accounts.i.shikanime.studio authelia.envoy-gateway-system.svc.cluster.local";
+              }
+              {
                 name = "forward";
                 parameters = ". /etc/resolv.conf";
               }
