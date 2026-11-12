@@ -53,7 +53,10 @@ with lib;
       };
 
       coredns.extraConfig = {
-        nodelocal.extraClusterDomains = [ "ts.net" ];
+        nodelocal.extraClusterDomains = [
+          "ts.net"
+          "i.shikanime.studio"
+        ];
 
         servers = [
           {
@@ -86,11 +89,15 @@ with lib;
               }
               {
                 name = "rewrite";
-                parameters = "name metrics.i.shikanime.studio grafana-egress-proxy.tailscale-system.svc.cluster.local";
+                parameters = "name metrics.i.shikanime.studio grafana.envoy-gateway-system.svc.cluster.local";
               }
               {
                 name = "rewrite";
                 parameters = "name accounts.i.shikanime.studio authelia.envoy-gateway-system.svc.cluster.local";
+              }
+              {
+                name = "rewrite";
+                parameters = "name logs.i.shikanime.studio victoria-logs.envoy-gateway-system.svc.cluster.local";
               }
               {
                 name = "forward";
