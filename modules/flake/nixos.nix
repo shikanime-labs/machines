@@ -238,7 +238,7 @@ in
 
   };
 
-  perSystem = { lib, system, ... }: {
+  perSystem = { pkgs, lib, system, ... }: {
     packages = lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
       automata-oci-image = mkAutomataContainerdisk system;
     };
