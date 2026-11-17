@@ -41,6 +41,9 @@ full directory layout.
   `jj describe -m "<msg>"` and review with `jj diff --git`.
 - Commits are DCO-signed and GPG-signed; add a `Reviewed-by:` trailer when
   pushing via git.
+- Bot PRs: the reviewer takes the lead — the bot author never acts on
+  review comments, so apply the verdict at review time (merge clean PRs,
+  fix or close broken ones) instead of commenting and waiting.
 - One logical change per commit/PR.
 
 
