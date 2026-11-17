@@ -1,3 +1,4 @@
+top@{ ... }:
 {
   perSystem =
     {
@@ -25,6 +26,11 @@
           hermes-agent-oci-image = pkgs.callPackage ../../pkgs/hermes-agent-oci-image/default.nix {
             inherit pkgs system hermes-agent;
           };
+        }
+        // lib.optionalAttrs (system == "aarch64-linux") {
+          fushi-toplevel = top.self.nixosConfigurations.fushi.config.system.build.toplevel;
+          minish-toplevel = top.self.nixosConfigurations.minish.config.system.build.toplevel;
+          nemishi-toplevel = top.self.nixosConfigurations.nemishi.config.system.build.toplevel;
         };
     };
 }

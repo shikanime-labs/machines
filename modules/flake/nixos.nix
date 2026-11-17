@@ -65,19 +65,34 @@ let
     ++ baseModules
     ++ clusterModules;
 
+  mkRpiCacheModule = {
+    nix.settings = {
+      substituters = [
+        "https://cache.nixos.org/"
+        "https://shikanime-studio.cachix.org"
+      ];
+      trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "shikanime-studio.cachix.org-1:KxV6aDFU81wzoR9u6pF1uq0dQbUuKbodOSP8/EJHXO0="
+      ];
+    };
+  };
+
   mkRpi4ClusterModules =
     system:
     [ inputs.nixos-hardware.nixosModules.raspberry-pi-4 ]
     ++ (mkAiModules system)
     ++ baseModules
-    ++ clusterModules;
+    ++ clusterModules
+    ++ [ mkRpiCacheModule ];
 
   mkRpi5ClusterModules =
     system:
     [ inputs.nixos-hardware.nixosModules.raspberry-pi-5 ]
     ++ (mkAiModules system)
     ++ baseModules
-    ++ clusterModules;
+    ++ clusterModules
+    ++ [ mkRpiCacheModule ];
 
   mkWorkstationsModules =
     system:
