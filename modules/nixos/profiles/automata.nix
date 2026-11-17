@@ -57,6 +57,14 @@
 
   services = {
     hermes-agent = {
+      extraPlugins = [
+        (config.services.hermes-agent.package.python.pkgs.callPackage ../../../pkgs/hermes-plugin-honcho
+          { })
+      ];
+      extraPythonPackages = [
+        (config.services.hermes-agent.package.python.pkgs.callPackage ../../../pkgs/honcho-ai
+          { })
+      ];
       environment = {
         A2A_HOST = "0.0.0.0";
         A2A_PUBLIC_URL = "https://a2a.automata.i.shikanime.studio";
@@ -412,6 +420,7 @@
       settings.plugins.enabled = [
         "disk-cleanup"
         "hermes-lcm"
+        "honcho"
         "platforms/a2a-platform"
         "platforms/discord"
         "platforms/email"
