@@ -21,6 +21,17 @@ let
     mandatoryFeatures = [ ];
   };
 
+  mkRpiBuildMachine = hostName: {
+    hostName = mkHostname hostName;
+    sshUser = "builder";
+    system = "aarch64-linux";
+    protocol = "ssh-ng";
+    maxJobs = 2;
+    speedFactor = 1;
+    supportedFeatures = [ "nixos-test" ];
+    mandatoryFeatures = [ ];
+  };
+
   mkBuildMachines =
     machines:
     let
@@ -46,6 +57,7 @@ in
       (mkBeelinkBuildMachine "manash")
       (mkBeelinkBuildMachine "nalsha")
       (mkBeelinkBuildMachine "sashina")
+      (mkRpiBuildMachine "nemishi")
     ];
 
     distributedBuilds = true;
@@ -84,6 +96,10 @@ in
     (mkSshKnownHost {
       hostName = "sashina";
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIII1QSdrWGafRNTuyBxRhm8NNLG+37Zfk3+i42sUbEB3";
+    })
+    (mkSshKnownHost {
+      hostName = "nemishi";
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMI8EVS3FKiS1aISQPsqZnU2ZiF21x0l0+393me+sFyU";
     })
   ];
 }
