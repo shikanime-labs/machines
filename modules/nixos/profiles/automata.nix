@@ -63,8 +63,16 @@ in
 
   services = {
     hermes-agent = {
+      # Split brain and hand: the gateway stays on the VM, the terminal/exec
+      # sandbox runs on telsha over ssh (the VM's default ~/.ssh/id_ed25519
+      # is authorized there through the telsha darwin config).
       extraPlugins = [ honchoPlugin ];
       extraPythonPackages = [ honchoAi ];
+      settings = {
+        terminal.backend = "ssh";
+        terminal.ssh_host = "telsha.taila659a.ts.net";
+        terminal.ssh_user = "shikanimedeva";
+      };
       environment = {
         A2A_HOST = "0.0.0.0";
         A2A_PUBLIC_URL = "https://a2a.automata.i.shikanime.studio";

@@ -21,6 +21,7 @@
     name = "shikanimedeva";
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH+tp1Xfz7NomHCZuDPlfj3XW5hm9t0TiCyEeudRraoe"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEucscCOOnPHavW166CylUEFTdPq6eKsfkSEzY0ngRnJ hermes@automata-local"
     ];
   };
 }
