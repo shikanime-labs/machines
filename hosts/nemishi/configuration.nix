@@ -24,6 +24,8 @@
     };
   };
 
+  nix.settings."build-dir" = "/mnt/data/tmp";
+
   hardware.facter.reportPath = ./facter.json;
 
   networking = {
