@@ -1,4 +1,4 @@
-top@{ ... }:
+{ self, ... }:
 {
   perSystem =
     {
@@ -14,9 +14,8 @@ top@{ ... }:
           hermes-agent = pkgs.callPackage ../../pkgs/hermes-agent/default.nix {
             hermes-agent = inputs'.hermes-agent.packages.default;
           };
-          cfg = top.self.nixosConfigurations;
-          toplevel = host: cfg.${host}.config.system.build.toplevel;
-          sdImage = host: cfg.${host}.config.system.build.sdImage;
+          toplevel = host: self.nixosConfigurations.${host}.config.system.build.toplevel;
+          sdImage = host: self.nixosConfigurations.${host}.config.system.build.sdImage;
         in
         {
           huggingface-oci-image = pkgs.callPackage ../../pkgs/huggingface-oci-image/default.nix {
