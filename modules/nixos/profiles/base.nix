@@ -18,10 +18,26 @@
     extraOptions = ''
       !include ${config.sops.templates.nix-config.path}
     '';
-    settings.experimental-features = [
-      "flakes"
-      "nix-command"
-    ];
+    settings = {
+      experimental-features = [
+        "flakes"
+        "nix-command"
+      ];
+      substituters = [
+        "https://cache.nixos.org/"
+        "https://cachix.cachix.org"
+        "https://devenv.cachix.org"
+        "https://shikanime.cachix.org"
+        "https://shikanime-studio.cachix.org"
+      ];
+      trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "cachix.cachix.org-1:eWNHQldwUO7G2VkjpnjDbWwy4KQ/HNxht7H4SSoMckM="
+        "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+        "shikanime.cachix.org-1:OrpjVTH6RzYf2R97IqcTWdLRejF6+XbpFNNZJxKG8Ts="
+        "shikanime-studio.cachix.org-1:KxV6aDFU81wzoR9u6pF1uq0dQbUuKbodOSP8/EJHXO0="
+      ];
+    };
   };
 
   sops = {

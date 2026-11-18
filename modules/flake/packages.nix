@@ -1,3 +1,4 @@
+{ self, ... }:
 {
   perSystem =
     {
@@ -13,6 +14,8 @@
           hermes-agent = pkgs.callPackage ../../pkgs/hermes-agent/default.nix {
             hermes-agent = inputs'.hermes-agent.packages.default;
           };
+          toplevel = host: self.nixosConfigurations.${host}.config.system.build.toplevel;
+          sdImage = host: self.nixosConfigurations.${host}.config.system.build.sdImage;
         in
         {
           huggingface-oci-image = pkgs.callPackage ../../pkgs/huggingface-oci-image/default.nix {
@@ -25,6 +28,19 @@
           hermes-agent-oci-image = pkgs.callPackage ../../pkgs/hermes-agent-oci-image/default.nix {
             inherit pkgs system hermes-agent;
           };
+        }
+        // lib.optionalAttrs (system == "aarch64-linux") {
+          fushi-sd-image = sdImage "fushi";
+          minish-sd-image = sdImage "minish";
+          nemishi-sd-image = sdImage "nemishi";
+        }
+        // lib.optionalAttrs (system == "x86_64-linux") {
+          ashira-toplevel = toplevel "ashira";
+          kushira-toplevel = toplevel "kushira";
+          manash-toplevel = toplevel "manash";
+          nalsha-toplevel = toplevel "nalsha";
+          nixtar-toplevel = toplevel "nixtar";
+          sashina-toplevel = toplevel "sashina";
         };
     };
 }

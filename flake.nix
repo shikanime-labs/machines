@@ -164,6 +164,7 @@
   };
 
   nixConfig = {
+    extra-platforms = [ "i686-linux" ];
     extra-substituters = [
       "https://cachix.cachix.org"
       "https://devenv.cachix.org"
