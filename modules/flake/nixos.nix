@@ -10,26 +10,12 @@ let
     ];
   };
 
-  cacheModule = {
-    nix.settings = {
-      substituters = [
-        "https://cache.nixos.org/"
-        "https://shikanime-studio.cachix.org"
-      ];
-      trusted-public-keys = [
-        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-        "shikanime-studio.cachix.org-1:KxV6aDFU81wzoR9u6pF1uq0dQbUuKbodOSP8/EJHXO0="
-      ];
-    };
-  };
-
   baseModules = [
     inputs.comin.nixosModules.comin
     inputs.sops-nix.nixosModules.default
     inputs.home-manager.nixosModules.default
     inputs.colemak.nixosModules.default
     baseHomeModule
-    cacheModule
   ];
 
   clusterModules = [
