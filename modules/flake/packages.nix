@@ -14,19 +14,9 @@ top@{ ... }:
           hermes-agent = pkgs.callPackage ../../pkgs/hermes-agent/default.nix {
             hermes-agent = inputs'.hermes-agent.packages.default;
           };
-
-          hostsForSystem = lib.filterAttrs (
-            _: cfg: cfg.pkgs.system == system
-          ) top.self.nixosConfigurations;
-
-          toplevels = lib.mapAttrs' (
-            name: cfg: lib.nameValuePair "${name}-toplevel" cfg.config.system.build.toplevel
-          ) hostsForSystem;
-
-          sdHosts = [ "fushi" "minish" "nemishi" ];
-          sdImages = lib.mapAttrs' (
-            name: cfg: lib.nameValuePair "${name}-sd-image" cfg.config.system.build.sdImage
-          ) (lib.filterAttrs (name: _: builtins.elem name sdHosts) hostsForSystem);
+          cfg = top.self.nixosConfigurations;
+          toplevel = host: cfg.${host}.config.system.build.toplevel;
+          sdImage = host: cfg.${host}.config.system.build.sdImage;
         in
         {
           huggingface-oci-image = pkgs.callPackage ../../pkgs/huggingface-oci-image/default.nix {
@@ -40,7 +30,18 @@ top@{ ... }:
             inherit pkgs system hermes-agent;
           };
         }
-        // toplevels
-        // sdImages;
+        // lib.optionalAttrs (system == "aarch64-linux") {
+          fushi-sd-image = sdImage "fushi";
+          minish-sd-image = sdImage "minish";
+          nemishi-sd-image = sdImage "nemishi";
+        }
+        // lib.optionalAttrs (system == "x86_64-linux") {
+          ashira-toplevel = toplevel "ashira";
+          kushira-toplevel = toplevel "kushira";
+          manash-toplevel = toplevel "manash";
+          nalsha-toplevel = toplevel "nalsha";
+          nixtar-toplevel = toplevel "nixtar";
+          sashina-toplevel = toplevel "sashina";
+        };
     };
 }
