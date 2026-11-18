@@ -174,7 +174,7 @@ in
               expr = "45 0 * * *";
             };
             skills = [
-              "sks-wiki"
+              "sks-doc"
               "sks-issue"
               "sks-commit"
               "sks-pr"
