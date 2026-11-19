@@ -2,7 +2,6 @@
 
 let
   hermesPythonPkgs = config.services.hermes-agent.package.python.pkgs;
-  honchoPlugin = hermesPythonPkgs.callPackage ../../../pkgs/hermes-plugin-honcho { };
   honchoAi = hermesPythonPkgs.callPackage ../../../pkgs/honcho-ai { };
 in
 
@@ -63,10 +62,7 @@ in
 
   services = {
     hermes-agent = {
-      extraPythonPackages = [
-        honchoAi
-        honchoPlugin
-      ];
+      extraPythonPackages = [ honchoAi ];
       environment = {
         A2A_HOST = "0.0.0.0";
         A2A_PUBLIC_URL = "https://a2a.automata.i.shikanime.studio";

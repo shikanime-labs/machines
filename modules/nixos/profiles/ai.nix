@@ -131,9 +131,7 @@ let
       mkSelfExcludedPeers hubPeers;
   hubTrust = lib.optionals isHub (mkSelfExcludedPeers workstationPeers);
 
-  hermesHonchoPlugin =
-    config.services.hermes-agent.package.python.pkgs.callPackage ../../../pkgs/hermes-plugin-honcho
-      { };
+  hermesHonchoPlugin = pkgs.callPackage ../../../pkgs/hermes-plugin-honcho { };
 
   honchoAi = config.services.hermes-agent.package.python.pkgs.callPackage ../../../pkgs/honcho-ai { };
   mkA2aAgent =
@@ -266,11 +264,8 @@ in
         papirus-icon-theme
         dejavu_fonts.minimal
       ];
-      extraPlugins = [ ];
-      extraPythonPackages = [
-        honchoAi
-        hermesHonchoPlugin
-      ];
+      extraPlugins = [ hermesHonchoPlugin ];
+      extraPythonPackages = [ honchoAi ];
       hermesHomeFiles."honcho.json" = builtins.toJSON {
         baseUrl = "https://honcho.i.shikanime.studio";
         hosts.hermes = {
