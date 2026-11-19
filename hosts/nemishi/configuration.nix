@@ -24,8 +24,10 @@
     };
   };
 
-  nix.settings."build-dir" = "/mnt/data/tmp";
-  systemd.tmpfiles.rules = [ "d /mnt/data/tmp 0755 root root -" ];
+  systemd.tmpfiles.rules = [
+    "d /mnt/data/nix/builds 0755 root root -"
+    "L+ /nix/var/nix/builds - - - - /mnt/data/nix/builds"
+  ];
 
   hardware.facter.reportPath = ./facter.json;
 
