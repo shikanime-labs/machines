@@ -163,89 +163,97 @@ in
       '';
 
       hermesHomeFiles."cron/jobs.json" = builtins.toJSON {
-        jobs = [
-          {
-            id = "adfc09a25ae9";
-            name = "daily-docs-sync";
-            enabled = true;
-            deliver = "local";
-            schedule = {
-              kind = "cron";
-              expr = "45 0 * * *";
-            };
-            skills = [
+        jobs =
+          (let
+            docsSkills = [
               "sks-doc"
               "sks-issue"
               "sks-commit"
               "sks-pr"
               "sks-fastlane"
             ];
-            prompt = ''
-              Daily docs sync for the fleet: mirror recent org changes into the
-              per-repo GitHub wikis, then keep docs.shikanime.studio factually true.
+            docsJob = { id, name, expr, domain, repos }: {
+              inherit id name;
+              enabled = true;
+              deliver = "local";
+              schedule = { kind = "cron"; expr = expr; };
+              skills = docsSkills;
+              prompt = ''
+                Domain-scoped docs sync: ${domain}. In-repo docs/ is canonical;
+                the GitHub wiki is a rendered human index that links to it.
 
-              1. Enumerate recently changed repos, one query per org (shikanime-labs,
-                 shikanime-studio, cloud-pi-native):
-                 gh api -H 'Accept: application/vnd.github.cloak-preview' "search/commits?q=org%3A<org>+committer-date%3A>$(date -u -d '-30 days' +%F)&per_page=100&sort=committer-date&order=desc" --jq '.items[] | [.repository.full_name, .commit.committer.date, (.commit.message | split("\n")[0])] | @tsv'
-                 The explicit sort matters: without sort=committer-date&order=desc the search returns
-                 best-match results and the org cap fills with the oldest commits of the window.
-                 Group by repo and drop repos whose only changes are dependency noise (renovate,
-                 bump, pin, chore(deps) subjects). Expect roughly 20 repos: do NOT cap this list
-                 before the wiki probe in step 2 - the repos carrying a wiki are the ones that
-                 matter and they are not the most recently changed ones.
-                 Never add -repo: excludes: org plus negated repo qualifiers return zero results
-                 on GitHub commit search.
-              2. Probe every candidate wiki, one line each:
-                 git ls-remote "https://github.com/<owner>/<repo>.wiki.git" HEAD
-                 Empty output means the wiki has no pages: page creation is a manual GitHub UI step,
-                 so never attempt it here - collect those repos for one report line.
-                 Otherwise clone it shallow - git clone --depth 1 -q
-                 "https://github.com/<owner>/<repo>.wiki.git" /tmp/<repo>.wiki - and compare
-                 git -C /tmp/<repo>.wiki log -1 --format=%cI with the newest change timestamp of
-                 that repo from step 1. A wiki equal to or newer than its repo is already in sync:
-                 skip it silently. Keep the rest as lagging.
-              3. Sync the lagging wikis, stalest first (oldest wiki commit first), AT MOST 2 PER RUN;
-                 list every other lagging wiki as a Deferred bullet. The order is self-correcting: a
-                 wiki you just synced becomes the newest and drops to the back, so the backlog drains
-                 instead of one busy repo winning every run, and a wiki that is already current is
-                 never re-synced.
-                 Page doctrine: a page documents THIS repo own internals - architecture, mechanics,
-                 runbooks, procedure detail - never another repo automation, jobs or machinery.
-                 Update the page that already covers the changed area; add a page only when a whole
-                 new subsystem appeared, and then register it in BOTH Home.md and _Sidebar.md in the
-                 same commit - an unlisted page is unreachable. Head each new page with
-                 `<!-- owner: Automata | zone: technical | purpose: <one line> -->` and keep the
-                 voice of the pages already there.
-                 Ground every claim in the changed code (gh api repos/<owner>/<repo>/commits/<sha>,
-                 or a depth 1 clone under /tmp), never in a commit subject, never in another wiki
-                 page.
-              4. Land each wiki update as ONE commit on master - no PR, no review, no sign-off, a
-                 wiki bypasses branch protection by design: imperative one line title, blank line,
-                 then Co-authored-by: Automata <automata@shikanime.studio>.
-                 Push with the GitHub token, never through origin (the hermes user has no SSH key):
-                 git -C /tmp/<repo>.wiki push -q "https://x-access-token:$GITHUB_TOKEN@github.com/<owner>/<repo>.wiki.git" HEAD:master
-                 Verify with git ls-remote
-                 "https://x-access-token:$GITHUB_TOKEN@github.com/<owner>/<repo>.wiki.git" HEAD and
-                 require it to equal git -C /tmp/<repo>.wiki rev-parse HEAD. A push success line is
-                 not proof.
-              5. docs.shikanime.studio drift check, unchanged scope: clone
-                 https://github.com/shikanime-studio/websites (depth 1) to /tmp; the site is
-                 apps/docs, pages under apps/docs/docs/<section>/, sidebars.ts, product table.
-                 Verify factual claims against ground truth - deployed manifests (clone
-                 https://github.com/shikanime-labs/manifests depth 1), live cluster state (kubectl,
-                 context automata), repo git logs - never from memory. Stale references are the norm.
-                 Drift between a documented service (name, hostname, port, image) and its manifest is
-                 a defect. File new drift in shikanime-studio/websites: page, claim, ground truth,
-                 source links. Assignee yorha-operator if eligible. Small factual fixes only (typo,
-                 stale name, corrected port): fastlane. Deploy stays manual - never wrangler deploy
-                 from this job. If step 3 already spent the run, report this step as Deferred
-                 instead of starting it.
+                1. Scope only these repos: ${builtins.concatStringsSep " " repos}.
+                   Enumerate recent changes with one query per org:
+                   gh api "search/commits?q=org%3A<org>+committer-date%3A>$(date -u -d '-30 days' +%F)&per_page=100&sort=committer-date&order=desc" --jq '.items[] | [.repository.full_name, .commit.committer.date] | @tsv'
+                   Keep only repos in the scope list and drop dependency noise.
+                2. Probe each wiki: git ls-remote "https://github.com/<owner>/<repo>.wiki.git" HEAD.
+                   Empty output means no pages. Page creation is a manual UI step, so report it and skip.
+                   Clone shallow and compare the wiki commit time with the repo newest change. Skip current wikis.
+                3. Sync AT MOST 2 lagging repos per run, stalest first; list the rest as Deferred.
+                   Write canonical technical detail into the repo docs/ through a PR per sks-doc.
+                   Keep each wiki page to a summary that links to the canonical doc. Update Home.md and
+                   _Sidebar.md when adding a page; head every page with
+                   <!-- owner: Automata | zone: technical | purpose: <one line> -->
+                   Ground every claim in changed code with gh api or a depth 1 clone, never in a commit subject.
+                   A page documents THIS repo own internals, never another repo automation.
+                4. Push wiki changes as ONE commit on master, no PR: imperative title, blank line, then
+                   Co-authored-by: Automata <automata@shikanime.studio>. Push with the GitHub token and
+                   verify with git ls-remote; a push success line is not proof.
+                5. For shikanime-studio/websites only, check docs.shikanime.studio factual drift against
+                   manifests and live cluster state. File drift in that repo. Deploy stays manual.
 
-              Report: one bullet per wiki page updated (repo, page, change mirrored), the Deferred
-              list, one line naming the changed repos whose wiki has no pages yet, then the drift
-              findings with the issues and PRs opened.
-            '';
-          }
+                Report: one bullet per docs/ PR and wiki page updated, the Deferred list, and any repo
+                whose wiki has no pages.
+              '';
+            };
+          in [
+            (docsJob {
+              id = "adfc09a25ae9";
+              name = "daily-docs-sync-infra";
+              expr = "15 0 * * *";
+              domain = "fleet infrastructure";
+              repos = [
+                "shikanime-labs/machines"
+                "shikanime-labs/manifests"
+                "shikanime-labs/knix"
+                "shikanime-labs/tailnet"
+                "shikanime-labs/tailscale-gateway"
+                "shikanime-labs/dashboards"
+                "shikanime-labs/identities"
+                "shikanime-labs/devlib"
+              ];
+            })
+            (docsJob {
+              id = "b17e4c93f0a2";
+              name = "daily-docs-sync-tooling";
+              expr = "45 0 * * *";
+              domain = "developer tooling";
+              repos = [
+                "shikanime-labs/skills"
+                "shikanime-labs/actions"
+                "shikanime-labs/gitignore"
+                "shikanime-labs/wharf"
+                "shikanime-labs/xqbit"
+                "shikanime-labs/algorithm"
+                "shikanime-labs/minishells"
+              ];
+            })
+            (docsJob {
+              id = "c28f5d04e1b3";
+              name = "daily-docs-sync-org";
+              expr = "15 1 * * *";
+              domain = "org and product documentation";
+              repos = [
+                "shikanime-labs/enhancements"
+                "shikanime-labs/.github"
+                "shikanime-labs/colemak"
+                "shikanime-labs/dotfiles"
+                "shikanime-studio/.github"
+                "shikanime-studio/websites"
+              ];
+            })
+          ])
+          ++ [
           {
             id = "3453978b1312";
             name = "weekly-fleet-efficiency-audit";
