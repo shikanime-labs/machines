@@ -25,6 +25,7 @@
   };
 
   nix.settings."build-dir" = "/mnt/reimu/tmp";
+  systemd.tmpfiles.rules = [ "d /mnt/reimu/tmp 0755 root root -" ];
 
   hardware.facter.reportPath = ./facter.json;
 

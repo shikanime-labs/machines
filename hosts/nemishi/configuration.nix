@@ -25,6 +25,7 @@
   };
 
   nix.settings."build-dir" = "/mnt/data/tmp";
+  systemd.tmpfiles.rules = [ "d /mnt/data/tmp 0755 root root -" ];
 
   hardware.facter.reportPath = ./facter.json;
 

@@ -25,6 +25,7 @@
   };
 
   nix.settings."build-dir" = "/mnt/marisa/tmp";
+  systemd.tmpfiles.rules = [ "d /mnt/marisa/tmp 0755 root root -" ];
 
   hardware.facter.reportPath = ./facter.json;
 
