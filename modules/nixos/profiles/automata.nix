@@ -2,7 +2,6 @@
 
 let
   hermesPythonPkgs = config.services.hermes-agent.package.python.pkgs;
-  honchoPlugin = hermesPythonPkgs.callPackage ../../../pkgs/hermes-plugin-honcho { };
   honchoAi = hermesPythonPkgs.callPackage ../../../pkgs/honcho-ai { };
 in
 
@@ -63,7 +62,6 @@ in
 
   services = {
     hermes-agent = {
-      extraPlugins = [ honchoPlugin ];
       extraPythonPackages = [ honchoAi ];
       environment = {
         A2A_HOST = "0.0.0.0";
