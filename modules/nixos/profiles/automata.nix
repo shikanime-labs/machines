@@ -63,8 +63,10 @@ in
 
   services = {
     hermes-agent = {
-      extraPlugins = [ honchoPlugin ];
-      extraPythonPackages = [ honchoAi ];
+      extraPythonPackages = [
+        honchoAi
+        honchoPlugin
+      ];
       environment = {
         A2A_HOST = "0.0.0.0";
         A2A_PUBLIC_URL = "https://a2a.automata.i.shikanime.studio";
