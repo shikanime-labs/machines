@@ -55,8 +55,12 @@
     programs.himalaya.enable = true;
   };
 
-  users.users.hermes.extraGroups = [
-    "adm"
-    "systemd-journal"
-  ];
+  users.users.hermes = {
+    subUidRanges = [ { startUid = 196608; count = 65536; } ];
+    subGidRanges = [ { startGid = 196608; count = 65536; } ];
+    extraGroups = [
+      "adm"
+      "systemd-journal"
+    ];
+  };
 }
