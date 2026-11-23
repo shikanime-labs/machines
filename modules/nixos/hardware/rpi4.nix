@@ -7,7 +7,7 @@
     "kube-reserved=cpu=50m,memory=256Mi"
     "system-reserved=cpu=50m,memory=128Mi"
     "eviction-hard=memory.available<300Mi"
-    "eviction-minimum-reclaim=memory.available<100Mi"
+    "eviction-minimum-reclaim=memory.available=100Mi"
   ];
 
   imports = [ ./rpi.nix ];
