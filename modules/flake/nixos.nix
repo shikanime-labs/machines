@@ -27,21 +27,24 @@ let
     services.cua-driver.package = inputs.cua.packages.${system}.default;
   };
 
-  mkHermesAgentModule = system: { pkgs, ... }: {
-    services.hermes-agent.package = pkgs.callPackage ../../pkgs/hermes-agent/default.nix {
+  mkHermesOverlay = system: final: _prev: {
+    hermes-agent = final.callPackage ../../pkgs/hermes-agent/default.nix {
       hermes-agent = inputs.hermes-agent.packages.${system}.default;
     };
   };
 
   mkAiModules = system: [
     inputs.cua.nixosModules.cua-driver
-    inputs.hermes-agent.nixosModules.default
     inputs.noctalia.nixosModules.default
     inputs.noctalia-greeter.nixosModules.default
-    inputs.skills.nixosModules.skills
     (mkCuaDriverModule system)
-    (mkHermesAgentModule system)
-    { home-manager.sharedModules = [ inputs.identities.homeModules.default ]; }
+    { nixpkgs.overlays = [ (mkHermesOverlay system) ]; }
+    {
+      home-manager.sharedModules = [
+        inputs.skills.homeModules.skills
+        inputs.identities.homeModules.default
+      ];
+    }
   ];
 
   mkBeelinkClusterModules =
@@ -100,11 +103,7 @@ let
         inherit system;
         config.allowUnfree = true;
       };
-      modules = [
-        ../../modules/nixos/profiles/automata.nix
-        ../../modules/nixos/users/hermes.nix
-      ]
-      ++ (mkWorkstationsModules system);
+      modules = [ ../../modules/nixos/profiles/automata.nix ] ++ (mkWorkstationsModules system);
     }).config.system.build.containerdiskImage;
 
   mkAshiraNixosConfiguration =
@@ -231,7 +230,7 @@ in
 
   };
 
-  perSystem = { lib, pkgs, system, ... }: {
+  perSystem = { lib, system, ... }: {
     packages = lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
       automata-oci-image = mkAutomataContainerdisk system;
     };
