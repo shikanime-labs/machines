@@ -777,6 +777,60 @@ in
     };
   };
 
+  # The Hermes credential vault lives on the persistent hermes-data disk
+  # (/var/lib/hermes, mounted by label, neededForBoot). Containerdisk
+  # rebuilds replace the ephemeral root only, so ~/.hermes/vault survives
+  # them; this probe asserts that guarantee on every boot and hourly, and
+  # fails loudly if the vault dir or its key/ciphertext ever drift from the
+  # expected path or modes (dir 0700, vault.key and vault.json.enc 0600).
+  # A missing vault dir is a FAIL: the disk mount or the agent's home moved.
+  systemd.services.hermes-vault-probe = {
+    description = "Check the Hermes credential vault layout on the persistent disk";
+    serviceConfig = {
+      type = "oneshot";
+      user = "hermes";
+      Environment = "HOME=/var/lib/hermes";
+    };
+    script = ''
+      set -u
+      vault_dir="$HOME/.hermes/vault"
+      fail=0
+      if [ ! -d "$vault_dir" ]; then
+        echo "FAIL: vault dir $vault_dir missing (hermes-data mount?)"
+        exit 1
+      fi
+      dir_mode=$(stat -c '%a' "$vault_dir")
+      if [ "$dir_mode" != "700" ]; then
+        echo "FAIL: $vault_dir mode $dir_mode (expected 700)"
+        fail=1
+      fi
+      for f in vault.key vault.json.enc; do
+        if [ -e "$vault_dir/$f" ]; then
+          fmode=$(stat -c '%a' "$vault_dir/$f")
+          if [ "$fmode" != "600" ]; then
+            echo "FAIL: $vault_dir/$f mode $fmode (expected 600)"
+            fail=1
+          else
+            echo "OK: $vault_dir/$f mode $fmode"
+          fi
+        else
+          echo "OK: $vault_dir/$f not present yet"
+        fi
+      done
+      echo "vault probe: dir=$vault_dir mode=$dir_mode mount=$(findmnt -no SOURCE --target "$vault_dir")"
+      exit $fail
+    '';
+  };
+
+  systemd.timers.hermes-vault-probe = {
+    description = "Hourly Hermes vault layout probe";
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnBootSec = "1min";
+      OnUnitActiveSec = "1h";
+    };
+  };
+
   virtualisation = {
     diskSize = 32768;
     docker = {
