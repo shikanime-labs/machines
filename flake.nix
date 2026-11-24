@@ -55,7 +55,7 @@
     };
 
     hermes-agent = {
-      url = "github:NousResearch/hermes-agent/511bab3d6b6965df8f48bc86b9bd5f760ebcff15";
+      url = "github:NousResearch/hermes-agent/5725d1d390ac4b7cfe157ea32bd6f4db1a280368";
       # Secrets-manager posture: Hermes' Bitwarden Secrets Manager source
       # (bws) ships disabled by default (secrets.bitwarden.enabled = false)
       # and stays that way — vaultwarden does not implement BSM, the fleet
