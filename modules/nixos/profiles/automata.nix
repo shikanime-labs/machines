@@ -62,6 +62,7 @@ in
 
   services = {
     hermes-agent = {
+      extraPackages = [ pkgs.bitwarden-cli ];
       extraPythonPackages = [ honchoAi ];
       environment = {
         A2A_HOST = "0.0.0.0";
