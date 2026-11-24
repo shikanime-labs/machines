@@ -24,7 +24,7 @@ hermes-agent.overrideAttrs (_finalAttrs: previousAttrs: {
     cp --no-preserve=mode -r ${hermesPluginLcm} $out/share/hermes-agent/plugins/hermes-lcm
     cp --no-preserve=mode -r ${hermesPluginMemoryWiki} $out/share/hermes-agent/plugins/memory-wiki
     cp --no-preserve=mode -r ${hermesPluginPonytail} $out/share/hermes-agent/plugins/ponytail
-    substituteInPlace $out/share/hermes-agent/plugins/platforms/discord/adapter.py \
+    substituteInPlace $out/share/hermes-agent/plugins/platforms/discord/adapter_opus.py \
       --replace-fail 'opus_path = ctypes.util.find_library("opus")' 'opus_path = "${lib.getLib libopus}/lib/libopus.so.0"'
   '';
 })
