@@ -102,6 +102,12 @@
     # same reason as the Beelinks — the NETGEAR MS308 is unmanaged.
     useNetworkd = true;
   };
+  # Pin the LAN resolver on br0: the ISP box advertises a dead IPv6 resolver
+  # over RA, and DNS taken from RA blackholes comin fetches.
+  systemd.network.networks."40-br0" = {
+    networkConfig.DNS = "192.168.1.1";
+    ipv6AcceptRAConfig.UseDNS = false;
+  };
 
   services.fstrim.enable = true;
 

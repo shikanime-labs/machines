@@ -75,6 +75,12 @@
 
     bridges.br0.interfaces = [ "bond0" ];
   };
+  # Pin the LAN resolver on br0: the ISP box advertises a dead IPv6 resolver
+  # over RA, and DNS taken from RA blackholes comin fetches.
+  systemd.network.networks."40-br0" = {
+    networkConfig.DNS = "192.168.1.1";
+    ipv6AcceptRAConfig.UseDNS = false;
+  };
 
   # NIC performance tuning: hardware offloads + RPS for both Intel i226-V ports.
   systemd.services.network-nic-performance = {

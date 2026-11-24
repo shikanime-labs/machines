@@ -31,6 +31,12 @@
     # Single NIC bridge — all traffic (flannel, SSH, Longhorn) on one wire.
     bridges.br0.interfaces = [ "end0" ];
   };
+  # Pin the LAN resolver on br0: the ISP box advertises a dead IPv6 resolver
+  # over RA, and DNS taken from RA blackholes comin fetches.
+  systemd.network.networks."40-br0" = {
+    networkConfig.DNS = "192.168.1.1";
+    ipv6AcceptRAConfig.UseDNS = false;
+  };
 
   # NIC performance tuning: hardware offloads + RPS for the USB3 GigE port.
   systemd.services.network-nic-performance = {
