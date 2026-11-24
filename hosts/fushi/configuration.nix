@@ -24,11 +24,6 @@
     };
   };
 
-  systemd.tmpfiles.rules = [
-    "d /mnt/marisa/nix/builds 0755 root root -"
-    "L+ /nix/var/nix/builds - - - - /mnt/marisa/nix/builds"
-  ];
-
   hardware.facter.reportPath = ./facter.json;
 
   networking = {
@@ -44,6 +39,8 @@
       }
     ];
   };
+
+  nix.settings.build-dir = "/mnt/marisa/nix/builds";
 
   services = {
     hermes-agent.hermesHomeFiles."SOUL.md" = ''
