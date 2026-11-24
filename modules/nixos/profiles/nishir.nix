@@ -38,6 +38,14 @@ with lib;
     };
   };
 
+  # Pin the LAN resolver on the cluster bridge. RA-advertised IPv6 resolvers
+  # have left sd-card hosts with no working upstream, which stalls comin pulls
+  # and image fetches while tailnet SSH still works.
+  systemd.network.networks."40-br0" = {
+    dns = [ "192.168.1.1" ];
+    ipv6AcceptRAConfig.UseDNS = false;
+  };
+
   services = {
     knix = {
       addons.flux = {
