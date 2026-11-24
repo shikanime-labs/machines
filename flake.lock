@@ -604,7 +604,6 @@
       "original": {
         "owner": "NousResearch",
         "repo": "hermes-agent",
-        "rev": "511bab3d6b6965df8f48bc86b9bd5f760ebcff15",
         "type": "github"
       }
     },
