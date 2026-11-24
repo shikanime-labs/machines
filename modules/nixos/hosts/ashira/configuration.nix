@@ -1,8 +1,8 @@
 {
   imports = [
-    ../../modules/nixos/profiles/follower.nix
-    ../../modules/nixos/profiles/nishir.nix
-    ../../modules/nixos/hardware/beelink-eq.nix
+    ../../../../modules/nixos/profiles/follower.nix
+    ../../../../modules/nixos/profiles/nishir.nix
+    ../../../../modules/nixos/hardware/beelink-eq.nix
   ];
 
   disko.devices.disk.patchouli = {
@@ -51,7 +51,7 @@
       `2a02:8424:7899:f201:94eb:8d1:325a:812b`. Imports: `beelink-eq.nix`,
       `builder.nix`, `distributed.nix`, `follower.nix`. Advertises Tailscale
       routes `10.244.2.0/24,fd00::2:0/112`. Secrets from
-      `../../secrets/ashira.enc.yaml`; many tokens shared from
+      `../../../../secrets/ashira.enc.yaml`; many tokens shared from
       `nishir.enc.yaml`. Role: follower, general workload network,
       patchouli-bound storage.
 
@@ -97,7 +97,7 @@
   };
 
   sops = {
-    defaultSopsFile = ../../secrets/ashira.enc.yaml;
+    defaultSopsFile = ../../../../secrets/ashira.enc.yaml;
     defaultSopsFormat = "yaml";
   };
 }

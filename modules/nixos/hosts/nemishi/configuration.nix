@@ -2,9 +2,9 @@
 
 {
   imports = [
-    ../../modules/nixos/profiles/agent.nix
-    ../../modules/nixos/profiles/nishir.nix
-    ../../modules/nixos/hardware/rpi5.nix
+    ../../../../modules/nixos/profiles/agent.nix
+    ../../../../modules/nixos/profiles/nishir.nix
+    ../../../../modules/nixos/hardware/rpi5.nix
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
   ];
 
@@ -60,7 +60,7 @@
       `192.168.1.27/24` on `br0`; also `fd00::5:0/112` via Tailscale. Imports:
       `agent.nix`, `builder.nix`, `distributed.nix`, `rpi5.nix`. Advertises
       Tailscale routes `10.244.5.0/24,fd00::5:0/112`. Secrets from
-      `../../secrets/nemishi.enc.yaml`; shared tokens from `nishir.enc.yaml`.
+      `../../../../secrets/nemishi.enc.yaml`; shared tokens from `nishir.enc.yaml`.
       Experimental edge: NVMe storage paired with RPi 5 EEPROM boot behavior.
 
       ## STYLE
@@ -106,7 +106,7 @@
   };
 
   sops = {
-    defaultSopsFile = ../../secrets/nemishi.enc.yaml;
+    defaultSopsFile = ../../../../secrets/nemishi.enc.yaml;
     defaultSopsFormat = "yaml";
   };
 }

@@ -1,13 +1,13 @@
 {
   imports = [
-    ../../modules/nixos/profiles/ai.nix
-    ../../modules/nixos/profiles/leader.nix
-    ../../modules/nixos/profiles/graphical.nix
-    ../../modules/nixos/hardware/razer-blade.nix
-    ../../modules/nixos/users/hermes.nix
-    ../../modules/nixos/users/meika.nix
-    ../../modules/nixos/users/nishir.nix
-    ../../modules/nixos/users/shika.nix
+    ../../../../modules/nixos/profiles/ai.nix
+    ../../../../modules/nixos/profiles/leader.nix
+    ../../../../modules/nixos/profiles/graphical.nix
+    ../../../../modules/nixos/hardware/razer-blade.nix
+    ../../../../modules/nixos/users/hermes.nix
+    ../../../../modules/nixos/users/meika.nix
+    ../../../../modules/nixos/users/nishir.nix
+    ../../../../modules/nixos/users/shika.nix
   ];
 
   hardware.nvidia.prime = {
@@ -91,7 +91,7 @@
       keyFile = "/var/lib/sops-nix/key.txt";
       sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     };
-    defaultSopsFile = ../../secrets/nixtar.enc.yaml;
+    defaultSopsFile = ../../../../secrets/nixtar.enc.yaml;
     defaultSopsFormat = "yaml";
   };
 

@@ -36,7 +36,7 @@ visible as a plain filesystem link managed by tmpfiles.
 | minish | `/mnt/reimu` | `/mnt/reimu/nix/builds` |
 | nemishi | `/mnt/data` | `/mnt/data/nix/builds` |
 
-The rules live in each host's `hosts/<host>/configuration.nix`.
+The rules live in each host's `modules/nixos/hosts/<host>/configuration.nix`.
 
 ## References
 

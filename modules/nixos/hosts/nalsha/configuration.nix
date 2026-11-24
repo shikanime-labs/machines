@@ -1,8 +1,8 @@
 {
   imports = [
-    ../../modules/nixos/profiles/follower.nix
-    ../../modules/nixos/profiles/nishir.nix
-    ../../modules/nixos/hardware/beelink-eq.nix
+    ../../../../modules/nixos/profiles/follower.nix
+    ../../../../modules/nixos/profiles/nishir.nix
+    ../../../../modules/nixos/hardware/beelink-eq.nix
   ];
 
   disko.devices.disk.remilia = {
@@ -51,7 +51,7 @@
       `2a02:8424:7899:f201:94eb:8d1:325a:7234`. Imports: `beelink-eq.nix`,
       `builder.nix`, `distributed.nix`, `follower.nix`. Advertises Tailscale
       routes `10.244.1.0/24,fd00::1:0/112`. Secrets from
-      `../../secrets/nalsha.enc.yaml`; shared tokens from `nishir.enc.yaml`.
+      `../../../../secrets/nalsha.enc.yaml`; shared tokens from `nishir.enc.yaml`.
       Role: follower, general workload, storage-intensive.
 
       ## STYLE
@@ -96,7 +96,7 @@
   };
 
   sops = {
-    defaultSopsFile = ../../secrets/nalsha.enc.yaml;
+    defaultSopsFile = ../../../../secrets/nalsha.enc.yaml;
     defaultSopsFormat = "yaml";
   };
 }

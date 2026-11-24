@@ -2,9 +2,9 @@
 
 {
   imports = [
-    ../../modules/nixos/profiles/agent.nix
-    ../../modules/nixos/profiles/nishir.nix
-    ../../modules/nixos/hardware/rpi4.nix
+    ../../../../modules/nixos/profiles/agent.nix
+    ../../../../modules/nixos/profiles/nishir.nix
+    ../../../../modules/nixos/hardware/rpi4.nix
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
   ];
 
@@ -59,7 +59,7 @@
       Static IP `192.168.1.80/24` on `br0`; also `fd7a:115c:a1e0::793a:a25d`.
       Imports: `agent.nix`, `builder.nix`, `distributed.nix`, `rpi4.nix`.
       Advertises Tailscale routes `10.244.4.0/24,fd00::4:0/112`. Secrets from
-      `../../secrets/fushi.enc.yaml`; shared tokens from `nishir.enc.yaml`. Boot
+      `../../../../secrets/fushi.enc.yaml`; shared tokens from `nishir.enc.yaml`. Boot
       partition is SD-card territory; wireless SSIDs present in secrets
       (`sfr-e368`, `vintage-korean`), but Ethernet + Tailscale are primary
       paths. `rpi4-model-b` firmware baseline.
@@ -106,7 +106,7 @@
   };
 
   sops = {
-    defaultSopsFile = ../../secrets/fushi.enc.yaml;
+    defaultSopsFile = ../../../../secrets/fushi.enc.yaml;
     defaultSopsFormat = "yaml";
   };
 }

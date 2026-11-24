@@ -2,9 +2,9 @@
 
 {
   imports = [
-    ../../modules/nixos/profiles/agent.nix
-    ../../modules/nixos/profiles/nishir.nix
-    ../../modules/nixos/hardware/rpi4.nix
+    ../../../../modules/nixos/profiles/agent.nix
+    ../../../../modules/nixos/profiles/nishir.nix
+    ../../../../modules/nixos/hardware/rpi4.nix
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
   ];
 
@@ -59,7 +59,7 @@
       Static IP `192.168.1.77/24` on `br0`; also `fd7a:115c:a1e0::bb3a:b57`.
       Imports: `agent.nix`, `builder.nix`, `distributed.nix`, `rpi4.nix`.
       Advertises Tailscale routes `10.244.3.0/24,fd00::3:0/112`. Secrets from
-      `../../secrets/minish.enc.yaml`; shared tokens from `nishir.enc.yaml`.
+      `../../../../secrets/minish.enc.yaml`; shared tokens from `nishir.enc.yaml`.
       Watchdog territory: SD-card wear patterns are the most informative failure
       signals on this host.
 
@@ -106,7 +106,7 @@
   };
 
   sops = {
-    defaultSopsFile = ../../secrets/minish.enc.yaml;
+    defaultSopsFile = ../../../../secrets/minish.enc.yaml;
     defaultSopsFormat = "yaml";
   };
 }

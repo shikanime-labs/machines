@@ -1,16 +1,16 @@
 {
   imports = [
-    ../../modules/darwin/profiles/distributed.nix
-    ../../modules/darwin/profiles/workstation.nix
+    ../../../../modules/darwin/profiles/distributed.nix
+    ../../../../modules/darwin/profiles/workstation.nix
   ];
 
-  home-manager.users.shikanimedeva.imports = [ ../../modules/darwin/users/shikanimedeva.nix ];
+  home-manager.users.shikanimedeva.imports = [ ../../../../modules/darwin/users/shikanimedeva.nix ];
 
   networking.hostName = "telsha";
 
   sops = {
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-    defaultSopsFile = ../../secrets/telsha.enc.yaml;
+    defaultSopsFile = ../../../../secrets/telsha.enc.yaml;
     defaultSopsFormat = "yaml";
   };
 

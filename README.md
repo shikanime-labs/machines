@@ -27,16 +27,18 @@ This flake is the source of truth for the machines I manage. It wires together:
 The flake entry point. It imports the module sets and exposes the host
 configurations and build outputs.
 
-### `hosts/`
+### `modules/nixos/hosts/` and `modules/darwin/hosts/`
 
 Per-machine entry points.
 
-- `hosts/<name>/configuration.nix` is the main NixOS host definition
-- `hosts/telsha/darwin-configuration.nix` is the nix-darwin host definition
-- `hosts/<name>/users/<user>/home-configuration.nix` contains host-specific Home
-  Manager config
-- `hosts/<name>/facter.json` stores hardware facts for hosts that rely on
-  `nixos-facter`
+- `modules/nixos/hosts/<name>/configuration.nix` is the main NixOS host
+  definition
+- `modules/darwin/hosts/<name>/darwin-configuration.nix` is the nix-darwin host
+  definition
+- `modules/nixos/hosts/<name>/users/<user>/home-configuration.nix` contains
+  host-specific Home Manager config
+- `modules/nixos/hosts/<name>/facter.json` stores hardware facts for hosts that
+  rely on `nixos-facter`
 
 Current hosts:
 
@@ -79,7 +81,7 @@ Shared module layers.
 
 Noctalia (the Wayland shell/bar) is configured entirely through Nix — there is
 no repo-owned theme schema or UI component to edit. The theme is set per user in
-`hosts/<host>/users/<user>/home-configuration.nix` under
+`modules/nixos/hosts/<host>/users/<user>/home-configuration.nix` under
 `programs.noctalia.settings`:
 
 - `theme.mode` — the auto-mode flag. `"auto"` follows the day/night schedule;

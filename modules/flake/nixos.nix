@@ -114,7 +114,7 @@ let
         inherit system;
         config.allowUnfree = true;
       };
-      modules = [ ../../hosts/ashira/configuration.nix ] ++ (mkBeelinkClusterModules system);
+      modules = [ ../../modules/nixos/hosts/ashira/configuration.nix ] ++ (mkBeelinkClusterModules system);
     };
 
   mkFushiNixosConfiguration =
@@ -124,7 +124,7 @@ let
         inherit system;
         config.allowUnfree = true;
       };
-      modules = [ ../../hosts/fushi/configuration.nix ] ++ (mkRpi4ClusterModules system);
+      modules = [ ../../modules/nixos/hosts/fushi/configuration.nix ] ++ (mkRpi4ClusterModules system);
     };
 
   mkNixtarNixosConfiguration =
@@ -135,7 +135,7 @@ let
         config.allowUnfree = true;
       };
       modules = [
-        ../../hosts/nixtar/configuration.nix
+        ../../modules/nixos/hosts/nixtar/configuration.nix
         inputs.nixos-hardware.nixosModules.common-cpu-intel
         inputs.nixos-hardware.nixosModules.common-pc-ssd
         inputs.nixos-hardware.nixosModules.common-gpu-nvidia
@@ -151,7 +151,7 @@ let
         inherit system;
         config.allowUnfree = true;
       };
-      modules = [ ../../hosts/manash/configuration.nix ] ++ (mkBeelinkClusterModules system);
+      modules = [ ../../modules/nixos/hosts/manash/configuration.nix ] ++ (mkBeelinkClusterModules system);
     };
 
   mkMinishNixosConfiguration =
@@ -161,7 +161,7 @@ let
         inherit system;
         config.allowUnfree = true;
       };
-      modules = [ ../../hosts/minish/configuration.nix ] ++ (mkRpi4ClusterModules system);
+      modules = [ ../../modules/nixos/hosts/minish/configuration.nix ] ++ (mkRpi4ClusterModules system);
     };
 
   # MS-S1 Max (Strix Halo, gfx1151): x86_64 worker + ROCm inference. The
@@ -178,7 +178,7 @@ let
           rocmSupport = true;
         };
       };
-      modules = [ ../../hosts/sashina/configuration.nix ] ++ (mkMsS1ClusterModules system);
+      modules = [ ../../modules/nixos/hosts/sashina/configuration.nix ] ++ (mkMsS1ClusterModules system);
     };
 
   mkKushiraNixosConfiguration =
@@ -191,7 +191,7 @@ let
           rocmSupport = true;
         };
       };
-      modules = [ ../../hosts/kushira/configuration.nix ] ++ (mkMsS1ClusterModules system);
+      modules = [ ../../modules/nixos/hosts/kushira/configuration.nix ] ++ (mkMsS1ClusterModules system);
     };
 
   mkNalshaNixosConfiguration =
@@ -201,7 +201,7 @@ let
         inherit system;
         config.allowUnfree = true;
       };
-      modules = [ ../../hosts/nalsha/configuration.nix ] ++ (mkBeelinkClusterModules system);
+      modules = [ ../../modules/nixos/hosts/nalsha/configuration.nix ] ++ (mkBeelinkClusterModules system);
     };
 
   mkNemishiNixosConfiguration =
@@ -211,7 +211,7 @@ let
         inherit system;
         config.allowUnfree = true;
       };
-      modules = [ ../../hosts/nemishi/configuration.nix ] ++ (mkRpi5ClusterModules system);
+      modules = [ ../../modules/nixos/hosts/nemishi/configuration.nix ] ++ (mkRpi5ClusterModules system);
     };
 
 in

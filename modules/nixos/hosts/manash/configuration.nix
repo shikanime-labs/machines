@@ -1,8 +1,8 @@
 {
   imports = [
-    ../../modules/nixos/profiles/leader.nix
-    ../../modules/nixos/profiles/nishir.nix
-    ../../modules/nixos/hardware/beelink-eq.nix
+    ../../../../modules/nixos/profiles/leader.nix
+    ../../../../modules/nixos/profiles/nishir.nix
+    ../../../../modules/nixos/hardware/beelink-eq.nix
   ];
 
   disko.devices.disk.flandre = {
@@ -51,7 +51,7 @@
       also `2a02:8424:7899:f201:94eb:8d1:325a:7181`. Imports: `beelink-eq.nix`,
       `builder.nix`, `distributed.nix`, `leader.nix`. Advertises Tailscale
       routes `10.244.0.0/24,fd00::/112`. Secrets from
-      `../../secrets/manash.enc.yaml`; shared tokens from `nishir.enc.yaml`.
+      `../../../../secrets/manash.enc.yaml`; shared tokens from `nishir.enc.yaml`.
       Role: leader, etcd quorum, containerd version coupling, control-plane
       disruption authorization required.
 
@@ -98,7 +98,7 @@
   };
 
   sops = {
-    defaultSopsFile = ../../secrets/manash.enc.yaml;
+    defaultSopsFile = ../../../../secrets/manash.enc.yaml;
     defaultSopsFormat = "yaml";
   };
 }

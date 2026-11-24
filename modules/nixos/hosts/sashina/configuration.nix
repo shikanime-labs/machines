@@ -1,8 +1,8 @@
 {
   imports = [
-    ../../modules/nixos/profiles/agent.nix
-    ../../modules/nixos/profiles/nishir.nix
-    ../../modules/nixos/hardware/minisforum-ms-s1.nix
+    ../../../../modules/nixos/profiles/agent.nix
+    ../../../../modules/nixos/profiles/nishir.nix
+    ../../../../modules/nixos/hardware/minisforum-ms-s1.nix
   ];
 
   networking = {
@@ -81,7 +81,7 @@
   };
 
   sops = {
-    defaultSopsFile = ../../secrets/sashina.enc.yaml;
+    defaultSopsFile = ../../../../secrets/sashina.enc.yaml;
     defaultSopsFormat = "yaml";
   };
 
