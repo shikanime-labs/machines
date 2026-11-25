@@ -17,7 +17,7 @@ in
       ../../../modules/home/niri.nix
       ../../../modules/home/starship.nix
       ../../../modules/home/vcs.nix
-      ../../../modules/home/workstation.nix
+      ../../../modules/home/ai.nix
       ../../../modules/home/zed-editor.nix
     ];
 
