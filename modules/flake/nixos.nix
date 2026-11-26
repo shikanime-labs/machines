@@ -67,14 +67,20 @@ let
 
   mkRpi4ClusterModules =
     system:
-    [ inputs.nixos-hardware.nixosModules.raspberry-pi-4 ]
+    [
+      inputs.nixos-hardware.nixosModules.raspberry-pi-4
+      inputs.impermanence.nixosModules.default
+    ]
     ++ (mkAiModules system)
     ++ baseModules
     ++ clusterModules;
 
   mkRpi5ClusterModules =
     system:
-    [ inputs.nixos-hardware.nixosModules.raspberry-pi-5 ]
+    [
+      inputs.nixos-hardware.nixosModules.raspberry-pi-5
+      inputs.impermanence.nixosModules.default
+    ]
     ++ (mkAiModules system)
     ++ baseModules
     ++ clusterModules;
@@ -231,7 +237,7 @@ in
 
   };
 
-  perSystem = { lib, pkgs, system, ... }: {
+  perSystem = { lib, system, ... }: {
     packages = lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
       automata-oci-image = mkAutomataContainerdisk system;
     };

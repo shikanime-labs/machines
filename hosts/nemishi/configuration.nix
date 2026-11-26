@@ -9,29 +9,45 @@
   ];
 
   disko.devices.disk.data = {
-    type = "disk";
-    device = "/dev/nvme0n1";
     content = {
-      type = "filesystem";
       format = "xfs";
-      mountpoint = "/mnt/data";
       mountOptions = [
         "nofail"
-        "x-systemd.automount"
         "x-systemd.device-timeout=10s"
         "x-systemd.mount-timeout=30s"
       ];
+      mountpoint = "/mnt/data";
+      type = "filesystem";
     };
+    device = "/dev/nvme0n1";
+    type = "disk";
   };
+
+  environment.persistence."/mnt/data" = {
+    directories = [
+      "/etc/cni/net.d"
+      "/nix/var/log"
+      "/nix/var/nix/builds"
+      "/var/cache"
+      "/var/lib/comin"
+      "/var/lib/kubelet"
+      "/var/lib/rancher"
+      "/var/lib/tailscale"
+      "/var/lib/vlagent-data"
+      "/var/log"
+    ];
+  };
+
+  fileSystems."/mnt/data".neededForBoot = true;
 
   hardware.facter.reportPath = ./facter.json;
 
   networking = {
-    hostName = "nemishi";
     defaultGateway = {
       address = "192.168.1.1";
       interface = "br0";
     };
+    hostName = "nemishi";
     interfaces.br0.ipv4.addresses = [
       {
         address = "192.168.1.27";
@@ -94,11 +110,11 @@
     '';
 
     knix = {
-      nodeIP = "192.168.1.27,2a02:8424:7899:f201:94eb:8d1:325a:aa5b";
       labels = {
         "beta.kubernetes.io/instance-type" = "rpi5";
         "node.kubernetes.io/instance-type" = "rpi5";
       };
+      nodeIP = "192.168.1.27,2a02:8424:7899:f201:94eb:8d1:325a:aa5b";
     };
   };
 

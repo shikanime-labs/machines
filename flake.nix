@@ -106,6 +106,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    impermanence = {
+      inputs = {
+        home-manager.follows = "home-manager";
+        nixpkgs.follows = "nixpkgs";
+      };
+      url = "github:nix-community/impermanence";
+    };
+
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
