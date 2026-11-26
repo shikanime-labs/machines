@@ -32,15 +32,3 @@ resource "github_actions_variable" "operator" {
   variable_name = "OPERATOR_APP_ID"
   value         = var.apps.operator
 }
-
-resource "github_actions_secret" "wakabox_github_token" {
-  repository      = var.repositories.shikanime
-  secret_name     = "WAKABOX_GITHUB_TOKEN"
-  plaintext_value = var.wakabox.github_token
-}
-
-resource "github_actions_secret" "wakatime_api_key" {
-  repository      = var.repositories.shikanime
-  secret_name     = "WAKATIME_API_KEY"
-  plaintext_value = var.wakabox.wakatime_api_key
-}

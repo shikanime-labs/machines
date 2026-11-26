@@ -49,12 +49,3 @@ variable "repositories" {
     shikanime        = "shikanime"
   }
 }
-
-variable "wakabox" {
-  type = object({
-    github_token     = string
-    wakatime_api_key = string
-  })
-  description = "Wakabox configuration secrets"
-  sensitive   = true
-}
