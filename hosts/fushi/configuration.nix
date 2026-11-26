@@ -27,17 +27,18 @@
   hardware.facter.reportPath = ./facter.json;
 
   networking = {
-    hostName = "fushi";
     defaultGateway = {
       address = "192.168.1.1";
       interface = "br0";
     };
+    hostName = "fushi";
     interfaces.br0.ipv4.addresses = [
       {
         address = "192.168.1.80";
         prefixLength = 24;
       }
     ];
+    nameservers = [ "192.168.1.1" ];
   };
 
   nix.settings.build-dir = "/mnt/marisa/nix/builds";
