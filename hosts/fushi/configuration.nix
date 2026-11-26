@@ -9,29 +9,45 @@
   ];
 
   disko.devices.disk.marisa = {
-    type = "disk";
-    device = "/dev/disk/by-label/marisa";
     content = {
-      type = "filesystem";
       format = "xfs";
-      mountpoint = "/mnt/marisa";
       mountOptions = [
         "nofail"
-        "x-systemd.automount"
         "x-systemd.device-timeout=10s"
         "x-systemd.mount-timeout=30s"
       ];
+      mountpoint = "/mnt/marisa";
+      type = "filesystem";
     };
+    device = "/dev/disk/by-label/marisa";
+    type = "disk";
   };
+
+  environment.persistence."/mnt/marisa" = {
+    directories = [
+      "/etc/cni/net.d"
+      "/nix/var/log"
+      "/nix/var/nix/builds"
+      "/var/cache"
+      "/var/lib/comin"
+      "/var/lib/kubelet"
+      "/var/lib/rancher"
+      "/var/lib/tailscale"
+      "/var/lib/vlagent-data"
+      "/var/log"
+    ];
+  };
+
+  fileSystems."/mnt/marisa".neededForBoot = true;
 
   hardware.facter.reportPath = ./facter.json;
 
   networking = {
-    hostName = "fushi";
     defaultGateway = {
       address = "192.168.1.1";
       interface = "br0";
     };
+    hostName = "fushi";
     interfaces.br0.ipv4.addresses = [
       {
         address = "192.168.1.80";
@@ -94,11 +110,11 @@
     '';
 
     knix = {
-      nodeIP = "192.168.1.80,fd7a:115c:a1e0::793a:a25d";
       labels = {
         "beta.kubernetes.io/instance-type" = "rpi4-model-b";
         "node.kubernetes.io/instance-type" = "rpi4-model-b";
       };
+      nodeIP = "192.168.1.80,fd7a:115c:a1e0::793a:a25d";
     };
   };
 

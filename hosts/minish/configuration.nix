@@ -9,29 +9,45 @@
   ];
 
   disko.devices.disk.reimu = {
-    type = "disk";
-    device = "/dev/disk/by-label/reimu";
     content = {
-      type = "filesystem";
       format = "xfs";
-      mountpoint = "/mnt/reimu";
       mountOptions = [
         "nofail"
-        "x-systemd.automount"
         "x-systemd.device-timeout=10s"
         "x-systemd.mount-timeout=30s"
       ];
+      mountpoint = "/mnt/reimu";
+      type = "filesystem";
     };
+    device = "/dev/disk/by-label/reimu";
+    type = "disk";
   };
+
+  environment.persistence."/mnt/reimu" = {
+    directories = [
+      "/etc/cni/net.d"
+      "/nix/var/log"
+      "/nix/var/nix/builds"
+      "/var/cache"
+      "/var/lib/comin"
+      "/var/lib/kubelet"
+      "/var/lib/rancher"
+      "/var/lib/tailscale"
+      "/var/lib/vlagent-data"
+      "/var/log"
+    ];
+  };
+
+  fileSystems."/mnt/reimu".neededForBoot = true;
 
   hardware.facter.reportPath = ./facter.json;
 
   networking = {
-    hostName = "minish";
     defaultGateway = {
       address = "192.168.1.1";
       interface = "br0";
     };
+    hostName = "minish";
     interfaces.br0.ipv4.addresses = [
       {
         address = "192.168.1.77";
@@ -94,11 +110,11 @@
     '';
 
     knix = {
-      nodeIP = "192.168.1.77,fd7a:115c:a1e0::bb3a:b57";
       labels = {
         "beta.kubernetes.io/instance-type" = "rpi4-model-b";
         "node.kubernetes.io/instance-type" = "rpi4-model-b";
       };
+      nodeIP = "192.168.1.77,fd7a:115c:a1e0::bb3a:b57";
     };
   };
 
