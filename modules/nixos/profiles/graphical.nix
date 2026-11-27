@@ -216,6 +216,16 @@
   # config, graphical-session target), so no external polkit-gnome agent.
   security.polkit.enable = true;
 
+  # Hardware security tokens (YubiKey/Nitrokey smartcard mode): pcscd is the
+  # CCID daemon scdaemon/gpg-agent talk to for on-card keys (GPG signing,
+  # SSH auth). FIDO2/WebAuthn passkeys over HID need no daemon — udev's
+  # 60-fido-id.rules already tags and exposes those.
+  services.pcscd.enable = true;
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+
   # Expose LM Studio over Tailscale HTTPS (ts.net endpoint on :1234). Runs after
   # tailscaled is up; `serve` persists in tailscaled state after first apply.
   systemd.services.tailscale-serve-lmstudio = {
