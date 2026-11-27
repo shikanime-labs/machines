@@ -22,6 +22,7 @@
             inputs.hermes-agent.homeManagerModules.default
             inputs.identities.homeModules.default
             inputs.sops-nix.homeModules.default
+            inputs.skills.homeModules.skills
           ];
         }
       ];
