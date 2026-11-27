@@ -41,7 +41,10 @@ let
     inputs.skills.nixosModules.skills
     (mkCuaDriverModule system)
     (mkHermesAgentModule system)
-    { home-manager.sharedModules = [ inputs.identities.homeModules.default ]; }
+    { home-manager.sharedModules = [
+      inputs.identities.homeModules.default
+      inputs.skills.homeModules.skills
+    ]; }
   ];
 
   mkBeelinkClusterModules =
