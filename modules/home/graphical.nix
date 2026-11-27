@@ -154,4 +154,18 @@
 
   # Scratchpad terminal bound to Super+grave.
   home.packages = [ pkgs.nirius ];
+
+  # Bitwarden desktop <-> browser bridge (native messaging + passkeys).
+  # Bitwarden writes its proxy/socket only to ~/.mozilla/native-messaging-hosts,
+  # which flatpak browsers can't see, so their extension silently never pops the
+  # desktop app (no autofill, no passkey prompt). This pins the override INI that
+  # `flatpak override --filesystem=... app.zen_browser.zen` would write — no :ro,
+  # the browser must connect() to the bridge socket. Rebuilt systems keep it.
+  # Re-run `flatpak override --user --filesystem=/home/shika/.mozilla/native-messaging-hosts app.zen_browser.zen`
+  # per additional browser flatpak (com.google.Chrome already has a copy).
+  # Flatpak reads user overrides from XDG_DATA_HOME (xdg.dataFile, not configFile).
+  xdg.dataFile."flatpak/overrides/app.zen_browser.zen".text = ''
+    [Context]
+    filesystems=/home/shika/.mozilla/native-messaging-hosts;
+  '';
 }
