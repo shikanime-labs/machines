@@ -363,7 +363,7 @@ in
               expr = "0 2 * * *";
             };
             skills = [
-              "sks-github-notif-sweep"
+              "sks-notif-sweep"
               "sks-triage"
             ];
             prompt = ''
@@ -591,7 +591,7 @@ in
                 prompt = ''
                   Review pull request #{number} in {repository.full_name}.
                 '';
-                skills = [ "sks-pr-review" ];
+                skills = [ "sks-review" ];
                 toolsets = [
                   "terminal"
                   "file"
