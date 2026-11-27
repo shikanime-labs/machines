@@ -354,13 +354,13 @@ in
             '';
           }
           {
-            id = "3c7ce2a4c3e1";
-            name = "hourly-github-notification-sweep";
+            id = "dd8748907e2a";
+            name = "github-notification-sweep";
             enabled = true;
             deliver = "local";
             schedule = {
               kind = "cron";
-              expr = "23 * * * *";
+              expr = "0 2 * * *";
             };
             skills = [
               "sks-github-notif-sweep"
