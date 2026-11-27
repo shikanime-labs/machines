@@ -157,6 +157,13 @@ let
   ];
 
   memoryWikiPlugin = pkgs.callPackage ../../pkgs/hermes-plugin-memory-wiki { };
+
+  nixtar = builtins.head (builtins.filter (p: p.name == "nixtar") workstationPeers);
+
+  nixtarPeer = nixtar // {
+    url = "https://nixtar.taila659a.ts.net:9900";
+  };
+
   mkA2aAgent =
     {
       name,
@@ -338,7 +345,7 @@ in
 
       platforms.a2a.enabled = true;
 
-      a2a_agents = mkA2aAgents fleetPeers;
+      a2a_agents = mkA2aAgents (fleetPeers ++ [ nixtarPeer ]);
 
       bot_peers = mkBotPeers fleetPeers;
 
