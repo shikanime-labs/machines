@@ -29,8 +29,8 @@
       height = 34;
       margin = "8 12 0 12";
       modules-left = [
-        "niri/workspaces"
-        "niri/window"
+        "hyprland/workspaces"
+        "hyprland/window"
       ];
       modules-right = [
         "tray"
@@ -39,10 +39,10 @@
         "battery"
         "clock"
       ];
-      "niri/workspaces" = {
+      "hyprland/workspaces" = {
         format = "{index}";
       };
-      "niri/window" = {
+      "hyprland/window" = {
         format = "{}";
         max-length = 60;
       };
@@ -145,13 +145,11 @@
         }
         {
           timeout = 600;
-          on-timeout = "niri msg action power-off-monitors";
-          on-resume = "niri msg action power-on-monitors";
+          on-timeout = "hyprctl dispatch dpms off";
+          on-resume = "hyprctl dispatch dpms on";
         }
       ];
     };
   };
 
-  # Scratchpad terminal bound to Super+grave.
-  home.packages = [ pkgs.nirius ];
 }

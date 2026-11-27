@@ -7,8 +7,8 @@
   ];
 
   environment = {
-    # Niri's built-in default spawns `${env TERMINAL alacritty}` on Super+Enter.
-    # Point it at Ghostty (provided by the home config) without a full config.kdl.
+    # Conventional default terminal; the Hyprland session keybinds spawn
+    # ghostty directly (provided by the home config).
     sessionVariables.TERMINAL = "ghostty";
 
     # Gaming + laptop utilities the graphical session needs at the system level.
@@ -22,15 +22,14 @@
         ];
         wayland = [
           xhost # lets gparted's root-launch wrapper grant root the Xwayland display
-          xwayland-satellite # bridge x11 apps
         ];
       in
       [
         bitwarden-desktop # password manager
-        brightnessctl # backlight/brightness keys under Niri
+        brightnessctl # backlight/brightness keys under Hyprland
         ddcutil # DDC/CI external monitor brightness/control
         element-desktop # Matrix client
-        fuzzel # secondary fallback launcher; Niri's default config binds Super+D
+        fuzzel # secondary fallback launcher; the Hyprland session binds Super+D
         hyprpolkitagent # polkit auth agent for the graphical session
         gparted-full # disk partition GUI (full FS tool set: resize/move any fs)
         nautilus # file manager GUI
@@ -72,8 +71,11 @@
   };
 
   programs = {
-    # Niri compositor (ships wayland-sessions/niri.desktop; the greeter lists it).
-    niri.enable = true;
+    # Hyprland compositor (ships wayland-sessions/hyprland.desktop; the greeter
+    # lists it). xwayland.enable defaults on: X11 apps get a native XWayland
+    # server, no external bridge. NVIDIA proprietary + prime offload env come
+    # from the host hardware module; session keybinds land in the home config.
+    hyprland.enable = true;
 
     # Noctalia shell removed: vicinae (launcher), waybar (bar), mako
     # (notifications), hyprlock/hypridle (lock/idle), hyprpolkitagent (polkit)
@@ -170,7 +172,7 @@
     comin.desktop.enable = true;
 
     # GNOME desktop session — selectable at the greetd greeter
-    # as an alternative to Niri. The .desktop file lands in
+    # as an alternative to Hyprland. The .desktop file lands in
     # wayland-sessions and noctalia-greeter picks it up.
     desktopManager.gnome.enable = true;
 
@@ -181,7 +183,7 @@
     greetd.enable = true;
 
     # Secret Service daemon so Thunderbird's login manager stores credentials
-    # encrypted (Niri ships no keyring today).
+    # encrypted (Hyprland ships no keyring).
     gnome = {
       gnome-keyring.enable = true;
       gnome-online-accounts.enable = true;
@@ -192,14 +194,15 @@
     # GVfs: trash, removable-media mount, and network shares for nautilus.
     gvfs.enable = true;
 
-    # Let niri own the lid-close action (lock-and-suspend) instead of logind's
-    # default suspend, which would race with niri's switch-events rule.
+    # Let the compositor session own the lid-close action (lock-and-suspend)
+    # instead of logind's default suspend, which would race with session
+    # switch handling.
     logind.settings.Login = {
       HandleLidSwitch = "ignore";
       HandleLidSwitchDocked = "ignore";
     };
 
-    # XWayland for the rare X11 app under Niri. Keep xserver on for the XWayland socket.
+    # XWayland for the rare X11 app under Hyprland. Keep xserver on for the XWayland socket.
     # videoDrivers = [ "nvidia" ] is supplied by nixos-hardware's common-gpu-nvidia.
     xserver.enable = true;
 

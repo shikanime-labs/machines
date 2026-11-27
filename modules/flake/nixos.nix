@@ -36,7 +36,6 @@ let
   mkAiModules = system: [
     inputs.cua.nixosModules.cua-driver
     inputs.hermes-agent.nixosModules.default
-    inputs.noctalia.nixosModules.default
     inputs.noctalia-greeter.nixosModules.default
     inputs.skills.nixosModules.skills
     (mkCuaDriverModule system)
@@ -94,7 +93,6 @@ let
         home-manager.sharedModules = [
           inputs.devlib.homeModules.default
           inputs.identities.homeModules.default
-          inputs.noctalia.homeModules.default
         ];
       }
     ];
