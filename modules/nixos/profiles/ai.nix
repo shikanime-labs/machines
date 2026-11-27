@@ -131,6 +131,10 @@ let
       mkSelfExcludedPeers hubPeers;
   hubTrust = lib.optionals isHub (mkSelfExcludedPeers workstationPeers);
 
+  workstationTrust = lib.optionals (!isClusterPeer && !isHub) (
+    builtins.filter (p: p.name == "telsha") workstationPeers
+  );
+
   hermesHonchoPlugin = pkgs.callPackage ../../../pkgs/hermes-plugin-honcho { };
 
   honchoAi = config.services.hermes-agent.package.python.pkgs.callPackage ../../../pkgs/honcho-ai { };
@@ -514,7 +518,7 @@ in
           A2A_AGENT_NAME=${config.networking.hostName}
           A2A_OWN_TOKEN=${config.sops.placeholder."${mkA2aTokenSecretName config.networking.hostName}"}
           A2A_PEER_TOKENS=${mkA2aPeerTokens otherPeers}
-          A2A_TRUSTED_PEERS=${mkA2aTrustedPeers (a2aTargets ++ hubTrust)}
+          A2A_TRUSTED_PEERS=${mkA2aTrustedPeers (a2aTargets ++ hubTrust ++ workstationTrust)}
         '';
         restartUnits = [ "hermes-agent.service" ];
       };
