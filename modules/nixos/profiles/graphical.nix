@@ -72,6 +72,43 @@
   };
 
   programs = {
+    # GameMode: daemon that applies on-demand optimizations while a game holds
+    # a request (CPU governor -> performance, process renice). Trigger per-game
+    # with the `gamemoderun` wrapper in the launch options (e.g. `gamemoderun %command%`).
+    # enableRenice defaults true, giving gamemoded CAP_SYS_NICE so it can renice.
+    gamemode = {
+      enable = true;
+      settings = {
+        general.renice = 10; # nice the game process while GameMode is active
+        # Optional NVIDIA side: pin the dGPU to fixed-performance so it doesn't
+        # clock-drop under load (fps for heat). Best-effort under Wayland — the
+        # NV-CONTROL write can no-op if there's no X display; harmless if so.
+        # Drop this `custom` block to keep the adaptive PowerMizer default.
+        custom = {
+          # Resolves to the nvidia-settings store path (the nvidia package exposes
+          # it as `config.hardware.nvidia.package.settings`). Pin the dGPU to
+          # fixed-performance so it doesn't clock-drop under load (fps for heat).
+          # Best-effort under Wayland — the NV-CONTROL write can no-op without an
+          # X display; harmless. Drop this block to keep adaptive PowerMizer.
+          start = "${config.hardware.nvidia.package.settings}/bin/nvidia-settings -a [gpu:0]/GPUPowerMizerMode=1";
+          end = "${config.hardware.nvidia.package.settings}/bin/nvidia-settings -a [gpu:0]/GPUPowerMizerMode=0";
+        };
+      };
+    };
+
+    # GameScope standalone binary with CAP_SYS_NICE so it can renice / go RT itself.
+    # Your steam `gamescopeSession` already wraps Steam in gamescope; this makes the
+    # bare `gamescope` command also cap_sys_nice-capable. Needs prime-offload (on).
+    gamescope = {
+      enable = true;
+      capSysNice = true;
+    };
+
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
+
     # Niri compositor (ships wayland-sessions/niri.desktop; the greeter lists it).
     niri.enable = true;
 
@@ -103,38 +140,6 @@
         obs-backgroundremoval # background removal filter
         obs-gstreamer # GStreamer source/encoder/filter
       ];
-    };
-
-    # GameMode: daemon that applies on-demand optimizations while a game holds
-    # a request (CPU governor -> performance, process renice). Trigger per-game
-    # with the `gamemoderun` wrapper in the launch options (e.g. `gamemoderun %command%`).
-    # enableRenice defaults true, giving gamemoded CAP_SYS_NICE so it can renice.
-    gamemode = {
-      enable = true;
-      settings = {
-        general.renice = 10; # nice the game process while GameMode is active
-        # Optional NVIDIA side: pin the dGPU to fixed-performance so it doesn't
-        # clock-drop under load (fps for heat). Best-effort under Wayland — the
-        # NV-CONTROL write can no-op if there's no X display; harmless if so.
-        # Drop this `custom` block to keep the adaptive PowerMizer default.
-        custom = {
-          # Resolves to the nvidia-settings store path (the nvidia package exposes
-          # it as `config.hardware.nvidia.package.settings`). Pin the dGPU to
-          # fixed-performance so it doesn't clock-drop under load (fps for heat).
-          # Best-effort under Wayland — the NV-CONTROL write can no-op without an
-          # X display; harmless. Drop this block to keep adaptive PowerMizer.
-          start = "${config.hardware.nvidia.package.settings}/bin/nvidia-settings -a [gpu:0]/GPUPowerMizerMode=1";
-          end = "${config.hardware.nvidia.package.settings}/bin/nvidia-settings -a [gpu:0]/GPUPowerMizerMode=0";
-        };
-      };
-    };
-
-    # GameScope standalone binary with CAP_SYS_NICE so it can renice / go RT itself.
-    # Your steam `gamescopeSession` already wraps Steam in gamescope; this makes the
-    # bare `gamescope` command also cap_sys_nice-capable. Needs prime-offload (on).
-    gamescope = {
-      enable = true;
-      capSysNice = true;
     };
 
     steam = {
@@ -178,6 +183,11 @@
     # so the portal must be on or the build fails.
     flatpak.enable = true;
 
+    # Fingerprint reader stack. Wires pam_fprintd into the auth path so the
+    # polkit agent (Noctalia) can surface a fingerprint gate for Bitwarden's
+    # "Unlock with system authentication". Enroll with `fprintd-enroll` as the user.
+    fprintd.enable = true;
+
     greetd.enable = true;
 
     # Secret Service daemon so Thunderbird's login manager stores credentials
@@ -199,14 +209,11 @@
       HandleLidSwitchDocked = "ignore";
     };
 
+    pcscd.enable = true;
+
     # XWayland for the rare X11 app under Niri. Keep xserver on for the XWayland socket.
     # videoDrivers = [ "nvidia" ] is supplied by nixos-hardware's common-gpu-nvidia.
     xserver.enable = true;
-
-    # Fingerprint reader stack. Wires pam_fprintd into the auth path so the
-    # polkit agent (Noctalia) can surface a fingerprint gate for Bitwarden's
-    # "Unlock with system authentication". Enroll with `fprintd-enroll` as the user.
-    fprintd.enable = true;
   };
 
   xdg.portal.enable = true;
@@ -215,16 +222,6 @@
   # pkexec/gparted raise. The in-session agent is hyprpolkitagent (home
   # config, graphical-session target), so no external polkit-gnome agent.
   security.polkit.enable = true;
-
-  # Hardware security tokens (YubiKey/Nitrokey smartcard mode): pcscd is the
-  # CCID daemon scdaemon/gpg-agent talk to for on-card keys (GPG signing,
-  # SSH auth). FIDO2/WebAuthn passkeys over HID need no daemon — udev's
-  # 60-fido-id.rules already tags and exposes those.
-  services.pcscd.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
 
   # Expose LM Studio over Tailscale HTTPS (ts.net endpoint on :1234). Runs after
   # tailscaled is up; `serve` persists in tailscaled state after first apply.
