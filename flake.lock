@@ -670,11 +670,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794956626,
-        "narHash": "sha256-2VmkAFKTyz7dN2yTIXrJ8MIPopsdsh1PJXeNRg48VaM=",
+        "lastModified": 1795488769,
+        "narHash": "sha256-2DxgiSiz8adqsd9DBJz2fGwGQm5JmVsOeSVhqzstN6M=",
         "owner": "shikanime-labs",
         "repo": "identities",
-        "rev": "7e022901ad5856a215c2dd7266c07bca09532eb0",
+        "rev": "505d8268a07223a679e3bc196d164b206f6ba0a6",
         "type": "github"
       },
       "original": {
@@ -977,26 +977,6 @@
         "type": "github"
       }
     },
-    "noctalia": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1793076550,
-        "narHash": "sha256-t+bLsze33OVl+jMJODjOxi4krrxKEpr74XxC0AivVXQ=",
-        "owner": "noctalia-dev",
-        "repo": "noctalia",
-        "rev": "d8d6616cf53cd04378abe2f911a6144bd7a9cc6f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "noctalia-dev",
-        "repo": "noctalia",
-        "type": "github"
-      }
-    },
     "noctalia-greeter": {
       "inputs": {
         "nixpkgs": [
@@ -1086,7 +1066,6 @@
         "nix-darwin": "nix-darwin",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
-        "noctalia": "noctalia",
         "noctalia-greeter": "noctalia-greeter",
         "skills": "skills",
         "sops-nix": "sops-nix",

@@ -3,7 +3,7 @@
 {
   imports = [ ./minimal.nix ];
 
-  # Colemak at the OS level (TTY + localed -> niri reads it).
+  # Colemak at the OS level (TTY + localed -> the compositor reads it).
   colemak.enable = true;
 
   # Unicode console font so the bare TTY can actually draw those glyphs
