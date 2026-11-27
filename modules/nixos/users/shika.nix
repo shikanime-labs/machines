@@ -52,6 +52,7 @@ in
     programs.bash.enable = true;
 
     programs.hermes-agent.enable = true;
+    programs.hermes-agent.desktop.enable = true;
 
     nix.extraOptions = "!include ${config.sops.templates.nix-user-config.path}";
 
