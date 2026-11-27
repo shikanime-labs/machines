@@ -49,9 +49,14 @@ in
       shikanime.enable = true;
     };
 
-    programs.bash.enable = true;
+    programs = {
+      bash.enable = true;
 
-    programs.hermes-agent.enable = true;
+      hermes-agent = {
+        enable = true;
+        desktop.enable = true;
+      };
+    };
 
     nix.extraOptions = "!include ${config.sops.templates.nix-user-config.path}";
 
